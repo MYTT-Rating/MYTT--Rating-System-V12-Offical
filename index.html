@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MYTT Rating System</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./"><span class="brand-icon">🏓</span><span><strong>MYTT</strong><small>Malaysia Table Tennis Rating System</small></span></a>
+  <nav class="nav">
+    <a href="#home">Home</a><a href="#search">Search</a><a href="#singles">Singles</a><a href="#doubles">Doubles</a><a href="#players">Players</a><a href="#submit">Join / Submit</a>
+  </nav>
+</header>
+<main id="home">
+<section class="hero">
+  <div>
+    <p class="kicker">MYTT Official Platform</p>
+    <h1>Play. Compete. Improve. Rank.</h1>
+    <p class="intro">Live rankings, player profiles, MYTT tiers and match result submission in one official platform.</p>
+    <div id="submit" class="cta-grid">
+      <a class="cta cta-red" href="https://docs.google.com/forms/d/e/1FAIpQLSfjxBBPNNCF92Aq89YZ-n9-oq5F0WtuNPD3zK6D_3woZLS9aw/viewform?usp=header" target="_blank"><span>🏓</span><div><strong>Submit Singles Result</strong><small>Open match result form</small></div></a>
+      <a class="cta cta-dark" href="https://docs.google.com/forms/d/e/1FAIpQLSe3cKNpJLp8RtUpAPV4Gg1jyBAiNCQ13Vlfz1RHGZoQyjHClg/viewform?usp=header" target="_blank"><span>👥</span><div><strong>Submit Doubles Result</strong><small>Open match result form</small></div></a>
+      <a class="cta cta-dark" href="https://docs.google.com/forms/d/e/1FAIpQLSeLXNo4hjiPcs461pMem5qzGyAOrvZga2MOEtSpoWMteZAODw/viewform?usp=header" target="_blank"><span>👤</span><div><strong>Join MYTT</strong><small>Register as an official MYTT player</small></div></a>
+      <a class="cta cta-dark" href="#players"><span>🔍</span><div><strong>View Players</strong><small>Search official profiles</small></div></a>
+    </div>
+  </div>
+  <div class="hero-card"><div class="pulse-ball"></div><p>MYTT Tier System</p><h2>🌱 Rookie → ⚔️ Challenger</h2><span>Push your rating. Reach the next tier.</span></div>
+</section>
+
+<section id="search" class="search-section">
+  <div class="section-head compact"><div><p class="kicker">Search</p><h2>Find Player</h2></div></div>
+  <div class="search-card">
+    <input id="globalSearch" type="search" placeholder="Search player name, e.g. Danny, Hang, YK..." autocomplete="off">
+    <div id="searchResults" class="search-results"><p class="muted">Type a player name to view rating, tier and profile.</p></div>
+  </div>
+</section>
+
+<section id="players" class="players-section">
+  <div class="section-head"><div><p class="kicker">Players</p><h2>Official Players</h2></div><span class="status">Mobile avatars</span></div>
+  <div class="players-toolbar">
+    <input id="playersSearch" type="search" placeholder="Search official players..." autocomplete="off">
+    <select id="playersFilter">
+      <option value="all">All Players</option>
+      <option value="approved">Approved Only</option>
+      <option value="leaderboard">Leaderboard Players</option>
+    </select>
+  </div>
+  <div id="playersGrid" class="players-grid"><p class="loading">Loading players...</p></div>
+</section>
+
+<section id="singles" class="board-section">
+  <div class="section-head"><div><p class="kicker">Singles</p><h2>Singles Leaderboard</h2></div><span id="singlesStatus" class="status">Loading...</span></div>
+  <div class="board-card"><div class="table-scroll"><table><thead><tr><th>Rank</th><th>Player</th><th>Tier</th><th>Rating</th><th>W-L</th><th>Win %</th><th>Peak</th></tr></thead><tbody id="singlesBody"><tr><td colspan="7" class="loading">Loading singles leaderboard...</td></tr></tbody></table></div></div>
+</section>
+
+<section id="doubles" class="board-section">
+  <div class="section-head"><div><p class="kicker">Doubles</p><h2>Doubles Leaderboard</h2></div><span id="doublesStatus" class="status">Loading...</span></div>
+  <div class="board-card"><div class="table-scroll"><table><thead><tr><th>Rank</th><th>Team</th><th>Tier</th><th>Rating</th><th>W-L</th><th>Win %</th><th>Peak</th></tr></thead><tbody id="doublesBody"><tr><td colspan="7" class="loading">Loading doubles leaderboard...</td></tr></tbody></table></div></div>
+</section>
+
+<section id="notice" class="info-grid">
+  <article><h3>📅 Weekly Schedule</h3><p><strong>Monday</strong> — Singles Matches</p><p><strong>Friday</strong> — Doubles Matches</p><p><strong>Sunday</strong> — Optional / Make-up Matches</p></article>
+  <article><h3>📢 Notice</h3><p>After each match, only one player/team needs to submit the result.</p><p>Ratings and leaderboards update automatically after each submission.</p><p>Doubles uses fixed teams only. Changing partner starts from 1500 rating.</p></article>
+</section>
+</main>
+
+<div id="profileModal" class="modal hidden">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card"><button class="modal-close" data-close-modal>×</button><div id="profileContent"></div></div>
+</div>
+<footer><strong>🏓 MYTT</strong><span>Malaysia Table Tennis Rating System</span><span>© 2026 MYTT. All Rights Reserved.</span></footer>
+<script>
+window.MYTT = {
+  singlesCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSXGQ-Pfqt9eY3wGYsSdbvEUtzhi3CeeBvGe06j3e5jXOkucz2vTtaQ7SbQTJu_qdwRfBYxNoqmi6R2/pub?gid=0&single=true&output=csv",
+  doublesCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSluDdRh-2MZW7emwK5wqPgFH-DUEgtWHbLcoZbThrl4rCEJOD25ztXK15S7_MPibRKNee5W0Y9GCY0/pub?gid=20383104&single=true&output=csv",
+  playerDbCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQVFMviJw4bvH24DESoH7oOsBgk5xHNSZ5PMrW--UPOwFilVx8PDlq06khW70NHjPzEwYXDKe2D5OKB/pub?gid=508447017&single=true&output=csv",
+  singlesForm: "https://docs.google.com/forms/d/e/1FAIpQLSfjxBBPNNCF92Aq89YZ-n9-oq5F0WtuNPD3zK6D_3woZLS9aw/viewform?usp=header",
+  doublesForm: "https://docs.google.com/forms/d/e/1FAIpQLSe3cKNpJLp8RtUpAPV4Gg1jyBAiNCQ13Vlfz1RHGZoQyjHClg/viewform?usp=header",
+  joinForm: "#"
+};
+</script>
+<script src="app.js"></script>
+</body></html>
