@@ -33,59 +33,46 @@ footer{display:flex;flex-direction:column;gap:8px;align-items:center;text-align:
 @media(max-width:850px){#profileContent{padding:18px}.profile-hero-main{flex-direction:column;text-align:center}.profile-badges{justify-content:center}.profile-stats-pro,.career-grid{grid-template-columns:1fr 1fr!important}.profile-avatar-pro{width:110px!important;height:110px!important}.profile-identity h3{font-size:40px}.modal-card{border-radius:22px!important}}
 @media(max-width:520px){.profile-stats-pro,.career-grid{grid-template-columns:1fr!important}.profile-identity h3{font-size:34px}}
 
-/* MYTT V4 Mobile Close Button Real Fix */
-#profileModal > button,
-#profileModal .close,
-#profileModal .close-btn,
-#profileModal [onclick*="closeProfile"]{
-  position: fixed !important;
-  top: 18px !important;
-  right: 18px !important;
-  width: 72px !important;
-  height: 72px !important;
-  z-index: 2147483647 !important;
-  border-radius: 50% !important;
-  background: rgba(0,0,0,.78) !important;
-  color: #fff !important;
-  font-size: 46px !important;
-  font-weight: 900 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  pointer-events: auto !important;
-  touch-action: manipulation !important;
+/* ===== MYTT Mobile Close Button ===== */
+
+#mobileBigCloseProfile{
+    position:fixed;
+    top:18px;
+    right:18px;
+
+    width:60px;
+    height:60px;
+
+    border:none;
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:38px;
+    font-weight:900;
+
+    color:#fff;
+
+    background:rgba(30,30,30,.45);
+
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+
+    transition:.25s;
+
+    z-index:999999999;
+
+    cursor:pointer;
 }
 
-/* Mobile close button glass + animation */
-#profileModal > button,
-#profileModal .close,
-#profileModal .close-btn,
-#profileModal [onclick*="closeProfile"]{
-  width: 60px !important;
-  height: 60px !important;
-  font-size: 38px !important;
-
-  background: rgba(25,25,25,.48) !important;
-  backdrop-filter: blur(14px) !important;
-  -webkit-backdrop-filter: blur(14px) !important;
-
-  box-shadow: 0 12px 30px rgba(0,0,0,.35),
-              inset 0 1px 0 rgba(255,255,255,.22) !important;
-
-  transition: transform .2s ease, background .2s ease, box-shadow .2s ease !important;
+#mobileBigCloseProfile:hover{
+    transform:scale(1.06);
 }
 
-#profileModal > button:active,
-#profileModal .close:active,
-#profileModal .close-btn:active,
-#profileModal [onclick*="closeProfile"]:active{
-  transform: scale(.92) !important;
-  background: rgba(255,255,255,.22) !important;
-}
-
-#profileModal > button:hover,
-#profileModal .close:hover,
-#profileModal .close-btn:hover,
-#profileModal [onclick*="closeProfile"]:hover{
-  transform: scale(1.06) !important;
+#mobileBigCloseProfile:active{
+    transform:scale(.92);
 }
