@@ -165,3 +165,53 @@ document.addEventListener("click", function(e){
     closeProfile();
   }
 });
+
+/* MYTT Mobile Big Close Button */
+(function(){
+  const bigClose = document.createElement("button");
+  bigClose.innerHTML = "×";
+  bigClose.id = "mobileBigCloseProfile";
+
+  bigClose.style.position = "fixed";
+  bigClose.style.top = "18px";
+  bigClose.style.right = "18px";
+  bigClose.style.width = "70px";
+  bigClose.style.height = "70px";
+  bigClose.style.borderRadius = "50%";
+  bigClose.style.border = "2px solid rgba(255,255,255,.35)";
+  bigClose.style.background = "rgba(0,0,0,.75)";
+  bigClose.style.color = "#fff";
+  bigClose.style.fontSize = "46px";
+  bigClose.style.fontWeight = "900";
+  bigClose.style.zIndex = "999999999";
+  bigClose.style.display = "none";
+  bigClose.style.alignItems = "center";
+  bigClose.style.justifyContent = "center";
+  bigClose.style.cursor = "pointer";
+  bigClose.style.touchAction = "manipulation";
+
+  document.body.appendChild(bigClose);
+
+  function isProfileOpen(){
+    const modal = document.getElementById("profileModal");
+    return modal && !modal.classList.contains("hidden");
+  }
+
+  function updateBigClose(){
+    bigClose.style.display = isProfileOpen() ? "flex" : "none";
+  }
+
+  bigClose.addEventListener("click", function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    const modal = document.getElementById("profileModal");
+    if(modal) modal.classList.add("hidden");
+    bigClose.style.display = "none";
+  });
+
+  document.addEventListener("click", function(){
+    setTimeout(updateBigClose, 100);
+  });
+
+  setInterval(updateBigClose, 300);
+})();
