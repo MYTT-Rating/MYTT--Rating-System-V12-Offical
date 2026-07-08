@@ -1,5 +1,10 @@
-# MYTT Website V12.1 Doubles Team Avatars
+# MYTT V3.3
 
-Doubles leaderboard now shows two player avatars when team names are separated by /, &, +, comma, or 'and'.
+Features:
+- Recent Matches in player profiles
+- Rating History chart
+- Head to Head summary
+- Avatars stored in `/avatars/`
+- Doubles team avatars
 
-Avatar rule: upload photos to repository root as MYTT0001.jpg, MYTT0002.jpg, etc.
+Deploy with GitHub Desktop: replace files, Commit to main, then Push origin.
