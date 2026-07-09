@@ -832,3 +832,73 @@ text-align:left;
     width:820px !important;
   }
 }
+
+/* ===== Fix Rank Journey Line Alignment ===== */
+
+.homepage-rank-road::before{
+  display:none !important;
+}
+
+.homepage-rank-road{
+  display:flex !important;
+  align-items:flex-start !important;
+  justify-content:space-between !important;
+  gap:0 !important;
+  overflow:visible !important;
+  padding:28px 0 18px !important;
+}
+
+.home-rank-node{
+  width:96px !important;
+  min-width:96px !important;
+  flex:0 0 96px !important;
+  text-align:center !important;
+  z-index:2 !important;
+}
+
+.home-rank-node div{
+  width:82px !important;
+  height:82px !important;
+  margin:0 auto 14px !important;
+  font-size:38px !important;
+}
+
+.home-rank-line{
+  display:block !important;
+  flex:1 1 auto !important;
+  min-width:18px !important;
+  height:7px !important;
+  margin-top:39px !important;
+  margin-left:-6px !important;
+  margin-right:-6px !important;
+  border-radius:999px !important;
+  background:linear-gradient(90deg,#ef4444,#f59e0b,#fde047,#22c55e,#06b6d4,#8b5cf6,#ec4899) !important;
+  box-shadow:0 0 18px rgba(239,68,68,.65) !important;
+  opacity:.9 !important;
+  z-index:1 !important;
+}
+
+.home-rank-node span{
+  font-size:15px !important;
+  line-height:1.15 !important;
+  min-height:36px !important;
+}
+
+.home-rank-node small{
+  font-size:15px !important;
+}
+
+@media(max-width:900px){
+  .homepage-rank-road{
+    overflow-x:auto !important;
+    justify-content:flex-start !important;
+  }
+
+  .home-rank-node{
+    flex:0 0 96px !important;
+  }
+
+  .home-rank-line{
+    flex:0 0 42px !important;
+  }
+}
