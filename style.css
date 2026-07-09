@@ -612,3 +612,115 @@ text-align:left;
 }
 
 }
+
+/* ===== MYTT V5 Homepage Rank Journey Full View Fix ===== */
+
+.hero-v5{
+  grid-template-columns:0.85fr 1.35fr !important;
+  gap:48px !important;
+  padding:70px 0 !important;
+}
+
+.hero-title-v5 span{
+  font-size:clamp(50px,5vw,82px) !important;
+}
+
+.hero-rank-card-v5{
+  padding:32px !important;
+  border-radius:30px !important;
+}
+
+.homepage-rank-road{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:8px !important;
+  overflow:visible !important;
+  padding:26px 0 18px !important;
+}
+
+.home-rank-node{
+  min-width:74px !important;
+  flex:1 !important;
+  opacity:.42;
+}
+
+.home-rank-node div{
+  width:58px !important;
+  height:58px !important;
+  font-size:29px !important;
+}
+
+.home-rank-node span{
+  font-size:13px !important;
+  line-height:1.15 !important;
+  min-height:30px;
+}
+
+.home-rank-node small{
+  font-size:12px !important;
+  color:#ef4444 !important;
+  font-weight:800;
+}
+
+.home-rank-line{
+  flex:.45 !important;
+  min-width:20px !important;
+  height:5px !important;
+}
+
+.current-rating-v5 strong{
+  color:#ef4444 !important;
+}
+
+.you-are-here-v5{
+  text-align:left !important;
+  margin-top:8px !important;
+  color:#ef4444 !important;
+}
+
+.you-are-here-v5 span{
+  font-size:22px !important;
+}
+
+.you-are-here-v5 strong{
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  font-size:14px !important;
+  color:#ef4444 !important;
+}
+
+@media(max-width:1100px){
+  .hero-v5{
+    grid-template-columns:1fr !important;
+  }
+
+  .homepage-rank-road{
+    overflow-x:auto !important;
+    justify-content:flex-start !important;
+  }
+
+  .home-rank-node{
+    min-width:95px !important;
+    flex:none !important;
+  }
+
+  .home-rank-line{
+    min-width:40px !important;
+    flex:none !important;
+  }
+}
+
+@media(max-width:700px){
+  .hero-title-v5 span{
+    font-size:44px !important;
+  }
+
+  .hero-rank-card-v5{
+    padding:22px !important;
+  }
+
+  .homepage-rank-road{
+    overflow-x:auto !important;
+  }
+}
