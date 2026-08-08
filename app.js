@@ -1557,11 +1557,13 @@ function eventCardHTML(event){
 
     <p class="event-description">${description}</p>
 
-    ${eventCapacityHTML(event)}
+    <div class="event-lower-block">
+      ${eventCapacityHTML(event)}
 
-    <div class="event-card-footer">
-      <small>${deadlineSafe||"Registration details managed by MYTT"}</small>
-      ${button}
+      <div class="event-card-footer">
+        <small class="event-deadline-note">${deadlineSafe||"Registration details managed by MYTT"}</small>
+        ${button}
+      </div>
     </div>
   </article>`;
 }
