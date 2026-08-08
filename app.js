@@ -1810,6 +1810,16 @@ function eventGvizResponseToRows(response){
   }).filter(row=>row.some(value=>String(value??"").trim()!==""));
 }
 
+function bundledUpcomingEvents(){
+  try{
+    const rows=Array.isArray(config.eventsFallbackRows)?config.eventsFallbackRows:[];
+    return publishedRowsToEvents(rows);
+  }catch(err){
+    console.warn("Bundled MYTT event fallback could not be parsed",err);
+    return[];
+  }
+}
+
 let eventGvizRequestNo=0;
 function loadEventsViaGviz(timeoutMs=18000){
   return new Promise((resolve,reject)=>{
@@ -1855,47 +1865,115 @@ function loadEventsViaGviz(timeoutMs=18000){
   });
 }
 
+let eventWebAppReadRequestNo=0;
+function loadEventsViaWebApp(timeoutMs=18000){
+  return new Promise((resolve,reject)=>{
+    if(!config.eventsWebAppUrl){
+      reject(new Error("Events Web App URL is missing"));
+      return;
+    }
+
+    const requestNo=++eventWebAppReadRequestNo;
+    const callbackName=`__myttEventsApi_${Date.now()}_${requestNo}`;
+    const script=document.createElement("script");
+    let settled=false;
+
+    const cleanup=()=>{
+      if(script.parentNode)script.parentNode.removeChild(script);
+      try{delete window[callbackName]}catch(_){window[callbackName]=undefined}
+    };
+
+    const finish=(fn,value)=>{
+      if(settled)return;
+      settled=true;
+      clearTimeout(timer);
+      cleanup();
+      fn(value);
+    };
+
+    window[callbackName]=(data)=>{
+      if(!data || data.source!=="MYTT_EVENTS_WEB_APP" || String(data.status||"").toLowerCase()!=="ok"){
+        finish(reject,new Error(String(data?.message||"Invalid MYTT Events API response")));
+        return;
+      }
+      finish(resolve,Array.isArray(data.events)?data.events:[]);
+    };
+
+    script.async=true;
+    script.onerror=()=>finish(reject,new Error("MYTT Events API script request failed"));
+    script.src=config.eventsWebAppUrl+
+      "?action=events"+
+      "&callback="+encodeURIComponent(callbackName)+
+      "&_="+Date.now();
+
+    const timer=setTimeout(()=>finish(reject,new Error("MYTT Events API request timed out")),timeoutMs);
+    document.head.appendChild(script);
+  });
+}
+
 async function loadUpcomingEvents(options={}){
   const status=document.getElementById("eventsStatus");
   const maxAttempts=Math.max(1,Number(options.maxAttempts)||2);
   const timeoutMs=Math.max(7000,Number(options.timeoutMs)||18000);
 
-  if(!config.eventsGvizUrl){
-    upcomingEvents=readCachedUpcomingEvents();
+  // Never make the event section blank while a cross-origin request is pending.
+  // Prefer a previously successful live copy; otherwise use the bundled current-event snapshot.
+  const cached=readCachedUpcomingEvents();
+  const bundled=bundledUpcomingEvents();
+  const initial=cached.length?cached:bundled;
+  if(!upcomingEvents.length && initial.length){
+    upcomingEvents=initial;
     renderUpcomingEvents();
-    if(status)status.textContent=upcomingEvents.length?"Showing saved events":"Events unavailable";
-    return upcomingEvents;
   }
 
-  for(let attempt=1;attempt<=maxAttempts;attempt++){
-    try{
-      if(status)status.textContent=attempt>1?"Refreshing events…":"Checking events...";
+  let lastError=null;
 
-      // Deliberately use a cross-origin <script> (Google Visualization JSONP)
-      // instead of fetch(), so mobile browsers do not depend on CSV CORS redirects.
-      const rows=await loadEventsViaGviz(timeoutMs);
-      upcomingEvents=publishedRowsToEvents(rows);
-      cacheUpcomingEvents(upcomingEvents);
-      renderUpcomingEvents();
-      return upcomingEvents;
-    }catch(err){
-      console.warn(`Upcoming MYTT Events GViz attempt ${attempt} failed`,err);
-      if(attempt<maxAttempts)await new Promise(resolve=>setTimeout(resolve,700*attempt));
+  // Primary live source: original Spreadsheet ID through Google Visualization JSONP.
+  if(config.eventsGvizUrl){
+    for(let attempt=1;attempt<=maxAttempts;attempt++){
+      try{
+        if(status)status.textContent=attempt>1?"Refreshing events…":"Checking events...";
+        const rows=await loadEventsViaGviz(timeoutMs);
+        const liveEvents=publishedRowsToEvents(rows);
+        upcomingEvents=liveEvents;
+        cacheUpcomingEvents(liveEvents);
+        renderUpcomingEvents();
+        return liveEvents;
+      }catch(err){
+        lastError=err;
+        console.warn(`Upcoming MYTT Events GViz attempt ${attempt} failed`,err);
+        if(attempt<maxAttempts)await new Promise(resolve=>setTimeout(resolve,650*attempt));
+      }
     }
   }
 
-  const cached=readCachedUpcomingEvents();
-  if(cached.length){
-    upcomingEvents=cached;
+  // Secondary live source: existing public Apps Script JSONP endpoint.
+  try{
+    if(status)status.textContent="Refreshing events…";
+    const apiEvents=await loadEventsViaWebApp(timeoutMs);
+    upcomingEvents=apiEvents;
+    cacheUpcomingEvents(apiEvents);
     renderUpcomingEvents();
-    if(status)status.textContent=upcomingEvents.length===1?"1 upcoming event · saved":upcomingEvents.length+" upcoming events · saved";
-    return upcomingEvents;
+    return apiEvents;
+  }catch(err){
+    lastError=err;
+    console.warn("Upcoming MYTT Events Apps Script fallback failed",err);
   }
 
-  upcomingEvents=[];
+  // Hard fallback: show a usable event card instead of an empty failure state.
+  const fallback=readCachedUpcomingEvents();
+  const safeEvents=fallback.length?fallback:bundledUpcomingEvents();
+  upcomingEvents=safeEvents;
   renderUpcomingEvents();
-  if(status)status.textContent="Load failed — tap Events to retry";
-  return[];
+
+  if(status){
+    if(upcomingEvents.length===1)status.textContent="1 upcoming event";
+    else if(upcomingEvents.length>1)status.textContent=upcomingEvents.length+" upcoming events";
+    else status.textContent="No upcoming events";
+  }
+
+  if(lastError)console.warn("Live MYTT Events unavailable; using safe fallback",lastError);
+  return upcomingEvents;
 }
 
 function renderEventPlayerSuggestions(){

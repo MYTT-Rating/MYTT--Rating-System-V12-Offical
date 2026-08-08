@@ -701,10 +701,15 @@ window.MYTT = {
   doublesWebAppUrl: "https://script.google.com/macros/s/AKfycbyZpeTiK4R31KME890Xh29TbGnbSZ5ACl8XYaWNiUPLvtjjEBSs43eSUwfq3VMdKPnK7A/exec",
   joinWebAppUrl: "https://script.google.com/macros/s/AKfycbyMF13I7EuIuSExNl-mCgVgIAW1GQwa6o7gujC-eby0sgBphKxb2vrNTV5tlivDKU0faQ/exec",
   eventsCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS1_V7xQmPWSbB-slp4q_aYqBiVZLqEMQiakRBSRSbU1SG18eX8ahkpvcQTVk7qlPqCL7Ggd8bKiZpe/pub?gid=935869480&single=true&output=csv",
-  eventsGvizUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS1_V7xQmPWSbB-slp4q_aYqBiVZLqEMQiakRBSRSbU1SG18eX8ahkpvcQTVk7qlPqCL7Ggd8bKiZpe/gviz/tq?gid=935869480",
+  eventsGvizUrl: "https://docs.google.com/spreadsheets/d/1WFX7yzKVeu4qVx86MFl6LPPo7yf075tHmsZldO9Rpsk/gviz/tq?gid=935869480",
+  // Same-origin page fallback data. This is only used if both live Google sources fail.
+  // It is still passed through the normal event-date/status logic, so it will expire naturally.
+  eventsFallbackRows: [
+    ["MYTT-E001","MYTT Rating Day","2026-08-30","2:00 PM","Jom Nittaku","Round Robin Singles","16","2026-08-28","Open","Official MYTT rating matches.","1"]
+  ],
   eventsWebAppUrl: "https://script.google.com/macros/s/AKfycbxFeSz9bn7LmnvcMDYIQnbsCdvD6dPnf3hEADE4JjWQ3UHzaTO_nVtjj3ABnGlz7fillA/exec"
 };
 </script>
-<script src="app.js?v=20260809-0205"></script>
+<script src="app.js?v=20260809-0215"></script>
 </body>
 </html>
