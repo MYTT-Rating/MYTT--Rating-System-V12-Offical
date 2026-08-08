@@ -58,8 +58,8 @@
         <a id="singlesSubmitCta" class="cta cta-red" href="#submit" data-open-singles-form aria-haspopup="dialog">
           <span>🏓</span><div><strong>Submit Singles Result</strong><small id="singlesSubmitCtaText">Checking active match session…</small></div>
         </a>
-        <a class="cta cta-dark" href="https://docs.google.com/forms/d/e/1FAIpQLSe3cKNpJLp8RtUpAPV4Gg1jyBAiNCQ13Vlfz1RHGZoQyjHClg/viewform?usp=header" target="_blank" rel="noopener">
-          <span>👥</span><div><strong>Submit Doubles Result</strong><small>Open match result form</small></div>
+        <a id="doublesSubmitCta" class="cta cta-dark" href="#submit" data-open-doubles-form aria-haspopup="dialog">
+          <span>👥</span><div><strong>Submit Doubles Result</strong><small id="doublesSubmitCtaText">Checking active doubles session…</small></div>
         </a>
         <a class="cta cta-dark" href="https://docs.google.com/forms/d/e/1FAIpQLSeLXNo4hjiPcs461pMem5qzGyAOrvZga2MOEtSpoWMteZAODw/viewform?usp=header" target="_blank" rel="noopener">
           <span>👤</span><div><strong>Join MYTT</strong><small>Register as an official MYTT player</small></div>
@@ -346,6 +346,85 @@
   </section>
 </div>
 
+
+<div id="doublesFormModal" class="result-modal hidden" aria-hidden="true">
+  <div class="result-modal-backdrop" data-close-doubles-form></div>
+  <section class="result-modal-card" role="dialog" aria-modal="true" aria-labelledby="doublesFormTitle">
+    <button class="result-modal-close" type="button" data-close-doubles-form aria-label="Close doubles result form">×</button>
+
+    <div class="result-form-head">
+      <p class="kicker">MYTT Match Submission</p>
+      <h2 id="doublesFormTitle">Submit Doubles Result</h2>
+      <p>Only teams listed in the current MYTT Active Doubles Teams session can submit a result. Choose both teams, the winner and final score.</p>
+    </div>
+
+    <div id="doublesClosedState" class="result-session-state result-session-hidden" aria-live="polite">
+      <div class="result-session-lock">🔒</div>
+      <h3 id="doublesClosedTitle">Result Submission Closed</h3>
+      <p id="doublesClosedText">No active MYTT Doubles match session is currently available.</p>
+    </div>
+
+    <form id="doublesResultForm"
+          class="result-form"
+          action="https://script.google.com/macros/s/AKfycbyZpeTiK4R31KME890Xh29TbGnbSZ5ACl8XYaWNiUPLvtjjEBSs43eSUwfq3VMdKPnK7A/exec"
+          method="POST"
+          target="doublesSubmitFrame"
+          novalidate>
+      <input id="doublesSubmissionId" type="hidden" name="submissionId">
+
+      <label class="result-field">
+        <span>Match Date</span>
+        <input id="doublesMatchDate" name="matchDate" type="date" required>
+      </label>
+
+      <div class="result-player-grid">
+        <div class="result-field">
+          <span>Team A</span>
+          <div class="player-picker">
+            <input id="teamASearch" class="result-player-search" type="search" placeholder="Search active team..." autocomplete="off" aria-autocomplete="list">
+            <input id="teamAValue" type="hidden" name="teamA">
+            <div id="teamAMenu" class="player-picker-menu hidden" role="listbox"></div>
+          </div>
+        </div>
+
+        <div class="result-field">
+          <span>Team B</span>
+          <div class="player-picker">
+            <input id="teamBSearch" class="result-player-search" type="search" placeholder="Search opponent team..." autocomplete="off" aria-autocomplete="list">
+            <input id="teamBValue" type="hidden" name="teamB">
+            <div id="teamBMenu" class="player-picker-menu hidden" role="listbox"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-field">
+        <span>Winner</span>
+        <input id="doublesWinnerValue" type="hidden" name="winner">
+        <div id="doublesWinnerChoices" class="choice-row winner-choices">
+          <p class="result-hint">Select Team A and Team B first.</p>
+        </div>
+      </div>
+
+      <div class="result-field">
+        <span>Final Score</span>
+        <input id="doublesScoreValue" type="hidden" name="matchScore">
+        <div class="choice-row score-choices">
+          <button type="button" class="result-choice" data-doubles-score="3-0">3–0</button>
+          <button type="button" class="result-choice" data-doubles-score="3-1">3–1</button>
+          <button type="button" class="result-choice" data-doubles-score="3-2">3–2</button>
+        </div>
+      </div>
+
+      <div id="doublesFormStatus" class="result-form-status" aria-live="polite"></div>
+
+      <button id="doublesSubmitButton" class="result-submit" type="submit">Submit Result</button>
+      <p class="result-form-note">Only current Active Doubles Teams are eligible. MYTT will confirm whether the result is accepted or rejected before showing the final status.</p>
+    </form>
+
+    <iframe id="doublesSubmitFrame" name="doublesSubmitFrame" class="result-submit-frame" title="Doubles result submission"></iframe>
+  </section>
+</div>
+
 <div id="profileModal" class="modal hidden">
   <div class="modal-backdrop" data-close-modal></div>
   <div class="modal-card">
@@ -363,7 +442,9 @@ window.MYTT = {
   playerDbCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQVFMviJw4bvH24DESoH7oOsBgk5xHNSZ5PMrW--UPOwFilVx8PDlq06khW70NHjPzEwYXDKe2D5OKB/pub?gid=508447017&single=true&output=csv",
   matchResultsCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSXGQ-Pfqt9eY3wGYsSdbvEUtzhi3CeeBvGe06j3e5jXOkucz2vTtaQ7SbQTJu_qdwRfBYxNoqmi6R2/pub?gid=909390526&single=true&output=csv",
   activePlayersCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSXGQ-Pfqt9eY3wGYsSdbvEUtzhi3CeeBvGe06j3e5jXOkucz2vTtaQ7SbQTJu_qdwRfBYxNoqmi6R2/pub?gid=1293054635&single=true&output=csv",
-  singlesWebAppUrl: "https://script.google.com/macros/s/AKfycbz24rx6NLZ_FLRft5mUcGbRBbqiofs4Ai0tuU_S58ZgCK9LVf9Q3TT1aQSzDLA6YVDfbQ/exec"
+  activeDoublesTeamsCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSluDdRh-2MZW7emwK5wqPgFH-DUEgtWHbLcoZbThrl4rCEJOD25ztXK15S7_MPibRKNee5W0Y9GCY0/pub?gid=642146116&single=true&output=csv",
+  singlesWebAppUrl: "https://script.google.com/macros/s/AKfycbz24rx6NLZ_FLRft5mUcGbRBbqiofs4Ai0tuU_S58ZgCK9LVf9Q3TT1aQSzDLA6YVDfbQ/exec",
+  doublesWebAppUrl: "https://script.google.com/macros/s/AKfycbyZpeTiK4R31KME890Xh29TbGnbSZ5ACl8XYaWNiUPLvtjjEBSs43eSUwfq3VMdKPnK7A/exec"
 };
 </script>
 <script src="app.js"></script>

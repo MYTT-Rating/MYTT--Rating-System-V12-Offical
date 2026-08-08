@@ -1,4 +1,4 @@
-const config=window.MYTT;let singlesPlayers=[],doublesTeams=[],playerDb=[],matchResults=[],activePlayers=[];let activePlayersLoaded=false,activePlayersError=false;
+const config=window.MYTT;let singlesPlayers=[],doublesTeams=[],playerDb=[],matchResults=[],activePlayers=[],activeDoublesTeams=[];let activePlayersLoaded=false,activePlayersError=false,activeDoublesTeamsLoaded=false,activeDoublesTeamsError=false;
 const TIERS=[{min:-Infinity,name:"Novice",icon:"🌿",cls:"tier-novice",next:1500},{min:1500,name:"Rookie",icon:"🌱",cls:"tier-rookie",next:1600},{min:1600,name:"Challenger",icon:"⚔️",cls:"tier-challenger",next:1700},{min:1700,name:"Elite",icon:"⭐",cls:"tier-elite",next:1800},{min:1800,name:"Master",icon:"🔥",cls:"tier-master",next:1900},{min:1900,name:"Legend",icon:"👑",cls:"tier-legend",next:2000},{min:2000,name:"Grandmaster",icon:"💎",cls:"tier-grandmaster",next:2100},{min:2100,name:"Immortal",icon:"⚡",cls:"tier-immortal",next:2200},{min:2200,name:"MYTT Champion",icon:"🏆",cls:"tier-champion",next:null}];
 function getTier(r){const rating=Number(r)||0;let t=TIERS[0];for(const tier of TIERS){if(rating>=tier.min)t=tier}return t}
 function tierHTML(r){const t=getTier(r);return `<span class="tier-pill ${t.cls}">${t.icon} ${t.name}</span>`}
@@ -641,24 +641,477 @@ async function loadActivePlayers(){
   }
 }
 
+
+/* MYTT Doubles Result — Active Doubles Teams controlled native web form */
+let doublesFormSubmitted=false;
+let doublesStatusPollToken=0;
+
+function doublesFormEls(){
+  return{
+    modal:document.getElementById("doublesFormModal"),
+    form:document.getElementById("doublesResultForm"),
+    closed:document.getElementById("doublesClosedState"),
+    closedTitle:document.getElementById("doublesClosedTitle"),
+    closedText:document.getElementById("doublesClosedText"),
+    date:document.getElementById("doublesMatchDate"),
+    submissionId:document.getElementById("doublesSubmissionId"),
+    aSearch:document.getElementById("teamASearch"),
+    aValue:document.getElementById("teamAValue"),
+    aMenu:document.getElementById("teamAMenu"),
+    bSearch:document.getElementById("teamBSearch"),
+    bValue:document.getElementById("teamBValue"),
+    bMenu:document.getElementById("teamBMenu"),
+    winner:document.getElementById("doublesWinnerValue"),
+    winnerChoices:document.getElementById("doublesWinnerChoices"),
+    score:document.getElementById("doublesScoreValue"),
+    status:document.getElementById("doublesFormStatus"),
+    submit:document.getElementById("doublesSubmitButton"),
+    frame:document.getElementById("doublesSubmitFrame"),
+    cta:document.getElementById("doublesSubmitCta"),
+    ctaText:document.getElementById("doublesSubmitCtaText")
+  };
+}
+
+function canonicalDoublesTeamName(name){
+  const s=slug(name);
+  const item=doublesTeams.find(x=>slug(x.name)===s);
+  return item?.name||String(name||"").trim();
+}
+
+function uniqueActiveDoublesNames(rows){
+  const seen=new Set(),out=[];
+  for(const raw of rows){
+    const name=canonicalDoublesTeamName(raw);
+    const k=slug(name);
+    if(!k||seen.has(k))continue;
+    seen.add(k);
+    out.push(name);
+  }
+  return out;
+}
+
+function isActiveDoublesTeam(name){
+  const k=slug(name);
+  return !!k&&activeDoublesTeams.some(n=>slug(n)===k);
+}
+
+function activeDoublesTeamItems(exclude=""){
+  const ex=slug(exclude);
+  return activeDoublesTeams
+    .filter(name=>slug(name)!==ex)
+    .map(name=>{
+      const lb=doublesTeams.find(x=>slug(x.name)===slug(name))||{rating:"-"};
+      return {name:canonicalDoublesTeamName(name),lb};
+    });
+}
+
+function updateDoublesSessionUI(){
+  const e=doublesFormEls();
+  if(!e.cta)return;
+
+  e.cta.classList.remove("session-open","session-closed","session-checking");
+  e.cta.removeAttribute("aria-disabled");
+
+  if(!activeDoublesTeamsLoaded){
+    e.cta.classList.add("session-checking");
+    if(e.ctaText)e.ctaText.textContent="Checking active doubles session…";
+  }else if(activeDoublesTeamsError){
+    e.cta.classList.add("session-closed");
+    e.cta.setAttribute("aria-disabled","true");
+    if(e.ctaText)e.ctaText.textContent="Session unavailable";
+  }else if(!activeDoublesTeams.length){
+    e.cta.classList.add("session-closed");
+    e.cta.setAttribute("aria-disabled","true");
+    if(e.ctaText)e.ctaText.textContent="Result submission closed";
+  }else{
+    e.cta.classList.add("session-open");
+    if(e.ctaText)e.ctaText.textContent=`Open · ${activeDoublesTeams.length} active team${activeDoublesTeams.length===1?"":"s"}`;
+  }
+
+  syncDoublesSessionModal();
+}
+
+function syncDoublesSessionModal(){
+  const e=doublesFormEls();
+  if(!e.form||!e.closed)return;
+
+  if(!activeDoublesTeamsLoaded){
+    e.form.classList.add("result-session-hidden");
+    e.closed.classList.remove("result-session-hidden");
+    if(e.closedTitle)e.closedTitle.textContent="Checking Doubles Session";
+    if(e.closedText)e.closedText.textContent="MYTT is checking the current Active Doubles Teams list…";
+    return;
+  }
+
+  if(activeDoublesTeamsError){
+    e.form.classList.add("result-session-hidden");
+    e.closed.classList.remove("result-session-hidden");
+    if(e.closedTitle)e.closedTitle.textContent="Session Unavailable";
+    if(e.closedText)e.closedText.textContent="MYTT could not verify the Active Doubles Teams list. Result submission remains locked for safety.";
+    return;
+  }
+
+  if(!activeDoublesTeams.length){
+    e.form.classList.add("result-session-hidden");
+    e.closed.classList.remove("result-session-hidden");
+    if(e.closedTitle)e.closedTitle.textContent="Result Submission Closed";
+    if(e.closedText)e.closedText.textContent="There are no teams in the current Active Doubles Teams session. Please wait for the next official MYTT Doubles match session.";
+    return;
+  }
+
+  e.closed.classList.add("result-session-hidden");
+  e.form.classList.remove("result-session-hidden");
+}
+
+function doublesPickerElements(which){
+  const e=doublesFormEls();
+  return which==="A"
+    ?{search:e.aSearch,value:e.aValue,menu:e.aMenu,other:e.bValue}
+    :{search:e.bSearch,value:e.bValue,menu:e.bMenu,other:e.aValue};
+}
+
+function doublesPickerOptionHTML(x,which){
+  const rating=x.lb?.rating&&x.lb.rating!=="-"?x.lb.rating:"New";
+  return `<button type="button" class="player-picker-option" data-pick-team="${encodeURIComponent(x.name)}" data-pick-team-side="${which}"><strong>${x.name}</strong><small>${rating}</small></button>`;
+}
+
+function renderDoublesTeamPicker(which){
+  const {search,menu,other}=doublesPickerElements(which);
+  if(!search||!menu)return;
+
+  if(!activeDoublesTeamsLoaded||activeDoublesTeamsError||!activeDoublesTeams.length){
+    menu.innerHTML=`<div class="player-picker-empty">Result submission is currently closed.</div>`;
+    menu.classList.remove("hidden");
+    return;
+  }
+
+  const q=search.value.trim().toLowerCase();
+  let list=activeDoublesTeamItems(other?.value||"");
+
+  if(q){
+    list=list.filter(x=>x.name.toLowerCase().includes(q)||slug(x.name).includes(slug(q)));
+  }
+
+  menu.innerHTML=list.length
+    ?`<div class="player-picker-label">${q?"Active Team Search":"Active Doubles Teams"}</div>${list.map(x=>doublesPickerOptionHTML(x,which)).join("")}`
+    :`<div class="player-picker-empty">${q?"No active team found.":"No eligible opponent team available."}</div>`;
+
+  menu.classList.remove("hidden");
+}
+
+function closeDoublesTeamMenus(){
+  const e=doublesFormEls();
+  e.aMenu?.classList.add("hidden");
+  e.bMenu?.classList.add("hidden");
+}
+
+function syncDoublesWinnerChoices(){
+  const e=doublesFormEls(),a=e.aValue?.value||"",b=e.bValue?.value||"";
+  if(!e.winnerChoices)return;
+
+  if(!a||!b){
+    e.winner.value="";
+    e.winnerChoices.innerHTML=`<p class="result-hint">Select Team A and Team B first.</p>`;
+    return;
+  }
+
+  if(e.winner.value&&!samePlayer(e.winner.value,a)&&!samePlayer(e.winner.value,b))e.winner.value="";
+  e.winnerChoices.innerHTML=[a,b]
+    .map(n=>`<button type="button" class="result-choice ${samePlayer(e.winner.value,n)?"active":""}" data-doubles-winner="${encodeURIComponent(n)}">${n}</button>`)
+    .join("");
+}
+
+function chooseDoublesTeam(which,name){
+  const e=doublesFormEls(),p=doublesPickerElements(which);
+  const canonical=canonicalDoublesTeamName(decodeURIComponent(name));
+
+  if(!isActiveDoublesTeam(canonical)){
+    if(e.status)e.status.textContent="That team is not in the current Active Doubles Teams session.";
+    return;
+  }
+
+  p.value.value=canonical;
+  p.search.value=canonical;
+  p.menu.classList.add("hidden");
+
+  if(which==="A"&&e.bValue&&samePlayer(e.bValue.value,canonical)){
+    e.bValue.value="";
+    e.bSearch.value="";
+  }
+  if(which==="B"&&e.aValue&&samePlayer(e.aValue.value,canonical)){
+    e.aValue.value="";
+    e.aSearch.value="";
+  }
+
+  e.winner.value="";
+  syncDoublesWinnerChoices();
+  if(e.status)e.status.textContent="";
+}
+
+function resetDoublesResultForm(){
+  const e=doublesFormEls();
+  if(!e.form)return;
+  e.form.reset();
+  e.date.value=todayLocalISO();
+  e.aValue.value="";
+  e.bValue.value="";
+  e.winner.value="";
+  e.score.value="";
+  document.querySelectorAll("#doublesFormModal .result-choice.active").forEach(x=>x.classList.remove("active"));
+  syncDoublesWinnerChoices();
+  closeDoublesTeamMenus();
+  e.status.textContent="";
+  e.status.classList.remove("success","error","rejected","closed");
+  e.submit.disabled=false;
+  e.submit.textContent="Submit Result";
+}
+
+function prepareNextDoublesResult(){
+  const e=doublesFormEls();
+  if(!e.form)return;
+
+  const savedDate=e.date?.value||todayLocalISO();
+
+  if(e.aSearch)e.aSearch.value="";
+  if(e.bSearch)e.bSearch.value="";
+  if(e.aValue)e.aValue.value="";
+  if(e.bValue)e.bValue.value="";
+  if(e.winner)e.winner.value="";
+  if(e.score)e.score.value="";
+  if(e.submissionId)e.submissionId.value="";
+  if(e.date)e.date.value=savedDate;
+
+  document
+    .querySelectorAll("#doublesFormModal .result-choice.active")
+    .forEach(x=>x.classList.remove("active"));
+
+  syncDoublesWinnerChoices();
+  closeDoublesTeamMenus();
+
+  setTimeout(()=>e.aSearch?.focus(),120);
+}
+
+function openDoublesResultForm(){
+  const e=doublesFormEls();
+  if(!e.modal)return;
+  if(!e.date.value)e.date.value=todayLocalISO();
+  syncDoublesSessionModal();
+  e.modal.classList.remove("hidden");
+  e.modal.setAttribute("aria-hidden","false");
+  document.body.classList.add("result-modal-open");
+  if(activeDoublesTeamsLoaded&&!activeDoublesTeamsError&&activeDoublesTeams.length){
+    setTimeout(()=>e.aSearch?.focus(),80);
+  }
+}
+
+function closeDoublesResultForm(){
+  const e=doublesFormEls();
+  if(!e.modal)return;
+  e.modal.classList.add("hidden");
+  e.modal.setAttribute("aria-hidden","true");
+  document.body.classList.remove("result-modal-open");
+  closeDoublesTeamMenus();
+}
+
+function validateDoublesResultForm(){
+  const e=doublesFormEls();
+  const a=e.aValue.value,b=e.bValue.value,w=e.winner.value,s=e.score.value,d=e.date.value;
+  let msg="";
+
+  if(!activeDoublesTeamsLoaded||activeDoublesTeamsError||!activeDoublesTeams.length)msg="Result submission is currently closed.";
+  else if(!d)msg="Please select a valid match date.";
+  else if(!a)msg="Please select Team A from the current Active Doubles Teams list.";
+  else if(!b)msg="Please select Team B from the current Active Doubles Teams list.";
+  else if(!isActiveDoublesTeam(a)||!isActiveDoublesTeam(b))msg="Both teams must be in the current Active Doubles Teams session.";
+  else if(samePlayer(a,b))msg="Team A and Team B cannot be the same team.";
+  else if(!w||(!samePlayer(w,a)&&!samePlayer(w,b)))msg="Please select the winner.";
+  else if(!["3-0","3-1","3-2"].includes(s))msg="Please select the final score.";
+
+  e.status.classList.remove("success","error","rejected","closed");
+  e.status.textContent=msg;
+  return !msg;
+}
+
+function handleDoublesServerResult(data){
+  if(!data||data.source!=="MYTT_DOUBLES_WEB_APP")return false;
+
+  const fe=doublesFormEls();
+  doublesFormSubmitted=false;
+  doublesStatusPollToken++;
+  fe.submit.disabled=false;
+  fe.status.classList.remove("success","error","rejected","closed");
+
+  const status=String(data.status||"error").toLowerCase();
+  const message=String(data.message||"MYTT could not process this result.");
+
+  if(status==="pending")return false;
+
+  if(status==="accepted"){
+    fe.status.textContent="✓ "+message+" Ready for the next result.";
+    fe.status.classList.add("success");
+    fe.submit.textContent="Submit Another Result";
+    prepareNextDoublesResult();
+    setTimeout(()=>loadAll(),700);
+    return true;
+  }
+
+  if(status==="rejected"){
+    fe.status.textContent="✕ "+message;
+    fe.status.classList.add("rejected");
+    fe.submit.textContent="Submit Result";
+    setTimeout(()=>loadAll(),700);
+    return true;
+  }
+
+  if(status==="closed"){
+    fe.status.textContent="🔒 "+message;
+    fe.status.classList.add("closed");
+    fe.submit.textContent="Submit Result";
+    setTimeout(()=>loadActiveDoublesTeams(),500);
+    return true;
+  }
+
+  fe.status.textContent="⚠ "+message;
+  fe.status.classList.add("error");
+  fe.submit.textContent="Submit Result";
+  return true;
+}
+
+function makeDoublesSubmissionId(){
+  return "mytt_d_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,10);
+}
+
+function requestDoublesSubmissionStatus(submissionId,token,attempt){
+  if(token!==doublesStatusPollToken)return;
+
+  const fe=doublesFormEls();
+  const maxAttempts=20;
+
+  if(attempt>maxAttempts){
+    doublesFormSubmitted=false;
+    fe.submit.disabled=false;
+    fe.submit.textContent="Submit Result";
+    fe.status.classList.add("error");
+    fe.status.textContent="⚠ MYTT could not confirm the final status automatically. Please check Match Results or Rejected Matches before trying again.";
+    return;
+  }
+
+  const callbackName="__myttDoublesStatus_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,7);
+  const script=document.createElement("script");
+  let finished=false;
+
+  function cleanup(){
+    if(finished)return;
+    finished=true;
+    try{delete window[callbackName]}catch(_){window[callbackName]=undefined}
+    script.remove();
+  }
+
+  window[callbackName]=data=>{
+    cleanup();
+    if(token!==doublesStatusPollToken)return;
+
+    const status=String(data?.status||"pending").toLowerCase();
+    if(status==="pending"){
+      setTimeout(()=>requestDoublesSubmissionStatus(submissionId,token,attempt+1),900);
+      return;
+    }
+
+    handleDoublesServerResult(data);
+  };
+
+  script.onerror=()=>{
+    cleanup();
+    if(token!==doublesStatusPollToken)return;
+    setTimeout(()=>requestDoublesSubmissionStatus(submissionId,token,attempt+1),1100);
+  };
+
+  const base=config.doublesWebAppUrl;
+  script.src=
+    base+
+    "?action=status&id="+encodeURIComponent(submissionId)+
+    "&callback="+encodeURIComponent(callbackName)+
+    "&_="+Date.now();
+
+  document.body.appendChild(script);
+
+  setTimeout(()=>{
+    if(finished||token!==doublesStatusPollToken)return;
+    cleanup();
+    setTimeout(()=>requestDoublesSubmissionStatus(submissionId,token,attempt+1),700);
+  },3500);
+}
+
+function startDoublesSubmissionStatusPolling(submissionId){
+  doublesStatusPollToken++;
+  const token=doublesStatusPollToken;
+  setTimeout(()=>requestDoublesSubmissionStatus(submissionId,token,1),700);
+}
+
+function bindDoublesFormEvents(){
+  const e=doublesFormEls();
+  if(!e.modal)return;
+  if(e.date&&!e.date.value)e.date.value=todayLocalISO();
+
+  window.addEventListener("message",event=>{
+    const data=event.data;
+    if(!data||data.source!=="MYTT_DOUBLES_WEB_APP")return;
+    handleDoublesServerResult(data);
+  });
+}
+
+async function loadActiveDoublesTeams(){
+  activeDoublesTeamsLoaded=false;
+  activeDoublesTeamsError=false;
+  updateDoublesSessionUI();
+
+  if(!config.activeDoublesTeamsCsv){
+    activeDoublesTeams=[];
+    activeDoublesTeamsLoaded=true;
+    activeDoublesTeamsError=true;
+    updateDoublesSessionUI();
+    return;
+  }
+
+  try{
+    const rows=await fetchRows(config.activeDoublesTeamsCsv);
+    activeDoublesTeams=uniqueActiveDoublesNames(rows.map(row=>row[0]).filter(Boolean));
+    activeDoublesTeamsError=false;
+  }catch(err){
+    console.error("Failed to load Active Doubles Teams",err);
+    activeDoublesTeams=[];
+    activeDoublesTeamsError=true;
+  }finally{
+    activeDoublesTeamsLoaded=true;
+    updateDoublesSessionUI();
+  }
+}
+
 function bindEvents(){
   document.addEventListener("input",e=>{
     if(e.target.id==="globalSearch")renderSearch();
     if(e.target.id==="playersSearch")renderPlayers();
     if(e.target.id==="playerASearch"){document.getElementById("playerAValue").value="";document.getElementById("winnerValue").value="";syncWinnerChoices();renderPlayerPicker("A")}
     if(e.target.id==="playerBSearch"){document.getElementById("playerBValue").value="";document.getElementById("winnerValue").value="";syncWinnerChoices();renderPlayerPicker("B")}
+    if(e.target.id==="teamASearch"){document.getElementById("teamAValue").value="";document.getElementById("doublesWinnerValue").value="";syncDoublesWinnerChoices();renderDoublesTeamPicker("A")}
+    if(e.target.id==="teamBSearch"){document.getElementById("teamBValue").value="";document.getElementById("doublesWinnerValue").value="";syncDoublesWinnerChoices();renderDoublesTeamPicker("B")}
   });
-  document.addEventListener("focusin",e=>{if(e.target.id==="playerASearch")renderPlayerPicker("A");if(e.target.id==="playerBSearch")renderPlayerPicker("B")});
+  document.addEventListener("focusin",e=>{if(e.target.id==="playerASearch")renderPlayerPicker("A");if(e.target.id==="playerBSearch")renderPlayerPicker("B");if(e.target.id==="teamASearch")renderDoublesTeamPicker("A");if(e.target.id==="teamBSearch")renderDoublesTeamPicker("B")});
   document.addEventListener("change",e=>{
     if(e.target.id==="playersFilter")renderPlayers();
   });
   document.addEventListener("click",e=>{
     const open=e.target.closest("[data-open-singles-form]");if(open){e.preventDefault();openSinglesResultForm();return}
     const close=e.target.closest("[data-close-singles-form]");if(close){e.preventDefault();closeSinglesResultForm();return}
+    const openD=e.target.closest("[data-open-doubles-form]");if(openD){e.preventDefault();openDoublesResultForm();return}
+    const closeD=e.target.closest("[data-close-doubles-form]");if(closeD){e.preventDefault();closeDoublesResultForm();return}
     const pick=e.target.closest("[data-pick-player]");if(pick){e.preventDefault();chooseFormPlayer(pick.dataset.pickSide,pick.dataset.pickPlayer);return}
+    const pickTeam=e.target.closest("[data-pick-team]");if(pickTeam){e.preventDefault();chooseDoublesTeam(pickTeam.dataset.pickTeamSide,pickTeam.dataset.pickTeam);return}
     const winner=e.target.closest("[data-winner]");if(winner){const fe=formEls();fe.winner.value=decodeURIComponent(winner.dataset.winner);syncWinnerChoices();fe.status.textContent="";return}
+    const winnerD=e.target.closest("[data-doubles-winner]");if(winnerD){const fe=doublesFormEls();fe.winner.value=decodeURIComponent(winnerD.dataset.doublesWinner);syncDoublesWinnerChoices();fe.status.textContent="";return}
     const score=e.target.closest("[data-score]");if(score){const fe=formEls();fe.score.value=score.dataset.score;document.querySelectorAll("#singlesFormModal [data-score]").forEach(x=>x.classList.toggle("active",x===score));fe.status.textContent="";return}
-    if(!e.target.closest(".player-picker"))closePlayerMenus();
+    const scoreD=e.target.closest("[data-doubles-score]");if(scoreD){const fe=doublesFormEls();fe.score.value=scoreD.dataset.doublesScore;document.querySelectorAll("#doublesFormModal [data-doubles-score]").forEach(x=>x.classList.toggle("active",x===scoreD));fe.status.textContent="";return}
+    if(!e.target.closest(".player-picker")){closePlayerMenus();closeDoublesTeamMenus();}
     const p=e.target.closest("[data-player]");if(p){e.stopPropagation();openProfile(p.dataset.player)}
     if(e.target.matches("[data-close-modal]"))closeProfile();
   });
@@ -677,11 +1130,34 @@ function bindEvents(){
 
     startSinglesSubmissionStatusPolling(submissionId);
   }});
-  document.addEventListener("keydown",e=>{if(e.key==="Escape"){const fm=document.getElementById("singlesFormModal");if(fm&&!fm.classList.contains("hidden"))closeSinglesResultForm();else closeProfile()}})
+
+  document.addEventListener("submit",e=>{if(e.target.id==="doublesResultForm"){
+    if(!validateDoublesResultForm()){e.preventDefault();return}
+
+    const fe=doublesFormEls();
+    const submissionId=makeDoublesSubmissionId();
+    fe.submissionId.value=submissionId;
+
+    doublesFormSubmitted=true;
+    fe.submit.disabled=true;
+    fe.submit.textContent="Submitting…";
+    fe.status.classList.remove("success","error","rejected","closed");
+    fe.status.textContent="MYTT is validating this doubles result…";
+
+    startDoublesSubmissionStatusPolling(submissionId);
+  }});
+
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"){
+    const sfm=document.getElementById("singlesFormModal");
+    const dfm=document.getElementById("doublesFormModal");
+    if(sfm&&!sfm.classList.contains("hidden"))closeSinglesResultForm();
+    else if(dfm&&!dfm.classList.contains("hidden"))closeDoublesResultForm();
+    else closeProfile();
+  }})
 }
 async function loadMatchResults(){if(!config.matchResultsCsv)return;try{const rows=await fetchRows(config.matchResultsCsv);matchResults=rows.map(rowToMatch).filter(m=>m.playerA&&m.playerB)}catch(e){console.error("Failed to load match results",e);matchResults=[]}}
-async function loadAll(){await loadPlayerDb();await loadMatchResults();await loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles");await loadLeaderboard(config.doublesCsv,"doublesBody","doublesStatus","doubles","doubles");await loadActivePlayers();renderPlayers();renderSearch()}
-bindEvents();bindSinglesFormEvents();loadAll();setInterval(loadAll,60000);
+async function loadAll(){await loadPlayerDb();await loadMatchResults();await loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles");await loadLeaderboard(config.doublesCsv,"doublesBody","doublesStatus","doubles","doubles");await loadActivePlayers();await loadActiveDoublesTeams();renderPlayers();renderSearch()}
+bindEvents();bindSinglesFormEvents();bindDoublesFormEvents();loadAll();setInterval(loadAll,60000);
 
 document.addEventListener("click", function(e){
   const target = e.target;
