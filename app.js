@@ -1658,8 +1658,10 @@ function renderUpcomingEvents(){
   }
 }
 
-function loadUpcomingEvents(){
+function loadUpcomingEvents(options={}){
   const status=document.getElementById("eventsStatus");
+  const maxAttempts=Number(options.maxAttempts)||3;
+  const timeoutMs=Number(options.timeoutMs)||20000;
 
   if(!config.eventsWebAppUrl){
     upcomingEvents=[];
@@ -1668,65 +1670,75 @@ function loadUpcomingEvents(){
     return Promise.resolve([]);
   }
 
-  if(status)status.textContent="Checking events...";
-
-  return new Promise((resolve,reject)=>{
-    const callbackName="__myttEvents_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,8);
-    const script=document.createElement("script");
-    let finished=false;
-
-    function cleanup(){
-      if(finished)return;
-      finished=true;
-      clearTimeout(timer);
-      try{delete window[callbackName]}catch(_){window[callbackName]=undefined}
-      script.remove();
+  function tryLoad(attempt){
+    if(status){
+      status.textContent=attempt>1
+        ? `Retrying events… (${attempt}/${maxAttempts})`
+        : "Checking events...";
     }
 
-    window[callbackName]=data=>{
-      cleanup();
+    return new Promise((resolve,reject)=>{
+      const callbackName="__myttEvents_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,8);
+      const script=document.createElement("script");
+      let finished=false;
+      let timer=null;
 
-      if(!data || data.source!=="MYTT_EVENTS_WEB_APP" || String(data.status||"").toLowerCase()!=="ok"){
-        const msg=String(data?.message||"Could not load MYTT events.");
-        upcomingEvents=[];
-        renderUpcomingEvents();
-        if(status)status.textContent="Load failed";
-        reject(new Error(msg));
-        return;
+      function cleanup(){
+        if(finished)return;
+        finished=true;
+        if(timer)clearTimeout(timer);
+        try{delete window[callbackName]}catch(_){window[callbackName]=undefined}
+        script.remove();
       }
 
-      upcomingEvents=Array.isArray(data.events)?data.events:[];
-      renderUpcomingEvents();
-      resolve(upcomingEvents);
-    };
+      window[callbackName]=data=>{
+        cleanup();
 
-    script.onerror=()=>{
-      cleanup();
+        if(!data || data.source!=="MYTT_EVENTS_WEB_APP" || String(data.status||"").toLowerCase()!=="ok"){
+          reject(new Error(String(data?.message||"Could not load MYTT events.")));
+          return;
+        }
+
+        upcomingEvents=Array.isArray(data.events)?data.events:[];
+        renderUpcomingEvents();
+        resolve(upcomingEvents);
+      };
+
+      script.onerror=()=>{
+        cleanup();
+        reject(new Error("Could not load MYTT events."));
+      };
+
+      timer=setTimeout(()=>{
+        cleanup();
+        reject(new Error("MYTT Events request timed out."));
+      },timeoutMs);
+
+      script.src=
+        config.eventsWebAppUrl+
+        "?action=events"+
+        "&callback="+encodeURIComponent(callbackName)+
+        "&_="+Date.now();
+
+      document.body.appendChild(script);
+    }).catch(err=>{
+      console.warn(`Upcoming MYTT Events attempt ${attempt} failed`,err);
+
+      if(attempt<maxAttempts){
+        return new Promise(resolve=>setTimeout(resolve,900*attempt))
+          .then(()=>tryLoad(attempt+1));
+      }
+
+      // Only clear the UI after every retry has failed.
       upcomingEvents=[];
       renderUpcomingEvents();
-      if(status)status.textContent="Load failed";
-      reject(new Error("Could not load MYTT events."));
-    };
+      if(status)status.textContent="Load failed — tap Events to retry";
+      console.error("Failed to load Upcoming MYTT Events after retries",err);
+      return [];
+    });
+  }
 
-    const timer=setTimeout(()=>{
-      cleanup();
-      upcomingEvents=[];
-      renderUpcomingEvents();
-      if(status)status.textContent="Load failed";
-      reject(new Error("MYTT Events request timed out."));
-    },8000);
-
-    script.src=
-      config.eventsWebAppUrl+
-      "?action=events"+
-      "&callback="+encodeURIComponent(callbackName)+
-      "&_="+Date.now();
-
-    document.body.appendChild(script);
-  }).catch(err=>{
-    console.error("Failed to load Upcoming MYTT Events",err);
-    return[];
-  });
+  return tryLoad(1);
 }
 
 function renderEventPlayerSuggestions(){
@@ -2099,8 +2111,33 @@ function bindEvents(){
   }})
 }
 async function loadMatchResults(){if(!config.matchResultsCsv)return;try{const rows=await fetchRows(config.matchResultsCsv);matchResults=rows.map(rowToMatch).filter(m=>m.playerA&&m.playerB)}catch(e){console.error("Failed to load match results",e);matchResults=[]}}
-async function loadAll(){await loadPlayerDb();await loadMatchResults();await loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles");await loadLeaderboard(config.doublesCsv,"doublesBody","doublesStatus","doubles","doubles");await loadActivePlayers();await loadActiveDoublesTeams();await loadUpcomingEvents();renderPlayers();renderSearch();renderEventPlayerSuggestions()}
-bindEvents();bindSinglesFormEvents();bindDoublesFormEvents();bindJoinFormEvents();bindEventRegistrationEvents();loadAll();setInterval(loadAll,60000);
+async function loadAll(){await loadPlayerDb();await loadMatchResults();await loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles");await loadLeaderboard(config.doublesCsv,"doublesBody","doublesStatus","doubles","doubles");await loadActivePlayers();await loadActiveDoublesTeams();renderPlayers();renderSearch();renderEventPlayerSuggestions()}
+bindEvents();bindSinglesFormEvents();bindDoublesFormEvents();bindJoinFormEvents();bindEventRegistrationEvents();
+// Load Events immediately instead of waiting for every other spreadsheet request.
+loadUpcomingEvents();
+loadAll();
+setInterval(loadAll,60000);
+setInterval(()=>loadUpcomingEvents({maxAttempts:2,timeoutMs:20000}),60000);
+
+// Mobile resilience: retry when connection returns or the tab becomes active again.
+window.addEventListener("online",()=>loadUpcomingEvents({maxAttempts:3,timeoutMs:20000}));
+document.addEventListener("visibilitychange",()=>{
+  if(document.visibilityState!=="visible")return;
+  const eventStatus=document.getElementById("eventsStatus");
+  if(!upcomingEvents.length || /failed|unavailable/i.test(eventStatus?.textContent||"")){
+    loadUpcomingEvents({maxAttempts:3,timeoutMs:20000});
+  }
+});
+
+// Tapping the Events nav after a failed load retries immediately.
+document.addEventListener("click",e=>{
+  const eventsLink=e.target.closest('a[href="#events"]');
+  if(!eventsLink)return;
+  const eventStatus=document.getElementById("eventsStatus");
+  if(!upcomingEvents.length || /failed|unavailable/i.test(eventStatus?.textContent||"")){
+    loadUpcomingEvents({maxAttempts:3,timeoutMs:20000});
+  }
+});
 
 document.addEventListener("click", function(e){
   const target = e.target;
