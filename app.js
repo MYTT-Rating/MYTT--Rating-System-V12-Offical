@@ -1658,87 +1658,183 @@ function renderUpcomingEvents(){
   }
 }
 
-function loadUpcomingEvents(options={}){
-  const status=document.getElementById("eventsStatus");
-  const maxAttempts=Number(options.maxAttempts)||3;
-  const timeoutMs=Number(options.timeoutMs)||20000;
+function normalizePublishedEventDate(value){
+  const text=String(value||"").trim();
+  if(!text)return"";
 
-  if(!config.eventsWebAppUrl){
-    upcomingEvents=[];
-    renderUpcomingEvents();
-    if(status)status.textContent="Events unavailable";
-    return Promise.resolve([]);
+  let m=text.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})$/);
+  if(m){
+    const y=Number(m[1]),mo=Number(m[2]),d=Number(m[3]);
+    return `${y}-${String(mo).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
   }
 
-  function tryLoad(attempt){
-    if(status){
-      status.textContent=attempt>1
-        ? `Retrying events… (${attempt}/${maxAttempts})`
-        : "Checking events...";
-    }
+  m=text.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{4})$/);
+  if(m){
+    const d=Number(m[1]),mo=Number(m[2]),y=Number(m[3]);
+    return `${y}-${String(mo).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+  }
 
-    return new Promise((resolve,reject)=>{
-      const callbackName="__myttEvents_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,8);
-      const script=document.createElement("script");
-      let finished=false;
-      let timer=null;
+  const parsed=new Date(text);
+  if(!isNaN(parsed.getTime())){
+    return `${parsed.getFullYear()}-${String(parsed.getMonth()+1).padStart(2,"0")}-${String(parsed.getDate()).padStart(2,"0")}`;
+  }
 
-      function cleanup(){
-        if(finished)return;
-        finished=true;
-        if(timer)clearTimeout(timer);
-        try{delete window[callbackName]}catch(_){window[callbackName]=undefined}
-        script.remove();
-      }
+  return text;
+}
 
-      window[callbackName]=data=>{
-        cleanup();
+function publishedEventDateObject(value){
+  const normalized=normalizePublishedEventDate(value);
+  const m=normalized.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!m)return null;
+  const d=new Date(Number(m[1]),Number(m[2])-1,Number(m[3]));
+  return isNaN(d.getTime())?null:d;
+}
 
-        if(!data || data.source!=="MYTT_EVENTS_WEB_APP" || String(data.status||"").toLowerCase()!=="ok"){
-          reject(new Error(String(data?.message||"Could not load MYTT events.")));
-          return;
-        }
+function publishedEventDateDisplay(value){
+  const d=publishedEventDateObject(value);
+  if(!d)return String(value||"");
+  return d.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short",year:"numeric"});
+}
 
-        upcomingEvents=Array.isArray(data.events)?data.events:[];
-        renderUpcomingEvents();
-        resolve(upcomingEvents);
-      };
+function publishedEventStatus(manualStatus,eventDate,deadline,capacity,filled){
+  const raw=String(manualStatus||"").trim().toLowerCase();
+  const todayNow=new Date();
+  const today=new Date(todayNow.getFullYear(),todayNow.getMonth(),todayNow.getDate());
+  const eventDay=publishedEventDateObject(eventDate);
+  const deadlineDay=publishedEventDateObject(deadline);
 
-      script.onerror=()=>{
-        cleanup();
-        reject(new Error("Could not load MYTT events."));
-      };
+  if(raw==="completed")return"Completed";
+  if(eventDay&&eventDay.getTime()<today.getTime())return"Completed";
+  if(raw==="closed")return"Closed";
+  if(deadlineDay&&deadlineDay.getTime()<today.getTime())return"Closed";
+  if(raw==="full")return"Full";
+  if(capacity>0&&filled>=capacity)return"Full";
+  if(raw==="open")return"Open";
+  if(raw==="upcoming"||raw==="coming soon")return"Upcoming";
+  return"Upcoming";
+}
 
-      timer=setTimeout(()=>{
-        cleanup();
-        reject(new Error("MYTT Events request timed out."));
-      },timeoutMs);
+function publishedRowsToEvents(rows){
+  const events=[];
 
-      script.src=
-        config.eventsWebAppUrl+
-        "?action=events"+
-        "&callback="+encodeURIComponent(callbackName)+
-        "&_="+Date.now();
+  rows.forEach(row=>{
+    const eventId=String(row[0]||"").trim();
+    const eventName=String(row[1]||"").trim();
+    if(!eventId||!eventName)return;
 
-      document.body.appendChild(script);
-    }).catch(err=>{
-      console.warn(`Upcoming MYTT Events attempt ${attempt} failed`,err);
+    const date=normalizePublishedEventDate(row[2]);
+    const deadline=normalizePublishedEventDate(row[7]);
+    const capacity=Math.max(0,Number(String(row[6]||"").replace(/,/g,""))||0);
+    const filled=Math.max(0,Number(String(row[10]||"").replace(/,/g,""))||0);
+    const effectiveStatus=publishedEventStatus(row[8],date,deadline,capacity,filled);
 
-      if(attempt<maxAttempts){
-        return new Promise(resolve=>setTimeout(resolve,900*attempt))
-          .then(()=>tryLoad(attempt+1));
-      }
+    if(effectiveStatus==="Completed")return;
 
-      // Only clear the UI after every retry has failed.
-      upcomingEvents=[];
-      renderUpcomingEvents();
-      if(status)status.textContent="Load failed — tap Events to retry";
-      console.error("Failed to load Upcoming MYTT Events after retries",err);
-      return [];
+    events.push({
+      eventId,
+      eventName,
+      date,
+      dateDisplay:publishedEventDateDisplay(date),
+      time:String(row[3]||"").trim(),
+      venue:String(row[4]||"").trim(),
+      format:String(row[5]||"").trim(),
+      capacity,
+      spotsFilled:filled,
+      spotsRemaining:capacity>0?Math.max(0,capacity-filled):null,
+      registrationDeadline:deadline,
+      registrationDeadlineDisplay:publishedEventDateDisplay(deadline).replace(/^[A-Za-z]{3},\s*/,""),
+      manualStatus:String(row[8]||"").trim(),
+      effectiveStatus,
+      description:String(row[9]||"").trim()
     });
+  });
+
+  events.sort((a,b)=>{
+    const da=publishedEventDateObject(a.date);
+    const db=publishedEventDateObject(b.date);
+    return (da?da.getTime():Number.MAX_SAFE_INTEGER)-(db?db.getTime():Number.MAX_SAFE_INTEGER);
+  });
+
+  return events;
+}
+
+function readCachedUpcomingEvents(){
+  try{
+    const raw=localStorage.getItem("mytt_upcoming_events_cache_v1");
+    if(!raw)return[];
+    const parsed=JSON.parse(raw);
+    if(!parsed||!Array.isArray(parsed.events))return[];
+    return parsed.events;
+  }catch(_){return[]}
+}
+
+function cacheUpcomingEvents(events){
+  try{
+    localStorage.setItem("mytt_upcoming_events_cache_v1",JSON.stringify({
+      savedAt:Date.now(),
+      events:Array.isArray(events)?events:[]
+    }));
+  }catch(_){}
+}
+
+async function fetchEventCsvText(url,timeoutMs=12000){
+  const controller=typeof AbortController!=="undefined"?new AbortController():null;
+  const timer=controller?setTimeout(()=>controller.abort(),timeoutMs):null;
+
+  try{
+    const requestUrl=url+(url.includes("?")?"&":"?")+"_="+Date.now();
+    const res=await fetch(requestUrl,{
+      cache:"no-store",
+      signal:controller?controller.signal:undefined
+    });
+    if(!res.ok)throw new Error("Events CSV returned "+res.status);
+    return await res.text();
+  }finally{
+    if(timer)clearTimeout(timer);
+  }
+}
+
+async function loadUpcomingEvents(options={}){
+  const status=document.getElementById("eventsStatus");
+  const maxAttempts=Math.max(1,Number(options.maxAttempts)||2);
+  const timeoutMs=Math.max(5000,Number(options.timeoutMs)||12000);
+
+  if(!config.eventsCsvUrl){
+    upcomingEvents=readCachedUpcomingEvents();
+    renderUpcomingEvents();
+    if(status)status.textContent=upcomingEvents.length?"Showing saved events":"Events unavailable";
+    return upcomingEvents;
   }
 
-  return tryLoad(1);
+  for(let attempt=1;attempt<=maxAttempts;attempt++){
+    try{
+      if(status)status.textContent=attempt>1?"Refreshing events…":"Checking events...";
+
+      const csvText=await fetchEventCsvText(config.eventsCsvUrl,timeoutMs);
+      const parsed=parseCSV(csvText);
+      const rows=cleanRows(parsed);
+      upcomingEvents=publishedRowsToEvents(rows);
+      cacheUpcomingEvents(upcomingEvents);
+      renderUpcomingEvents();
+      return upcomingEvents;
+    }catch(err){
+      console.warn(`Upcoming MYTT Events CSV attempt ${attempt} failed`,err);
+      if(attempt<maxAttempts)await new Promise(resolve=>setTimeout(resolve,700*attempt));
+    }
+  }
+
+  const cached=readCachedUpcomingEvents();
+  if(cached.length){
+    upcomingEvents=cached;
+    renderUpcomingEvents();
+    if(status)status.textContent=upcomingEvents.length===1?"1 upcoming event · saved":upcomingEvents.length+" upcoming events · saved";
+    return upcomingEvents;
+  }
+
+  upcomingEvents=[];
+  renderUpcomingEvents();
+  if(status)status.textContent="Load failed — tap Events to retry";
+  return[];
 }
 
 function renderEventPlayerSuggestions(){
@@ -2117,15 +2213,15 @@ bindEvents();bindSinglesFormEvents();bindDoublesFormEvents();bindJoinFormEvents(
 loadUpcomingEvents();
 loadAll();
 setInterval(loadAll,60000);
-setInterval(()=>loadUpcomingEvents({maxAttempts:2,timeoutMs:20000}),60000);
+setInterval(()=>loadUpcomingEvents({maxAttempts:1,timeoutMs:12000}),60000);
 
 // Mobile resilience: retry when connection returns or the tab becomes active again.
-window.addEventListener("online",()=>loadUpcomingEvents({maxAttempts:3,timeoutMs:20000}));
+window.addEventListener("online",()=>loadUpcomingEvents({maxAttempts:2,timeoutMs:12000}));
 document.addEventListener("visibilitychange",()=>{
   if(document.visibilityState!=="visible")return;
   const eventStatus=document.getElementById("eventsStatus");
   if(!upcomingEvents.length || /failed|unavailable/i.test(eventStatus?.textContent||"")){
-    loadUpcomingEvents({maxAttempts:3,timeoutMs:20000});
+    loadUpcomingEvents({maxAttempts:2,timeoutMs:12000});
   }
 });
 
@@ -2135,7 +2231,7 @@ document.addEventListener("click",e=>{
   if(!eventsLink)return;
   const eventStatus=document.getElementById("eventsStatus");
   if(!upcomingEvents.length || /failed|unavailable/i.test(eventStatus?.textContent||"")){
-    loadUpcomingEvents({maxAttempts:3,timeoutMs:20000});
+    loadUpcomingEvents({maxAttempts:2,timeoutMs:12000});
   }
 });
 
