@@ -670,7 +670,7 @@ function joinFormEls(){
     status:document.getElementById("joinFormStatus"),
     submit:document.getElementById("joinSubmitButton"),
     success:document.getElementById("joinSuccessState"),
-    another:document.getElementById("joinAnotherButton")
+    another:null
   };
 }
 
@@ -945,10 +945,6 @@ function bindJoinFormEvents(){
 
   e.removePhoto?.addEventListener("click",()=>{
     clearJoinPhoto();
-  });
-
-  e.another?.addEventListener("click",()=>{
-    resetJoinForm();
   });
 
   window.addEventListener("message",event=>{

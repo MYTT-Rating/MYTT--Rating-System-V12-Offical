@@ -1274,3 +1274,10 @@ body.result-modal-open{overflow:hidden}
     border-radius:22px 22px 0 0;
   }
 }
+
+
+/* Join MYTT visibility safeguard */
+#joinSuccessState.hidden,
+#joinMyttForm.hidden{
+  display:none !important;
+}
