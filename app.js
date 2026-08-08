@@ -1509,28 +1509,40 @@ function eventCapacityHTML(event){
   </div>`;
 }
 
-function eventExactDate(event){
+function eventDateParts(event){
   const d=parseEventDateOnly(event?.date);
   if(d){
     const months=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
-    const weekdays=["SUN","MON","TUE","WED","THU","FRI","SAT"];
-    return `${weekdays[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+    const weekdays=["SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"];
+    return{
+      date:`${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`,
+      weekday:weekdays[d.getDay()]
+    };
   }
-  return String(event?.dateDisplay||event?.date||"TBA").toUpperCase();
+  return{date:String(event?.dateDisplay||event?.date||"TBA").toUpperCase(),weekday:""};
+}
+
+function eventTitleParts(name){
+  const clean=String(name||"MYTT Event").trim();
+  const words=clean.split(/\s+/);
+  if(words.length<=1)return{top:"MYTT",main:clean.toUpperCase()};
+  if(words[0].toUpperCase()==="MYTT")return{top:"MYTT",main:words.slice(1).join(" ").toUpperCase()};
+  return{top:words[0].toUpperCase(),main:words.slice(1).join(" ").toUpperCase()};
 }
 
 function eventCardHTML(event){
   const status=eventStatusPresentation(event);
   const isOpen=String(event?.effectiveStatus)==="Open";
-  const deadline=eventDeadlineText(event);
   const eventId=eventEscapeHtml(event?.eventId);
-  const name=eventEscapeHtml(event?.eventName||"MYTT Event");
-  const dateMain=eventEscapeHtml(eventExactDate(event));
+  const name=String(event?.eventName||"MYTT Event");
+  const title=eventTitleParts(name);
+  const dateParts=eventDateParts(event);
+  const dateMain=eventEscapeHtml(dateParts.date);
+  const weekday=eventEscapeHtml(dateParts.weekday);
   const time=eventEscapeHtml(event?.time||"TBA");
   const venue=eventEscapeHtml(event?.venue||"Venue TBA");
   const format=eventEscapeHtml(event?.format||"MYTT Event");
-  const description=eventEscapeHtml(event?.description||"Official MYTT rating matches");
-  const deadlineSafe=eventEscapeHtml(deadline||"Registration details managed by MYTT");
+  const description=eventEscapeHtml(event?.description||"Official MYTT rating matches.");
   const capacity=Number(event?.capacity)||0;
   const filled=Number(event?.spotsFilled)||0;
   const remaining=capacity>0?Math.max(0,capacity-filled):filled;
@@ -1538,79 +1550,80 @@ function eventCardHTML(event){
 
   let registerButton;
   if(isOpen){
-    registerButton=`<button class="event-exact-register" type="button" data-register-event="${eventId}">
-      <span>Register<br>Now</span><b>→</b>
+    registerButton=`<button class="target-register-button" type="button" data-register-event="${eventId}">
+      <span>REGISTER NOW</span><b>→</b>
     </button>`;
   }else{
-    const label=status.cls==="full"?"Event Full":status.cls==="closed"?"Registration Closed":"Opens Soon";
-    registerButton=`<button class="event-exact-register disabled" type="button" disabled><span>${eventEscapeHtml(label)}</span></button>`;
+    const label=status.cls==="full"?"EVENT FULL":status.cls==="closed"?"REGISTRATION CLOSED":"OPENS SOON";
+    registerButton=`<button class="target-register-button disabled" type="button" disabled><span>${eventEscapeHtml(label)}</span></button>`;
   }
 
-  return `<article class="event-card event-exact-card">
-    <section class="event-exact-hero">
-      <div class="event-exact-art" aria-hidden="true"></div>
+  return `<article class="target-event-shell">
+    <section class="target-event-hero">
+      <div class="target-paddle-art" aria-hidden="true"></div>
 
-      <div class="event-exact-main">
-        <p class="event-exact-eyebrow">MYTT Official Event</p>
-        <h3 class="event-exact-title">${name}</h3>
+      <div class="target-hero-content">
+        <div class="target-event-title">
+          <span>${eventEscapeHtml(title.top)}</span>
+          <strong>${eventEscapeHtml(title.main)}</strong>
+        </div>
 
-        <div class="event-exact-summary">
-          <div class="event-exact-summary-item date-item">
-            <span class="event-exact-summary-icon">📅</span>
-            <div><strong>${dateMain}</strong><small>${deadlineSafe}</small></div>
+        <div class="target-event-summary">
+          <div class="target-summary-item target-date-summary">
+            <span class="target-summary-icon target-calendar-icon">▦</span>
+            <div><strong>${dateMain}</strong><small>${weekday}</small></div>
           </div>
-
-          <div class="event-exact-divider"></div>
-
-          <div class="event-exact-summary-item status-item ${status.cls}">
-            <span class="event-exact-status-dot"></span>
-            <div><strong>${eventEscapeHtml(status.label)}</strong><small>${isOpen?"Open for registration":"MYTT event status"}</small></div>
+          <i></i>
+          <div class="target-summary-item target-status-summary ${status.cls}">
+            <span class="target-live-dot"></span>
+            <div><strong>${eventEscapeHtml(status.label)}</strong><small>${isOpen?"OPEN FOR REGISTRATION":"MYTT EVENT STATUS"}</small></div>
           </div>
-
-          <div class="event-exact-divider"></div>
-
-          <div class="event-exact-summary-item spots-item">
-            <span class="event-exact-summary-icon people-icon">👥</span>
-            <strong class="event-exact-remaining">${remaining}</strong>
-            <div><strong>Spots Remaining</strong><small>${capacity>0?"Limited slots available":"Open registration"}</small></div>
+          <i></i>
+          <div class="target-summary-item target-spots-summary">
+            <span class="target-people-icon">♟</span>
+            <b>${remaining}</b>
+            <div><strong>SPOTS REMAINING</strong><small>${capacity>0?"LIMITED SLOTS AVAILABLE":"OPEN REGISTRATION"}</small></div>
           </div>
         </div>
       </div>
 
-      <div class="event-exact-action">${registerButton}</div>
+      <div class="target-hero-action">${registerButton}</div>
     </section>
 
-    <section class="event-exact-details">
-      <div class="event-exact-details-head">
-        <div class="event-exact-details-label"><span>///</span><strong>Official Event Details</strong><span>///</span></div>
-        <span class="event-exact-id">${eventId}</span>
+    <section class="target-event-details">
+      <div class="target-details-heading">
+        <div class="target-details-title"><span>//</span><strong>OFFICIAL EVENT DETAILS</strong></div>
+        <div class="target-details-line"></div>
+        <span class="target-event-id">${eventId}</span>
       </div>
 
-      <div class="event-exact-tech-grid">
-        <div class="event-exact-tech-card">
-          <span class="event-exact-tech-icon">🕒</span>
-          <div><small>Time</small><strong>${time}</strong></div>
+      <div class="target-tech-grid">
+        <div class="target-tech-card">
+          <div class="target-tech-icon target-clock">◷</div>
+          <div><small>TIME</small><strong>${time}</strong></div>
         </div>
-        <div class="event-exact-tech-card">
-          <span class="event-exact-tech-icon">📍</span>
-          <div><small>Venue</small><strong>${venue}</strong></div>
+        <div class="target-tech-card">
+          <div class="target-tech-icon target-pin">●</div>
+          <div><small>VENUE</small><strong>${venue}</strong></div>
         </div>
-        <div class="event-exact-tech-card">
-          <span class="event-exact-tech-icon">🏓</span>
-          <div><small>Format</small><strong>${format}</strong></div>
+        <div class="target-tech-card">
+          <div class="target-tech-icon target-ping">🏓</div>
+          <div><small>FORMAT</small><strong>${format}</strong></div>
         </div>
-        <div class="event-exact-tech-card">
-          <span class="event-exact-tech-icon">👥</span>
-          <div><small>Total Spots</small><strong>${capacity>0?capacity:"Open"}</strong></div>
+        <div class="target-tech-card">
+          <div class="target-tech-icon target-team">♟</div>
+          <div><small>TOTAL SPOTS</small><strong>${capacity>0?capacity:"OPEN"}</strong></div>
         </div>
       </div>
 
-      <div class="event-exact-progress">
-        <div class="event-exact-progress-head"><span>Spots Filled</span><strong>${capacity>0?`${filled} / ${capacity}`:`${filled} registered`}</strong></div>
-        <div class="event-exact-progress-track"><span style="width:${pct}%"></span></div>
+      <div class="target-progress-panel">
+        <div class="target-progress-head"><span>SPOTS FILLED</span><strong>${capacity>0?`${filled} / ${capacity}`:`${filled} REGISTERED`}</strong></div>
+        <div class="target-progress-track"><span style="width:${pct}%"></span></div>
+        <div class="target-progress-footer">
+          <div class="target-description"><span>✓</span><p>${description}</p></div>
+          <button class="target-details-button" type="button" data-target-event-details="${eventId}">VIEW EVENT DETAILS <b>→</b></button>
+        </div>
       </div>
-
-      <div class="event-exact-description"><span>✓</span><p>${description}</p></div>
     </section>
   </article>`;
 }
@@ -1991,6 +2004,16 @@ function bindEvents(){
     if(e.target.id==="eventRegistrationCategory")updateEventPartnerVisibility();
   });
   document.addEventListener("click",e=>{
+    const detailsButton=e.target.closest("[data-target-event-details]");if(detailsButton){
+      e.preventDefault();
+      const shell=detailsButton.closest(".target-event-shell");
+      const desc=shell?.querySelector(".target-description");
+      if(desc){
+        desc.classList.toggle("target-description-expanded");
+        detailsButton.firstChild.textContent=desc.classList.contains("target-description-expanded")?"HIDE EVENT DETAILS ":"VIEW EVENT DETAILS ";
+      }
+      return;
+    }
     const registerEvent=e.target.closest("[data-register-event]");if(registerEvent){e.preventDefault();openEventRegistration(registerEvent.dataset.registerEvent);return}
     const closeEvent=e.target.closest("[data-close-event-registration]");if(closeEvent){e.preventDefault();closeEventRegistration();return}
     const openJoin=e.target.closest("[data-open-join-form]");if(openJoin){e.preventDefault();openJoinForm();return}
