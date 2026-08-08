@@ -464,9 +464,6 @@ function bindSinglesFormEvents(){
   if(e.date&&!e.date.value)e.date.value=todayLocalISO();
 
   window.addEventListener("message",event=>{
-    const frame=formEls().frame;
-    if(!frame||event.source!==frame.contentWindow)return;
-
     const data=event.data;
     if(!data||data.source!=="MYTT_SINGLES_WEB_APP")return;
 
