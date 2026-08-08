@@ -189,6 +189,7 @@ function renderSearch(){const input=document.getElementById("globalSearch"),resu
 
 /* MYTT Singles Result — Active Players controlled native web form */
 let singlesFormSubmitted=false;
+let singlesStatusPollToken=0;
 
 function todayLocalISO(){
   const d=new Date();
@@ -205,6 +206,7 @@ function formEls(){
     closedTitle:document.getElementById("singlesClosedTitle"),
     closedText:document.getElementById("singlesClosedText"),
     date:document.getElementById("singlesMatchDate"),
+    submissionId:document.getElementById("singlesSubmissionId"),
     aSearch:document.getElementById("playerASearch"),
     aValue:document.getElementById("playerAValue"),
     aMenu:document.getElementById("playerAMenu"),
@@ -458,50 +460,131 @@ function validateSinglesResultForm(){
   return !msg;
 }
 
+function handleSinglesServerResult(data){
+  if(!data||data.source!=="MYTT_SINGLES_WEB_APP")return false;
+
+  const fe=formEls();
+  singlesFormSubmitted=false;
+  singlesStatusPollToken++;
+  fe.submit.disabled=false;
+  fe.status.classList.remove("success","error","rejected","closed");
+
+  const status=String(data.status||"error").toLowerCase();
+  const message=String(data.message||"MYTT could not process this result.");
+
+  if(status==="pending")return false;
+
+  if(status==="accepted"){
+    fe.status.textContent="✓ "+message;
+    fe.status.classList.add("success");
+    fe.submit.textContent="Submit Another Result";
+    setTimeout(()=>loadAll(),700);
+    return true;
+  }
+
+  if(status==="rejected"){
+    fe.status.textContent="✕ "+message;
+    fe.status.classList.add("rejected");
+    fe.submit.textContent="Submit Result";
+    setTimeout(()=>loadAll(),700);
+    return true;
+  }
+
+  if(status==="closed"){
+    fe.status.textContent="🔒 "+message;
+    fe.status.classList.add("closed");
+    fe.submit.textContent="Submit Result";
+    setTimeout(()=>loadActivePlayers(),500);
+    return true;
+  }
+
+  fe.status.textContent="⚠ "+message;
+  fe.status.classList.add("error");
+  fe.submit.textContent="Submit Result";
+  return true;
+}
+
+function makeSinglesSubmissionId(){
+  return "mytt_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,10);
+}
+
+function requestSinglesSubmissionStatus(submissionId,token,attempt){
+  if(token!==singlesStatusPollToken)return;
+
+  const fe=formEls();
+  const maxAttempts=20;
+
+  if(attempt>maxAttempts){
+    singlesFormSubmitted=false;
+    fe.submit.disabled=false;
+    fe.submit.textContent="Submit Result";
+    fe.status.classList.add("error");
+    fe.status.textContent="⚠ MYTT could not confirm the final status automatically. Please check Match Results or Rejected Matches before trying again.";
+    return;
+  }
+
+  const callbackName="__myttStatus_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,7);
+  const script=document.createElement("script");
+  let finished=false;
+
+  function cleanup(){
+    if(finished)return;
+    finished=true;
+    try{delete window[callbackName]}catch(_){window[callbackName]=undefined}
+    script.remove();
+  }
+
+  window[callbackName]=data=>{
+    cleanup();
+    if(token!==singlesStatusPollToken)return;
+
+    const status=String(data?.status||"pending").toLowerCase();
+    if(status==="pending"){
+      setTimeout(()=>requestSinglesSubmissionStatus(submissionId,token,attempt+1),900);
+      return;
+    }
+
+    handleSinglesServerResult(data);
+  };
+
+  script.onerror=()=>{
+    cleanup();
+    if(token!==singlesStatusPollToken)return;
+    setTimeout(()=>requestSinglesSubmissionStatus(submissionId,token,attempt+1),1100);
+  };
+
+  const base=config.singlesWebAppUrl;
+  script.src=
+    base+
+    "?action=status&id="+encodeURIComponent(submissionId)+
+    "&callback="+encodeURIComponent(callbackName)+
+    "&_="+Date.now();
+
+  document.body.appendChild(script);
+
+  setTimeout(()=>{
+    if(finished||token!==singlesStatusPollToken)return;
+    cleanup();
+    setTimeout(()=>requestSinglesSubmissionStatus(submissionId,token,attempt+1),700);
+  },3500);
+}
+
+function startSinglesSubmissionStatusPolling(submissionId){
+  singlesStatusPollToken++;
+  const token=singlesStatusPollToken;
+  setTimeout(()=>requestSinglesSubmissionStatus(submissionId,token,1),700);
+}
+
 function bindSinglesFormEvents(){
   const e=formEls();
   if(!e.modal)return;
   if(e.date&&!e.date.value)e.date.value=todayLocalISO();
 
+  /* Keep postMessage as a fast-path if the browser happens to allow it. */
   window.addEventListener("message",event=>{
     const data=event.data;
     if(!data||data.source!=="MYTT_SINGLES_WEB_APP")return;
-
-    const fe=formEls();
-    singlesFormSubmitted=false;
-    fe.submit.disabled=false;
-    fe.status.classList.remove("success","error","rejected","closed");
-
-    const status=String(data.status||"error").toLowerCase();
-    const message=String(data.message||"MYTT could not process this result.");
-
-    if(status==="accepted"){
-      fe.status.textContent="✓ "+message;
-      fe.status.classList.add("success");
-      fe.submit.textContent="Submit Another Result";
-      setTimeout(()=>loadAll(),700);
-      return;
-    }
-
-    if(status==="rejected"){
-      fe.status.textContent="✕ "+message;
-      fe.status.classList.add("rejected");
-      fe.submit.textContent="Submit Result";
-      setTimeout(()=>loadAll(),700);
-      return;
-    }
-
-    if(status==="closed"){
-      fe.status.textContent="🔒 "+message;
-      fe.status.classList.add("closed");
-      fe.submit.textContent="Submit Result";
-      setTimeout(()=>loadActivePlayers(),500);
-      return;
-    }
-
-    fe.status.textContent="⚠ "+message;
-    fe.status.classList.add("error");
-    fe.submit.textContent="Submit Result";
+    handleSinglesServerResult(data);
   });
 }
 
@@ -555,21 +638,18 @@ function bindEvents(){
   });
   document.addEventListener("submit",e=>{if(e.target.id==="singlesResultForm"){
     if(!validateSinglesResultForm()){e.preventDefault();return}
+
     const fe=formEls();
+    const submissionId=makeSinglesSubmissionId();
+    fe.submissionId.value=submissionId;
+
     singlesFormSubmitted=true;
     fe.submit.disabled=true;
     fe.submit.textContent="Submitting…";
     fe.status.classList.remove("success","error","rejected","closed");
     fe.status.textContent="MYTT is validating this result…";
 
-    setTimeout(()=>{
-      if(!singlesFormSubmitted)return;
-      singlesFormSubmitted=false;
-      fe.submit.disabled=false;
-      fe.submit.textContent="Submit Result";
-      fe.status.classList.add("error");
-      fe.status.textContent="⚠ MYTT did not receive a response in time. Please do not resubmit immediately—check Match Results or Rejected Matches first.";
-    },15000);
+    startSinglesSubmissionStatusPolling(submissionId);
   }});
   document.addEventListener("keydown",e=>{if(e.key==="Escape"){const fm=document.getElementById("singlesFormModal");if(fm&&!fm.classList.contains("hidden"))closeSinglesResultForm();else closeProfile()}})
 }
