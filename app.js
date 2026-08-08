@@ -419,6 +419,31 @@ function resetSinglesResultForm(){
   e.submit.textContent="Submit Result";
 }
 
+function prepareNextSinglesResult(){
+  const e=formEls();
+  if(!e.form)return;
+
+  const savedDate=e.date?.value||todayLocalISO();
+
+  if(e.aSearch)e.aSearch.value="";
+  if(e.bSearch)e.bSearch.value="";
+  if(e.aValue)e.aValue.value="";
+  if(e.bValue)e.bValue.value="";
+  if(e.winner)e.winner.value="";
+  if(e.score)e.score.value="";
+  if(e.submissionId)e.submissionId.value="";
+  if(e.date)e.date.value=savedDate;
+
+  document
+    .querySelectorAll("#singlesFormModal .result-choice.active")
+    .forEach(x=>x.classList.remove("active"));
+
+  syncWinnerChoices();
+  closePlayerMenus();
+
+  setTimeout(()=>e.aSearch?.focus(),120);
+}
+
 function openSinglesResultForm(){
   const e=formEls();
   if(!e.modal)return;
@@ -475,9 +500,10 @@ function handleSinglesServerResult(data){
   if(status==="pending")return false;
 
   if(status==="accepted"){
-    fe.status.textContent="✓ "+message;
+    fe.status.textContent="✓ "+message+" Ready for the next result.";
     fe.status.classList.add("success");
     fe.submit.textContent="Submit Another Result";
+    prepareNextSinglesResult();
     setTimeout(()=>loadAll(),700);
     return true;
   }
