@@ -1520,49 +1520,99 @@ function eventCardHTML(event){
   const venue=eventEscapeHtml(event?.venue||"Venue TBA");
   const format=eventEscapeHtml(event?.format||"MYTT Event");
   const description=eventEscapeHtml(event?.description||"Official MYTT event.");
+  const capacity=Number(event?.capacity)||0;
+  const filled=Number(event?.spotsFilled)||0;
+  const remaining=capacity>0?Math.max(0,capacity-filled):null;
+  const pct=capacity>0?Math.max(0,Math.min(100,(filled/capacity)*100)):0;
   const deadlineSafe=eventEscapeHtml(deadline);
 
   let button;
   if(isOpen){
-    button=`<button class="event-register-button" type="button" data-register-event="${eventId}">
-      Register Now
-      <span>→</span>
+    button=`<button class="event-feature-register" type="button" data-register-event="${eventId}">
+      <span>Register Now</span><b>→</b>
     </button>`;
   }else{
     const label=
       status.cls==="full" ? "Event Full" :
       status.cls==="closed" ? "Registration Closed" :
       "Opens Soon";
-
-    button=`<button class="event-register-button disabled" type="button" disabled>${label}</button>`;
+    button=`<button class="event-feature-register disabled" type="button" disabled><span>${label}</span></button>`;
   }
 
-  return `<article class="event-card">
-    <div class="event-card-top">
-      <span class="event-id">${eventId}</span>
-      <span class="event-status-badge ${status.cls}">${status.icon} ${status.label}</span>
+  const remainingHTML=capacity>0
+    ? `<div class="event-feature-quick event-feature-spots">
+         <span class="event-feature-quick-icon">👥</span>
+         <div><strong>${remaining}</strong><small>Spots Remaining</small><em>Limited slots available</em></div>
+       </div>`
+    : `<div class="event-feature-quick event-feature-spots">
+         <span class="event-feature-quick-icon">👥</span>
+         <div><strong>${filled}</strong><small>Registered</small><em>Open registration</em></div>
+       </div>`;
+
+  return `<article class="event-card event-card-neon">
+    <div class="event-feature-banner">
+      <div class="event-feature-art" aria-hidden="true">
+        <span class="event-feature-paddle">🏓</span>
+        <span class="event-feature-ball"></span>
+      </div>
+
+      <div class="event-feature-main">
+        <p class="event-feature-eyebrow">MYTT Official Event</p>
+        <h3>${name}</h3>
+
+        <div class="event-feature-quick-row">
+          <div class="event-feature-quick">
+            <span class="event-feature-quick-icon">📅</span>
+            <div><strong>${date}</strong><em>${deadlineSafe||"Event date"}</em></div>
+          </div>
+
+          <div class="event-feature-quick event-feature-status ${status.cls}">
+            <span class="event-feature-status-dot"></span>
+            <div><strong>${status.label}</strong><em>${isOpen?"Open for registration":"MYTT event status"}</em></div>
+          </div>
+
+          ${remainingHTML}
+        </div>
+      </div>
+
+      <div class="event-feature-action">${button}</div>
     </div>
 
-    <div class="event-card-title">
-      <p>MYTT Official Event</p>
-      <h3>${name}</h3>
-    </div>
+    <div class="event-detail-panel">
+      <div class="event-detail-head">
+        <div class="event-detail-heading"><span></span><strong>Official Event Details</strong><i></i></div>
+        <span class="event-id event-id-tech">${eventId}</span>
+      </div>
 
-    <div class="event-meta-grid">
-      <div><span>📅</span><small>Date</small><strong>${date}</strong></div>
-      <div><span>🕒</span><small>Time</small><strong>${time}</strong></div>
-      <div><span>📍</span><small>Venue</small><strong>${venue}</strong></div>
-      <div><span>🏓</span><small>Format</small><strong>${format}</strong></div>
-    </div>
+      <div class="event-tech-grid">
+        <div class="event-tech-card">
+          <span class="event-tech-icon">🕒</span>
+          <div><small>Time</small><strong>${time}</strong></div>
+        </div>
+        <div class="event-tech-card">
+          <span class="event-tech-icon">📍</span>
+          <div><small>Venue</small><strong>${venue}</strong></div>
+        </div>
+        <div class="event-tech-card">
+          <span class="event-tech-icon">🏓</span>
+          <div><small>Format</small><strong>${format}</strong></div>
+        </div>
+        <div class="event-tech-card">
+          <span class="event-tech-icon">👥</span>
+          <div><small>Total Spots</small><strong>${capacity>0?capacity:"Open"}</strong></div>
+        </div>
+      </div>
 
-    <p class="event-description">${description}</p>
+      <div class="event-tech-progress">
+        <div class="event-tech-progress-head">
+          <span>Spots Filled</span>
+          <strong>${capacity>0?`${filled} / ${capacity}`:`${filled} registered`}</strong>
+        </div>
+        <div class="event-tech-progress-track"><span style="width:${pct}%"></span></div>
+      </div>
 
-    <div class="event-lower-block">
-      ${eventCapacityHTML(event)}
-
-      <div class="event-card-footer">
-        <small class="event-deadline-note">${deadlineSafe||"Registration details managed by MYTT"}</small>
-        ${button}
+      <div class="event-detail-footer">
+        <p><span>✓</span>${description}</p>
       </div>
     </div>
   </article>`;
