@@ -2969,3 +2969,21 @@ body.result-modal-open{overflow:hidden}
   .target-progress-footer{flex-direction:column;align-items:stretch}
   .target-details-button{width:100%}
 }
+
+
+/* MYTT Event details button removed */
+.target-progress-footer{
+  justify-content:flex-start !important;
+}
+.target-description{
+  width:100%;
+}
+.target-description p{
+  max-width:none !important;
+  white-space:normal !important;
+  overflow:visible !important;
+  text-overflow:clip !important;
+}
+.target-details-button{
+  display:none !important;
+}

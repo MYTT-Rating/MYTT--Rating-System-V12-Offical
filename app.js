@@ -1621,7 +1621,6 @@ function eventCardHTML(event){
         <div class="target-progress-track"><span style="width:${pct}%"></span></div>
         <div class="target-progress-footer">
           <div class="target-description"><span>✓</span><p>${description}</p></div>
-          <button class="target-details-button" type="button" data-target-event-details="${eventId}">VIEW EVENT DETAILS <b>→</b></button>
         </div>
       </div>
     </section>
@@ -2004,16 +2003,6 @@ function bindEvents(){
     if(e.target.id==="eventRegistrationCategory")updateEventPartnerVisibility();
   });
   document.addEventListener("click",e=>{
-    const detailsButton=e.target.closest("[data-target-event-details]");if(detailsButton){
-      e.preventDefault();
-      const shell=detailsButton.closest(".target-event-shell");
-      const desc=shell?.querySelector(".target-description");
-      if(desc){
-        desc.classList.toggle("target-description-expanded");
-        detailsButton.firstChild.textContent=desc.classList.contains("target-description-expanded")?"HIDE EVENT DETAILS ":"VIEW EVENT DETAILS ";
-      }
-      return;
-    }
     const registerEvent=e.target.closest("[data-register-event]");if(registerEvent){e.preventDefault();openEventRegistration(registerEvent.dataset.registerEvent);return}
     const closeEvent=e.target.closest("[data-close-event-registration]");if(closeEvent){e.preventDefault();closeEventRegistration();return}
     const openJoin=e.target.closest("[data-open-join-form]");if(openJoin){e.preventDefault();openJoinForm();return}
