@@ -931,3 +931,30 @@ body.result-modal-open{overflow:hidden}
 }
 #singlesSubmitCta.session-closed small{color:#fca5a5}
 #singlesSubmitCta.session-checking{opacity:.78}
+
+
+/* MYTT Web App real submission status */
+.result-form-status.rejected,
+.result-form-status.error,
+.result-form-status.closed{
+  display:block;
+  padding:13px 15px;
+  border-radius:14px;
+  line-height:1.45;
+  font-weight:850;
+}
+.result-form-status.rejected{
+  color:#fecaca;
+  background:rgba(239,68,68,.12);
+  border:1px solid rgba(239,68,68,.34);
+}
+.result-form-status.error{
+  color:#fde68a;
+  background:rgba(250,204,21,.09);
+  border:1px solid rgba(250,204,21,.28);
+}
+.result-form-status.closed{
+  color:#e5e7eb;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.13);
+}

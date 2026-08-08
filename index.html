@@ -287,19 +287,14 @@
 
     <form id="singlesResultForm"
           class="result-form"
-          action="https://docs.google.com/forms/d/e/1FAIpQLSfjxBBPNNCF92Aq89YZ-n9-oq5F0WtuNPD3zK6D_3woZLS9aw/formResponse"
+          action="https://script.google.com/macros/s/AKfycbz24rx6NLZ_FLRft5mUcGbRBbqiofs4Ai0tuU_S58ZgCK9LVf9Q3TT1aQSzDLA6YVDfbQ/exec"
           method="POST"
           target="singlesSubmitFrame"
           novalidate>
-      <input type="hidden" name="fvv" value="1">
-      <input type="hidden" name="pageHistory" value="0">
 
       <label class="result-field">
         <span>Match Date</span>
-        <input id="singlesMatchDate" type="date" required>
-        <input id="singlesMatchDateYear" type="hidden" name="entry.280421563_year">
-        <input id="singlesMatchDateMonth" type="hidden" name="entry.280421563_month">
-        <input id="singlesMatchDateDay" type="hidden" name="entry.280421563_day">
+        <input id="singlesMatchDate" name="matchDate" type="date" required>
       </label>
 
       <div class="result-player-grid">
@@ -307,7 +302,7 @@
           <span>Player A</span>
           <div class="player-picker" data-picker="A">
             <input id="playerASearch" class="result-player-search" type="search" placeholder="Search player..." autocomplete="off" aria-autocomplete="list">
-            <input id="playerAValue" type="hidden" name="entry.1058647056">
+            <input id="playerAValue" type="hidden" name="playerA">
             <div id="playerAMenu" class="player-picker-menu hidden" role="listbox"></div>
           </div>
         </div>
@@ -316,7 +311,7 @@
           <span>Player B</span>
           <div class="player-picker" data-picker="B">
             <input id="playerBSearch" class="result-player-search" type="search" placeholder="Search opponent..." autocomplete="off" aria-autocomplete="list">
-            <input id="playerBValue" type="hidden" name="entry.1793894507">
+            <input id="playerBValue" type="hidden" name="playerB">
             <div id="playerBMenu" class="player-picker-menu hidden" role="listbox"></div>
           </div>
         </div>
@@ -324,7 +319,7 @@
 
       <div class="result-field">
         <span>Winner</span>
-        <input id="winnerValue" type="hidden" name="entry.1260102288">
+        <input id="winnerValue" type="hidden" name="winner">
         <div id="winnerChoices" class="choice-row winner-choices">
           <p class="result-hint">Select Player A and Player B first.</p>
         </div>
@@ -332,7 +327,7 @@
 
       <div class="result-field">
         <span>Final Score</span>
-        <input id="scoreValue" type="hidden" name="entry.1170277369">
+        <input id="scoreValue" type="hidden" name="matchScore">
         <div class="choice-row score-choices">
           <button type="button" class="result-choice" data-score="3-0">3–0</button>
           <button type="button" class="result-choice" data-score="3-1">3–1</button>
@@ -343,7 +338,7 @@
       <div id="singlesFormStatus" class="result-form-status" aria-live="polite"></div>
 
       <button id="singlesSubmitButton" class="result-submit" type="submit">Submit Result</button>
-      <p class="result-form-note">Only current Active Players are eligible. Invalid or duplicate matches may still be rejected during validation.</p>
+      <p class="result-form-note">Only current Active Players are eligible. MYTT will confirm whether the result is accepted or rejected before showing the final status.</p>
     </form>
 
     <iframe id="singlesSubmitFrame" name="singlesSubmitFrame" class="result-submit-frame" title="Singles result submission"></iframe>

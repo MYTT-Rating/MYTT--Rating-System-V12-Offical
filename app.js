@@ -196,21 +196,6 @@ function todayLocalISO(){
   return d.toISOString().slice(0,10);
 }
 
-function syncGoogleFormDateFields(){
-  const e=formEls();
-  const value=e.date?.value||"";
-  const m=value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if(!m){
-    if(e.dateYear)e.dateYear.value="";
-    if(e.dateMonth)e.dateMonth.value="";
-    if(e.dateDay)e.dateDay.value="";
-    return false;
-  }
-  if(e.dateYear)e.dateYear.value=String(Number(m[1]));
-  if(e.dateMonth)e.dateMonth.value=String(Number(m[2]));
-  if(e.dateDay)e.dateDay.value=String(Number(m[3]));
-  return true;
-}
 
 function formEls(){
   return{
@@ -220,9 +205,6 @@ function formEls(){
     closedTitle:document.getElementById("singlesClosedTitle"),
     closedText:document.getElementById("singlesClosedText"),
     date:document.getElementById("singlesMatchDate"),
-    dateYear:document.getElementById("singlesMatchDateYear"),
-    dateMonth:document.getElementById("singlesMatchDateMonth"),
-    dateDay:document.getElementById("singlesMatchDateDay"),
     aSearch:document.getElementById("playerASearch"),
     aValue:document.getElementById("playerAValue"),
     aMenu:document.getElementById("playerAMenu"),
@@ -422,7 +404,6 @@ function resetSinglesResultForm(){
   if(!e.form)return;
   e.form.reset();
   e.date.value=todayLocalISO();
-  syncGoogleFormDateFields();
   e.aValue.value="";
   e.bValue.value="";
   e.winner.value="";
@@ -440,7 +421,6 @@ function openSinglesResultForm(){
   const e=formEls();
   if(!e.modal)return;
   if(!e.date.value)e.date.value=todayLocalISO();
-  syncGoogleFormDateFields();
   syncSinglesSessionModal();
   e.modal.classList.remove("hidden");
   e.modal.setAttribute("aria-hidden","false");
@@ -465,7 +445,7 @@ function validateSinglesResultForm(){
   let msg="";
 
   if(!activePlayersLoaded||activePlayersError||!activePlayers.length)msg="Result submission is currently closed.";
-  else if(!d||!syncGoogleFormDateFields())msg="Please select a valid match date.";
+  else if(!d)msg="Please select a valid match date.";
   else if(!a)msg="Please select Player A from the current Active Players list.";
   else if(!b)msg="Please select Player B from the current Active Players list.";
   else if(!isActivePlayer(a)||!isActivePlayer(b))msg="Both players must be in the current Active Players session.";
@@ -483,13 +463,48 @@ function bindSinglesFormEvents(){
   if(!e.modal)return;
   if(e.date&&!e.date.value)e.date.value=todayLocalISO();
 
-  e.frame?.addEventListener("load",()=>{
-    if(!singlesFormSubmitted)return;
+  window.addEventListener("message",event=>{
+    const frame=formEls().frame;
+    if(!frame||event.source!==frame.contentWindow)return;
+
+    const data=event.data;
+    if(!data||data.source!=="MYTT_SINGLES_WEB_APP")return;
+
+    const fe=formEls();
     singlesFormSubmitted=false;
-    e.status.textContent="✓ Result sent to MYTT. Please confirm it appears in Match Results.";
-    e.status.classList.add("success");
-    e.submit.disabled=false;
-    e.submit.textContent="Submit Another Result";
+    fe.submit.disabled=false;
+    fe.status.classList.remove("success","error","rejected","closed");
+
+    const status=String(data.status||"error").toLowerCase();
+    const message=String(data.message||"MYTT could not process this result.");
+
+    if(status==="accepted"){
+      fe.status.textContent="✓ "+message;
+      fe.status.classList.add("success");
+      fe.submit.textContent="Submit Another Result";
+      setTimeout(()=>loadAll(),700);
+      return;
+    }
+
+    if(status==="rejected"){
+      fe.status.textContent="✕ "+message;
+      fe.status.classList.add("rejected");
+      fe.submit.textContent="Submit Result";
+      setTimeout(()=>loadAll(),700);
+      return;
+    }
+
+    if(status==="closed"){
+      fe.status.textContent="🔒 "+message;
+      fe.status.classList.add("closed");
+      fe.submit.textContent="Submit Result";
+      setTimeout(()=>loadActivePlayers(),500);
+      return;
+    }
+
+    fe.status.textContent="⚠ "+message;
+    fe.status.classList.add("error");
+    fe.submit.textContent="Submit Result";
   });
 }
 
@@ -530,7 +545,6 @@ function bindEvents(){
   document.addEventListener("focusin",e=>{if(e.target.id==="playerASearch")renderPlayerPicker("A");if(e.target.id==="playerBSearch")renderPlayerPicker("B")});
   document.addEventListener("change",e=>{
     if(e.target.id==="playersFilter")renderPlayers();
-    if(e.target.id==="singlesMatchDate")syncGoogleFormDateFields();
   });
   document.addEventListener("click",e=>{
     const open=e.target.closest("[data-open-singles-form]");if(open){e.preventDefault();openSinglesResultForm();return}
@@ -542,7 +556,24 @@ function bindEvents(){
     const p=e.target.closest("[data-player]");if(p){e.stopPropagation();openProfile(p.dataset.player)}
     if(e.target.matches("[data-close-modal]"))closeProfile();
   });
-  document.addEventListener("submit",e=>{if(e.target.id==="singlesResultForm"){if(!validateSinglesResultForm()){e.preventDefault();return}syncGoogleFormDateFields();const fe=formEls();singlesFormSubmitted=true;fe.submit.disabled=true;fe.submit.textContent="Submitting…";fe.status.classList.remove("success");fe.status.textContent="Sending result…";setTimeout(()=>{if(singlesFormSubmitted){singlesFormSubmitted=false;fe.submit.disabled=false;fe.submit.textContent="Submit Result";fe.status.textContent="Submission is taking longer than expected. Please check your connection and try again if needed."}},9000)}});
+  document.addEventListener("submit",e=>{if(e.target.id==="singlesResultForm"){
+    if(!validateSinglesResultForm()){e.preventDefault();return}
+    const fe=formEls();
+    singlesFormSubmitted=true;
+    fe.submit.disabled=true;
+    fe.submit.textContent="Submitting…";
+    fe.status.classList.remove("success","error","rejected","closed");
+    fe.status.textContent="MYTT is validating this result…";
+
+    setTimeout(()=>{
+      if(!singlesFormSubmitted)return;
+      singlesFormSubmitted=false;
+      fe.submit.disabled=false;
+      fe.submit.textContent="Submit Result";
+      fe.status.classList.add("error");
+      fe.status.textContent="⚠ MYTT did not receive a response in time. Please do not resubmit immediately—check Match Results or Rejected Matches first.";
+    },15000);
+  }});
   document.addEventListener("keydown",e=>{if(e.key==="Escape"){const fm=document.getElementById("singlesFormModal");if(fm&&!fm.classList.contains("hidden"))closeSinglesResultForm();else closeProfile()}})
 }
 async function loadMatchResults(){if(!config.matchResultsCsv)return;try{const rows=await fetchRows(config.matchResultsCsv);matchResults=rows.map(rowToMatch).filter(m=>m.playerA&&m.playerB)}catch(e){console.error("Failed to load match results",e);matchResults=[]}}
