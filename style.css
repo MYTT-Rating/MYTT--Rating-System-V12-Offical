@@ -2036,3 +2036,48 @@ body.result-modal-open{overflow:hidden}
     text-align:left;
   }
 }
+
+
+/* =========================================================
+   UPCOMING EVENTS — adaptive card width
+   1 event  = wider feature card
+   2 events = two equal columns
+   3+       = automatic three-column grid
+   ========================================================= */
+
+.events-grid.events-count-1{
+  grid-template-columns:minmax(0,1fr) !important;
+}
+
+.events-grid.events-count-1 .event-card{
+  width:min(68%,1120px);
+}
+
+.events-grid.events-count-2{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+}
+
+.events-grid.events-count-many{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+}
+
+@media(max-width:1250px){
+  .events-grid.events-count-1 .event-card{
+    width:min(78%,980px);
+  }
+
+  .events-grid.events-count-many{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+@media(max-width:900px){
+  .events-grid.events-count-1 .event-card{
+    width:100%;
+  }
+
+  .events-grid.events-count-2,
+  .events-grid.events-count-many{
+    grid-template-columns:1fr !important;
+  }
+}

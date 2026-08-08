@@ -1571,7 +1571,10 @@ function renderUpcomingEvents(){
   const status=document.getElementById("eventsStatus");
   if(!grid)return;
 
+  grid.classList.remove("events-count-0","events-count-1","events-count-2","events-count-many");
+
   if(!upcomingEvents.length){
+    grid.classList.add("events-count-0");
     grid.innerHTML=`<div class="event-empty-state">
       <span>🏓</span>
       <strong>No upcoming MYTT events announced yet.</strong>
@@ -1581,7 +1584,12 @@ function renderUpcomingEvents(){
     return;
   }
 
+  if(upcomingEvents.length===1)grid.classList.add("events-count-1");
+  else if(upcomingEvents.length===2)grid.classList.add("events-count-2");
+  else grid.classList.add("events-count-many");
+
   grid.innerHTML=upcomingEvents.map(eventCardHTML).join("");
+
   if(status){
     status.textContent=upcomingEvents.length===1
       ? "1 upcoming event"
