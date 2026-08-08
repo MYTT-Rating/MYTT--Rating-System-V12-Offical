@@ -31,6 +31,7 @@
   </a>
   <nav class="nav">
     <a class="active" href="#home">Home</a>
+    <a href="#events">Events</a>
     <a href="#singles">Singles</a>
     <a href="#doubles">Doubles</a>
     <a href="#players">Players</a>
@@ -181,6 +182,24 @@
     </div>
   </section>
 
+
+  <section id="events" class="events-section">
+    <div class="section-head events-section-head">
+      <div>
+        <p class="kicker">Upcoming Matches</p>
+        <h2>Upcoming MYTT Events</h2>
+      </div>
+      <span id="eventsStatus" class="status">Checking events...</span>
+    </div>
+
+    <div id="eventsGrid" class="events-grid" aria-live="polite">
+      <div class="event-empty-state">
+        <span>🏓</span>
+        <strong>Loading upcoming MYTT events...</strong>
+      </div>
+    </div>
+  </section>
+
   <section id="players" class="players-section">
     <div class="section-head"><div><p class="kicker">Players</p><h2>Official Players</h2></div><span class="status">Official Profiles</span></div>
     <div class="players-toolbar">
@@ -210,24 +229,7 @@
     </table></div></div>
   </section>
 
-  <section id="notice" class="info-grid">
-  <article class="info-card schedule-card">
-    <h3>🏓 MYTT Round Robin League</h3>
-
-    <div class="schedule-item">
-      <span class="day"><strong>Official First Round</strong></span>
-      <span class="desc">📅 <strong>Sunday, 23 August 2026</strong></span>
-    </div>
-
-    <p style="margin-top:16px; line-height:1.6; color:var(--muted);">
-      Join us for the official launch of the <strong>MYTT Round Robin League</strong>. Experience competitive matches, live ratings, and player rankings in a fun and friendly community.
-    </p>
-
-    <p style="margin-top:16px; font-weight:700; color:#16a34a;">
-      🟢 Registration is now open.
-    </p>
-  </article>
-
+  <section id="notice" class="info-grid info-grid-single">
   <article class="info-card rules-card">
     <h3>📢 Competition Rules</h3>
 
@@ -273,6 +275,142 @@
   </article>
 </section>
 </main>
+
+
+<div id="eventRegistrationModal" class="result-modal hidden" aria-hidden="true">
+  <div class="result-modal-backdrop" data-close-event-registration></div>
+
+  <section class="result-modal-card event-registration-modal-card"
+           role="dialog"
+           aria-modal="true"
+           aria-labelledby="eventRegistrationTitle">
+
+    <button class="result-modal-close"
+            type="button"
+            data-close-event-registration
+            aria-label="Close event registration">×</button>
+
+    <div class="result-form-head">
+      <p class="kicker">MYTT Event Registration</p>
+      <h2 id="eventRegistrationTitle">Register for Event</h2>
+      <p>Submit your registration for the selected MYTT event. Your entry will be recorded as pending until MYTT admin review.</p>
+    </div>
+
+    <div id="eventRegistrationSummary" class="event-registration-summary">
+      <div>
+        <small>Selected Event</small>
+        <strong id="eventRegistrationEventName">MYTT Event</strong>
+      </div>
+      <div class="event-registration-summary-meta">
+        <span id="eventRegistrationDate">📅 —</span>
+        <span id="eventRegistrationVenue">📍 —</span>
+      </div>
+    </div>
+
+    <form id="eventRegistrationForm"
+          class="result-form event-registration-form"
+          action="https://script.google.com/macros/s/AKfycbxFeSz9bn7LmnvcMDYIQnbsCdvD6dPnf3hEADE4JjWQ3UHzaTO_nVtjj3ABnGlz7fillA/exec"
+          method="POST"
+          target="eventRegistrationSubmitFrame"
+          novalidate>
+
+      <input id="eventRegistrationSubmissionId" type="hidden" name="submissionId">
+      <input id="eventRegistrationEventId" type="hidden" name="eventId">
+
+      <div class="result-player-grid">
+        <label class="result-field">
+          <span>Player Name <em>Required</em></span>
+          <input id="eventRegistrationPlayerName"
+                 name="playerName"
+                 type="text"
+                 list="eventPlayerSuggestions"
+                 placeholder="Your player name"
+                 maxlength="80"
+                 autocomplete="name"
+                 required>
+          <datalist id="eventPlayerSuggestions"></datalist>
+        </label>
+
+        <label class="result-field">
+          <span>MYTT ID <small>Optional</small></span>
+          <input id="eventRegistrationMyttId"
+                 name="myttId"
+                 type="text"
+                 placeholder="e.g. MYTT0001"
+                 maxlength="40"
+                 autocomplete="off">
+        </label>
+      </div>
+
+      <div class="result-player-grid">
+        <label class="result-field">
+          <span>Category <em>Required</em></span>
+          <select id="eventRegistrationCategory" name="category" required>
+            <option value="">Select category</option>
+          </select>
+        </label>
+
+        <label id="eventDoublesPartnerField" class="result-field hidden">
+          <span>Doubles Partner <em>Required for Doubles</em></span>
+          <input id="eventRegistrationDoublesPartner"
+                 name="doublesPartner"
+                 type="text"
+                 list="eventPlayerSuggestions"
+                 placeholder="Partner name"
+                 maxlength="80"
+                 autocomplete="off">
+        </label>
+      </div>
+
+      <label class="result-field">
+        <span>Contact Number <em>Required</em></span>
+        <input id="eventRegistrationContact"
+               name="contactNumber"
+               type="tel"
+               placeholder="e.g. 012-3456789"
+               maxlength="40"
+               autocomplete="tel"
+               required>
+      </label>
+
+      <label class="result-field">
+        <span>Notes <small>Optional</small></span>
+        <textarea id="eventRegistrationNotes"
+                  name="notes"
+                  rows="3"
+                  maxlength="500"
+                  placeholder="Anything MYTT should know?"></textarea>
+      </label>
+
+      <div id="eventRegistrationFormStatus"
+           class="result-form-status"
+           aria-live="polite"></div>
+
+      <button id="eventRegistrationSubmitButton"
+              class="result-submit"
+              type="submit">Submit Registration</button>
+
+      <p class="result-form-note">
+        Registration does not guarantee a confirmed slot until MYTT admin review.
+        Pending and approved entries count toward event capacity.
+      </p>
+    </form>
+
+    <div id="eventRegistrationSuccessState" class="join-success-state hidden">
+      <div class="join-success-icon">✓</div>
+      <h3>Registration Received</h3>
+      <p id="eventRegistrationSuccessText">
+        Your registration has been received and is now pending MYTT admin review and approval.
+      </p>
+    </div>
+
+    <iframe id="eventRegistrationSubmitFrame"
+            name="eventRegistrationSubmitFrame"
+            class="result-submit-frame"
+            title="MYTT event registration submission"></iframe>
+  </section>
+</div>
+
 
 <div id="singlesFormModal" class="result-modal hidden" aria-hidden="true">
   <div class="result-modal-backdrop" data-close-singles-form></div>
@@ -561,7 +699,8 @@ window.MYTT = {
   activeDoublesTeamsCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSluDdRh-2MZW7emwK5wqPgFH-DUEgtWHbLcoZbThrl4rCEJOD25ztXK15S7_MPibRKNee5W0Y9GCY0/pub?gid=642146116&single=true&output=csv",
   singlesWebAppUrl: "https://script.google.com/macros/s/AKfycbz24rx6NLZ_FLRft5mUcGbRBbqiofs4Ai0tuU_S58ZgCK9LVf9Q3TT1aQSzDLA6YVDfbQ/exec",
   doublesWebAppUrl: "https://script.google.com/macros/s/AKfycbyZpeTiK4R31KME890Xh29TbGnbSZ5ACl8XYaWNiUPLvtjjEBSs43eSUwfq3VMdKPnK7A/exec",
-  joinWebAppUrl: "https://script.google.com/macros/s/AKfycbyMF13I7EuIuSExNl-mCgVgIAW1GQwa6o7gujC-eby0sgBphKxb2vrNTV5tlivDKU0faQ/exec"
+  joinWebAppUrl: "https://script.google.com/macros/s/AKfycbyMF13I7EuIuSExNl-mCgVgIAW1GQwa6o7gujC-eby0sgBphKxb2vrNTV5tlivDKU0faQ/exec",
+  eventsWebAppUrl: "https://script.google.com/macros/s/AKfycbxFeSz9bn7LmnvcMDYIQnbsCdvD6dPnf3hEADE4JjWQ3UHzaTO_nVtjj3ABnGlz7fillA/exec"
 };
 </script>
 <script src="app.js"></script>

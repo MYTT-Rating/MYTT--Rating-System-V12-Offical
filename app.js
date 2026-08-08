@@ -1399,10 +1399,530 @@ async function loadActiveDoublesTeams(){
   }
 }
 
+
+/* =========================================================
+   MYTT Upcoming Events + Native Event Registration
+   ========================================================= */
+
+let upcomingEvents=[];
+let eventRegistrationSubmitted=false;
+let eventRegistrationStatusPollToken=0;
+
+function eventEscapeHtml(value){
+  return String(value??"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function eventFormEls(){
+  return{
+    modal:document.getElementById("eventRegistrationModal"),
+    form:document.getElementById("eventRegistrationForm"),
+    submissionId:document.getElementById("eventRegistrationSubmissionId"),
+    eventId:document.getElementById("eventRegistrationEventId"),
+    title:document.getElementById("eventRegistrationTitle"),
+    eventName:document.getElementById("eventRegistrationEventName"),
+    date:document.getElementById("eventRegistrationDate"),
+    venue:document.getElementById("eventRegistrationVenue"),
+    playerName:document.getElementById("eventRegistrationPlayerName"),
+    myttId:document.getElementById("eventRegistrationMyttId"),
+    category:document.getElementById("eventRegistrationCategory"),
+    partnerField:document.getElementById("eventDoublesPartnerField"),
+    partner:document.getElementById("eventRegistrationDoublesPartner"),
+    contact:document.getElementById("eventRegistrationContact"),
+    notes:document.getElementById("eventRegistrationNotes"),
+    status:document.getElementById("eventRegistrationFormStatus"),
+    submit:document.getElementById("eventRegistrationSubmitButton"),
+    success:document.getElementById("eventRegistrationSuccessState"),
+    successText:document.getElementById("eventRegistrationSuccessText")
+  };
+}
+
+function findUpcomingEvent(eventId){
+  const key=String(eventId||"").trim().toLowerCase();
+  return upcomingEvents.find(x=>String(x.eventId||"").trim().toLowerCase()===key)||null;
+}
+
+function eventStatusPresentation(event){
+  const raw=String(event?.effectiveStatus||"Upcoming");
+  const remaining=Number(event?.spotsRemaining);
+
+  if(raw==="Open" && Number.isFinite(remaining) && remaining>0 && remaining<=3){
+    return{label:"Almost Full",cls:"almost-full",icon:"🟠"};
+  }
+  if(raw==="Open")return{label:"Registration Open",cls:"open",icon:"🟢"};
+  if(raw==="Full")return{label:"Full",cls:"full",icon:"🔴"};
+  if(raw==="Closed")return{label:"Registration Closed",cls:"closed",icon:"🔒"};
+  if(raw==="Completed")return{label:"Completed",cls:"completed",icon:"✓"};
+  return{label:"Registration Opens Soon",cls:"upcoming",icon:"⏳"};
+}
+
+function parseEventDateOnly(value){
+  const text=String(value||"").trim();
+  const m=text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!m)return null;
+  return new Date(Number(m[1]),Number(m[2])-1,Number(m[3]));
+}
+
+function eventDeadlineText(event){
+  const d=parseEventDateOnly(event?.registrationDeadline);
+  if(!d)return event?.registrationDeadlineDisplay
+    ? "Registration closes "+event.registrationDeadlineDisplay
+    : "";
+
+  const now=new Date();
+  const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  const days=Math.ceil((d.getTime()-today.getTime())/86400000);
+
+  if(days<0)return "Registration deadline passed";
+  if(days===0)return "Registration closes today";
+  if(days===1)return "Registration closes tomorrow";
+  return "Registration closes in "+days+" days";
+}
+
+function eventCapacityHTML(event){
+  const capacity=Number(event?.capacity)||0;
+  const filled=Number(event?.spotsFilled)||0;
+
+  if(capacity<=0){
+    return `<div class="event-capacity event-capacity-unlimited">
+      <div class="event-capacity-head">
+        <span>Registration</span>
+        <strong>${filled} registered</strong>
+      </div>
+    </div>`;
+  }
+
+  const pct=Math.max(0,Math.min(100,(filled/capacity)*100));
+  const remaining=Math.max(0,capacity-filled);
+
+  return `<div class="event-capacity">
+    <div class="event-capacity-head">
+      <span>Spots Filled</span>
+      <strong>${filled} / ${capacity}</strong>
+    </div>
+    <div class="event-capacity-track"><span style="width:${pct}%"></span></div>
+    <small>${remaining>0 ? remaining+" spot"+(remaining===1?"":"s")+" remaining" : "No spots remaining"}</small>
+  </div>`;
+}
+
+function eventCardHTML(event){
+  const status=eventStatusPresentation(event);
+  const isOpen=String(event?.effectiveStatus)==="Open";
+  const deadline=eventDeadlineText(event);
+  const eventId=eventEscapeHtml(event?.eventId);
+  const name=eventEscapeHtml(event?.eventName||"MYTT Event");
+  const date=eventEscapeHtml(event?.dateDisplay||event?.date||"TBA");
+  const time=eventEscapeHtml(event?.time||"TBA");
+  const venue=eventEscapeHtml(event?.venue||"Venue TBA");
+  const format=eventEscapeHtml(event?.format||"MYTT Event");
+  const description=eventEscapeHtml(event?.description||"Official MYTT event.");
+  const deadlineSafe=eventEscapeHtml(deadline);
+
+  let button;
+  if(isOpen){
+    button=`<button class="event-register-button" type="button" data-register-event="${eventId}">
+      Register Now
+      <span>→</span>
+    </button>`;
+  }else{
+    const label=
+      status.cls==="full" ? "Event Full" :
+      status.cls==="closed" ? "Registration Closed" :
+      "Opens Soon";
+
+    button=`<button class="event-register-button disabled" type="button" disabled>${label}</button>`;
+  }
+
+  return `<article class="event-card">
+    <div class="event-card-top">
+      <span class="event-id">${eventId}</span>
+      <span class="event-status-badge ${status.cls}">${status.icon} ${status.label}</span>
+    </div>
+
+    <div class="event-card-title">
+      <p>MYTT Official Event</p>
+      <h3>${name}</h3>
+    </div>
+
+    <div class="event-meta-grid">
+      <div><span>📅</span><small>Date</small><strong>${date}</strong></div>
+      <div><span>🕒</span><small>Time</small><strong>${time}</strong></div>
+      <div><span>📍</span><small>Venue</small><strong>${venue}</strong></div>
+      <div><span>🏓</span><small>Format</small><strong>${format}</strong></div>
+    </div>
+
+    <p class="event-description">${description}</p>
+
+    ${eventCapacityHTML(event)}
+
+    <div class="event-card-footer">
+      <small>${deadlineSafe||"Registration details managed by MYTT"}</small>
+      ${button}
+    </div>
+  </article>`;
+}
+
+function renderUpcomingEvents(){
+  const grid=document.getElementById("eventsGrid");
+  const status=document.getElementById("eventsStatus");
+  if(!grid)return;
+
+  if(!upcomingEvents.length){
+    grid.innerHTML=`<div class="event-empty-state">
+      <span>🏓</span>
+      <strong>No upcoming MYTT events announced yet.</strong>
+      <small>New matches and registration windows will appear here automatically.</small>
+    </div>`;
+    if(status)status.textContent="No upcoming events";
+    return;
+  }
+
+  grid.innerHTML=upcomingEvents.map(eventCardHTML).join("");
+  if(status){
+    status.textContent=upcomingEvents.length===1
+      ? "1 upcoming event"
+      : upcomingEvents.length+" upcoming events";
+  }
+}
+
+function loadUpcomingEvents(){
+  const status=document.getElementById("eventsStatus");
+
+  if(!config.eventsWebAppUrl){
+    upcomingEvents=[];
+    renderUpcomingEvents();
+    if(status)status.textContent="Events unavailable";
+    return Promise.resolve([]);
+  }
+
+  if(status)status.textContent="Checking events...";
+
+  return new Promise((resolve,reject)=>{
+    const callbackName="__myttEvents_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,8);
+    const script=document.createElement("script");
+    let finished=false;
+
+    function cleanup(){
+      if(finished)return;
+      finished=true;
+      clearTimeout(timer);
+      try{delete window[callbackName]}catch(_){window[callbackName]=undefined}
+      script.remove();
+    }
+
+    window[callbackName]=data=>{
+      cleanup();
+
+      if(!data || data.source!=="MYTT_EVENTS_WEB_APP" || String(data.status||"").toLowerCase()!=="ok"){
+        const msg=String(data?.message||"Could not load MYTT events.");
+        upcomingEvents=[];
+        renderUpcomingEvents();
+        if(status)status.textContent="Load failed";
+        reject(new Error(msg));
+        return;
+      }
+
+      upcomingEvents=Array.isArray(data.events)?data.events:[];
+      renderUpcomingEvents();
+      resolve(upcomingEvents);
+    };
+
+    script.onerror=()=>{
+      cleanup();
+      upcomingEvents=[];
+      renderUpcomingEvents();
+      if(status)status.textContent="Load failed";
+      reject(new Error("Could not load MYTT events."));
+    };
+
+    const timer=setTimeout(()=>{
+      cleanup();
+      upcomingEvents=[];
+      renderUpcomingEvents();
+      if(status)status.textContent="Load failed";
+      reject(new Error("MYTT Events request timed out."));
+    },8000);
+
+    script.src=
+      config.eventsWebAppUrl+
+      "?action=events"+
+      "&callback="+encodeURIComponent(callbackName)+
+      "&_="+Date.now();
+
+    document.body.appendChild(script);
+  }).catch(err=>{
+    console.error("Failed to load Upcoming MYTT Events",err);
+    return[];
+  });
+}
+
+function renderEventPlayerSuggestions(){
+  const list=document.getElementById("eventPlayerSuggestions");
+  if(!list)return;
+
+  const names=getPlayerList().map(x=>x.name);
+  list.innerHTML=[...new Set(names)].sort((a,b)=>a.localeCompare(b))
+    .map(name=>`<option value="${eventEscapeHtml(name)}"></option>`)
+    .join("");
+}
+
+function syncEventMyttIdFromName(){
+  const e=eventFormEls();
+  if(!e.playerName||!e.myttId)return;
+
+  const key=slug(e.playerName.value);
+  if(!key)return;
+
+  const exact=playerDb.find(p=>slug(p.name)===key);
+  if(exact?.id)e.myttId.value=exact.id;
+}
+
+function configureEventCategories(event){
+  const e=eventFormEls();
+  if(!e.category)return;
+
+  const format=String(event?.format||"").toLowerCase();
+  let options;
+
+  const hasSingles=format.includes("single");
+  const hasDoubles=format.includes("double");
+
+  if(hasSingles&&!hasDoubles){
+    options=[["Singles","Singles"]];
+  }else if(hasDoubles&&!hasSingles){
+    options=[["Doubles","Doubles"]];
+  }else{
+    options=[
+      ["","Select category"],
+      ["Singles","Singles"],
+      ["Doubles","Doubles"],
+      ["Singles + Doubles","Both — Singles + Doubles"]
+    ];
+  }
+
+  e.category.innerHTML=options
+    .map(([value,label])=>`<option value="${eventEscapeHtml(value)}">${eventEscapeHtml(label)}</option>`)
+    .join("");
+
+  if(options.length===1)e.category.value=options[0][0];
+
+  updateEventPartnerVisibility();
+}
+
+function updateEventPartnerVisibility(){
+  const e=eventFormEls();
+  if(!e.category||!e.partnerField)return;
+
+  const needsPartner=String(e.category.value||"").toLowerCase().includes("double");
+  e.partnerField.classList.toggle("hidden",!needsPartner);
+  if(!needsPartner && e.partner)e.partner.value="";
+}
+
+function resetEventRegistrationForm(){
+  const e=eventFormEls();
+  if(!e.form)return;
+
+  e.form.reset();
+  if(e.submissionId)e.submissionId.value="";
+  if(e.eventId)e.eventId.value="";
+  if(e.status){
+    e.status.textContent="";
+    e.status.classList.remove("success","error","rejected","closed");
+  }
+  if(e.submit){
+    e.submit.disabled=false;
+    e.submit.textContent="Submit Registration";
+  }
+  e.partnerField?.classList.add("hidden");
+  e.form.classList.remove("hidden");
+  e.success?.classList.add("hidden");
+}
+
+function openEventRegistration(eventId){
+  const event=findUpcomingEvent(eventId);
+  if(!event || String(event.effectiveStatus)!=="Open")return;
+
+  const e=eventFormEls();
+  if(!e.modal)return;
+
+  resetEventRegistrationForm();
+
+  e.eventId.value=String(event.eventId||"");
+  e.title.textContent="Register — "+String(event.eventName||"MYTT Event");
+  e.eventName.textContent=String(event.eventName||"MYTT Event");
+  e.date.textContent="📅 "+[event.dateDisplay||event.date||"TBA",event.time||""].filter(Boolean).join(" · ");
+  e.venue.textContent="📍 "+String(event.venue||"Venue TBA");
+
+  configureEventCategories(event);
+  renderEventPlayerSuggestions();
+
+  e.modal.classList.remove("hidden");
+  e.modal.setAttribute("aria-hidden","false");
+  document.body.classList.add("result-modal-open");
+
+  setTimeout(()=>e.playerName?.focus(),80);
+}
+
+function closeEventRegistration(){
+  const e=eventFormEls();
+  if(!e.modal)return;
+
+  e.modal.classList.add("hidden");
+  e.modal.setAttribute("aria-hidden","true");
+  document.body.classList.remove("result-modal-open");
+}
+
+function makeEventRegistrationSubmissionId(){
+  return "mytt_event_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,10);
+}
+
+function validateEventRegistrationForm(){
+  const e=eventFormEls();
+  let msg="";
+
+  const event=findUpcomingEvent(e.eventId?.value);
+  const category=String(e.category?.value||"");
+
+  if(!event)msg="The selected MYTT event could not be found.";
+  else if(String(event.effectiveStatus)!=="Open")msg="Registration for this event is not currently open.";
+  else if(!e.playerName?.value.trim())msg="Please enter your Player Name.";
+  else if(!category)msg="Please select a Category.";
+  else if(category.toLowerCase().includes("double")&&!e.partner?.value.trim())msg="Please enter your Doubles Partner.";
+  else if(!e.contact?.value.trim())msg="Please enter your Contact Number.";
+
+  if(e.status){
+    e.status.classList.remove("success","error","rejected","closed");
+    e.status.textContent=msg;
+    if(msg)e.status.classList.add("error");
+  }
+
+  return !msg;
+}
+
+function handleEventRegistrationServerResult(data){
+  if(!data||data.source!=="MYTT_EVENTS_WEB_APP")return false;
+
+  const e=eventFormEls();
+  eventRegistrationSubmitted=false;
+  eventRegistrationStatusPollToken++;
+
+  if(e.submit)e.submit.disabled=false;
+
+  const status=String(data.status||"error").toLowerCase();
+  const message=String(data.message||"MYTT could not process this registration.");
+
+  if(status==="pending")return false;
+
+  if(status==="accepted"){
+    if(e.status)e.status.textContent="";
+    e.form?.classList.add("hidden");
+    e.success?.classList.remove("hidden");
+    if(e.successText)e.successText.textContent=message;
+    if(e.submit)e.submit.textContent="Submit Registration";
+
+    setTimeout(()=>loadUpcomingEvents(),400);
+    return true;
+  }
+
+  if(e.status){
+    e.status.textContent="⚠ "+message;
+    e.status.classList.add("error");
+  }
+  if(e.submit)e.submit.textContent="Submit Registration";
+  return true;
+}
+
+function requestEventRegistrationStatus(submissionId,token,attempt){
+  if(token!==eventRegistrationStatusPollToken)return;
+
+  const e=eventFormEls();
+  const maxAttempts=35;
+
+  if(attempt>maxAttempts){
+    eventRegistrationSubmitted=false;
+    if(e.submit){
+      e.submit.disabled=false;
+      e.submit.textContent="Submit Registration";
+    }
+    if(e.status){
+      e.status.classList.add("error");
+      e.status.textContent="⏳ Your registration is being processed. Please do not submit it again yet.";
+    }
+    return;
+  }
+
+  const callbackName="__myttEventStatus_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,7);
+  const script=document.createElement("script");
+  let finished=false;
+
+  function cleanup(){
+    if(finished)return;
+    finished=true;
+    try{delete window[callbackName]}catch(_){window[callbackName]=undefined}
+    script.remove();
+  }
+
+  window[callbackName]=data=>{
+    cleanup();
+    if(token!==eventRegistrationStatusPollToken)return;
+
+    const status=String(data?.status||"pending").toLowerCase();
+    if(status==="pending"){
+      setTimeout(()=>requestEventRegistrationStatus(submissionId,token,attempt+1),900);
+      return;
+    }
+
+    handleEventRegistrationServerResult(data);
+  };
+
+  script.onerror=()=>{
+    cleanup();
+    if(token!==eventRegistrationStatusPollToken)return;
+    setTimeout(()=>requestEventRegistrationStatus(submissionId,token,attempt+1),1100);
+  };
+
+  script.src=
+    config.eventsWebAppUrl+
+    "?action=status&id="+encodeURIComponent(submissionId)+
+    "&callback="+encodeURIComponent(callbackName)+
+    "&_="+Date.now();
+
+  document.body.appendChild(script);
+
+  setTimeout(()=>{
+    if(finished||token!==eventRegistrationStatusPollToken)return;
+    cleanup();
+    setTimeout(()=>requestEventRegistrationStatus(submissionId,token,attempt+1),700);
+  },3500);
+}
+
+function startEventRegistrationStatusPolling(submissionId){
+  eventRegistrationStatusPollToken++;
+  const token=eventRegistrationStatusPollToken;
+  setTimeout(()=>requestEventRegistrationStatus(submissionId,token,1),700);
+}
+
+function bindEventRegistrationEvents(){
+  const e=eventFormEls();
+  if(!e.modal)return;
+
+  window.addEventListener("message",event=>{
+    const data=event.data;
+    if(!data||data.source!=="MYTT_EVENTS_WEB_APP")return;
+    handleEventRegistrationServerResult(data);
+  });
+}
+
+
 function bindEvents(){
   document.addEventListener("input",e=>{
     if(e.target.id==="globalSearch")renderSearch();
     if(e.target.id==="playersSearch")renderPlayers();
+    if(e.target.id==="eventRegistrationPlayerName")syncEventMyttIdFromName();
     if(e.target.id==="playerASearch"){document.getElementById("playerAValue").value="";document.getElementById("winnerValue").value="";syncWinnerChoices();renderPlayerPicker("A")}
     if(e.target.id==="playerBSearch"){document.getElementById("playerBValue").value="";document.getElementById("winnerValue").value="";syncWinnerChoices();renderPlayerPicker("B")}
     if(e.target.id==="teamASearch"){document.getElementById("teamAValue").value="";document.getElementById("doublesWinnerValue").value="";syncDoublesWinnerChoices();renderDoublesTeamPicker("A")}
@@ -1411,8 +1931,11 @@ function bindEvents(){
   document.addEventListener("focusin",e=>{if(e.target.id==="playerASearch")renderPlayerPicker("A");if(e.target.id==="playerBSearch")renderPlayerPicker("B");if(e.target.id==="teamASearch")renderDoublesTeamPicker("A");if(e.target.id==="teamBSearch")renderDoublesTeamPicker("B")});
   document.addEventListener("change",e=>{
     if(e.target.id==="playersFilter")renderPlayers();
+    if(e.target.id==="eventRegistrationCategory")updateEventPartnerVisibility();
   });
   document.addEventListener("click",e=>{
+    const registerEvent=e.target.closest("[data-register-event]");if(registerEvent){e.preventDefault();openEventRegistration(registerEvent.dataset.registerEvent);return}
+    const closeEvent=e.target.closest("[data-close-event-registration]");if(closeEvent){e.preventDefault();closeEventRegistration();return}
     const openJoin=e.target.closest("[data-open-join-form]");if(openJoin){e.preventDefault();openJoinForm();return}
     const closeJoin=e.target.closest("[data-close-join-form]");if(closeJoin){e.preventDefault();closeJoinForm();return}
     const open=e.target.closest("[data-open-singles-form]");if(open){e.preventDefault();openSinglesResultForm();return}
@@ -1429,6 +1952,22 @@ function bindEvents(){
     const p=e.target.closest("[data-player]");if(p){e.stopPropagation();openProfile(p.dataset.player)}
     if(e.target.matches("[data-close-modal]"))closeProfile();
   });
+  document.addEventListener("submit",e=>{if(e.target.id==="eventRegistrationForm"){
+    if(!validateEventRegistrationForm()){e.preventDefault();return}
+
+    const fe=eventFormEls();
+    const submissionId=makeEventRegistrationSubmissionId();
+    fe.submissionId.value=submissionId;
+
+    eventRegistrationSubmitted=true;
+    fe.submit.disabled=true;
+    fe.submit.textContent="Submitting…";
+    fe.status.classList.remove("success","error","rejected","closed");
+    fe.status.textContent="MYTT is submitting your event registration…";
+
+    startEventRegistrationStatusPolling(submissionId);
+  }});
+
   document.addEventListener("submit",e=>{if(e.target.id==="singlesResultForm"){
     if(!validateSinglesResultForm()){e.preventDefault();return}
 
@@ -1479,18 +2018,20 @@ function bindEvents(){
   }});
 
   document.addEventListener("keydown",e=>{if(e.key==="Escape"){
+    const efm=document.getElementById("eventRegistrationModal");
     const jfm=document.getElementById("joinFormModal");
     const sfm=document.getElementById("singlesFormModal");
     const dfm=document.getElementById("doublesFormModal");
-    if(jfm&&!jfm.classList.contains("hidden"))closeJoinForm();
+    if(efm&&!efm.classList.contains("hidden"))closeEventRegistration();
+    else if(jfm&&!jfm.classList.contains("hidden"))closeJoinForm();
     else if(sfm&&!sfm.classList.contains("hidden"))closeSinglesResultForm();
     else if(dfm&&!dfm.classList.contains("hidden"))closeDoublesResultForm();
     else closeProfile();
   }})
 }
 async function loadMatchResults(){if(!config.matchResultsCsv)return;try{const rows=await fetchRows(config.matchResultsCsv);matchResults=rows.map(rowToMatch).filter(m=>m.playerA&&m.playerB)}catch(e){console.error("Failed to load match results",e);matchResults=[]}}
-async function loadAll(){await loadPlayerDb();await loadMatchResults();await loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles");await loadLeaderboard(config.doublesCsv,"doublesBody","doublesStatus","doubles","doubles");await loadActivePlayers();await loadActiveDoublesTeams();renderPlayers();renderSearch()}
-bindEvents();bindSinglesFormEvents();bindDoublesFormEvents();bindJoinFormEvents();loadAll();setInterval(loadAll,60000);
+async function loadAll(){await loadPlayerDb();await loadMatchResults();await loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles");await loadLeaderboard(config.doublesCsv,"doublesBody","doublesStatus","doubles","doubles");await loadActivePlayers();await loadActiveDoublesTeams();await loadUpcomingEvents();renderPlayers();renderSearch();renderEventPlayerSuggestions()}
+bindEvents();bindSinglesFormEvents();bindDoublesFormEvents();bindJoinFormEvents();bindEventRegistrationEvents();loadAll();setInterval(loadAll,60000);
 
 document.addEventListener("click", function(e){
   const target = e.target;
