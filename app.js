@@ -500,7 +500,7 @@ function handleSinglesServerResult(data){
   if(status==="pending")return false;
 
   if(status==="accepted"){
-    fe.status.textContent="✓ "+message+" Ready for the next result.";
+    fe.status.textContent="✓ Result accepted and ratings updated. Ready for the next result.";
     fe.status.classList.add("success");
     fe.submit.textContent="Submit Another Result";
     prepareNextSinglesResult();
@@ -947,7 +947,7 @@ function handleDoublesServerResult(data){
   if(status==="pending")return false;
 
   if(status==="accepted"){
-    fe.status.textContent="✓ "+message+" Ready for the next result.";
+    fe.status.textContent="✓ Result accepted and ratings updated. Ready for the next result.";
     fe.status.classList.add("success");
     fe.submit.textContent="Submit Another Result";
     prepareNextDoublesResult();

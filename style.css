@@ -833,7 +833,7 @@ main{
 }
 
 /* =========================================================
-   MYTT Singles Result — native web form
+   MYTT Result Forms — Singles & Doubles
    ========================================================= */
 .result-modal.hidden{display:none}
 .result-modal{position:fixed;inset:0;z-index:180;display:grid;place-items:center;padding:18px}
@@ -868,7 +868,16 @@ main{
 .winner-choices .result-choice{flex:1 1 180px}
 .result-hint{margin:0;color:var(--muted);font-size:14px}
 .result-form-status{min-height:22px;padding:0 2px;color:#fca5a5;font-size:14px;font-weight:800}
-.result-form-status.success{color:#86efac}
+.result-form-status.success{
+  display:block;
+  padding:13px 15px;
+  border-radius:14px;
+  line-height:1.45;
+  font-weight:850;
+  color:#bbf7d0;
+  background:rgba(34,197,94,.10);
+  border:1px solid rgba(134,239,172,.28);
+}
 .result-submit{width:100%;min-height:56px;border:0;border-radius:16px;background:linear-gradient(135deg,#f05252,#991b1b);color:#fff;font-size:17px;font-weight:950;text-transform:uppercase;letter-spacing:.8px;cursor:pointer;box-shadow:0 16px 36px rgba(239,68,68,.22)}
 .result-submit:hover{filter:brightness(1.06)}
 .result-submit:disabled{opacity:.62;cursor:wait}
@@ -886,7 +895,7 @@ body.result-modal-open{overflow:hidden}
 
 
 /* =========================================================
-   MYTT Singles Result — Active Players session control
+   MYTT Result Forms — Active session control
    ========================================================= */
 .result-session-hidden{display:none!important}
 .result-session-state{
@@ -921,16 +930,21 @@ body.result-modal-open{overflow:hidden}
   color:var(--muted);
   line-height:1.55;
 }
-#singlesSubmitCta.session-open{
+#singlesSubmitCta.session-open,
+#doublesSubmitCta.session-open{
   border:1px solid rgba(134,239,172,.32);
 }
-#singlesSubmitCta.session-open small{color:#bbf7d0}
-#singlesSubmitCta.session-closed{
+#singlesSubmitCta.session-open small,
+#doublesSubmitCta.session-open small{color:#bbf7d0}
+#singlesSubmitCta.session-closed,
+#doublesSubmitCta.session-closed{
   background:linear-gradient(135deg,#24262d,#111319);
   border:1px solid rgba(255,255,255,.12);
 }
-#singlesSubmitCta.session-closed small{color:#fca5a5}
-#singlesSubmitCta.session-checking{opacity:.78}
+#singlesSubmitCta.session-closed small,
+#doublesSubmitCta.session-closed small{color:#fca5a5}
+#singlesSubmitCta.session-checking,
+#doublesSubmitCta.session-checking{opacity:.78}
 
 
 /* MYTT Web App real submission status */
@@ -957,4 +971,72 @@ body.result-modal-open{overflow:hidden}
   color:#e5e7eb;
   background:rgba(255,255,255,.055);
   border:1px solid rgba(255,255,255,.13);
+}
+
+
+/* Final mobile polish for Singles + Doubles result forms */
+.result-choice,
+.player-picker-option strong,
+.result-form-status{
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+
+@media(max-width:480px){
+  .result-modal{padding:0;align-items:end}
+  .result-modal-card{
+    max-height:96dvh;
+    border-radius:22px 22px 0 0;
+    padding:20px 14px 16px;
+  }
+  .result-modal-close{
+    top:12px;
+    right:12px;
+    width:38px;
+    height:38px;
+    font-size:25px;
+  }
+  .result-form-head{
+    padding-right:42px;
+    margin-bottom:18px;
+  }
+  .result-form-head h2{
+    font-size:clamp(27px,9vw,34px);
+  }
+  .result-form-head>p:last-child{
+    font-size:13px;
+  }
+  .result-form{
+    gap:15px;
+  }
+  .result-field input[type="date"],
+  .result-player-search{
+    height:50px;
+    font-size:16px;
+  }
+  .choice-row{
+    gap:8px;
+  }
+  .winner-choices .result-choice{
+    flex:1 1 100%;
+  }
+  .score-choices .result-choice{
+    flex:1 1 calc(33.333% - 6px);
+    min-height:46px;
+    padding:9px 8px;
+  }
+  .player-picker-menu{
+    max-height:190px;
+  }
+  .result-submit{
+    min-height:52px;
+    font-size:15px;
+  }
+  .result-form-status.success,
+  .result-form-status.rejected,
+  .result-form-status.error,
+  .result-form-status.closed{
+    padding:11px 12px;
+    font-size:13px;
+  }
 }
