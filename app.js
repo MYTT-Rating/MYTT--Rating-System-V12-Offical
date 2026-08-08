@@ -880,7 +880,7 @@ function requestJoinSubmissionStatus(submissionId,token,attempt){
     e.submit.disabled=false;
     e.submit.textContent="Submit Registration";
     e.status.classList.add("error");
-    e.status.textContent="⚠ MYTT could not confirm the registration automatically. Please do not submit again immediately.";
+    e.status.textContent="⏳ Your registration is being processed. Please wait for MYTT admin review and approval. There is no need to submit again.";
     return;
   }
 
