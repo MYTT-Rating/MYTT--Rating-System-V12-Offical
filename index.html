@@ -291,10 +291,15 @@
           method="POST"
           target="singlesSubmitFrame"
           novalidate>
+      <input type="hidden" name="fvv" value="1">
+      <input type="hidden" name="pageHistory" value="0">
 
       <label class="result-field">
         <span>Match Date</span>
-        <input id="singlesMatchDate" name="entry.280421563" type="date" required>
+        <input id="singlesMatchDate" type="date" required>
+        <input id="singlesMatchDateYear" type="hidden" name="entry.280421563_year">
+        <input id="singlesMatchDateMonth" type="hidden" name="entry.280421563_month">
+        <input id="singlesMatchDateDay" type="hidden" name="entry.280421563_day">
       </label>
 
       <div class="result-player-grid">

@@ -196,6 +196,22 @@ function todayLocalISO(){
   return d.toISOString().slice(0,10);
 }
 
+function syncGoogleFormDateFields(){
+  const e=formEls();
+  const value=e.date?.value||"";
+  const m=value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!m){
+    if(e.dateYear)e.dateYear.value="";
+    if(e.dateMonth)e.dateMonth.value="";
+    if(e.dateDay)e.dateDay.value="";
+    return false;
+  }
+  if(e.dateYear)e.dateYear.value=String(Number(m[1]));
+  if(e.dateMonth)e.dateMonth.value=String(Number(m[2]));
+  if(e.dateDay)e.dateDay.value=String(Number(m[3]));
+  return true;
+}
+
 function formEls(){
   return{
     modal:document.getElementById("singlesFormModal"),
@@ -204,6 +220,9 @@ function formEls(){
     closedTitle:document.getElementById("singlesClosedTitle"),
     closedText:document.getElementById("singlesClosedText"),
     date:document.getElementById("singlesMatchDate"),
+    dateYear:document.getElementById("singlesMatchDateYear"),
+    dateMonth:document.getElementById("singlesMatchDateMonth"),
+    dateDay:document.getElementById("singlesMatchDateDay"),
     aSearch:document.getElementById("playerASearch"),
     aValue:document.getElementById("playerAValue"),
     aMenu:document.getElementById("playerAMenu"),
@@ -403,6 +422,7 @@ function resetSinglesResultForm(){
   if(!e.form)return;
   e.form.reset();
   e.date.value=todayLocalISO();
+  syncGoogleFormDateFields();
   e.aValue.value="";
   e.bValue.value="";
   e.winner.value="";
@@ -420,6 +440,7 @@ function openSinglesResultForm(){
   const e=formEls();
   if(!e.modal)return;
   if(!e.date.value)e.date.value=todayLocalISO();
+  syncGoogleFormDateFields();
   syncSinglesSessionModal();
   e.modal.classList.remove("hidden");
   e.modal.setAttribute("aria-hidden","false");
@@ -444,7 +465,7 @@ function validateSinglesResultForm(){
   let msg="";
 
   if(!activePlayersLoaded||activePlayersError||!activePlayers.length)msg="Result submission is currently closed.";
-  else if(!d)msg="Please select the match date.";
+  else if(!d||!syncGoogleFormDateFields())msg="Please select a valid match date.";
   else if(!a)msg="Please select Player A from the current Active Players list.";
   else if(!b)msg="Please select Player B from the current Active Players list.";
   else if(!isActivePlayer(a)||!isActivePlayer(b))msg="Both players must be in the current Active Players session.";
@@ -465,7 +486,7 @@ function bindSinglesFormEvents(){
   e.frame?.addEventListener("load",()=>{
     if(!singlesFormSubmitted)return;
     singlesFormSubmitted=false;
-    e.status.textContent="✓ Result submitted. Rating updates after MYTT validation.";
+    e.status.textContent="✓ Result sent to MYTT. Please confirm it appears in Match Results.";
     e.status.classList.add("success");
     e.submit.disabled=false;
     e.submit.textContent="Submit Another Result";
@@ -507,7 +528,10 @@ function bindEvents(){
     if(e.target.id==="playerBSearch"){document.getElementById("playerBValue").value="";document.getElementById("winnerValue").value="";syncWinnerChoices();renderPlayerPicker("B")}
   });
   document.addEventListener("focusin",e=>{if(e.target.id==="playerASearch")renderPlayerPicker("A");if(e.target.id==="playerBSearch")renderPlayerPicker("B")});
-  document.addEventListener("change",e=>{if(e.target.id==="playersFilter")renderPlayers()});
+  document.addEventListener("change",e=>{
+    if(e.target.id==="playersFilter")renderPlayers();
+    if(e.target.id==="singlesMatchDate")syncGoogleFormDateFields();
+  });
   document.addEventListener("click",e=>{
     const open=e.target.closest("[data-open-singles-form]");if(open){e.preventDefault();openSinglesResultForm();return}
     const close=e.target.closest("[data-close-singles-form]");if(close){e.preventDefault();closeSinglesResultForm();return}
@@ -518,7 +542,7 @@ function bindEvents(){
     const p=e.target.closest("[data-player]");if(p){e.stopPropagation();openProfile(p.dataset.player)}
     if(e.target.matches("[data-close-modal]"))closeProfile();
   });
-  document.addEventListener("submit",e=>{if(e.target.id==="singlesResultForm"){if(!validateSinglesResultForm()){e.preventDefault();return}const fe=formEls();singlesFormSubmitted=true;fe.submit.disabled=true;fe.submit.textContent="Submitting…";fe.status.classList.remove("success");fe.status.textContent="Sending result…";setTimeout(()=>{if(singlesFormSubmitted){singlesFormSubmitted=false;fe.submit.disabled=false;fe.submit.textContent="Submit Result";fe.status.textContent="Submission is taking longer than expected. Please check your connection and try again if needed."}},9000)}});
+  document.addEventListener("submit",e=>{if(e.target.id==="singlesResultForm"){if(!validateSinglesResultForm()){e.preventDefault();return}syncGoogleFormDateFields();const fe=formEls();singlesFormSubmitted=true;fe.submit.disabled=true;fe.submit.textContent="Submitting…";fe.status.classList.remove("success");fe.status.textContent="Sending result…";setTimeout(()=>{if(singlesFormSubmitted){singlesFormSubmitted=false;fe.submit.disabled=false;fe.submit.textContent="Submit Result";fe.status.textContent="Submission is taking longer than expected. Please check your connection and try again if needed."}},9000)}});
   document.addEventListener("keydown",e=>{if(e.key==="Escape"){const fm=document.getElementById("singlesFormModal");if(fm&&!fm.classList.contains("hidden"))closeSinglesResultForm();else closeProfile()}})
 }
 async function loadMatchResults(){if(!config.matchResultsCsv)return;try{const rows=await fetchRows(config.matchResultsCsv);matchResults=rows.map(rowToMatch).filter(m=>m.playerA&&m.playerB)}catch(e){console.error("Failed to load match results",e);matchResults=[]}}
