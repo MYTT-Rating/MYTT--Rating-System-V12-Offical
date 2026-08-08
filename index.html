@@ -55,8 +55,8 @@
       <p class="intro hero-intro-v5">Track every match. Climb every tier. Become a champion.</p>
 
       <div id="submit" class="cta-grid cta-grid-v5">
-        <a class="cta cta-red" href="https://docs.google.com/forms/d/e/1FAIpQLSfjxBBPNNCF92Aq89YZ-n9-oq5F0WtuNPD3zK6D_3woZLS9aw/viewform?usp=header" target="_blank" rel="noopener">
-          <span>🏓</span><div><strong>Submit Singles Result</strong><small>Open match result form</small></div>
+        <a id="singlesSubmitCta" class="cta cta-red" href="#submit" data-open-singles-form aria-haspopup="dialog">
+          <span>🏓</span><div><strong>Submit Singles Result</strong><small id="singlesSubmitCtaText">Checking active match session…</small></div>
         </a>
         <a class="cta cta-dark" href="https://docs.google.com/forms/d/e/1FAIpQLSe3cKNpJLp8RtUpAPV4Gg1jyBAiNCQ13Vlfz1RHGZoQyjHClg/viewform?usp=header" target="_blank" rel="noopener">
           <span>👥</span><div><strong>Submit Doubles Result</strong><small>Open match result form</small></div>
@@ -268,6 +268,83 @@
 </section>
 </main>
 
+<div id="singlesFormModal" class="result-modal hidden" aria-hidden="true">
+  <div class="result-modal-backdrop" data-close-singles-form></div>
+  <section class="result-modal-card" role="dialog" aria-modal="true" aria-labelledby="singlesFormTitle">
+    <button class="result-modal-close" type="button" data-close-singles-form aria-label="Close singles result form">×</button>
+
+    <div class="result-form-head">
+      <p class="kicker">MYTT Match Submission</p>
+      <h2 id="singlesFormTitle">Submit Singles Result</h2>
+      <p>Only players listed in the current MYTT Active Players session can submit a result. Choose both players, the winner and final score.</p>
+    </div>
+
+    <div id="singlesClosedState" class="result-session-state result-session-hidden" aria-live="polite">
+      <div class="result-session-lock">🔒</div>
+      <h3 id="singlesClosedTitle">Result Submission Closed</h3>
+      <p id="singlesClosedText">No active MYTT match session is currently available.</p>
+    </div>
+
+    <form id="singlesResultForm"
+          class="result-form"
+          action="https://docs.google.com/forms/d/e/1FAIpQLSfjxBBPNNCF92Aq89YZ-n9-oq5F0WtuNPD3zK6D_3woZLS9aw/formResponse"
+          method="POST"
+          target="singlesSubmitFrame"
+          novalidate>
+
+      <label class="result-field">
+        <span>Match Date</span>
+        <input id="singlesMatchDate" name="entry.280421563" type="date" required>
+      </label>
+
+      <div class="result-player-grid">
+        <div class="result-field">
+          <span>Player A</span>
+          <div class="player-picker" data-picker="A">
+            <input id="playerASearch" class="result-player-search" type="search" placeholder="Search player..." autocomplete="off" aria-autocomplete="list">
+            <input id="playerAValue" type="hidden" name="entry.1058647056">
+            <div id="playerAMenu" class="player-picker-menu hidden" role="listbox"></div>
+          </div>
+        </div>
+
+        <div class="result-field">
+          <span>Player B</span>
+          <div class="player-picker" data-picker="B">
+            <input id="playerBSearch" class="result-player-search" type="search" placeholder="Search opponent..." autocomplete="off" aria-autocomplete="list">
+            <input id="playerBValue" type="hidden" name="entry.1793894507">
+            <div id="playerBMenu" class="player-picker-menu hidden" role="listbox"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-field">
+        <span>Winner</span>
+        <input id="winnerValue" type="hidden" name="entry.1260102288">
+        <div id="winnerChoices" class="choice-row winner-choices">
+          <p class="result-hint">Select Player A and Player B first.</p>
+        </div>
+      </div>
+
+      <div class="result-field">
+        <span>Final Score</span>
+        <input id="scoreValue" type="hidden" name="entry.1170277369">
+        <div class="choice-row score-choices">
+          <button type="button" class="result-choice" data-score="3-0">3–0</button>
+          <button type="button" class="result-choice" data-score="3-1">3–1</button>
+          <button type="button" class="result-choice" data-score="3-2">3–2</button>
+        </div>
+      </div>
+
+      <div id="singlesFormStatus" class="result-form-status" aria-live="polite"></div>
+
+      <button id="singlesSubmitButton" class="result-submit" type="submit">Submit Result</button>
+      <p class="result-form-note">Only current Active Players are eligible. Invalid or duplicate matches may still be rejected during validation.</p>
+    </form>
+
+    <iframe id="singlesSubmitFrame" name="singlesSubmitFrame" class="result-submit-frame" title="Singles result submission"></iframe>
+  </section>
+</div>
+
 <div id="profileModal" class="modal hidden">
   <div class="modal-backdrop" data-close-modal></div>
   <div class="modal-card">
@@ -283,7 +360,8 @@ window.MYTT = {
   singlesCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSXGQ-Pfqt9eY3wGYsSdbvEUtzhi3CeeBvGe06j3e5jXOkucz2vTtaQ7SbQTJu_qdwRfBYxNoqmi6R2/pub?gid=0&single=true&output=csv",
   doublesCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSluDdRh-2MZW7emwK5wqPgFH-DUEgtWHbLcoZbThrl4rCEJOD25ztXK15S7_MPibRKNee5W0Y9GCY0/pub?gid=20383104&single=true&output=csv",
   playerDbCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQVFMviJw4bvH24DESoH7oOsBgk5xHNSZ5PMrW--UPOwFilVx8PDlq06khW70NHjPzEwYXDKe2D5OKB/pub?gid=508447017&single=true&output=csv",
-  matchResultsCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSXGQ-Pfqt9eY3wGYsSdbvEUtzhi3CeeBvGe06j3e5jXOkucz2vTtaQ7SbQTJu_qdwRfBYxNoqmi6R2/pub?gid=909390526&single=true&output=csv"
+  matchResultsCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSXGQ-Pfqt9eY3wGYsSdbvEUtzhi3CeeBvGe06j3e5jXOkucz2vTtaQ7SbQTJu_qdwRfBYxNoqmi6R2/pub?gid=909390526&single=true&output=csv",
+  activePlayersCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSXGQ-Pfqt9eY3wGYsSdbvEUtzhi3CeeBvGe06j3e5jXOkucz2vTtaQ7SbQTJu_qdwRfBYxNoqmi6R2/pub?gid=1293054635&single=true&output=csv"
 };
 </script>
 <script src="app.js"></script>

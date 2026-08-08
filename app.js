@@ -1,4 +1,4 @@
-const config=window.MYTT;let singlesPlayers=[],doublesTeams=[],playerDb=[],matchResults=[];
+const config=window.MYTT;let singlesPlayers=[],doublesTeams=[],playerDb=[],matchResults=[],activePlayers=[];let activePlayersLoaded=false,activePlayersError=false;
 const TIERS=[{min:-Infinity,name:"Novice",icon:"🌿",cls:"tier-novice",next:1500},{min:1500,name:"Rookie",icon:"🌱",cls:"tier-rookie",next:1600},{min:1600,name:"Challenger",icon:"⚔️",cls:"tier-challenger",next:1700},{min:1700,name:"Elite",icon:"⭐",cls:"tier-elite",next:1800},{min:1800,name:"Master",icon:"🔥",cls:"tier-master",next:1900},{min:1900,name:"Legend",icon:"👑",cls:"tier-legend",next:2000},{min:2000,name:"Grandmaster",icon:"💎",cls:"tier-grandmaster",next:2100},{min:2100,name:"Immortal",icon:"⚡",cls:"tier-immortal",next:2200},{min:2200,name:"MYTT Champion",icon:"🏆",cls:"tier-champion",next:null}];
 function getTier(r){const rating=Number(r)||0;let t=TIERS[0];for(const tier of TIERS){if(rating>=tier.min)t=tier}return t}
 function tierHTML(r){const t=getTier(r);return `<span class="tier-pill ${t.cls}">${t.icon} ${t.name}</span>`}
@@ -185,10 +185,345 @@ function closeProfile(){
 function getPlayerList(){const map=new Map();singlesPlayers.forEach(p=>map.set(slug(p.name),{source:"leaderboard",db:findDbByName(p.name),lb:p,name:p.name}));playerDb.forEach(db=>{const k=slug(db.name);if(!map.has(k))map.set(k,{source:"approved",db,lb:findLbByName(db.name),name:db.name});else map.get(k).db=db});return [...map.values()].sort((a,b)=>(Number(b.lb.rating)||0)-(Number(a.lb.rating)||0))}
 function renderPlayers(){const grid=document.getElementById("playersGrid");if(!grid)return;const q=(document.getElementById("playersSearch")?.value||"").toLowerCase();const filter=document.getElementById("playersFilter")?.value||"all";let list=getPlayerList();if(filter==="approved")list=list.filter(x=>x.db);if(filter==="leaderboard")list=list.filter(x=>x.source==="leaderboard");if(q)list=list.filter(x=>x.name.toLowerCase().includes(q));if(!list.length){grid.innerHTML=`<p class="loading">No players found.</p>`;return}grid.innerHTML=list.map(x=>`<div class="player-card" data-player="${encodeURIComponent(x.name)}"><div class="player-card-top">${avatarHTML(x.db,"avatar")}<div><h3>${x.name}</h3><p>${x.db?.id||"Leaderboard Player"}</p>${tierHTML(x.lb.rating)}</div></div><div class="mini-stats"><div class="mini-stat"><small>Rating</small><strong>${x.lb.rating}</strong></div><div class="mini-stat"><small>Peak</small><strong>${x.lb.peak}</strong></div><div class="mini-stat"><small>Rank</small><strong>#${x.lb.rank}</strong></div></div><p>🏓 ${x.db?.grip||"-"} · ${x.db?.hand||"-"}</p></div>`).join("")}
 function renderSearch(){const input=document.getElementById("globalSearch"),results=document.getElementById("searchResults");if(!input||!results)return;const q=input.value.trim().toLowerCase();if(!q){results.innerHTML=`<p class="muted">Type a player name to view rating, tier and profile.</p>`;return}const items=getPlayerList().filter(i=>i.name.toLowerCase().includes(q)).slice(0,8);if(!items.length){results.innerHTML=`<p class="muted">No player found.</p>`;return}results.innerHTML=items.map(i=>`<div class="search-result" data-player="${encodeURIComponent(i.name)}"><div class="search-rank">${rankLabel(i.lb.rank)}</div><div><div class="search-name">${i.name}</div><div class="search-meta">${tierHTML(i.lb.rating)} · W-L ${i.lb.record} · Peak ${i.lb.peak}</div></div><div class="search-rating">${i.lb.rating}</div></div>`).join("")}
-function bindEvents(){document.addEventListener("input",e=>{if(e.target.id==="globalSearch")renderSearch();if(e.target.id==="playersSearch")renderPlayers()});document.addEventListener("change",e=>{if(e.target.id==="playersFilter")renderPlayers()});document.addEventListener("click",e=>{const p=e.target.closest("[data-player]");if(p){e.stopPropagation();openProfile(p.dataset.player);}if(e.target.matches("[data-close-modal]"))closeProfile()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeProfile()})}
+
+
+/* MYTT Singles Result — Active Players controlled native web form */
+let singlesFormSubmitted=false;
+
+function todayLocalISO(){
+  const d=new Date();
+  d.setMinutes(d.getMinutes()-d.getTimezoneOffset());
+  return d.toISOString().slice(0,10);
+}
+
+function formEls(){
+  return{
+    modal:document.getElementById("singlesFormModal"),
+    form:document.getElementById("singlesResultForm"),
+    closed:document.getElementById("singlesClosedState"),
+    closedTitle:document.getElementById("singlesClosedTitle"),
+    closedText:document.getElementById("singlesClosedText"),
+    date:document.getElementById("singlesMatchDate"),
+    aSearch:document.getElementById("playerASearch"),
+    aValue:document.getElementById("playerAValue"),
+    aMenu:document.getElementById("playerAMenu"),
+    bSearch:document.getElementById("playerBSearch"),
+    bValue:document.getElementById("playerBValue"),
+    bMenu:document.getElementById("playerBMenu"),
+    winner:document.getElementById("winnerValue"),
+    winnerChoices:document.getElementById("winnerChoices"),
+    score:document.getElementById("scoreValue"),
+    status:document.getElementById("singlesFormStatus"),
+    submit:document.getElementById("singlesSubmitButton"),
+    frame:document.getElementById("singlesSubmitFrame"),
+    cta:document.getElementById("singlesSubmitCta"),
+    ctaText:document.getElementById("singlesSubmitCtaText")
+  };
+}
+
+function canonicalPlayerName(name){
+  const s=slug(name);
+  const item=getPlayerList().find(x=>slug(x.name)===s);
+  return item?.name||String(name||"").trim();
+}
+
+function uniqueActiveNames(rows){
+  const seen=new Set(),out=[];
+  for(const raw of rows){
+    const name=canonicalPlayerName(raw);
+    const k=slug(name);
+    if(!k||seen.has(k))continue;
+    seen.add(k);
+    out.push(name);
+  }
+  return out;
+}
+
+function isActivePlayer(name){
+  const k=slug(name);
+  return !!k&&activePlayers.some(n=>slug(n)===k);
+}
+
+function activePlayerItems(exclude=""){
+  const ex=slug(exclude);
+  return activePlayers
+    .filter(name=>slug(name)!==ex)
+    .map(name=>{
+      const db=findDbByName(name);
+      const lb=findLbByName(name);
+      return {source:"active",db,lb,name:canonicalPlayerName(name)};
+    });
+}
+
+function updateSinglesSessionUI(){
+  const e=formEls();
+  if(!e.cta)return;
+
+  e.cta.classList.remove("session-open","session-closed","session-checking");
+  e.cta.removeAttribute("aria-disabled");
+
+  if(!activePlayersLoaded){
+    e.cta.classList.add("session-checking");
+    if(e.ctaText)e.ctaText.textContent="Checking active match session…";
+  }else if(activePlayersError){
+    e.cta.classList.add("session-closed");
+    e.cta.setAttribute("aria-disabled","true");
+    if(e.ctaText)e.ctaText.textContent="Session unavailable";
+  }else if(!activePlayers.length){
+    e.cta.classList.add("session-closed");
+    e.cta.setAttribute("aria-disabled","true");
+    if(e.ctaText)e.ctaText.textContent="Result submission closed";
+  }else{
+    e.cta.classList.add("session-open");
+    if(e.ctaText)e.ctaText.textContent=`Open · ${activePlayers.length} active player${activePlayers.length===1?"":"s"}`;
+  }
+
+  syncSinglesSessionModal();
+}
+
+function syncSinglesSessionModal(){
+  const e=formEls();
+  if(!e.form||!e.closed)return;
+
+  if(!activePlayersLoaded){
+    e.form.classList.add("result-session-hidden");
+    e.closed.classList.remove("result-session-hidden");
+    if(e.closedTitle)e.closedTitle.textContent="Checking Match Session";
+    if(e.closedText)e.closedText.textContent="MYTT is checking the current Active Players list…";
+    return;
+  }
+
+  if(activePlayersError){
+    e.form.classList.add("result-session-hidden");
+    e.closed.classList.remove("result-session-hidden");
+    if(e.closedTitle)e.closedTitle.textContent="Session Unavailable";
+    if(e.closedText)e.closedText.textContent="MYTT could not verify the Active Players list. Result submission remains locked for safety.";
+    return;
+  }
+
+  if(!activePlayers.length){
+    e.form.classList.add("result-session-hidden");
+    e.closed.classList.remove("result-session-hidden");
+    if(e.closedTitle)e.closedTitle.textContent="Result Submission Closed";
+    if(e.closedText)e.closedText.textContent="There are no players in the current Active Players session. Please wait for the next official MYTT match session.";
+    return;
+  }
+
+  e.closed.classList.add("result-session-hidden");
+  e.form.classList.remove("result-session-hidden");
+}
+
+function pickerElements(which){
+  const e=formEls();
+  return which==="A"
+    ?{search:e.aSearch,value:e.aValue,menu:e.aMenu,other:e.bValue}
+    :{search:e.bSearch,value:e.bValue,menu:e.bMenu,other:e.aValue};
+}
+
+function pickerOptionHTML(x,which){
+  const rating=x.lb?.rating&&x.lb.rating!=="-"?x.lb.rating:"New";
+  return `<button type="button" class="player-picker-option" data-pick-player="${encodeURIComponent(x.name)}" data-pick-side="${which}"><strong>${x.name}</strong><small>${rating}</small></button>`;
+}
+
+function renderPlayerPicker(which){
+  const {search,menu,other}=pickerElements(which);
+  if(!search||!menu)return;
+
+  if(!activePlayersLoaded||activePlayersError||!activePlayers.length){
+    menu.innerHTML=`<div class="player-picker-empty">Result submission is currently closed.</div>`;
+    menu.classList.remove("hidden");
+    return;
+  }
+
+  const q=search.value.trim().toLowerCase();
+  let list=activePlayerItems(other?.value||"");
+
+  if(q){
+    list=list.filter(x=>x.name.toLowerCase().includes(q)||slug(x.name).includes(slug(q)));
+  }
+
+  menu.innerHTML=list.length
+    ?`<div class="player-picker-label">${q?"Active Player Search":"Active Players"}</div>${list.map(x=>pickerOptionHTML(x,which)).join("")}`
+    :`<div class="player-picker-empty">${q?"No active player found.":"No eligible opponent available."}</div>`;
+
+  menu.classList.remove("hidden");
+}
+
+function closePlayerMenus(){
+  const e=formEls();
+  e.aMenu?.classList.add("hidden");
+  e.bMenu?.classList.add("hidden");
+}
+
+function syncWinnerChoices(){
+  const e=formEls(),a=e.aValue?.value||"",b=e.bValue?.value||"";
+  if(!e.winnerChoices)return;
+
+  if(!a||!b){
+    e.winner.value="";
+    e.winnerChoices.innerHTML=`<p class="result-hint">Select Player A and Player B first.</p>`;
+    return;
+  }
+
+  if(e.winner.value&&!samePlayer(e.winner.value,a)&&!samePlayer(e.winner.value,b))e.winner.value="";
+  e.winnerChoices.innerHTML=[a,b]
+    .map(n=>`<button type="button" class="result-choice ${samePlayer(e.winner.value,n)?"active":""}" data-winner="${encodeURIComponent(n)}">${n}</button>`)
+    .join("");
+}
+
+function chooseFormPlayer(which,name){
+  const e=formEls(),p=pickerElements(which);
+  const canonical=canonicalPlayerName(decodeURIComponent(name));
+
+  if(!isActivePlayer(canonical)){
+    if(e.status)e.status.textContent="That player is not in the current Active Players session.";
+    return;
+  }
+
+  p.value.value=canonical;
+  p.search.value=canonical;
+  p.menu.classList.add("hidden");
+
+  if(which==="A"&&e.bValue&&samePlayer(e.bValue.value,canonical)){
+    e.bValue.value="";
+    e.bSearch.value="";
+  }
+  if(which==="B"&&e.aValue&&samePlayer(e.aValue.value,canonical)){
+    e.aValue.value="";
+    e.aSearch.value="";
+  }
+
+  e.winner.value="";
+  syncWinnerChoices();
+  if(e.status)e.status.textContent="";
+}
+
+function resetSinglesResultForm(){
+  const e=formEls();
+  if(!e.form)return;
+  e.form.reset();
+  e.date.value=todayLocalISO();
+  e.aValue.value="";
+  e.bValue.value="";
+  e.winner.value="";
+  e.score.value="";
+  document.querySelectorAll("#singlesFormModal .result-choice.active").forEach(x=>x.classList.remove("active"));
+  syncWinnerChoices();
+  closePlayerMenus();
+  e.status.textContent="";
+  e.status.classList.remove("success");
+  e.submit.disabled=false;
+  e.submit.textContent="Submit Result";
+}
+
+function openSinglesResultForm(){
+  const e=formEls();
+  if(!e.modal)return;
+  if(!e.date.value)e.date.value=todayLocalISO();
+  syncSinglesSessionModal();
+  e.modal.classList.remove("hidden");
+  e.modal.setAttribute("aria-hidden","false");
+  document.body.classList.add("result-modal-open");
+  if(activePlayersLoaded&&!activePlayersError&&activePlayers.length){
+    setTimeout(()=>e.aSearch?.focus(),80);
+  }
+}
+
+function closeSinglesResultForm(){
+  const e=formEls();
+  if(!e.modal)return;
+  e.modal.classList.add("hidden");
+  e.modal.setAttribute("aria-hidden","true");
+  document.body.classList.remove("result-modal-open");
+  closePlayerMenus();
+}
+
+function validateSinglesResultForm(){
+  const e=formEls();
+  const a=e.aValue.value,b=e.bValue.value,w=e.winner.value,s=e.score.value,d=e.date.value;
+  let msg="";
+
+  if(!activePlayersLoaded||activePlayersError||!activePlayers.length)msg="Result submission is currently closed.";
+  else if(!d)msg="Please select the match date.";
+  else if(!a)msg="Please select Player A from the current Active Players list.";
+  else if(!b)msg="Please select Player B from the current Active Players list.";
+  else if(!isActivePlayer(a)||!isActivePlayer(b))msg="Both players must be in the current Active Players session.";
+  else if(samePlayer(a,b))msg="Player A and Player B cannot be the same player.";
+  else if(!w||(!samePlayer(w,a)&&!samePlayer(w,b)))msg="Please select the winner.";
+  else if(!["3-0","3-1","3-2"].includes(s))msg="Please select the final score.";
+
+  e.status.classList.remove("success");
+  e.status.textContent=msg;
+  return !msg;
+}
+
+function bindSinglesFormEvents(){
+  const e=formEls();
+  if(!e.modal)return;
+  if(e.date&&!e.date.value)e.date.value=todayLocalISO();
+
+  e.frame?.addEventListener("load",()=>{
+    if(!singlesFormSubmitted)return;
+    singlesFormSubmitted=false;
+    e.status.textContent="✓ Result submitted. Rating updates after MYTT validation.";
+    e.status.classList.add("success");
+    e.submit.disabled=false;
+    e.submit.textContent="Submit Another Result";
+  });
+}
+
+async function loadActivePlayers(){
+  activePlayersLoaded=false;
+  activePlayersError=false;
+  updateSinglesSessionUI();
+
+  if(!config.activePlayersCsv){
+    activePlayers=[];
+    activePlayersLoaded=true;
+    activePlayersError=true;
+    updateSinglesSessionUI();
+    return;
+  }
+
+  try{
+    const rows=await fetchRows(config.activePlayersCsv);
+    activePlayers=uniqueActiveNames(rows.map(row=>row[0]).filter(Boolean));
+    activePlayersError=false;
+  }catch(err){
+    console.error("Failed to load Active Players",err);
+    activePlayers=[];
+    activePlayersError=true;
+  }finally{
+    activePlayersLoaded=true;
+    updateSinglesSessionUI();
+  }
+}
+
+function bindEvents(){
+  document.addEventListener("input",e=>{
+    if(e.target.id==="globalSearch")renderSearch();
+    if(e.target.id==="playersSearch")renderPlayers();
+    if(e.target.id==="playerASearch"){document.getElementById("playerAValue").value="";document.getElementById("winnerValue").value="";syncWinnerChoices();renderPlayerPicker("A")}
+    if(e.target.id==="playerBSearch"){document.getElementById("playerBValue").value="";document.getElementById("winnerValue").value="";syncWinnerChoices();renderPlayerPicker("B")}
+  });
+  document.addEventListener("focusin",e=>{if(e.target.id==="playerASearch")renderPlayerPicker("A");if(e.target.id==="playerBSearch")renderPlayerPicker("B")});
+  document.addEventListener("change",e=>{if(e.target.id==="playersFilter")renderPlayers()});
+  document.addEventListener("click",e=>{
+    const open=e.target.closest("[data-open-singles-form]");if(open){e.preventDefault();openSinglesResultForm();return}
+    const close=e.target.closest("[data-close-singles-form]");if(close){e.preventDefault();closeSinglesResultForm();return}
+    const pick=e.target.closest("[data-pick-player]");if(pick){e.preventDefault();chooseFormPlayer(pick.dataset.pickSide,pick.dataset.pickPlayer);return}
+    const winner=e.target.closest("[data-winner]");if(winner){const fe=formEls();fe.winner.value=decodeURIComponent(winner.dataset.winner);syncWinnerChoices();fe.status.textContent="";return}
+    const score=e.target.closest("[data-score]");if(score){const fe=formEls();fe.score.value=score.dataset.score;document.querySelectorAll("#singlesFormModal [data-score]").forEach(x=>x.classList.toggle("active",x===score));fe.status.textContent="";return}
+    if(!e.target.closest(".player-picker"))closePlayerMenus();
+    const p=e.target.closest("[data-player]");if(p){e.stopPropagation();openProfile(p.dataset.player)}
+    if(e.target.matches("[data-close-modal]"))closeProfile();
+  });
+  document.addEventListener("submit",e=>{if(e.target.id==="singlesResultForm"){if(!validateSinglesResultForm()){e.preventDefault();return}const fe=formEls();singlesFormSubmitted=true;fe.submit.disabled=true;fe.submit.textContent="Submitting…";fe.status.classList.remove("success");fe.status.textContent="Sending result…";setTimeout(()=>{if(singlesFormSubmitted){singlesFormSubmitted=false;fe.submit.disabled=false;fe.submit.textContent="Submit Result";fe.status.textContent="Submission is taking longer than expected. Please check your connection and try again if needed."}},9000)}});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"){const fm=document.getElementById("singlesFormModal");if(fm&&!fm.classList.contains("hidden"))closeSinglesResultForm();else closeProfile()}})
+}
 async function loadMatchResults(){if(!config.matchResultsCsv)return;try{const rows=await fetchRows(config.matchResultsCsv);matchResults=rows.map(rowToMatch).filter(m=>m.playerA&&m.playerB)}catch(e){console.error("Failed to load match results",e);matchResults=[]}}
-async function loadAll(){await loadPlayerDb();await loadMatchResults();await loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles");await loadLeaderboard(config.doublesCsv,"doublesBody","doublesStatus","doubles","doubles");renderPlayers();renderSearch()}
-bindEvents();loadAll();setInterval(loadAll,60000);
+async function loadAll(){await loadPlayerDb();await loadMatchResults();await loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles");await loadLeaderboard(config.doublesCsv,"doublesBody","doublesStatus","doubles","doubles");await loadActivePlayers();renderPlayers();renderSearch()}
+bindEvents();bindSinglesFormEvents();loadAll();setInterval(loadAll,60000);
 
 document.addEventListener("click", function(e){
   const target = e.target;
