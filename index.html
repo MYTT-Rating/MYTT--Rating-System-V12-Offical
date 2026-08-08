@@ -30,7 +30,7 @@
     </span>
   </a>
   <nav class="nav">
-    <a href="#home">Home</a>
+    <a class="active" href="#home">Home</a>
     <a href="#search">Search</a>
     <a href="#singles">Singles</a>
     <a href="#doubles">Doubles</a>
@@ -40,37 +40,25 @@
 </header>
 
 <main id="home">
-  <section class="hero hero-v5">
-    <div class="hero-copy-v5">
-      <p class="kicker">MYTT Official Platform</p>
+  <section class="hero hero-home-final">
+    <div class="hero-top-banner">
+      <p class="kicker kicker-centered">
+        <span aria-hidden="true"></span>
+        MYTT Official Platform
+        <span aria-hidden="true"></span>
+      </p>
 
-      <h1 class="hero-title-v5">
+      <h1 class="hero-title-row">
         <span>Play.</span>
         <span>Compete.</span>
         <span>Improve.</span>
         <span class="rank-word">Rank.</span>
       </h1>
 
-      <p class="hero-tagline">Malaysia's competitive table tennis rating platform.</p>
-      <p class="intro hero-intro-v5">Track every match. Climb every tier. Become a champion.</p>
-
-      <div id="submit" class="cta-grid cta-grid-v5">
-        <a id="singlesSubmitCta" class="cta cta-red" href="#submit" data-open-singles-form aria-haspopup="dialog">
-          <span>🏓</span><div><strong>Submit Singles Result</strong><small id="singlesSubmitCtaText">Checking active match session…</small></div>
-        </a>
-        <a id="doublesSubmitCta" class="cta cta-dark" href="#submit" data-open-doubles-form aria-haspopup="dialog">
-          <span>👥</span><div><strong>Submit Doubles Result</strong><small id="doublesSubmitCtaText">Checking active doubles session…</small></div>
-        </a>
-        <a id="joinMyttCta" class="cta cta-dark" href="#join" data-open-join-form aria-haspopup="dialog">
-          <span>👤</span><div><strong>Join MYTT</strong><small>Register as an official MYTT player</small></div>
-        </a>
-        <a class="cta cta-dark" href="#players">
-          <span>🔍</span><div><strong>View Players</strong><small>Search official profiles</small></div>
-        </a>
-      </div>
+      <div class="hero-neon-divider" aria-hidden="true"></div>
     </div>
 
-    <section class="hero-rank-card-v5">
+    <section class="hero-rank-card-v5 hero-rank-card-final">
       <div class="rank-card-glow"></div>
 
       <div class="rank-card-head-v5">
@@ -158,13 +146,40 @@
         <p><b>1500</b> / 1600 · 100 pts to Challenger</p>
       </div>
     </section>
-  </section>
 
-  <section class="feature-strip">
-    <article><span>📊</span><div><strong>Live Rankings</strong><small>Real-time player updates</small></div></article>
-    <article><span>👤</span><div><strong>Player Profiles</strong><small>Stats and match history</small></div></article>
-    <article><span>🛡️</span><div><strong>MYTT Tier System</strong><small>Climb through 9 tiers</small></div></article>
-    <article><span>🏆</span><div><strong>Compete & Improve</strong><small>Every match matters</small></div></article>
+    <div id="submit" class="cta-grid cta-grid-home-final">
+      <a id="singlesSubmitCta" class="cta cta-red" href="#submit" data-open-singles-form aria-haspopup="dialog">
+        <span>🏓</span>
+        <div>
+          <strong>Submit Singles Result</strong>
+          <small id="singlesSubmitCtaText">Checking active match session…</small>
+        </div>
+      </a>
+
+      <a id="doublesSubmitCta" class="cta cta-dark" href="#submit" data-open-doubles-form aria-haspopup="dialog">
+        <span>👥</span>
+        <div>
+          <strong>Submit Doubles Result</strong>
+          <small id="doublesSubmitCtaText">Checking active doubles session…</small>
+        </div>
+      </a>
+
+      <a id="joinMyttCta" class="cta cta-dark cta-join-highlight" href="#join" data-open-join-form aria-haspopup="dialog">
+        <span>👤</span>
+        <div>
+          <strong>Join MYTT</strong>
+          <small>Register as an official MYTT player</small>
+        </div>
+      </a>
+
+      <a class="cta cta-dark" href="#players">
+        <span>🔍</span>
+        <div>
+          <strong>View Players</strong>
+          <small>Search official profiles</small>
+        </div>
+      </a>
+    </div>
   </section>
 
   <section id="search" class="search-section">

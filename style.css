@@ -1281,3 +1281,352 @@ body.result-modal-open{overflow:hidden}
 #joinMyttForm.hidden{
   display:none !important;
 }
+
+
+/* =========================================================
+   MYTT HOMEPAGE FINAL — 2026-08-08
+   Final approved layout:
+   slogan -> rank journey -> four full-width action cards
+   ========================================================= */
+
+.nav a.active{
+  color:#ff3b3b;
+  opacity:1;
+  position:relative;
+}
+
+.nav a.active::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-10px;
+  height:2px;
+  border-radius:999px;
+  background:#ff2e2e;
+  box-shadow:0 0 12px rgba(255,46,46,.62);
+}
+
+.hero-home-final{
+  min-height:auto !important;
+  display:flex !important;
+  flex-direction:column !important;
+  grid-template-columns:none !important;
+  align-items:stretch !important;
+  gap:26px !important;
+  width:100%;
+  padding:34px 0 44px !important;
+}
+
+.hero-top-banner{
+  width:100%;
+  text-align:center;
+  padding-top:2px;
+}
+
+.kicker-centered{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:22px;
+  margin:0 0 16px !important;
+  color:#ff4d4d;
+  font-size:15px;
+  font-weight:950;
+  letter-spacing:6px;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+.kicker-centered span{
+  display:block;
+  width:245px;
+  max-width:19vw;
+  height:2px;
+  background:linear-gradient(90deg,transparent,#d92323 25%,#d92323 75%,transparent);
+  opacity:.86;
+}
+
+.hero-title-row{
+  display:flex;
+  flex-wrap:nowrap;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(16px,2.2vw,36px);
+  margin:0 !important;
+  font-size:clamp(46px,5.15vw,84px) !important;
+  line-height:.96 !important;
+  font-style:italic;
+  font-weight:950;
+  letter-spacing:-2.6px;
+  text-transform:uppercase;
+}
+
+.hero-title-row span{
+  display:block;
+  color:#fff;
+  white-space:nowrap;
+  text-shadow:0 3px 18px rgba(0,0,0,.32);
+}
+
+.hero-title-row .rank-word{
+  color:#ff3232;
+  text-shadow:0 0 26px rgba(239,68,68,.38);
+}
+
+.hero-neon-divider{
+  position:relative;
+  width:min(1010px,84%);
+  height:4px;
+  margin:17px auto 0;
+  border-radius:999px;
+  background:linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,33,33,.12) 8%,
+    #ff2828 28%,
+    #ff3a3a 50%,
+    #ff2828 72%,
+    rgba(255,33,33,.12) 92%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 9px rgba(255,45,45,.78),
+    0 0 22px rgba(255,22,22,.48),
+    0 0 40px rgba(255,0,0,.22);
+}
+
+.hero-neon-divider::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:38px;
+  height:16px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(
+    ellipse at center,
+    #fff 0 8%,
+    rgba(255,255,255,.92) 9%,
+    #ff3b3b 28%,
+    rgba(255,32,32,.5) 48%,
+    transparent 72%
+  );
+  filter:blur(.2px);
+  box-shadow:
+    0 0 12px rgba(255,255,255,.65),
+    0 0 26px rgba(255,37,37,.88),
+    0 0 48px rgba(255,0,0,.48);
+}
+
+.hero-rank-card-final{
+  width:100% !important;
+  max-width:none !important;
+  margin:0 auto !important;
+  padding:28px 30px 24px !important;
+  border-radius:28px !important;
+}
+
+.rank-card-head-v5{
+  margin-bottom:10px !important;
+}
+
+.rank-card-head-v5 h2{
+  font-size:clamp(30px,3.2vw,44px) !important;
+}
+
+.current-rating-v5{
+  display:grid;
+  grid-template-columns:auto auto;
+  grid-template-areas:
+    "label pill"
+    "rating pill";
+  align-items:center;
+  column-gap:18px;
+  padding:12px 16px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:18px;
+  background:rgba(0,0,0,.16);
+}
+
+.current-rating-v5 small{
+  grid-area:label;
+}
+
+.current-rating-v5 strong{
+  grid-area:rating;
+  margin:5px 0 0 !important;
+}
+
+.current-rating-v5 span{
+  grid-area:pill;
+  align-self:center;
+}
+
+.homepage-rank-road{
+  padding-top:22px !important;
+  padding-bottom:50px !important;
+}
+
+.hero-progress-card{
+  margin-top:0 !important;
+  padding:15px 18px !important;
+  background:rgba(2,3,6,.50) !important;
+}
+
+.hero-progress-track{
+  height:12px !important;
+  background:rgba(255,255,255,.09) !important;
+}
+
+.hero-progress-track span{
+  background:linear-gradient(90deg,#ff3030,#e02c2c) !important;
+  box-shadow:0 0 16px rgba(255,45,45,.34);
+}
+
+/* Buttons align exactly with the rank-card outer red border */
+.cta-grid-home-final{
+  width:100% !important;
+  max-width:none !important;
+  margin:2px auto 0 !important;
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:28px !important;
+}
+
+.cta-grid-home-final .cta{
+  min-width:0 !important;
+  min-height:126px;
+  padding:22px 24px !important;
+  border-radius:20px !important;
+  justify-content:flex-start;
+  box-shadow:0 16px 40px rgba(0,0,0,.30);
+}
+
+.cta-grid-home-final .cta>span{
+  flex:0 0 auto;
+  font-size:48px !important;
+  line-height:1;
+}
+
+.cta-grid-home-final .cta strong{
+  display:block;
+  font-size:16px !important;
+  line-height:1.22;
+  font-weight:950;
+  text-transform:uppercase;
+}
+
+.cta-grid-home-final .cta small{
+  display:block;
+  margin-top:7px;
+  color:rgba(255,255,255,.78);
+  font-size:11px !important;
+  line-height:1.35;
+}
+
+.cta-grid-home-final .cta-red{
+  border:1px solid rgba(255,90,90,.72);
+  background:
+    radial-gradient(circle at 18% 20%,rgba(255,91,91,.20),transparent 38%),
+    linear-gradient(135deg,#ef3e3e 0%,#bd2020 47%,#760a0a 100%);
+  box-shadow:
+    0 16px 42px rgba(0,0,0,.34),
+    0 0 22px rgba(239,68,68,.12);
+}
+
+.cta-grid-home-final .cta-dark{
+  background:linear-gradient(145deg,rgba(26,29,36,.92),rgba(7,9,13,.98));
+  border:1px solid rgba(255,255,255,.13);
+}
+
+/* Subtle emphasis only — still secondary to Singles */
+.cta-grid-home-final .cta-join-highlight{
+  border-color:rgba(239,68,68,.58) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(239,68,68,.07),
+    0 0 18px rgba(239,68,68,.11),
+    0 16px 40px rgba(0,0,0,.30) !important;
+}
+
+.cta-grid-home-final .cta-join-highlight:hover{
+  border-color:rgba(255,91,91,.78) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(239,68,68,.10),
+    0 0 25px rgba(239,68,68,.17),
+    0 20px 50px rgba(0,0,0,.38) !important;
+}
+
+/* Remove the old promo strip from the final home layout if one survives cached markup */
+.feature-strip{
+  display:none !important;
+}
+
+@media(max-width:1180px){
+  .hero-title-row{
+    flex-wrap:wrap;
+    row-gap:4px;
+  }
+
+  .cta-grid-home-final{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:18px !important;
+  }
+}
+
+@media(max-width:760px){
+  .hero-home-final{
+    gap:20px !important;
+    padding-top:24px !important;
+  }
+
+  .kicker-centered{
+    gap:10px;
+    font-size:11px;
+    letter-spacing:3px;
+  }
+
+  .kicker-centered span{
+    width:55px;
+    max-width:14vw;
+  }
+
+  .hero-title-row{
+    gap:8px 13px;
+    font-size:clamp(31px,9vw,50px) !important;
+    letter-spacing:-1.5px;
+  }
+
+  .hero-neon-divider{
+    width:92%;
+    margin-top:12px;
+  }
+
+  .hero-rank-card-final{
+    padding:20px 15px 18px !important;
+  }
+
+  .rank-card-head-v5{
+    flex-direction:column;
+  }
+
+  .current-rating-v5{
+    width:100%;
+    text-align:left;
+    grid-template-columns:1fr auto;
+  }
+
+  .cta-grid-home-final{
+    grid-template-columns:1fr !important;
+    gap:13px !important;
+  }
+
+  .cta-grid-home-final .cta{
+    min-height:104px;
+  }
+
+  .cta-grid-home-final .cta>span{
+    font-size:40px !important;
+  }
+}
