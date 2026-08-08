@@ -1509,13 +1509,44 @@ function eventCapacityHTML(event){
   </div>`;
 }
 
+
+function eventFeatureDateParts(event){
+  const d=parseEventDateOnly(event?.date);
+  if(d){
+    const months=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+    const weekdays=["SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"];
+    return{
+      main:`${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`,
+      sub:weekdays[d.getDay()]
+    };
+  }
+  return{main:String(event?.dateDisplay||event?.date||"TBA").toUpperCase(),sub:"EVENT DATE"};
+}
+
+function toggleEventDetails(button){
+  const card=button?.closest?.(".event-card");
+  if(!card)return;
+  const extra=card.querySelector(".event-extra-details");
+  if(!extra)return;
+  const open=!extra.classList.contains("hidden");
+  extra.classList.toggle("hidden",open);
+  button.classList.toggle("active",!open);
+  const label=button.querySelector("span");
+  if(label)label.textContent=open?"View Event Details":"Hide Event Details";
+}
+
 function eventCardHTML(event){
   const status=eventStatusPresentation(event);
   const isOpen=String(event?.effectiveStatus)==="Open";
   const deadline=eventDeadlineText(event);
   const eventId=eventEscapeHtml(event?.eventId);
-  const name=eventEscapeHtml(event?.eventName||"MYTT Event");
-  const date=eventEscapeHtml(event?.dateDisplay||event?.date||"TBA");
+  const rawName=String(event?.eventName||"MYTT Event").trim();
+  const nameWords=rawName.split(/\s+/).filter(Boolean);
+  const titleLead=eventEscapeHtml((nameWords.shift()||"MYTT").toUpperCase());
+  const titleMain=eventEscapeHtml((nameWords.join(" ")||"EVENT").toUpperCase());
+  const dateParts=eventFeatureDateParts(event);
+  const dateMain=eventEscapeHtml(dateParts.main);
+  const dateSub=eventEscapeHtml(dateParts.sub);
   const time=eventEscapeHtml(event?.time||"TBA");
   const venue=eventEscapeHtml(event?.venue||"Venue TBA");
   const format=eventEscapeHtml(event?.format||"MYTT Event");
@@ -1539,80 +1570,105 @@ function eventCardHTML(event){
     button=`<button class="event-feature-register disabled" type="button" disabled><span>${label}</span></button>`;
   }
 
-  const remainingHTML=capacity>0
-    ? `<div class="event-feature-quick event-feature-spots">
-         <span class="event-feature-quick-icon">👥</span>
-         <div><strong>${remaining}</strong><small>Spots Remaining</small><em>Limited slots available</em></div>
+  const remainingBlock=capacity>0
+    ? `<div class="event-feature-stat event-feature-stat-spots">
+         <span class="event-stat-people" aria-hidden="true"><i></i><i></i></span>
+         <strong>${remaining}</strong>
+         <div><b>Spots Remaining</b><small>Limited slots available</small></div>
        </div>`
-    : `<div class="event-feature-quick event-feature-spots">
-         <span class="event-feature-quick-icon">👥</span>
-         <div><strong>${filled}</strong><small>Registered</small><em>Open registration</em></div>
+    : `<div class="event-feature-stat event-feature-stat-spots">
+         <span class="event-stat-people" aria-hidden="true"><i></i><i></i></span>
+         <strong>${filled}</strong>
+         <div><b>Registered</b><small>Open registration</small></div>
        </div>`;
 
-  return `<article class="event-card event-card-neon">
-    <div class="event-feature-banner">
-      <div class="event-feature-art" aria-hidden="true">
-        <span class="event-feature-paddle">🏓</span>
-        <span class="event-feature-ball"></span>
+  return `<article class="event-card event-card-neon-v3">
+    <div class="event-feature-banner-v3">
+      <div class="event-feature-art-v3" aria-hidden="true">
+        <div class="event-paddle-css">
+          <span class="event-paddle-handle"></span>
+          <span class="event-paddle-neck"></span>
+          <span class="event-paddle-face"></span>
+        </div>
+        <span class="event-ball-css"></span>
       </div>
 
-      <div class="event-feature-main">
-        <p class="event-feature-eyebrow">MYTT Official Event</p>
-        <h3>${name}</h3>
+      <div class="event-feature-content-v3">
+        <h3 class="event-feature-title-v3">
+          <span>${titleLead}</span>
+          <strong>${titleMain}</strong>
+        </h3>
 
-        <div class="event-feature-quick-row">
-          <div class="event-feature-quick">
-            <span class="event-feature-quick-icon">📅</span>
-            <div><strong>${date}</strong><em>${deadlineSafe||"Event date"}</em></div>
+        <div class="event-feature-stats-v3">
+          <div class="event-feature-stat event-feature-stat-date">
+            <span class="event-stat-calendar" aria-hidden="true"><i></i></span>
+            <div><b>${dateMain}</b><small>${dateSub}</small></div>
           </div>
 
-          <div class="event-feature-quick event-feature-status ${status.cls}">
-            <span class="event-feature-status-dot"></span>
-            <div><strong>${status.label}</strong><em>${isOpen?"Open for registration":"MYTT event status"}</em></div>
+          <div class="event-feature-stat event-feature-stat-status ${status.cls}">
+            <span class="event-stat-status-dot"></span>
+            <div><b>${eventEscapeHtml(status.label)}</b><small>${isOpen?"Open for registration":"MYTT event status"}</small></div>
           </div>
 
-          ${remainingHTML}
+          ${remainingBlock}
         </div>
       </div>
 
-      <div class="event-feature-action">${button}</div>
+      <div class="event-feature-action-v3">${button}</div>
     </div>
 
-    <div class="event-detail-panel">
-      <div class="event-detail-head">
-        <div class="event-detail-heading"><span></span><strong>Official Event Details</strong><i></i></div>
-        <span class="event-id event-id-tech">${eventId}</span>
+    <div class="event-detail-panel-v3">
+      <div class="event-detail-head-v3">
+        <div class="event-detail-label-v3"><i></i><i></i><strong>Official Event Details</strong></div>
+        <span class="event-id-tech-v3">${eventId}</span>
       </div>
 
-      <div class="event-tech-grid">
-        <div class="event-tech-card">
-          <span class="event-tech-icon">🕒</span>
+      <div class="event-tech-grid-v3">
+        <div class="event-tech-card-v3">
+          <span class="event-tech-svg">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 7v5l3 2"></path></svg>
+          </span>
           <div><small>Time</small><strong>${time}</strong></div>
         </div>
-        <div class="event-tech-card">
-          <span class="event-tech-icon">📍</span>
+
+        <div class="event-tech-card-v3">
+          <span class="event-tech-svg">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+          </span>
           <div><small>Venue</small><strong>${venue}</strong></div>
         </div>
-        <div class="event-tech-card">
-          <span class="event-tech-icon">🏓</span>
+
+        <div class="event-tech-card-v3">
+          <span class="event-tech-svg event-tech-paddle-svg">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9" r="6"></circle><path d="m13 13 7 7"></path><path d="m15 15 2-2"></path></svg>
+          </span>
           <div><small>Format</small><strong>${format}</strong></div>
         </div>
-        <div class="event-tech-card">
-          <span class="event-tech-icon">👥</span>
+
+        <div class="event-tech-card-v3">
+          <span class="event-tech-svg">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><circle cx="16.5" cy="9" r="2.4"></circle><path d="M3 20c0-4 2.5-6 6-6s6 2 6 6"></path><path d="M14 15c3-.6 6 1.2 6 5"></path></svg>
+          </span>
           <div><small>Total Spots</small><strong>${capacity>0?capacity:"Open"}</strong></div>
         </div>
       </div>
 
-      <div class="event-tech-progress">
-        <div class="event-tech-progress-head">
+      <div class="event-progress-v3">
+        <div class="event-progress-head-v3">
           <span>Spots Filled</span>
           <strong>${capacity>0?`${filled} / ${capacity}`:`${filled} registered`}</strong>
         </div>
-        <div class="event-tech-progress-track"><span style="width:${pct}%"></span></div>
-      </div>
+        <div class="event-progress-track-v3"><span style="width:${pct}%"></span></div>
 
-      <div class="event-detail-footer">
-        <p><span>✓</span>${description}</p>
+        <div class="event-progress-footer-v3">
+          <p><span class="event-shield-check">✓</span>${description}</p>
+          <button class="event-details-button-v3" type="button" data-event-details><span>View Event Details</span><b>→</b></button>
+        </div>
+
+        <div class="event-extra-details hidden">
+          <div><small>Registration</small><strong>${deadlineSafe||"Managed by MYTT"}</strong></div>
+          <div><small>Event Status</small><strong>${eventEscapeHtml(status.label)}</strong></div>
+        </div>
       </div>
     </div>
   </article>`;
@@ -1994,6 +2050,7 @@ function bindEvents(){
     if(e.target.id==="eventRegistrationCategory")updateEventPartnerVisibility();
   });
   document.addEventListener("click",e=>{
+    const detailsEvent=e.target.closest("[data-event-details]");if(detailsEvent){e.preventDefault();toggleEventDetails(detailsEvent);return}
     const registerEvent=e.target.closest("[data-register-event]");if(registerEvent){e.preventDefault();openEventRegistration(registerEvent.dataset.registerEvent);return}
     const closeEvent=e.target.closest("[data-close-event-registration]");if(closeEvent){e.preventDefault();closeEventRegistration();return}
     const openJoin=e.target.closest("[data-open-join-form]");if(openJoin){e.preventDefault();openJoinForm();return}
