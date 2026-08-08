@@ -1777,29 +1777,90 @@ function cacheUpcomingEvents(events){
   }catch(_){}
 }
 
-async function fetchEventCsvText(url,timeoutMs=12000){
-  const controller=typeof AbortController!=="undefined"?new AbortController():null;
-  const timer=controller?setTimeout(()=>controller.abort(),timeoutMs):null;
-
-  try{
-    const requestUrl=url+(url.includes("?")?"&":"?")+"_="+Date.now();
-    const res=await fetch(requestUrl,{
-      cache:"no-store",
-      signal:controller?controller.signal:undefined
-    });
-    if(!res.ok)throw new Error("Events CSV returned "+res.status);
-    return await res.text();
-  }finally{
-    if(timer)clearTimeout(timer);
+function eventGvizDateValue(value){
+  if(value instanceof Date && !isNaN(value.getTime())){
+    return `${value.getFullYear()}-${String(value.getMonth()+1).padStart(2,"0")}-${String(value.getDate()).padStart(2,"0")}`;
   }
+  return value;
+}
+
+function eventGvizCellValue(cell){
+  if(!cell)return"";
+  const raw=eventGvizDateValue(cell.v);
+  if(raw instanceof Date)return eventGvizDateValue(raw);
+  if(cell.v instanceof Date)return eventGvizDateValue(cell.v);
+  if(cell.f!==undefined && cell.f!==null && String(cell.f).trim()!==""){
+    // For dates use the actual Date value so day/month cannot be reversed.
+    if(cell.v instanceof Date)return eventGvizDateValue(cell.v);
+    return String(cell.f).trim();
+  }
+  return raw===undefined||raw===null?"":raw;
+}
+
+function eventGvizResponseToRows(response){
+  if(!response || response.status!=="ok" || !response.table || !Array.isArray(response.table.rows)){
+    const msg=response?.errors?.[0]?.message || "Invalid Google Sheets response";
+    throw new Error(msg);
+  }
+  return response.table.rows.map(row=>{
+    const cells=Array.isArray(row?.c)?row.c:[];
+    const out=[];
+    for(let i=0;i<11;i++)out.push(eventGvizCellValue(cells[i]));
+    return out;
+  }).filter(row=>row.some(value=>String(value??"").trim()!==""));
+}
+
+let eventGvizRequestNo=0;
+function loadEventsViaGviz(timeoutMs=18000){
+  return new Promise((resolve,reject)=>{
+    if(!config.eventsGvizUrl){
+      reject(new Error("Events GViz URL is missing"));
+      return;
+    }
+
+    const requestNo=++eventGvizRequestNo;
+    const callbackName=`__myttEventsGviz_${Date.now()}_${requestNo}`;
+    const script=document.createElement("script");
+    let settled=false;
+
+    const cleanup=()=>{
+      if(script.parentNode)script.parentNode.removeChild(script);
+      try{delete window[callbackName]}catch(_){window[callbackName]=undefined}
+    };
+
+    const finish=(fn,value)=>{
+      if(settled)return;
+      settled=true;
+      clearTimeout(timer);
+      cleanup();
+      fn(value);
+    };
+
+    window[callbackName]=(response)=>{
+      try{
+        finish(resolve,eventGvizResponseToRows(response));
+      }catch(err){
+        finish(reject,err);
+      }
+    };
+
+    script.async=true;
+    script.onerror=()=>finish(reject,new Error("Google Sheets script request failed"));
+    const sep=config.eventsGvizUrl.includes("?")?"&":"?";
+    const tqx=encodeURIComponent(`out:json;responseHandler:${callbackName}`);
+    script.src=`${config.eventsGvizUrl}${sep}headers=1&tqx=${tqx}&_=${Date.now()}`;
+
+    const timer=setTimeout(()=>finish(reject,new Error("Google Sheets script request timed out")),timeoutMs);
+    document.head.appendChild(script);
+  });
 }
 
 async function loadUpcomingEvents(options={}){
   const status=document.getElementById("eventsStatus");
   const maxAttempts=Math.max(1,Number(options.maxAttempts)||2);
-  const timeoutMs=Math.max(5000,Number(options.timeoutMs)||12000);
+  const timeoutMs=Math.max(7000,Number(options.timeoutMs)||18000);
 
-  if(!config.eventsCsvUrl){
+  if(!config.eventsGvizUrl){
     upcomingEvents=readCachedUpcomingEvents();
     renderUpcomingEvents();
     if(status)status.textContent=upcomingEvents.length?"Showing saved events":"Events unavailable";
@@ -1810,15 +1871,15 @@ async function loadUpcomingEvents(options={}){
     try{
       if(status)status.textContent=attempt>1?"Refreshing events…":"Checking events...";
 
-      const csvText=await fetchEventCsvText(config.eventsCsvUrl,timeoutMs);
-      const parsed=parseCSV(csvText);
-      const rows=cleanRows(parsed);
+      // Deliberately use a cross-origin <script> (Google Visualization JSONP)
+      // instead of fetch(), so mobile browsers do not depend on CSV CORS redirects.
+      const rows=await loadEventsViaGviz(timeoutMs);
       upcomingEvents=publishedRowsToEvents(rows);
       cacheUpcomingEvents(upcomingEvents);
       renderUpcomingEvents();
       return upcomingEvents;
     }catch(err){
-      console.warn(`Upcoming MYTT Events CSV attempt ${attempt} failed`,err);
+      console.warn(`Upcoming MYTT Events GViz attempt ${attempt} failed`,err);
       if(attempt<maxAttempts)await new Promise(resolve=>setTimeout(resolve,700*attempt));
     }
   }
@@ -2213,15 +2274,15 @@ bindEvents();bindSinglesFormEvents();bindDoublesFormEvents();bindJoinFormEvents(
 loadUpcomingEvents();
 loadAll();
 setInterval(loadAll,60000);
-setInterval(()=>loadUpcomingEvents({maxAttempts:1,timeoutMs:12000}),60000);
+setInterval(()=>loadUpcomingEvents({maxAttempts:1,timeoutMs:18000}),60000);
 
 // Mobile resilience: retry when connection returns or the tab becomes active again.
-window.addEventListener("online",()=>loadUpcomingEvents({maxAttempts:2,timeoutMs:12000}));
+window.addEventListener("online",()=>loadUpcomingEvents({maxAttempts:2,timeoutMs:18000}));
 document.addEventListener("visibilitychange",()=>{
   if(document.visibilityState!=="visible")return;
   const eventStatus=document.getElementById("eventsStatus");
   if(!upcomingEvents.length || /failed|unavailable/i.test(eventStatus?.textContent||"")){
-    loadUpcomingEvents({maxAttempts:2,timeoutMs:12000});
+    loadUpcomingEvents({maxAttempts:2,timeoutMs:18000});
   }
 });
 
@@ -2231,7 +2292,7 @@ document.addEventListener("click",e=>{
   if(!eventsLink)return;
   const eventStatus=document.getElementById("eventsStatus");
   if(!upcomingEvents.length || /failed|unavailable/i.test(eventStatus?.textContent||"")){
-    loadUpcomingEvents({maxAttempts:2,timeoutMs:12000});
+    loadUpcomingEvents({maxAttempts:2,timeoutMs:18000});
   }
 });
 
