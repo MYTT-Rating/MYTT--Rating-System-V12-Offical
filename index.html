@@ -22,7 +22,7 @@
 </head>
 <body>
 <header class="topbar">
-  <a class="brand" href="#home">
+  <a id="joinMyttCta" class="brand" href="#join" data-open-join-form aria-haspopup="dialog">
     <span class="brand-icon">🏓</span>
     <span>
       <strong>MYTT</strong>
@@ -347,6 +347,117 @@
 </div>
 
 
+
+<div id="joinFormModal" class="result-modal hidden" aria-hidden="true">
+  <div class="result-modal-backdrop" data-close-join-form></div>
+  <section class="result-modal-card join-modal-card" role="dialog" aria-modal="true" aria-labelledby="joinFormTitle">
+    <button class="result-modal-close" type="button" data-close-join-form aria-label="Close Join MYTT form">×</button>
+
+    <div class="result-form-head">
+      <p class="kicker">MYTT Player Registration</p>
+      <h2 id="joinFormTitle">Join MYTT</h2>
+      <p>Register your player profile for MYTT. Your submission will be reviewed before your MYTT ID and public player profile are activated.</p>
+    </div>
+
+    <form id="joinMyttForm"
+          class="result-form join-form"
+          action="https://script.google.com/macros/s/AKfycbyMF13I7EuIuSExNl-mCgVgIAW1GQwa6o7gujC-eby0sgBphKxb2vrNTV5tlivDKU0faQ/exec"
+          method="POST"
+          target="joinSubmitFrame"
+          novalidate>
+      <input id="joinSubmissionId" type="hidden" name="submissionId">
+      <input id="joinPhotoData" type="hidden" name="photoData">
+      <input id="joinPhotoName" type="hidden" name="photoName">
+      <input id="joinPhotoType" type="hidden" name="photoType">
+
+      <label class="result-field">
+        <span>Player Name <em>Required</em></span>
+        <input id="joinPlayerName" name="playerName" type="text" placeholder="Your player name" maxlength="80" autocomplete="name" required>
+      </label>
+
+      <div class="result-player-grid">
+        <div class="result-field">
+          <span>Grip Style <em>Required</em></span>
+          <select id="joinGripStyle" name="gripStyle" required>
+            <option value="">Select grip style</option>
+            <option value="Shakehand">Shakehand</option>
+            <option value="Penhold">Penhold</option>
+          </select>
+        </div>
+
+        <div class="result-field">
+          <span>Playing Hand <em>Required</em></span>
+          <select id="joinPlayingHand" name="playingHand" required>
+            <option value="">Select playing hand</option>
+            <option value="Right-handed">Right-handed</option>
+            <option value="Left-handed">Left-handed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="join-section">
+        <div class="join-section-head">
+          <h3>Equipment</h3>
+          <p>Optional — you can leave these blank if you are not sure.</p>
+        </div>
+
+        <label class="result-field">
+          <span>Blade</span>
+          <input id="joinBlade" name="blade" type="text" placeholder="e.g. Butterfly Viscaria" maxlength="120">
+        </label>
+
+        <div class="result-player-grid">
+          <label class="result-field">
+            <span>Forehand Rubber</span>
+            <input id="joinForehandRubber" name="forehandRubber" type="text" placeholder="e.g. Dignics 09C" maxlength="120">
+          </label>
+
+          <label class="result-field">
+            <span>Backhand Rubber</span>
+            <input id="joinBackhandRubber" name="backhandRubber" type="text" placeholder="e.g. Dignics 05" maxlength="120">
+          </label>
+        </div>
+      </div>
+
+      <div class="result-field">
+        <span>Profile Photo <small>Optional</small></span>
+        <label class="join-photo-picker" for="joinProfilePhoto">
+          <span class="join-photo-icon">📷</span>
+          <span class="join-photo-copy">
+            <strong id="joinPhotoLabel">Choose profile photo</strong>
+            <small>JPG, PNG or WebP · max 4 MB</small>
+          </span>
+        </label>
+        <input id="joinProfilePhoto" class="join-photo-input" type="file" accept="image/jpeg,image/png,image/webp">
+        <div id="joinPhotoPreviewWrap" class="join-photo-preview-wrap hidden">
+          <img id="joinPhotoPreview" class="join-photo-preview" alt="Profile photo preview">
+          <button id="joinRemovePhoto" class="join-remove-photo" type="button">Remove photo</button>
+        </div>
+      </div>
+
+      <label class="join-consent">
+        <input id="joinConsent" name="consent" type="checkbox" value="yes" required>
+        <span>I agree that MYTT may publish my player profile, rating, match statistics, profile photo and equipment information on the official MYTT website.</span>
+      </label>
+
+      <div id="joinFormStatus" class="result-form-status" aria-live="polite"></div>
+
+      <button id="joinSubmitButton" class="result-submit" type="submit">Submit Registration</button>
+
+      <p class="result-form-note">Submitting this form does not activate your profile immediately. MYTT will review the registration before assigning a MYTT ID and publishing the player profile.</p>
+    </form>
+
+    <div id="joinSuccessState" class="join-success-state hidden">
+      <div class="join-success-icon">✓</div>
+      <h3>Registration Received</h3>
+      <p>Your MYTT registration has been submitted for review.</p>
+      <button id="joinAnotherButton" class="result-submit" type="button">Submit Another Registration</button>
+    </div>
+
+    <iframe id="joinSubmitFrame" name="joinSubmitFrame" class="result-submit-frame" title="Join MYTT registration submission"></iframe>
+  </section>
+</div>
+
 <div id="doublesFormModal" class="result-modal hidden" aria-hidden="true">
   <div class="result-modal-backdrop" data-close-doubles-form></div>
   <section class="result-modal-card" role="dialog" aria-modal="true" aria-labelledby="doublesFormTitle">
@@ -444,7 +555,8 @@ window.MYTT = {
   activePlayersCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSXGQ-Pfqt9eY3wGYsSdbvEUtzhi3CeeBvGe06j3e5jXOkucz2vTtaQ7SbQTJu_qdwRfBYxNoqmi6R2/pub?gid=1293054635&single=true&output=csv",
   activeDoublesTeamsCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSluDdRh-2MZW7emwK5wqPgFH-DUEgtWHbLcoZbThrl4rCEJOD25ztXK15S7_MPibRKNee5W0Y9GCY0/pub?gid=642146116&single=true&output=csv",
   singlesWebAppUrl: "https://script.google.com/macros/s/AKfycbz24rx6NLZ_FLRft5mUcGbRBbqiofs4Ai0tuU_S58ZgCK9LVf9Q3TT1aQSzDLA6YVDfbQ/exec",
-  doublesWebAppUrl: "https://script.google.com/macros/s/AKfycbyZpeTiK4R31KME890Xh29TbGnbSZ5ACl8XYaWNiUPLvtjjEBSs43eSUwfq3VMdKPnK7A/exec"
+  doublesWebAppUrl: "https://script.google.com/macros/s/AKfycbyZpeTiK4R31KME890Xh29TbGnbSZ5ACl8XYaWNiUPLvtjjEBSs43eSUwfq3VMdKPnK7A/exec",
+  joinWebAppUrl: "https://script.google.com/macros/s/AKfycbyMF13I7EuIuSExNl-mCgVgIAW1GQwa6o7gujC-eby0sgBphKxb2vrNTV5tlivDKU0faQ/exec"
 };
 </script>
 <script src="app.js"></script>

@@ -642,6 +642,278 @@ async function loadActivePlayers(){
 }
 
 
+
+/* MYTT Join — native player registration form */
+let joinFormSubmitted=false;
+let joinStatusPollToken=0;
+
+function joinFormEls(){
+  return{
+    modal:document.getElementById("joinFormModal"),
+    form:document.getElementById("joinMyttForm"),
+    name:document.getElementById("joinPlayerName"),
+    grip:document.getElementById("joinGripStyle"),
+    hand:document.getElementById("joinPlayingHand"),
+    blade:document.getElementById("joinBlade"),
+    fh:document.getElementById("joinForehandRubber"),
+    bh:document.getElementById("joinBackhandRubber"),
+    consent:document.getElementById("joinConsent"),
+    submissionId:document.getElementById("joinSubmissionId"),
+    photoInput:document.getElementById("joinProfilePhoto"),
+    photoData:document.getElementById("joinPhotoData"),
+    photoName:document.getElementById("joinPhotoName"),
+    photoType:document.getElementById("joinPhotoType"),
+    photoLabel:document.getElementById("joinPhotoLabel"),
+    photoPreviewWrap:document.getElementById("joinPhotoPreviewWrap"),
+    photoPreview:document.getElementById("joinPhotoPreview"),
+    removePhoto:document.getElementById("joinRemovePhoto"),
+    status:document.getElementById("joinFormStatus"),
+    submit:document.getElementById("joinSubmitButton"),
+    success:document.getElementById("joinSuccessState"),
+    another:document.getElementById("joinAnotherButton")
+  };
+}
+
+function openJoinForm(){
+  const e=joinFormEls();
+  if(!e.modal)return;
+  e.modal.classList.remove("hidden");
+  e.modal.setAttribute("aria-hidden","false");
+  document.body.classList.add("result-modal-open");
+  setTimeout(()=>e.name?.focus(),80);
+}
+
+function closeJoinForm(){
+  const e=joinFormEls();
+  if(!e.modal)return;
+  e.modal.classList.add("hidden");
+  e.modal.setAttribute("aria-hidden","true");
+  document.body.classList.remove("result-modal-open");
+}
+
+function makeJoinSubmissionId(){
+  return "mytt_join_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,10);
+}
+
+function clearJoinPhoto(){
+  const e=joinFormEls();
+  if(e.photoInput)e.photoInput.value="";
+  if(e.photoData)e.photoData.value="";
+  if(e.photoName)e.photoName.value="";
+  if(e.photoType)e.photoType.value="";
+  if(e.photoPreview)e.photoPreview.removeAttribute("src");
+  if(e.photoPreviewWrap)e.photoPreviewWrap.classList.add("hidden");
+  if(e.photoLabel)e.photoLabel.textContent="Choose profile photo";
+}
+
+function resetJoinForm(){
+  const e=joinFormEls();
+  if(!e.form)return;
+  e.form.reset();
+  clearJoinPhoto();
+  if(e.submissionId)e.submissionId.value="";
+  if(e.status){
+    e.status.textContent="";
+    e.status.classList.remove("success","error","rejected","closed");
+  }
+  if(e.submit){
+    e.submit.disabled=false;
+    e.submit.textContent="Submit Registration";
+  }
+  e.form.classList.remove("hidden");
+  e.success?.classList.add("hidden");
+  setTimeout(()=>e.name?.focus(),80);
+}
+
+function validateJoinForm(){
+  const e=joinFormEls();
+  let msg="";
+
+  if(!e.name?.value.trim())msg="Please enter your Player Name.";
+  else if(!e.grip?.value)msg="Please select your Grip Style.";
+  else if(!e.hand?.value)msg="Please select your Playing Hand.";
+  else if(!e.consent?.checked)msg="Please agree to the MYTT publication consent before submitting.";
+
+  if(e.status){
+    e.status.classList.remove("success","error","rejected","closed");
+    e.status.textContent=msg;
+  }
+  return !msg;
+}
+
+function readJoinPhoto(file){
+  const e=joinFormEls();
+
+  if(!file){
+    clearJoinPhoto();
+    return Promise.resolve(true);
+  }
+
+  const allowed=["image/jpeg","image/png","image/webp"];
+  if(!allowed.includes(file.type)){
+    e.photoInput.value="";
+    e.status.textContent="Profile photo must be JPG, PNG or WebP.";
+    e.status.classList.add("error");
+    return Promise.resolve(false);
+  }
+
+  if(file.size>4*1024*1024){
+    e.photoInput.value="";
+    e.status.textContent="Profile photo must be 4 MB or smaller.";
+    e.status.classList.add("error");
+    return Promise.resolve(false);
+  }
+
+  return new Promise(resolve=>{
+    const reader=new FileReader();
+    reader.onload=()=>{
+      const dataUrl=String(reader.result||"");
+      const comma=dataUrl.indexOf(",");
+      if(comma<0){
+        e.status.textContent="Could not read this profile photo.";
+        e.status.classList.add("error");
+        resolve(false);
+        return;
+      }
+
+      e.photoData.value=dataUrl.slice(comma+1);
+      e.photoName.value=file.name||"profile-photo.jpg";
+      e.photoType.value=file.type||"image/jpeg";
+      e.photoLabel.textContent=file.name||"Profile photo selected";
+      e.photoPreview.src=dataUrl;
+      e.photoPreviewWrap.classList.remove("hidden");
+      e.status.textContent="";
+      e.status.classList.remove("error");
+      resolve(true);
+    };
+    reader.onerror=()=>{
+      e.status.textContent="Could not read this profile photo.";
+      e.status.classList.add("error");
+      resolve(false);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function handleJoinServerResult(data){
+  if(!data||data.source!=="MYTT_JOIN_WEB_APP")return false;
+
+  const e=joinFormEls();
+  joinFormSubmitted=false;
+  joinStatusPollToken++;
+
+  if(e.submit){
+    e.submit.disabled=false;
+  }
+
+  const status=String(data.status||"error").toLowerCase();
+  const message=String(data.message||"MYTT could not process this registration.");
+
+  if(status==="pending")return false;
+
+  if(status==="accepted"){
+    e.status.textContent="";
+    e.status.classList.remove("error","rejected","closed");
+    e.form.classList.add("hidden");
+    e.success.classList.remove("hidden");
+    return true;
+  }
+
+  e.status.textContent="⚠ "+message;
+  e.status.classList.add("error");
+  e.submit.textContent="Submit Registration";
+  return true;
+}
+
+function requestJoinSubmissionStatus(submissionId,token,attempt){
+  if(token!==joinStatusPollToken)return;
+
+  const e=joinFormEls();
+  const maxAttempts=20;
+
+  if(attempt>maxAttempts){
+    joinFormSubmitted=false;
+    e.submit.disabled=false;
+    e.submit.textContent="Submit Registration";
+    e.status.classList.add("error");
+    e.status.textContent="⚠ MYTT could not confirm the registration automatically. Please do not submit again immediately.";
+    return;
+  }
+
+  const callbackName="__myttJoinStatus_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,7);
+  const script=document.createElement("script");
+  let finished=false;
+
+  function cleanup(){
+    if(finished)return;
+    finished=true;
+    try{delete window[callbackName]}catch(_){window[callbackName]=undefined}
+    script.remove();
+  }
+
+  window[callbackName]=data=>{
+    cleanup();
+    if(token!==joinStatusPollToken)return;
+
+    const status=String(data?.status||"pending").toLowerCase();
+    if(status==="pending"){
+      setTimeout(()=>requestJoinSubmissionStatus(submissionId,token,attempt+1),900);
+      return;
+    }
+
+    handleJoinServerResult(data);
+  };
+
+  script.onerror=()=>{
+    cleanup();
+    if(token!==joinStatusPollToken)return;
+    setTimeout(()=>requestJoinSubmissionStatus(submissionId,token,attempt+1),1100);
+  };
+
+  script.src=
+    config.joinWebAppUrl+
+    "?action=status&id="+encodeURIComponent(submissionId)+
+    "&callback="+encodeURIComponent(callbackName)+
+    "&_="+Date.now();
+
+  document.body.appendChild(script);
+
+  setTimeout(()=>{
+    if(finished||token!==joinStatusPollToken)return;
+    cleanup();
+    setTimeout(()=>requestJoinSubmissionStatus(submissionId,token,attempt+1),700);
+  },3500);
+}
+
+function startJoinSubmissionStatusPolling(submissionId){
+  joinStatusPollToken++;
+  const token=joinStatusPollToken;
+  setTimeout(()=>requestJoinSubmissionStatus(submissionId,token,1),700);
+}
+
+function bindJoinFormEvents(){
+  const e=joinFormEls();
+  if(!e.modal)return;
+
+  e.photoInput?.addEventListener("change",async()=>{
+    await readJoinPhoto(e.photoInput.files?.[0]||null);
+  });
+
+  e.removePhoto?.addEventListener("click",()=>{
+    clearJoinPhoto();
+  });
+
+  e.another?.addEventListener("click",()=>{
+    resetJoinForm();
+  });
+
+  window.addEventListener("message",event=>{
+    const data=event.data;
+    if(!data||data.source!=="MYTT_JOIN_WEB_APP")return;
+    handleJoinServerResult(data);
+  });
+}
+
 /* MYTT Doubles Result — Active Doubles Teams controlled native web form */
 let doublesFormSubmitted=false;
 let doublesStatusPollToken=0;
@@ -1101,6 +1373,8 @@ function bindEvents(){
     if(e.target.id==="playersFilter")renderPlayers();
   });
   document.addEventListener("click",e=>{
+    const openJoin=e.target.closest("[data-open-join-form]");if(openJoin){e.preventDefault();openJoinForm();return}
+    const closeJoin=e.target.closest("[data-close-join-form]");if(closeJoin){e.preventDefault();closeJoinForm();return}
     const open=e.target.closest("[data-open-singles-form]");if(open){e.preventDefault();openSinglesResultForm();return}
     const close=e.target.closest("[data-close-singles-form]");if(close){e.preventDefault();closeSinglesResultForm();return}
     const openD=e.target.closest("[data-open-doubles-form]");if(openD){e.preventDefault();openDoublesResultForm();return}
@@ -1131,6 +1405,23 @@ function bindEvents(){
     startSinglesSubmissionStatusPolling(submissionId);
   }});
 
+
+  document.addEventListener("submit",e=>{if(e.target.id==="joinMyttForm"){
+    if(!validateJoinForm()){e.preventDefault();return}
+
+    const fe=joinFormEls();
+    const submissionId=makeJoinSubmissionId();
+    fe.submissionId.value=submissionId;
+
+    joinFormSubmitted=true;
+    fe.submit.disabled=true;
+    fe.submit.textContent="Submitting…";
+    fe.status.classList.remove("success","error","rejected","closed");
+    fe.status.textContent="MYTT is submitting your registration…";
+
+    startJoinSubmissionStatusPolling(submissionId);
+  }});
+
   document.addEventListener("submit",e=>{if(e.target.id==="doublesResultForm"){
     if(!validateDoublesResultForm()){e.preventDefault();return}
 
@@ -1148,16 +1439,18 @@ function bindEvents(){
   }});
 
   document.addEventListener("keydown",e=>{if(e.key==="Escape"){
+    const jfm=document.getElementById("joinFormModal");
     const sfm=document.getElementById("singlesFormModal");
     const dfm=document.getElementById("doublesFormModal");
-    if(sfm&&!sfm.classList.contains("hidden"))closeSinglesResultForm();
+    if(jfm&&!jfm.classList.contains("hidden"))closeJoinForm();
+    else if(sfm&&!sfm.classList.contains("hidden"))closeSinglesResultForm();
     else if(dfm&&!dfm.classList.contains("hidden"))closeDoublesResultForm();
     else closeProfile();
   }})
 }
 async function loadMatchResults(){if(!config.matchResultsCsv)return;try{const rows=await fetchRows(config.matchResultsCsv);matchResults=rows.map(rowToMatch).filter(m=>m.playerA&&m.playerB)}catch(e){console.error("Failed to load match results",e);matchResults=[]}}
 async function loadAll(){await loadPlayerDb();await loadMatchResults();await loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles");await loadLeaderboard(config.doublesCsv,"doublesBody","doublesStatus","doubles","doubles");await loadActivePlayers();await loadActiveDoublesTeams();renderPlayers();renderSearch()}
-bindEvents();bindSinglesFormEvents();bindDoublesFormEvents();loadAll();setInterval(loadAll,60000);
+bindEvents();bindSinglesFormEvents();bindDoublesFormEvents();bindJoinFormEvents();loadAll();setInterval(loadAll,60000);
 
 document.addEventListener("click", function(e){
   const target = e.target;

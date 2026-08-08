@@ -1040,3 +1040,208 @@ body.result-modal-open{overflow:hidden}
     font-size:13px;
   }
 }
+
+
+/* MYTT Join registration */
+.join-modal-card{
+  max-width:760px;
+}
+
+.join-form select{
+  width:100%;
+  height:52px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.14);
+  background:#101216;
+  color:#f7f7f8;
+  padding:0 14px;
+  font:inherit;
+  outline:none;
+}
+
+.join-form select:focus{
+  border-color:rgba(239,68,68,.72);
+  box-shadow:0 0 0 3px rgba(239,68,68,.10);
+}
+
+.result-field>span em{
+  margin-left:6px;
+  font-style:normal;
+  font-size:10px;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  color:#fca5a5;
+}
+
+.result-field>span small{
+  color:#9ca3af;
+  font-weight:700;
+}
+
+.join-section{
+  display:grid;
+  gap:14px;
+  padding:16px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:18px;
+  background:rgba(255,255,255,.025);
+}
+
+.join-section-head h3{
+  margin:0 0 3px;
+  font-size:15px;
+}
+
+.join-section-head p{
+  margin:0;
+  color:#9ca3af;
+  font-size:12px;
+}
+
+.join-photo-input{
+  position:absolute;
+  width:1px;
+  height:1px;
+  opacity:0;
+  pointer-events:none;
+}
+
+.join-photo-picker{
+  min-height:74px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:13px 15px;
+  border:1px dashed rgba(255,255,255,.20);
+  border-radius:16px;
+  background:rgba(255,255,255,.025);
+  cursor:pointer;
+  transition:.18s ease;
+}
+
+.join-photo-picker:hover{
+  border-color:rgba(239,68,68,.60);
+  background:rgba(239,68,68,.045);
+}
+
+.join-photo-icon{
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+  border-radius:12px;
+  background:rgba(239,68,68,.10);
+  font-size:21px;
+}
+
+.join-photo-copy{
+  display:grid;
+  gap:3px;
+}
+
+.join-photo-copy strong{
+  font-size:13px;
+}
+
+.join-photo-copy small{
+  color:#9ca3af;
+  font-size:11px;
+}
+
+.join-photo-preview-wrap{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:10px;
+}
+
+.join-photo-preview{
+  width:72px;
+  height:72px;
+  object-fit:cover;
+  border-radius:15px;
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.join-remove-photo{
+  border:0;
+  background:transparent;
+  color:#fca5a5;
+  font:inherit;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.join-consent{
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+  padding:14px;
+  border-radius:15px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.09);
+  color:#d1d5db;
+  font-size:12px;
+  line-height:1.5;
+  cursor:pointer;
+}
+
+.join-consent input{
+  width:18px;
+  height:18px;
+  flex:0 0 18px;
+  margin-top:1px;
+  accent-color:#ef4444;
+}
+
+.join-success-state{
+  min-height:340px;
+  display:grid;
+  align-content:center;
+  justify-items:center;
+  text-align:center;
+  gap:10px;
+  padding:30px 10px;
+}
+
+.join-success-icon{
+  display:grid;
+  place-items:center;
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background:rgba(34,197,94,.12);
+  border:1px solid rgba(134,239,172,.30);
+  color:#86efac;
+  font-size:30px;
+  font-weight:950;
+}
+
+.join-success-state h3{
+  margin:6px 0 0;
+  font-size:25px;
+}
+
+.join-success-state p{
+  margin:0 0 14px;
+  color:#b7bac3;
+}
+
+.join-success-state .result-submit{
+  width:min(100%,320px);
+}
+
+@media(max-width:480px){
+  .join-modal-card{
+    max-height:97dvh;
+  }
+  .join-section{
+    padding:13px;
+  }
+  .join-photo-picker{
+    min-height:68px;
+    padding:11px 12px;
+  }
+}
