@@ -1245,3 +1245,32 @@ body.result-modal-open{overflow:hidden}
     padding:11px 12px;
   }
 }
+
+
+/* Join MYTT long-form scrolling fix */
+#joinFormModal{
+  overflow-y:auto;
+  overscroll-behavior:contain;
+}
+
+#joinFormModal .result-modal-card{
+  max-height:calc(100dvh - 32px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable;
+  -webkit-overflow-scrolling:touch;
+}
+
+@media(max-width:720px){
+  #joinFormModal{
+    align-items:flex-start;
+    padding:12px 0 0;
+  }
+
+  #joinFormModal .result-modal-card{
+    width:100%;
+    max-height:calc(100dvh - 12px);
+    overflow-y:auto;
+    border-radius:22px 22px 0 0;
+  }
+}

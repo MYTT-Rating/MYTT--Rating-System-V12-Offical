@@ -757,40 +757,84 @@ function readJoinPhoto(file){
     return Promise.resolve(false);
   }
 
-  if(file.size>4*1024*1024){
+  if(file.size>8*1024*1024){
     e.photoInput.value="";
-    e.status.textContent="Profile photo must be 4 MB or smaller.";
+    e.status.textContent="Profile photo must be 8 MB or smaller.";
     e.status.classList.add("error");
     return Promise.resolve(false);
   }
 
+  e.status.textContent="Preparing profile photo…";
+  e.status.classList.remove("error");
+
   return new Promise(resolve=>{
     const reader=new FileReader();
+
     reader.onload=()=>{
-      const dataUrl=String(reader.result||"");
-      const comma=dataUrl.indexOf(",");
-      if(comma<0){
+      const sourceUrl=String(reader.result||"");
+      const img=new Image();
+
+      img.onload=()=>{
+        try{
+          const maxSide=1200;
+          let width=img.naturalWidth||img.width;
+          let height=img.naturalHeight||img.height;
+
+          if(width>maxSide||height>maxSide){
+            const scale=Math.min(maxSide/width,maxSide/height);
+            width=Math.round(width*scale);
+            height=Math.round(height*scale);
+          }
+
+          const canvas=document.createElement("canvas");
+          canvas.width=width;
+          canvas.height=height;
+
+          const ctx=canvas.getContext("2d");
+          if(!ctx)throw new Error("Canvas unavailable");
+
+          // White background also normalizes transparent PNG/WebP photos.
+          ctx.fillStyle="#ffffff";
+          ctx.fillRect(0,0,width,height);
+          ctx.drawImage(img,0,0,width,height);
+
+          const compressedUrl=canvas.toDataURL("image/jpeg",0.82);
+          const comma=compressedUrl.indexOf(",");
+
+          if(comma<0)throw new Error("Invalid compressed photo");
+
+          e.photoData.value=compressedUrl.slice(comma+1);
+          e.photoName.value=(file.name||"profile-photo").replace(/\.[^.]+$/,"")+".jpg";
+          e.photoType.value="image/jpeg";
+          e.photoLabel.textContent=file.name||"Profile photo selected";
+          e.photoPreview.src=compressedUrl;
+          e.photoPreviewWrap.classList.remove("hidden");
+          e.status.textContent="";
+          e.status.classList.remove("error");
+          resolve(true);
+        }catch(err){
+          console.error("Join photo compression failed",err);
+          e.status.textContent="Could not prepare this profile photo.";
+          e.status.classList.add("error");
+          resolve(false);
+        }
+      };
+
+      img.onerror=()=>{
         e.status.textContent="Could not read this profile photo.";
         e.status.classList.add("error");
         resolve(false);
-        return;
-      }
+      };
 
-      e.photoData.value=dataUrl.slice(comma+1);
-      e.photoName.value=file.name||"profile-photo.jpg";
-      e.photoType.value=file.type||"image/jpeg";
-      e.photoLabel.textContent=file.name||"Profile photo selected";
-      e.photoPreview.src=dataUrl;
-      e.photoPreviewWrap.classList.remove("hidden");
-      e.status.textContent="";
-      e.status.classList.remove("error");
-      resolve(true);
+      img.src=sourceUrl;
     };
+
     reader.onerror=()=>{
       e.status.textContent="Could not read this profile photo.";
       e.status.classList.add("error");
       resolve(false);
     };
+
     reader.readAsDataURL(file);
   });
 }
@@ -829,7 +873,7 @@ function requestJoinSubmissionStatus(submissionId,token,attempt){
   if(token!==joinStatusPollToken)return;
 
   const e=joinFormEls();
-  const maxAttempts=20;
+  const maxAttempts=35;
 
   if(attempt>maxAttempts){
     joinFormSubmitted=false;
