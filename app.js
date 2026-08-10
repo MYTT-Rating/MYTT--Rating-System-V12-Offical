@@ -732,6 +732,10 @@ function validateJoinForm(){
   if(!e.name?.value.trim())msg="Please enter your Player Name.";
   else if(!e.grip?.value)msg="Please select your Grip Style.";
   else if(!e.hand?.value)msg="Please select your Playing Hand.";
+  else if(!e.blade?.value.trim())msg="Please enter your Blade. If you don’t know the exact model, enter the brand name.";
+  else if(!e.fh?.value.trim())msg="Please enter your Forehand Rubber. If you don’t know the exact model, enter the brand name.";
+  else if(!e.bh?.value.trim())msg="Please enter your Backhand Rubber. If you don’t know the exact model, enter the brand name.";
+  else if(!e.photoData?.value)msg="Please upload a clear and authentic Profile Photo.";
   else if(!e.consent?.checked)msg="Please agree to the MYTT publication consent before submitting.";
 
   if(e.status){

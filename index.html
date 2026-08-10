@@ -542,33 +542,33 @@
       <div class="join-section">
         <div class="join-section-head">
           <h3>Equipment</h3>
-          <p>Optional — you can leave these blank if you are not sure.</p>
+          <p>Required — if you don’t know the exact model, simply enter the brand name.</p>
         </div>
 
         <label class="result-field">
-          <span>Blade</span>
-          <input id="joinBlade" name="blade" type="text" placeholder="e.g. Butterfly Viscaria" maxlength="120">
+          <span>Blade <em>Required</em></span>
+          <input id="joinBlade" name="blade" type="text" placeholder="e.g. Butterfly Viscaria or Butterfly" maxlength="120" required>
         </label>
 
         <div class="result-player-grid">
           <label class="result-field">
-            <span>Forehand Rubber</span>
-            <input id="joinForehandRubber" name="forehandRubber" type="text" placeholder="e.g. Dignics 09C" maxlength="120">
+            <span>Forehand Rubber <em>Required</em></span>
+            <input id="joinForehandRubber" name="forehandRubber" type="text" placeholder="e.g. Dignics 09C or Butterfly" maxlength="120" required>
           </label>
 
           <label class="result-field">
-            <span>Backhand Rubber</span>
-            <input id="joinBackhandRubber" name="backhandRubber" type="text" placeholder="e.g. Dignics 05" maxlength="120">
+            <span>Backhand Rubber <em>Required</em></span>
+            <input id="joinBackhandRubber" name="backhandRubber" type="text" placeholder="e.g. Dignics 05 or Butterfly" maxlength="120" required>
           </label>
         </div>
       </div>
 
       <div class="result-field">
-        <span>Profile Photo <small>Optional</small></span>
+        <span>Profile Photo <em>Required</em></span>
         <div class="join-photo-guideline" role="note" aria-label="Profile photo guidelines">
           <span class="join-photo-guideline-icon" aria-hidden="true">!</span>
           <span class="join-photo-guideline-copy">
-            <strong>If you upload a profile photo, it must be clear and authentic.</strong>
+            <strong>A clear and authentic profile photo is required.</strong>
             <em>Avatars, group photos, heavily filtered or unclear images will be automatically rejected.</em>
           </span>
         </div>
@@ -579,7 +579,7 @@
             <small>JPG, PNG or WebP · max 4 MB</small>
           </span>
         </label>
-        <input id="joinProfilePhoto" class="join-photo-input" type="file" accept="image/jpeg,image/png,image/webp">
+        <input id="joinProfilePhoto" class="join-photo-input" type="file" accept="image/jpeg,image/png,image/webp" required>
         <div id="joinPhotoPreviewWrap" class="join-photo-preview-wrap hidden">
           <img id="joinPhotoPreview" class="join-photo-preview" alt="Profile photo preview">
           <button id="joinRemovePhoto" class="join-remove-photo" type="button">Remove photo</button>
@@ -717,6 +717,6 @@ window.MYTT = {
   eventsWebAppUrl: "https://script.google.com/macros/s/AKfycbxFeSz9bn7LmnvcMDYIQnbsCdvD6dPnf3hEADE4JjWQ3UHzaTO_nVtjj3ABnGlz7fillA/exec"
 };
 </script>
-<script src="app.js?v=20260809-0215"></script>
+<script src="app.js?v=20260810-1458"></script>
 </body>
 </html>
