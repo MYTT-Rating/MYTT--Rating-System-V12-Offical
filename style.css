@@ -1106,6 +1106,55 @@ body.result-modal-open{overflow:hidden}
   pointer-events:none;
 }
 
+/* Profile photo quality notice */
+.join-photo-guideline{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin:8px 0 12px;
+  padding:10px 12px;
+  border:1px solid rgba(239,68,68,.28);
+  border-radius:12px;
+  background:linear-gradient(135deg,rgba(239,68,68,.075),rgba(255,255,255,.018));
+}
+
+.join-photo-guideline-icon{
+  flex:0 0 22px;
+  width:22px;
+  height:22px;
+  display:grid;
+  place-items:center;
+  margin-top:1px;
+  border-radius:7px;
+  background:rgba(239,68,68,.13);
+  border:1px solid rgba(239,68,68,.34);
+  color:#ff6b6b;
+  font-size:13px;
+  line-height:1;
+  font-weight:900;
+}
+
+.join-photo-guideline-copy{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  min-width:0;
+}
+
+.join-photo-guideline-copy strong{
+  color:#f3f4f6;
+  font-size:12px;
+  line-height:1.45;
+  font-weight:750;
+}
+
+.join-photo-guideline-copy em{
+  color:#b8bec8;
+  font-size:11px;
+  line-height:1.45;
+  font-style:italic;
+}
+
 .join-photo-picker{
   min-height:74px;
   display:flex;
