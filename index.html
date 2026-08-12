@@ -18,7 +18,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260810-1448">
+  <link rel="stylesheet" href="style.css?v=20260812-players-pages">
 </head>
 <body>
 <header class="topbar">
@@ -203,14 +203,25 @@
   <section id="players" class="players-section">
     <div class="section-head"><div><p class="kicker">Players</p><h2>Official Players</h2></div><span class="status">Official Profiles</span></div>
     <div class="players-toolbar">
-      <input id="playersSearch" type="search" placeholder="Search official players..." autocomplete="off">
-      <select id="playersFilter">
+      <input id="playersSearch" type="search" placeholder="Search official players or MYTT ID..." autocomplete="off">
+
+      <select id="playersFilter" aria-label="Filter players">
         <option value="all">All Players</option>
         <option value="approved">Approved Only</option>
         <option value="leaderboard">Leaderboard Players</option>
       </select>
+
+      <select id="playersSort" aria-label="Sort players">
+        <option value="name-asc" selected>Name: A–Z</option>
+        <option value="name-desc">Name: Z–A</option>
+        <option value="rating-desc">Rating: High to Low</option>
+        <option value="rating-asc">Rating: Low to High</option>
+        <option value="rank-asc">Leaderboard Rank</option>
+      </select>
     </div>
+
     <div id="playersGrid" class="players-grid"><p class="loading">Loading players...</p></div>
+    <div id="playersPagination" class="players-pagination" aria-label="Players pages"></div>
   </section>
 
   <section id="singles" class="board-section">
@@ -717,6 +728,6 @@ window.MYTT = {
   eventsWebAppUrl: "https://script.google.com/macros/s/AKfycbxFeSz9bn7LmnvcMDYIQnbsCdvD6dPnf3hEADE4JjWQ3UHzaTO_nVtjj3ABnGlz7fillA/exec"
 };
 </script>
-<script src="app.js?v=20260810-1458"></script>
+<script src="app.js?v=20260812-players-pages"></script>
 </body>
 </html>

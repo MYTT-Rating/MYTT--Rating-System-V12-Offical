@@ -182,8 +182,235 @@ function closeProfile(){
   if(modal) modal.classList.add("hidden");
   document.body.classList.remove("modal-open","profile-open","no-scroll");
 }
-function getPlayerList(){const map=new Map();singlesPlayers.forEach(p=>map.set(slug(p.name),{source:"leaderboard",db:findDbByName(p.name),lb:p,name:p.name}));playerDb.forEach(db=>{const k=slug(db.name);if(!map.has(k))map.set(k,{source:"approved",db,lb:findLbByName(db.name),name:db.name});else map.get(k).db=db});return [...map.values()].sort((a,b)=>(Number(b.lb.rating)||0)-(Number(a.lb.rating)||0))}
-function renderPlayers(){const grid=document.getElementById("playersGrid");if(!grid)return;const q=(document.getElementById("playersSearch")?.value||"").toLowerCase();const filter=document.getElementById("playersFilter")?.value||"all";let list=getPlayerList();if(filter==="approved")list=list.filter(x=>x.db);if(filter==="leaderboard")list=list.filter(x=>x.source==="leaderboard");if(q)list=list.filter(x=>x.name.toLowerCase().includes(q));if(!list.length){grid.innerHTML=`<p class="loading">No players found.</p>`;return}grid.innerHTML=list.map(x=>`<div class="player-card" data-player="${encodeURIComponent(x.name)}"><div class="player-card-top">${avatarHTML(x.db,"avatar")}<div><h3>${x.name}</h3><p>${x.db?.id||"Leaderboard Player"}</p>${tierHTML(x.lb.rating)}</div></div><div class="mini-stats"><div class="mini-stat"><small>Rating</small><strong>${x.lb.rating}</strong></div><div class="mini-stat"><small>Peak</small><strong>${x.lb.peak}</strong></div><div class="mini-stat"><small>Rank</small><strong>#${x.lb.rank}</strong></div></div><p>🏓 ${x.db?.grip||"-"} · ${x.db?.hand||"-"}</p></div>`).join("")}
+const PLAYERS_PER_PAGE=12;
+let playersCurrentPage=1;
+
+function getPlayerList(){
+  const map=new Map();
+
+  singlesPlayers.forEach(p=>{
+    map.set(slug(p.name),{
+      source:"leaderboard",
+      db:findDbByName(p.name),
+      lb:p,
+      name:p.name
+    });
+  });
+
+  playerDb.forEach(db=>{
+    const k=slug(db.name);
+    if(!map.has(k)){
+      map.set(k,{
+        source:"approved",
+        db,
+        lb:findLbByName(db.name),
+        name:db.name
+      });
+    }else{
+      map.get(k).db=db;
+    }
+  });
+
+  return [...map.values()];
+}
+
+function sortPlayers(list,sort){
+  const items=[...list];
+
+  const byName=(a,b)=>String(a.name||"").localeCompare(
+    String(b.name||""),
+    undefined,
+    {sensitivity:"base",numeric:true}
+  );
+
+  if(sort==="name-desc"){
+    return items.sort((a,b)=>-byName(a,b));
+  }
+
+  if(sort==="rating-desc"){
+    return items.sort((a,b)=>
+      (Number(b.lb?.rating)||0)-(Number(a.lb?.rating)||0) || byName(a,b)
+    );
+  }
+
+  if(sort==="rating-asc"){
+    return items.sort((a,b)=>
+      (Number(a.lb?.rating)||0)-(Number(b.lb?.rating)||0) || byName(a,b)
+    );
+  }
+
+  if(sort==="rank-asc"){
+    return items.sort((a,b)=>{
+      const ar=Number(a.lb?.rank)||Number.MAX_SAFE_INTEGER;
+      const br=Number(b.lb?.rank)||Number.MAX_SAFE_INTEGER;
+      return ar-br || byName(a,b);
+    });
+  }
+
+  return items.sort(byName);
+}
+
+function playerPageButton(label,page,active=false,disabled=false,extraClass=""){
+  return `<button type="button"
+    class="players-page-btn ${active?"active":""} ${extraClass}"
+    data-player-page="${page}"
+    ${disabled?"disabled":""}>${label}</button>`;
+}
+
+function renderPlayersPagination(totalItems,totalPages,startIndex,endIndex){
+  const pagination=document.getElementById("playersPagination");
+  if(!pagination)return;
+
+  if(!totalItems){
+    pagination.innerHTML="";
+    return;
+  }
+
+  const buttons=[];
+
+  if(totalPages>1){
+    buttons.push(
+      playerPageButton("‹ Prev",playersCurrentPage-1,false,playersCurrentPage===1,"wide")
+    );
+
+    const pages=new Set([1,totalPages,playersCurrentPage]);
+
+    for(
+      let p=Math.max(1,playersCurrentPage-1);
+      p<=Math.min(totalPages,playersCurrentPage+1);
+      p++
+    ){
+      pages.add(p);
+    }
+
+    const sorted=[...pages].sort((a,b)=>a-b);
+    let previous=0;
+
+    sorted.forEach(page=>{
+      if(previous && page-previous>1){
+        buttons.push(`<span class="players-page-ellipsis">…</span>`);
+      }
+      buttons.push(
+        playerPageButton(String(page),page,page===playersCurrentPage)
+      );
+      previous=page;
+    });
+
+    buttons.push(
+      playerPageButton("Next ›",playersCurrentPage+1,false,playersCurrentPage===totalPages,"wide")
+    );
+  }
+
+  pagination.innerHTML=`
+    <div class="players-page-summary">
+      Showing ${startIndex+1}–${endIndex} of ${totalItems} players
+    </div>
+
+    <div class="players-page-controls">
+      ${buttons.join("")}
+    </div>
+
+    <div class="players-page-size">
+      ${PLAYERS_PER_PAGE} per page
+    </div>
+  `;
+}
+
+function renderPlayers(){
+  const grid=document.getElementById("playersGrid");
+  if(!grid)return;
+
+  const q=(document.getElementById("playersSearch")?.value||"")
+    .trim()
+    .toLowerCase();
+
+  const filter=document.getElementById("playersFilter")?.value||"all";
+  const sort=document.getElementById("playersSort")?.value||"name-asc";
+
+  let list=getPlayerList();
+
+  if(filter==="approved"){
+    list=list.filter(x=>x.db);
+  }
+
+  if(filter==="leaderboard"){
+    list=list.filter(x=>x.source==="leaderboard");
+  }
+
+  if(q){
+    list=list.filter(x=>{
+      const name=String(x.name||"").toLowerCase();
+      const id=String(x.db?.id||"").toLowerCase();
+      return name.includes(q)||id.includes(q);
+    });
+  }
+
+  list=sortPlayers(list,sort);
+
+  if(!list.length){
+    grid.innerHTML=`<p class="loading">No players found.</p>`;
+    renderPlayersPagination(0,0,0,0);
+    return;
+  }
+
+  const totalPages=Math.max(
+    1,
+    Math.ceil(list.length/PLAYERS_PER_PAGE)
+  );
+
+  playersCurrentPage=Math.min(
+    Math.max(1,playersCurrentPage),
+    totalPages
+  );
+
+  const start=(playersCurrentPage-1)*PLAYERS_PER_PAGE;
+  const end=Math.min(
+    start+PLAYERS_PER_PAGE,
+    list.length
+  );
+
+  const pageItems=list.slice(start,end);
+
+  grid.innerHTML=pageItems.map(x=>`
+    <div class="player-card" data-player="${encodeURIComponent(x.name)}">
+      <div class="player-card-top">
+        ${avatarHTML(x.db,"avatar")}
+        <div>
+          <h3>${x.name}</h3>
+          <p>${x.db?.id||"Leaderboard Player"}</p>
+          ${tierHTML(x.lb.rating)}
+        </div>
+      </div>
+
+      <div class="mini-stats">
+        <div class="mini-stat">
+          <small>Rating</small>
+          <strong>${x.lb.rating}</strong>
+        </div>
+
+        <div class="mini-stat">
+          <small>Peak</small>
+          <strong>${x.lb.peak}</strong>
+        </div>
+
+        <div class="mini-stat">
+          <small>Rank</small>
+          <strong>#${x.lb.rank}</strong>
+        </div>
+      </div>
+
+      <p>🏓 ${x.db?.grip||"-"} · ${x.db?.hand||"-"}</p>
+    </div>
+  `).join("");
+
+  renderPlayersPagination(
+    list.length,
+    totalPages,
+    start,
+    end
+  );
+}
+
 function renderSearch(){const input=document.getElementById("globalSearch"),results=document.getElementById("searchResults");if(!input||!results)return;const q=input.value.trim().toLowerCase();if(!q){results.innerHTML=`<p class="muted">Type a player name to view rating, tier and profile.</p>`;return}const items=getPlayerList().filter(i=>i.name.toLowerCase().includes(q)).slice(0,8);if(!items.length){results.innerHTML=`<p class="muted">No player found.</p>`;return}results.innerHTML=items.map(i=>`<div class="search-result" data-player="${encodeURIComponent(i.name)}"><div class="search-rank">${rankLabel(i.lb.rank)}</div><div><div class="search-name">${i.name}</div><div class="search-meta">${tierHTML(i.lb.rating)} · W-L ${i.lb.record} · Peak ${i.lb.peak}</div></div><div class="search-rating">${i.lb.rating}</div></div>`).join("")}
 
 
@@ -2241,7 +2468,7 @@ function bindEventRegistrationEvents(){
 function bindEvents(){
   document.addEventListener("input",e=>{
     if(e.target.id==="globalSearch")renderSearch();
-    if(e.target.id==="playersSearch")renderPlayers();
+    if(e.target.id==="playersSearch"){playersCurrentPage=1;renderPlayers();}
     if(e.target.id==="eventRegistrationPlayerName")syncEventMyttIdFromName();
     if(e.target.id==="playerASearch"){document.getElementById("playerAValue").value="";document.getElementById("winnerValue").value="";syncWinnerChoices();renderPlayerPicker("A")}
     if(e.target.id==="playerBSearch"){document.getElementById("playerBValue").value="";document.getElementById("winnerValue").value="";syncWinnerChoices();renderPlayerPicker("B")}
@@ -2250,7 +2477,7 @@ function bindEvents(){
   });
   document.addEventListener("focusin",e=>{if(e.target.id==="playerASearch")renderPlayerPicker("A");if(e.target.id==="playerBSearch")renderPlayerPicker("B");if(e.target.id==="teamASearch")renderDoublesTeamPicker("A");if(e.target.id==="teamBSearch")renderDoublesTeamPicker("B")});
   document.addEventListener("change",e=>{
-    if(e.target.id==="playersFilter")renderPlayers();
+    if(e.target.id==="playersFilter"||e.target.id==="playersSort"){playersCurrentPage=1;renderPlayers();}
     if(e.target.id==="eventRegistrationCategory")updateEventPartnerVisibility();
   });
   document.addEventListener("click",e=>{
@@ -2268,6 +2495,17 @@ function bindEvents(){
     const winnerD=e.target.closest("[data-doubles-winner]");if(winnerD){const fe=doublesFormEls();fe.winner.value=decodeURIComponent(winnerD.dataset.doublesWinner);syncDoublesWinnerChoices();fe.status.textContent="";return}
     const score=e.target.closest("[data-score]");if(score){const fe=formEls();fe.score.value=score.dataset.score;document.querySelectorAll("#singlesFormModal [data-score]").forEach(x=>x.classList.toggle("active",x===score));fe.status.textContent="";return}
     const scoreD=e.target.closest("[data-doubles-score]");if(scoreD){const fe=doublesFormEls();fe.score.value=scoreD.dataset.doublesScore;document.querySelectorAll("#doublesFormModal [data-doubles-score]").forEach(x=>x.classList.toggle("active",x===scoreD));fe.status.textContent="";return}
+    const playerPage=e.target.closest("[data-player-page]");
+    if(playerPage&&!playerPage.disabled){
+      e.preventDefault();
+      playersCurrentPage=Number(playerPage.dataset.playerPage)||1;
+      renderPlayers();
+      document.getElementById("players")?.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+      return;
+    }
     if(!e.target.closest(".player-picker")){closePlayerMenus();closeDoublesTeamMenus();}
     const p=e.target.closest("[data-player]");if(p){e.stopPropagation();openProfile(p.dataset.player)}
     if(e.target.matches("[data-close-modal]"))closeProfile();
