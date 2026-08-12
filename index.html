@@ -18,7 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260812-join-scroll-fix">
+  <link rel="stylesheet" href="style.css?v=20260812-market-live">
+  <link rel="stylesheet" href="marketplace.css?v=20260812-market-live">
 </head>
 <body>
 <header class="site-header premium-header">
@@ -56,6 +57,11 @@
       <a href="#players" class="nav-link" data-target="players">
         <span class="nav-icon">●</span>
         <span>Players</span>
+      </a>
+
+      <a href="#market" class="nav-link" data-target="market">
+        <span class="nav-icon">▣</span>
+        <span>Market</span>
       </a>
 
       <a href="#submit" class="nav-link" data-target="submit">
@@ -238,6 +244,80 @@
         <strong>Loading upcoming MYTT events...</strong>
       </div>
     </div>
+  </section>
+
+<section id="market" class="mytt-market-section">
+    <div class="mytt-market-hero">
+      <div class="mytt-market-hero-copy">
+        <p class="kicker">Community Marketplace</p>
+        <h2>MYTT Gear Market</h2>
+        <p class="mytt-market-subtitle">
+          Buy and sell table tennis equipment within the MYTT community.
+          List your gear, find great deals, and connect directly with fellow players.
+        </p>
+
+        <div class="mytt-market-trust-grid">
+          <div class="mytt-market-trust-item">
+            <span>✓</span>
+            <div><strong>MYTT Community</strong><small>Player-to-player listings</small></div>
+          </div>
+          <div class="mytt-market-trust-item">
+            <span>📷</span>
+            <div><strong>Real Photos</strong><small>Actual equipment photos required</small></div>
+          </div>
+          <div class="mytt-market-trust-item">
+            <span>↗</span>
+            <div><strong>Direct Contact</strong><small>Connect with sellers on WhatsApp</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mytt-market-hero-action">
+        <span class="mytt-market-hero-icon">🏓</span>
+        <button id="myttMarketSellButton" class="mytt-market-sell-button" type="button">
+          + Sell Equipment
+        </button>
+      </div>
+    </div>
+
+    <div class="mytt-market-toolbar" aria-label="Marketplace filters">
+      <label class="mytt-market-search-wrap">
+        <span aria-hidden="true">⌕</span>
+        <input id="myttMarketSearch" type="search" placeholder="Search brand, model or equipment..." autocomplete="off">
+      </label>
+      <select id="myttMarketCategory" aria-label="Filter by category">
+        <option value="all">All Equipment</option>
+        <option value="Complete Racket">Complete Racket</option>
+        <option value="Blade">Blade</option>
+        <option value="Rubber">Rubber</option>
+        <option value="Shoes">Shoes</option>
+        <option value="Apparel">Apparel</option>
+        <option value="Bag">Bag</option>
+        <option value="Accessories">Accessories</option>
+        <option value="Other">Other</option>
+      </select>
+      <select id="myttMarketSort" aria-label="Sort marketplace listings">
+        <option value="newest">Newest First</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+      </select>
+    </div>
+
+    <div class="mytt-market-info-strip">
+      <span>✓ MYTT player listings</span>
+      <span>✓ Admin reviewed before publishing</span>
+      <span>✓ Direct buyer-to-seller contact</span>
+    </div>
+
+    <div id="myttMarketStatus" class="mytt-market-status" aria-live="polite">Loading marketplace...</div>
+    <div id="myttMarketGrid" class="mytt-market-grid" aria-live="polite">
+      <div class="mytt-market-empty">
+        <span>🏓</span>
+        <strong>Loading equipment listings...</strong>
+      </div>
+    </div>
+
+    <p class="mytt-market-disclaimer">MYTT provides a community listing platform only. Buyers and sellers are responsible for checking item condition, payment and collection arrangements.</p>
   </section>
 
   <section id="players" class="players-section">
@@ -743,6 +823,146 @@
   </section>
 </div>
 
+<div id="myttMarketSellModal" class="mytt-market-modal hidden" aria-hidden="true">
+  <div class="mytt-market-modal-backdrop" data-close-market-sell></div>
+  <section class="mytt-market-modal-card" role="dialog" aria-modal="true" aria-labelledby="myttMarketSellTitle">
+    <button class="mytt-market-modal-close" type="button" data-close-market-sell aria-label="Close sell equipment form">×</button>
+
+    <div class="mytt-market-modal-head">
+      <p class="kicker">MYTT Gear Market</p>
+      <h2 id="myttMarketSellTitle">Sell Equipment</h2>
+      <p>Listings are reviewed by MYTT before they appear publicly. Only registered MYTT players should submit equipment for sale.</p>
+    </div>
+
+    <form id="myttMarketSellForm" class="mytt-market-form" method="POST" target="myttMarketSubmitFrame" novalidate>
+      <input id="myttMarketSubmissionId" name="submissionId" type="hidden">
+      <input id="myttMarketPhotoData" name="photoData" type="hidden">
+      <input id="myttMarketPhotoName" name="photoName" type="hidden">
+      <input id="myttMarketPhotoType" name="photoType" type="hidden">
+
+      <div class="mytt-market-field-grid two">
+        <label class="mytt-market-field">
+          <span>MYTT ID <em>Required</em></span>
+          <input id="myttMarketSellerId" name="myttId" type="text" placeholder="e.g. MYTT0001" maxlength="20" autocomplete="off" required>
+        </label>
+        <label class="mytt-market-field">
+          <span>Seller Name <em>Required</em></span>
+          <input id="myttMarketSellerName" name="sellerName" type="text" placeholder="Name shown on your MYTT profile" maxlength="80" autocomplete="name" required>
+        </label>
+      </div>
+
+      <div class="mytt-market-field-grid two">
+        <label class="mytt-market-field">
+          <span>Category <em>Required</em></span>
+          <select id="myttMarketSellCategory" name="category" required>
+            <option value="">Select category</option>
+            <option value="Complete Racket">Complete Racket</option>
+            <option value="Blade">Blade</option>
+            <option value="Rubber">Rubber</option>
+            <option value="Shoes">Shoes</option>
+            <option value="Apparel">Apparel</option>
+            <option value="Bag">Bag</option>
+            <option value="Accessories">Accessories</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
+        <label class="mytt-market-field">
+          <span>Condition <em>Required</em></span>
+          <select id="myttMarketCondition" name="condition" required>
+            <option value="">Select condition</option>
+            <option value="New">New</option>
+            <option value="Like New">Like New</option>
+            <option value="Good">Good</option>
+            <option value="Fair">Fair</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="mytt-market-field-grid two">
+        <label class="mytt-market-field">
+          <span>Brand <em>Required</em></span>
+          <input id="myttMarketBrand" name="brand" type="text" placeholder="e.g. Butterfly" maxlength="60" required>
+        </label>
+        <label class="mytt-market-field">
+          <span>Model / Item Name <em>Required</em></span>
+          <input id="myttMarketModel" name="model" type="text" placeholder="e.g. Viscaria" maxlength="100" required>
+        </label>
+      </div>
+
+      <div class="mytt-market-field-grid two">
+        <label class="mytt-market-field">
+          <span>Price (RM) <em>Required</em></span>
+          <input id="myttMarketPrice" name="price" type="number" min="1" max="99999" step="1" placeholder="e.g. 450" required>
+        </label>
+        <label class="mytt-market-field">
+          <span>Location <em>Required</em></span>
+          <input id="myttMarketLocation" name="location" type="text" placeholder="e.g. Kuala Lumpur" maxlength="80" required>
+        </label>
+      </div>
+
+      <label class="mytt-market-field">
+        <span>Description <em>Required</em></span>
+        <textarea id="myttMarketDescription" name="description" rows="4" maxlength="800" placeholder="Condition details, age, reason for selling, included items, etc." required></textarea>
+      </label>
+
+      <label class="mytt-market-field">
+        <span>WhatsApp / Contact Number <em>Required</em></span>
+        <input id="myttMarketContact" name="contact" type="tel" placeholder="e.g. +60123456789" maxlength="30" autocomplete="tel" required>
+        <small>Your number is used to create the Contact Seller button on approved listings.</small>
+      </label>
+
+      <div class="mytt-market-field">
+        <span>Item Photo <em>Required</em></span>
+        <div class="mytt-market-photo-note">
+          <strong>Use a clear photo of the actual item.</strong>
+          <small>Stock photos, unrelated images or unclear photos may be rejected.</small>
+        </div>
+        <label class="mytt-market-photo-picker" for="myttMarketPhoto">
+          <span>📷</span>
+          <span>
+            <strong id="myttMarketPhotoLabel">Choose item photo</strong>
+            <small>JPG, PNG or WebP · max 5 MB</small>
+          </span>
+        </label>
+        <input id="myttMarketPhoto" class="mytt-market-photo-input" type="file" accept="image/jpeg,image/png,image/webp" required>
+        <div id="myttMarketPhotoPreviewWrap" class="mytt-market-photo-preview-wrap hidden">
+          <img id="myttMarketPhotoPreview" alt="Equipment photo preview">
+          <button id="myttMarketRemovePhoto" type="button">Remove photo</button>
+        </div>
+      </div>
+
+      <label class="mytt-market-consent">
+        <input id="myttMarketConsent" name="consent" type="checkbox" value="yes" required>
+        <span>I confirm that this listing is accurate and I agree that MYTT may publish the listing, seller name, MYTT ID and contact button on the MYTT website.</span>
+      </label>
+
+      <div id="myttMarketFormStatus" class="mytt-market-form-status" aria-live="polite"></div>
+      <button id="myttMarketSubmitButton" class="mytt-market-submit" type="submit">Submit Listing for Review</button>
+      <p class="mytt-market-form-note">Submitting a listing does not publish it immediately. MYTT admin approval is required first.</p>
+    </form>
+
+    <div id="myttMarketSuccess" class="mytt-market-success hidden">
+      <div>✓</div>
+      <h3>Listing Received</h3>
+      <p>Your equipment listing is pending MYTT admin review.</p>
+    </div>
+
+    <iframe id="myttMarketSubmitFrame" name="myttMarketSubmitFrame" class="mytt-market-submit-frame" title="Marketplace listing submission"></iframe>
+  </section>
+</div>
+
+
+
+<div id="myttMarketDetailModal" class="mytt-market-modal hidden" aria-hidden="true">
+  <div class="mytt-market-modal-backdrop" data-close-market-detail></div>
+  <section class="mytt-market-modal-card mytt-market-detail-card" role="dialog" aria-modal="true" aria-labelledby="myttMarketDetailTitle">
+    <button class="mytt-market-modal-close" type="button" data-close-market-detail aria-label="Close equipment details">×</button>
+    <div id="myttMarketDetailContent"></div>
+  </section>
+</div>
+
+
+
 <div id="profileModal" class="modal hidden">
   <div class="modal-backdrop" data-close-modal></div>
   <div class="modal-card">
@@ -771,9 +991,11 @@ window.MYTT = {
   eventsFallbackRows: [
     ["MYTT-E001","MYTT Rating Day","2026-08-30","2:00 PM","Jom Nittaku","Round Robin Singles","16","2026-08-28","Open","Official MYTT rating matches.","1"]
   ],
-  eventsWebAppUrl: "https://script.google.com/macros/s/AKfycbxFeSz9bn7LmnvcMDYIQnbsCdvD6dPnf3hEADE4JjWQ3UHzaTO_nVtjj3ABnGlz7fillA/exec"
+  eventsWebAppUrl: "https://script.google.com/macros/s/AKfycbxFeSz9bn7LmnvcMDYIQnbsCdvD6dPnf3hEADE4JjWQ3UHzaTO_nVtjj3ABnGlz7fillA/exec",
+  marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260812-join-scroll-fix"></script>
+<script src="app.js?v=20260812-market-live"></script>
+<script src="marketplace.js?v=20260812-market-live"></script>
 </body>
 </html>
