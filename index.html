@@ -18,25 +18,65 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260812-leaderboard-top10">
+  <link rel="stylesheet" href="style.css?v=20260812-premium-nav">
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="#home">
-    <span class="brand-icon">🏓</span>
-    <span>
-      <strong>MYTT</strong>
-      <small>Malaysia Table Tennis Rating System</small>
-    </span>
-  </a>
-  <nav class="nav">
-    <a class="active" href="#home">Home</a>
-    <a href="#events">Events</a>
-    <a href="#singles">Singles</a>
-    <a href="#doubles">Doubles</a>
-    <a href="#players">Players</a>
-    <a href="#submit">Join / Submit</a>
-  </nav>
+<header class="site-header premium-header">
+  <div class="premium-header-inner">
+
+    <a class="premium-brand" href="#home" data-target="home" aria-label="MYTT Home">
+      <div class="premium-brand-mark" aria-hidden="true">🏓</div>
+      <div class="premium-brand-copy">
+        <div class="premium-brand-name">MYTT</div>
+        <div class="premium-brand-sub">Malaysia Table Tennis Rating System</div>
+      </div>
+    </a>
+
+    <nav class="premium-nav" aria-label="Primary navigation">
+      <a href="#home" class="nav-link active" data-target="home">
+        <span class="nav-icon">⌂</span>
+        <span>Home</span>
+      </a>
+
+      <a href="#event" class="nav-link" data-target="event">
+        <span class="nav-icon">🏆</span>
+        <span>Events</span>
+      </a>
+
+      <a href="#singles" class="nav-link" data-target="singles">
+        <span class="nav-icon">▥</span>
+        <span>Singles</span>
+      </a>
+
+      <a href="#doubles" class="nav-link" data-target="doubles">
+        <span class="nav-icon">◫</span>
+        <span>Doubles</span>
+      </a>
+
+      <a href="#players" class="nav-link" data-target="players">
+        <span class="nav-icon">●</span>
+        <span>Players</span>
+      </a>
+
+      <a href="#join" class="nav-link" data-target="join">
+        <span class="nav-icon">＋</span>
+        <span>Join / Submit</span>
+      </a>
+    </nav>
+
+    <div class="premium-header-badge" aria-label="Official MYTT Platform">
+      <span class="premium-header-badge-dot"></span>
+      <div>
+        <strong>MYTT</strong>
+        <small>OFFICIAL PLATFORM</small>
+      </div>
+    </div>
+
+    <button class="premium-mobile-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+  </div>
 </header>
 
 <main id="home">
@@ -734,6 +774,6 @@ window.MYTT = {
   eventsWebAppUrl: "https://script.google.com/macros/s/AKfycbxFeSz9bn7LmnvcMDYIQnbsCdvD6dPnf3hEADE4JjWQ3UHzaTO_nVtjj3ABnGlz7fillA/exec"
 };
 </script>
-<script src="app.js?v=20260812-leaderboard-top10"></script>
+<script src="app.js?v=20260812-premium-nav"></script>
 </body>
 </html>
