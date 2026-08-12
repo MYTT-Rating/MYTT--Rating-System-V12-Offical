@@ -3565,3 +3565,134 @@ section[id]{
     scroll-margin-top:94px;
   }
 }
+
+
+/* =========================================================
+   MOBILE LAYOUT STABILITY FIX
+   Prevent Samsung/Android browsers from occasionally rendering
+   the main page at a partial viewport width after restore/load.
+   ========================================================= */
+
+html,
+body{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+@media(max-width:860px){
+  html,
+  body{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    overflow-x:hidden !important;
+  }
+
+  body{
+    margin:0 !important;
+  }
+
+  main#home{
+    box-sizing:border-box !important;
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding-left:12px !important;
+    padding-right:12px !important;
+    overflow-x:hidden !important;
+  }
+
+  main#home > .hero-home-final,
+  main#home > #events,
+  main#home > #players,
+  main#home > #singles,
+  main#home > #doubles,
+  main#home > #market,
+  main#home > #notice{
+    box-sizing:border-box !important;
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+  }
+
+  .hero-home-final,
+  .hero-top-banner,
+  .hero-rank-card-final,
+  .cta-grid-home-final{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+  }
+
+  .hero-rank-card-final{
+    overflow:hidden !important;
+  }
+
+  .homepage-rank-road{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    overflow-x:auto !important;
+    overflow-y:visible !important;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .cta-grid-home-final{
+    margin-left:0 !important;
+    margin-right:0 !important;
+  }
+
+  .cta-grid-home-final .cta{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+  }
+
+  .premium-header,
+  .premium-header-inner{
+    max-width:100% !important;
+    min-width:0 !important;
+  }
+
+  .premium-header-inner{
+    width:calc(100% - 22px) !important;
+  }
+
+  .events-section,
+  .players-section,
+  .board-section,
+  .mytt-market-section,
+  .info-grid-single{
+    box-sizing:border-box !important;
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+  }
+
+  img,
+  video,
+  canvas,
+  svg{
+    max-width:100%;
+  }
+}
+
+@media(max-width:520px){
+  main#home{
+    padding-left:8px !important;
+    padding-right:8px !important;
+  }
+
+  .hero-home-final{
+    padding-left:0 !important;
+    padding-right:0 !important;
+  }
+}

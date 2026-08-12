@@ -2889,3 +2889,38 @@ document.addEventListener("click", function(e){
   const initial=location.hash.replace("#","")||"home";
   setActiveNav(initial);
 })();
+
+
+/* Mobile viewport restore stability */
+(function(){
+  function stabilizeMobileLayout(){
+    if(window.innerWidth > 860) return;
+
+    const main=document.getElementById("home");
+    if(!main) return;
+
+    // Force a fresh layout calculation after mobile browser toolbar /
+    // back-forward-cache viewport restoration.
+    main.style.width="100%";
+    void main.offsetWidth;
+
+    requestAnimationFrame(()=>{
+      main.style.width="";
+      void document.documentElement.offsetWidth;
+    });
+  }
+
+  window.addEventListener("pageshow",()=>{
+    setTimeout(stabilizeMobileLayout,60);
+    setTimeout(stabilizeMobileLayout,350);
+  });
+
+  window.addEventListener("orientationchange",()=>{
+    setTimeout(stabilizeMobileLayout,250);
+  });
+
+  window.addEventListener("resize",()=>{
+    clearTimeout(window.__myttMobileLayoutTimer);
+    window.__myttMobileLayoutTimer=setTimeout(stabilizeMobileLayout,120);
+  });
+})();
