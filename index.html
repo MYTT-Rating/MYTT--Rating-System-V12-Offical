@@ -18,8 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260812-nav-order">
-  <link rel="stylesheet" href="marketplace.css?v=20260812-nav-order">
+  <link rel="stylesheet" href="style.css?v=20260812-section-order-fix">
+  <link rel="stylesheet" href="marketplace.css?v=20260812-section-order-fix">
 </head>
 <body>
 <header class="site-header premium-header">
@@ -246,6 +246,53 @@
     </div>
   </section>
 
+
+  <section id="players" class="players-section">
+    <div class="section-head"><div><p class="kicker">Players</p><h2>Official Players</h2></div><span class="status">Official Profiles</span></div>
+    <div class="players-toolbar">
+      <input id="playersSearch" type="search" placeholder="Search official players or MYTT ID..." autocomplete="off">
+
+      <select id="playersFilter" aria-label="Filter players">
+        <option value="all">All Players</option>
+        <option value="approved">Approved Only</option>
+        <option value="leaderboard">Leaderboard Players</option>
+      </select>
+
+      <select id="playersSort" aria-label="Sort players">
+        <option value="name-asc" selected>Name: A–Z</option>
+        <option value="name-desc">Name: Z–A</option>
+        <option value="rating-desc">Rating: High to Low</option>
+        <option value="rating-asc">Rating: Low to High</option>
+        <option value="rank-asc">Leaderboard Rank</option>
+      </select>
+    </div>
+
+    <div id="playersGrid" class="players-grid"><p class="loading">Loading players...</p></div>
+    <div id="playersPagination" class="players-pagination" aria-label="Players pages"></div>
+  </section>
+
+  <section id="singles" class="board-section">
+    <div class="section-head"><div><p class="kicker">Singles</p><h2>Singles Leaderboard</h2></div><span id="singlesStatus" class="status">Loading...</span></div>
+    <div class="board-card">
+      <div class="table-scroll"><table>
+        <thead><tr><th>Rank</th><th>Player</th><th>Tier</th><th>Rating</th><th>W-L</th><th>Win %</th><th>Peak</th></tr></thead>
+        <tbody id="singlesBody"><tr><td colspan="7" class="loading">Loading singles leaderboard...</td></tr></tbody>
+      </table></div>
+      <div id="singlesLeaderboardControls" class="leaderboard-expand-controls"></div>
+    </div>
+  </section>
+
+  <section id="doubles" class="board-section">
+    <div class="section-head"><div><p class="kicker">Doubles</p><h2>Doubles Leaderboard</h2></div><span id="doublesStatus" class="status">Loading...</span></div>
+    <div class="board-card">
+      <div class="table-scroll"><table>
+        <thead><tr><th>Rank</th><th>Team</th><th>Tier</th><th>Rating</th><th>W-L</th><th>Win %</th><th>Peak</th></tr></thead>
+        <tbody id="doublesBody"><tr><td colspan="7" class="loading">Loading doubles leaderboard...</td></tr></tbody>
+      </table></div>
+      <div id="doublesLeaderboardControls" class="leaderboard-expand-controls"></div>
+    </div>
+  </section>
+
 <section id="market" class="mytt-market-section">
     <div class="mytt-market-hero">
       <div class="mytt-market-hero-copy">
@@ -320,51 +367,6 @@
     <p class="mytt-market-disclaimer">MYTT provides a community listing platform only. Buyers and sellers are responsible for checking item condition, payment and collection arrangements.</p>
   </section>
 
-  <section id="players" class="players-section">
-    <div class="section-head"><div><p class="kicker">Players</p><h2>Official Players</h2></div><span class="status">Official Profiles</span></div>
-    <div class="players-toolbar">
-      <input id="playersSearch" type="search" placeholder="Search official players or MYTT ID..." autocomplete="off">
-
-      <select id="playersFilter" aria-label="Filter players">
-        <option value="all">All Players</option>
-        <option value="approved">Approved Only</option>
-        <option value="leaderboard">Leaderboard Players</option>
-      </select>
-
-      <select id="playersSort" aria-label="Sort players">
-        <option value="name-asc" selected>Name: A–Z</option>
-        <option value="name-desc">Name: Z–A</option>
-        <option value="rating-desc">Rating: High to Low</option>
-        <option value="rating-asc">Rating: Low to High</option>
-        <option value="rank-asc">Leaderboard Rank</option>
-      </select>
-    </div>
-
-    <div id="playersGrid" class="players-grid"><p class="loading">Loading players...</p></div>
-    <div id="playersPagination" class="players-pagination" aria-label="Players pages"></div>
-  </section>
-
-  <section id="singles" class="board-section">
-    <div class="section-head"><div><p class="kicker">Singles</p><h2>Singles Leaderboard</h2></div><span id="singlesStatus" class="status">Loading...</span></div>
-    <div class="board-card">
-      <div class="table-scroll"><table>
-        <thead><tr><th>Rank</th><th>Player</th><th>Tier</th><th>Rating</th><th>W-L</th><th>Win %</th><th>Peak</th></tr></thead>
-        <tbody id="singlesBody"><tr><td colspan="7" class="loading">Loading singles leaderboard...</td></tr></tbody>
-      </table></div>
-      <div id="singlesLeaderboardControls" class="leaderboard-expand-controls"></div>
-    </div>
-  </section>
-
-  <section id="doubles" class="board-section">
-    <div class="section-head"><div><p class="kicker">Doubles</p><h2>Doubles Leaderboard</h2></div><span id="doublesStatus" class="status">Loading...</span></div>
-    <div class="board-card">
-      <div class="table-scroll"><table>
-        <thead><tr><th>Rank</th><th>Team</th><th>Tier</th><th>Rating</th><th>W-L</th><th>Win %</th><th>Peak</th></tr></thead>
-        <tbody id="doublesBody"><tr><td colspan="7" class="loading">Loading doubles leaderboard...</td></tr></tbody>
-      </table></div>
-      <div id="doublesLeaderboardControls" class="leaderboard-expand-controls"></div>
-    </div>
-  </section>
 
   <section id="notice" class="info-grid info-grid-single">
   <article class="info-card rules-card">
@@ -1011,7 +1013,7 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260812-nav-order"></script>
-<script src="marketplace.js?v=20260812-nav-order"></script>
+<script src="app.js?v=20260812-section-order-fix"></script>
+<script src="marketplace.js?v=20260812-section-order-fix"></script>
 </body>
 </html>
