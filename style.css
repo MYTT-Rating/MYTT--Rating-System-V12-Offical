@@ -3550,3 +3550,18 @@ section[id]{
     text-overflow:ellipsis;
   }
 }
+
+
+/* =========================================================
+   JOIN / SUBMIT NAV ANCHOR FIX
+   Keep the CTA row fully visible below the sticky header.
+   ========================================================= */
+#submit{
+  scroll-margin-top:112px;
+}
+
+@media(max-width:860px){
+  #submit{
+    scroll-margin-top:94px;
+  }
+}
