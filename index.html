@@ -18,7 +18,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260812-players-pages">
+  <link rel="stylesheet" href="style.css?v=20260812-leaderboard-top10">
 </head>
 <body>
 <header class="topbar">
@@ -226,18 +226,24 @@
 
   <section id="singles" class="board-section">
     <div class="section-head"><div><p class="kicker">Singles</p><h2>Singles Leaderboard</h2></div><span id="singlesStatus" class="status">Loading...</span></div>
-    <div class="board-card"><div class="table-scroll"><table>
-      <thead><tr><th>Rank</th><th>Player</th><th>Tier</th><th>Rating</th><th>W-L</th><th>Win %</th><th>Peak</th></tr></thead>
-      <tbody id="singlesBody"><tr><td colspan="7" class="loading">Loading singles leaderboard...</td></tr></tbody>
-    </table></div></div>
+    <div class="board-card">
+      <div class="table-scroll"><table>
+        <thead><tr><th>Rank</th><th>Player</th><th>Tier</th><th>Rating</th><th>W-L</th><th>Win %</th><th>Peak</th></tr></thead>
+        <tbody id="singlesBody"><tr><td colspan="7" class="loading">Loading singles leaderboard...</td></tr></tbody>
+      </table></div>
+      <div id="singlesLeaderboardControls" class="leaderboard-expand-controls"></div>
+    </div>
   </section>
 
   <section id="doubles" class="board-section">
     <div class="section-head"><div><p class="kicker">Doubles</p><h2>Doubles Leaderboard</h2></div><span id="doublesStatus" class="status">Loading...</span></div>
-    <div class="board-card"><div class="table-scroll"><table>
-      <thead><tr><th>Rank</th><th>Team</th><th>Tier</th><th>Rating</th><th>W-L</th><th>Win %</th><th>Peak</th></tr></thead>
-      <tbody id="doublesBody"><tr><td colspan="7" class="loading">Loading doubles leaderboard...</td></tr></tbody>
-    </table></div></div>
+    <div class="board-card">
+      <div class="table-scroll"><table>
+        <thead><tr><th>Rank</th><th>Team</th><th>Tier</th><th>Rating</th><th>W-L</th><th>Win %</th><th>Peak</th></tr></thead>
+        <tbody id="doublesBody"><tr><td colspan="7" class="loading">Loading doubles leaderboard...</td></tr></tbody>
+      </table></div>
+      <div id="doublesLeaderboardControls" class="leaderboard-expand-controls"></div>
+    </div>
   </section>
 
   <section id="notice" class="info-grid info-grid-single">
@@ -728,6 +734,6 @@ window.MYTT = {
   eventsWebAppUrl: "https://script.google.com/macros/s/AKfycbxFeSz9bn7LmnvcMDYIQnbsCdvD6dPnf3hEADE4JjWQ3UHzaTO_nVtjj3ABnGlz7fillA/exec"
 };
 </script>
-<script src="app.js?v=20260812-players-pages"></script>
+<script src="app.js?v=20260812-leaderboard-top10"></script>
 </body>
 </html>

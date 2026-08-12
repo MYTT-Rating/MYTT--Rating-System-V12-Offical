@@ -136,7 +136,161 @@ function teamCellHTML(teamName){
 }
 
 function makeRow(item){const db=findDbByName(item.name);const tr=document.createElement("tr");tr.className="rank-"+String(item.rank||"").trim();const nameHtml=item.type==="doubles"?teamCellHTML(item.name):`<div class="player-cell">${avatarHTML(db,"row-avatar")}<span>${item.name} ↗</span></div>`;tr.innerHTML=`<td><span class="rank-badge">${rankLabel(item.rank)}</span></td><td class="name" ${item.type==="doubles"?"":`data-player="${encodeURIComponent(item.name)}"`}>${nameHtml}</td><td>${tierHTML(item.rating)}</td><td class="rating">${item.rating}</td><td>${item.record}</td><td>${item.winRate}</td><td>${item.peak}</td>`;return tr}
-async function loadLeaderboard(csvUrl,bodyId,statusId,type,label){const body=document.getElementById(bodyId),status=document.getElementById(statusId);try{const rows=await fetchRows(csvUrl);const items=rows.map(row=>rowToLb(row,type));if(type==="singles")singlesPlayers=items;if(type==="doubles")doublesTeams=items;body.innerHTML="";if(!items.length){body.innerHTML=`<tr><td colspan="7" class="loading">No data yet.</td></tr>`;status.textContent="No data";return}items.forEach(item=>body.appendChild(makeRow(item)));status.textContent="Updated "+new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});renderSearch();renderPlayers()}catch(e){console.error(e);body.innerHTML=`<tr><td colspan="7" class="loading">Failed to load ${label} leaderboard.</td></tr>`;status.textContent="Load failed"}}
+const LEADERBOARD_INITIAL_COUNT=10;
+const LEADERBOARD_STEP=10;
+
+const leaderboardVisibleCount={
+  singles:LEADERBOARD_INITIAL_COUNT,
+  doubles:LEADERBOARD_INITIAL_COUNT
+};
+
+function getLeaderboardItems(type){
+  return type==="doubles" ? doublesTeams : singlesPlayers;
+}
+
+function leaderboardBodyId(type){
+  return type==="doubles" ? "doublesBody" : "singlesBody";
+}
+
+function leaderboardControlsId(type){
+  return type==="doubles"
+    ? "doublesLeaderboardControls"
+    : "singlesLeaderboardControls";
+}
+
+function renderLeaderboardControls(type){
+  const controls=document.getElementById(leaderboardControlsId(type));
+  if(!controls)return;
+
+  const items=getLeaderboardItems(type);
+  const total=items.length;
+  const noun=type==="doubles" ? "teams" : "players";
+
+  if(!total){
+    controls.innerHTML="";
+    return;
+  }
+
+  const visible=Math.min(
+    leaderboardVisibleCount[type]||LEADERBOARD_INITIAL_COUNT,
+    total
+  );
+
+  if(total<=LEADERBOARD_INITIAL_COUNT){
+    controls.innerHTML=`
+      <div class="leaderboard-showing">
+        Showing all ${total} ${noun}
+      </div>
+    `;
+    return;
+  }
+
+  const allShown=visible>=total;
+
+  controls.innerHTML=`
+    <button
+      type="button"
+      class="leaderboard-expand-btn"
+      data-leaderboard-toggle="${type}"
+      data-leaderboard-action="${allShown?"less":"more"}"
+    >
+      <span class="leaderboard-expand-icon">${allShown?"↑":"↓"}</span>
+      ${allShown?"Show Less":`Show More ${type==="doubles"?"Teams":"Players"}`}
+    </button>
+
+    <div class="leaderboard-showing">
+      Showing ${visible} of ${total} ${noun}
+    </div>
+  `;
+}
+
+function renderLeaderboardRows(type){
+  const body=document.getElementById(leaderboardBodyId(type));
+  if(!body)return;
+
+  const items=getLeaderboardItems(type);
+  body.innerHTML="";
+
+  if(!items.length){
+    body.innerHTML=`<tr><td colspan="7" class="loading">No data yet.</td></tr>`;
+    renderLeaderboardControls(type);
+    return;
+  }
+
+  const visible=Math.min(
+    leaderboardVisibleCount[type]||LEADERBOARD_INITIAL_COUNT,
+    items.length
+  );
+
+  items.slice(0,visible).forEach(item=>{
+    body.appendChild(makeRow(item));
+  });
+
+  renderLeaderboardControls(type);
+}
+
+function changeLeaderboardVisible(type,action){
+  const items=getLeaderboardItems(type);
+  if(!items.length)return;
+
+  if(action==="less"){
+    leaderboardVisibleCount[type]=LEADERBOARD_INITIAL_COUNT;
+  }else{
+    leaderboardVisibleCount[type]=Math.min(
+      (leaderboardVisibleCount[type]||LEADERBOARD_INITIAL_COUNT)+LEADERBOARD_STEP,
+      items.length
+    );
+  }
+
+  renderLeaderboardRows(type);
+
+  if(action==="less"){
+    document.getElementById(type)?.scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+  }
+}
+
+async function loadLeaderboard(csvUrl,bodyId,statusId,type,label){
+  const body=document.getElementById(bodyId);
+  const status=document.getElementById(statusId);
+
+  try{
+    const rows=await fetchRows(csvUrl);
+    const items=rows.map(row=>rowToLb(row,type));
+
+    if(type==="singles")singlesPlayers=items;
+    if(type==="doubles")doublesTeams=items;
+
+    if(!items.length){
+      body.innerHTML=`<tr><td colspan="7" class="loading">No data yet.</td></tr>`;
+      status.textContent="No data";
+      renderLeaderboardControls(type);
+      return;
+    }
+
+    renderLeaderboardRows(type);
+
+    status.textContent=
+      "Updated "+
+      new Date().toLocaleTimeString([],{
+        hour:"2-digit",
+        minute:"2-digit"
+      });
+
+    renderSearch();
+    renderPlayers();
+
+  }catch(e){
+    console.error(e);
+    body.innerHTML=`<tr><td colspan="7" class="loading">Failed to load ${label} leaderboard.</td></tr>`;
+    status.textContent="Load failed";
+
+    const controls=document.getElementById(leaderboardControlsId(type));
+    if(controls)controls.innerHTML="";
+  }
+}
 async function loadPlayerDb(){try{const rows=await fetchRows(config.playerDbCsv);const all=rows.map(rowToDb).filter(p=>p.name);playerDb=all.filter(p=>String(p.status).toLowerCase()==="approved");if(!playerDb.length)playerDb=all;renderPlayers()}catch(e){console.error(e);renderPlayers()}}
 function playerItem(name){const db=findDbByName(name);const lb=findLbByName(db?.name||name);return{db,lb,name:db?.name||name}}
 function openProfile(name){
@@ -2495,6 +2649,16 @@ function bindEvents(){
     const winnerD=e.target.closest("[data-doubles-winner]");if(winnerD){const fe=doublesFormEls();fe.winner.value=decodeURIComponent(winnerD.dataset.doublesWinner);syncDoublesWinnerChoices();fe.status.textContent="";return}
     const score=e.target.closest("[data-score]");if(score){const fe=formEls();fe.score.value=score.dataset.score;document.querySelectorAll("#singlesFormModal [data-score]").forEach(x=>x.classList.toggle("active",x===score));fe.status.textContent="";return}
     const scoreD=e.target.closest("[data-doubles-score]");if(scoreD){const fe=doublesFormEls();fe.score.value=scoreD.dataset.doublesScore;document.querySelectorAll("#doublesFormModal [data-doubles-score]").forEach(x=>x.classList.toggle("active",x===scoreD));fe.status.textContent="";return}
+    const leaderboardToggle=e.target.closest("[data-leaderboard-toggle]");
+    if(leaderboardToggle){
+      e.preventDefault();
+      changeLeaderboardVisible(
+        leaderboardToggle.dataset.leaderboardToggle,
+        leaderboardToggle.dataset.leaderboardAction
+      );
+      return;
+    }
+
     const playerPage=e.target.closest("[data-player-page]");
     if(playerPage&&!playerPage.disabled){
       e.preventDefault();
