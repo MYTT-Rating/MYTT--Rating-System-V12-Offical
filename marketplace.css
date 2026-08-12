@@ -1051,3 +1051,121 @@ body.mytt-market-modal-open{
     grid-template-columns:1fr;
   }
 }
+
+
+/* =========================================================
+   MARKET MULTI-PHOTO UPLOAD + GALLERY
+   ========================================================= */
+.mytt-market-photo-preview-wrap{
+  display:block;
+}
+.mytt-market-photo-preview-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:10px;
+}
+.mytt-market-photo-preview-item{
+  position:relative;
+  overflow:hidden;
+  aspect-ratio:1/1;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  background:#080a0d;
+}
+.mytt-market-photo-preview-item:first-child{
+  border-color:rgba(239,68,68,.75);
+  box-shadow:0 0 16px rgba(239,68,68,.13);
+}
+.mytt-market-photo-preview-item img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.mytt-market-photo-preview-item>span{
+  position:absolute;
+  left:6px;
+  bottom:6px;
+  padding:4px 6px;
+  border-radius:6px;
+  background:rgba(0,0,0,.72);
+  color:#fff;
+  font-size:8px;
+  font-weight:950;
+  letter-spacing:.08em;
+}
+.mytt-market-photo-preview-item>button{
+  position:absolute;
+  top:6px;
+  right:6px;
+  width:27px;
+  height:27px;
+  display:grid;
+  place-items:center;
+  padding:0;
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:50%;
+  background:rgba(0,0,0,.72);
+  color:#fff;
+  font-size:18px;
+  line-height:1;
+  cursor:pointer;
+}
+.mytt-market-photo-preview-actions{
+  margin-top:10px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.mytt-market-photo-preview-actions small{
+  color:#949ba5;
+}
+.mytt-market-photo-preview-actions button{
+  border:0;
+  background:transparent;
+  color:#ff7373;
+  font-weight:850;
+  cursor:pointer;
+}
+.mytt-market-detail-photo-column{
+  min-width:0;
+}
+.mytt-market-detail-thumbs{
+  margin-top:10px;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:8px;
+}
+.mytt-market-detail-thumb{
+  overflow:hidden;
+  aspect-ratio:1/1;
+  padding:0;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:9px;
+  background:#080a0d;
+  cursor:pointer;
+  opacity:.68;
+  transition:.16s ease;
+}
+.mytt-market-detail-thumb.active,
+.mytt-market-detail-thumb:hover{
+  opacity:1;
+  border-color:#ef4444;
+  box-shadow:0 0 14px rgba(239,68,68,.18);
+}
+.mytt-market-detail-thumb img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+@media(max-width:650px){
+  .mytt-market-photo-preview-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  .mytt-market-photo-preview-actions{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}

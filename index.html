@@ -19,7 +19,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
   <link rel="stylesheet" href="style.css?v=20260812-market-live">
-  <link rel="stylesheet" href="marketplace.css?v=20260812-market-live">
+  <link rel="stylesheet" href="marketplace.css?v=20260812-multi-photo">
 </head>
 <body>
 <header class="site-header premium-header">
@@ -836,9 +836,22 @@
 
     <form id="myttMarketSellForm" class="mytt-market-form" method="POST" target="myttMarketSubmitFrame" novalidate>
       <input id="myttMarketSubmissionId" name="submissionId" type="hidden">
+      <input id="myttMarketPhotoCount" name="photoCount" type="hidden" value="0">
       <input id="myttMarketPhotoData" name="photoData" type="hidden">
       <input id="myttMarketPhotoName" name="photoName" type="hidden">
       <input id="myttMarketPhotoType" name="photoType" type="hidden">
+      <input id="myttMarketPhotoData2" name="photoData2" type="hidden">
+      <input id="myttMarketPhotoName2" name="photoName2" type="hidden">
+      <input id="myttMarketPhotoType2" name="photoType2" type="hidden">
+      <input id="myttMarketPhotoData3" name="photoData3" type="hidden">
+      <input id="myttMarketPhotoName3" name="photoName3" type="hidden">
+      <input id="myttMarketPhotoType3" name="photoType3" type="hidden">
+      <input id="myttMarketPhotoData4" name="photoData4" type="hidden">
+      <input id="myttMarketPhotoName4" name="photoName4" type="hidden">
+      <input id="myttMarketPhotoType4" name="photoType4" type="hidden">
+      <input id="myttMarketPhotoData5" name="photoData5" type="hidden">
+      <input id="myttMarketPhotoName5" name="photoName5" type="hidden">
+      <input id="myttMarketPhotoType5" name="photoType5" type="hidden">
 
       <div class="mytt-market-field-grid two">
         <label class="mytt-market-field">
@@ -912,22 +925,25 @@
       </label>
 
       <div class="mytt-market-field">
-        <span>Item Photo <em>Required</em></span>
+        <span>Item Photos <em>Required</em></span>
         <div class="mytt-market-photo-note">
-          <strong>Use a clear photo of the actual item.</strong>
-          <small>Stock photos, unrelated images or unclear photos may be rejected.</small>
+          <strong>Upload 1–5 clear photos of the actual item.</strong>
+          <small>The first photo becomes the listing cover. Show both sides and any wear or damage clearly. Stock photos, unrelated images or unclear photos may be rejected.</small>
         </div>
         <label class="mytt-market-photo-picker" for="myttMarketPhoto">
           <span>📷</span>
           <span>
-            <strong id="myttMarketPhotoLabel">Choose item photo</strong>
-            <small>JPG, PNG or WebP · max 5 MB</small>
+            <strong id="myttMarketPhotoLabel">Choose up to 5 item photos</strong>
+            <small>JPG, PNG or WebP · up to 5 photos · max 8 MB each</small>
           </span>
         </label>
-        <input id="myttMarketPhoto" class="mytt-market-photo-input" type="file" accept="image/jpeg,image/png,image/webp" required>
+        <input id="myttMarketPhoto" class="mytt-market-photo-input" type="file" accept="image/jpeg,image/png,image/webp" multiple required>
         <div id="myttMarketPhotoPreviewWrap" class="mytt-market-photo-preview-wrap hidden">
-          <img id="myttMarketPhotoPreview" alt="Equipment photo preview">
-          <button id="myttMarketRemovePhoto" type="button">Remove photo</button>
+          <div id="myttMarketPhotoPreviewGrid" class="mytt-market-photo-preview-grid"></div>
+          <div class="mytt-market-photo-preview-actions">
+            <small>Photo 1 is the cover image.</small>
+            <button id="myttMarketRemovePhoto" type="button">Remove all photos</button>
+          </div>
         </div>
       </div>
 
@@ -996,6 +1012,6 @@ window.MYTT = {
 };
 </script>
 <script src="app.js?v=20260812-market-live"></script>
-<script src="marketplace.js?v=20260812-market-live"></script>
+<script src="marketplace.js?v=20260812-multi-photo"></script>
 </body>
 </html>

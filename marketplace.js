@@ -15,12 +15,13 @@
     sellForm: document.getElementById("myttMarketSellForm"),
     submissionId: document.getElementById("myttMarketSubmissionId"),
     photoInput: document.getElementById("myttMarketPhoto"),
+    photoCount: document.getElementById("myttMarketPhotoCount"),
     photoData: document.getElementById("myttMarketPhotoData"),
     photoName: document.getElementById("myttMarketPhotoName"),
     photoType: document.getElementById("myttMarketPhotoType"),
     photoLabel: document.getElementById("myttMarketPhotoLabel"),
     photoPreviewWrap: document.getElementById("myttMarketPhotoPreviewWrap"),
-    photoPreview: document.getElementById("myttMarketPhotoPreview"),
+    photoPreviewGrid: document.getElementById("myttMarketPhotoPreviewGrid"),
     removePhoto: document.getElementById("myttMarketRemovePhoto"),
     formStatus: document.getElementById("myttMarketFormStatus"),
     submitButton: document.getElementById("myttMarketSubmitButton"),
@@ -32,7 +33,7 @@
   if (!els.grid) return;
 
   let listings = [];
-  let compressedPhoto = null;
+  let compressedPhotos = [];
   let pollTimer = null;
 
   function escapeHtml(value) {
@@ -69,6 +70,12 @@
       month: "short",
       year: "numeric"
     });
+  }
+
+  function getPhotoUrls(item) {
+    const urls = Array.isArray(item?.photoUrls) ? item.photoUrls.filter(Boolean) : [];
+    if (urls.length) return urls;
+    return item?.photoUrl ? [item.photoUrl] : [];
   }
 
   function setStatus(text) {
@@ -121,10 +128,11 @@
 
     els.grid.innerHTML = rows.map((item) => {
       const title = [item.brand, item.model].filter(Boolean).join(" ");
+      const cover = getPhotoUrls(item)[0] || "";
       return `
         <article class="mytt-market-card" data-market-listing="${escapeHtml(item.listingId)}">
           <div class="mytt-market-card-photo" data-open-market-detail="${escapeHtml(item.listingId)}">
-            <img src="${escapeHtml(item.photoUrl)}" alt="${escapeHtml(title)}" loading="lazy">
+            <img src="${escapeHtml(cover)}" alt="${escapeHtml(title)}" loading="lazy">
             <div class="mytt-market-card-badges">
               <span class="mytt-market-badge">${escapeHtml(item.category)}</span>
               <span class="mytt-market-badge condition">${escapeHtml(item.condition)}</span>
@@ -265,11 +273,24 @@
     const number = normalizeWhatsApp(item.contact);
     const message = encodeURIComponent(`Hi, I saw your ${title} listing on MYTT Gear Market. Is it still available?`);
     const wa = number ? `https://wa.me/${number}?text=${message}` : "#";
+    const photos = getPhotoUrls(item);
+    const mainPhoto = photos[0] || "";
+    const thumbs = photos.length > 1 ? `
+      <div class="mytt-market-detail-thumbs">
+        ${photos.map((url,index)=>`
+          <button type="button" class="mytt-market-detail-thumb ${index===0?"active":""}"
+            data-market-photo-src="${escapeHtml(url)}" aria-label="View photo ${index+1}">
+            <img src="${escapeHtml(url)}" alt="${escapeHtml(title)} photo ${index+1}">
+          </button>`).join("")}
+      </div>` : "";
 
     els.detailContent.innerHTML = `
       <div class="mytt-market-detail-layout">
-        <div class="mytt-market-detail-photo">
-          <img src="${escapeHtml(item.photoUrl)}" alt="${escapeHtml(title)}">
+        <div class="mytt-market-detail-photo-column">
+          <div class="mytt-market-detail-photo">
+            <img id="myttMarketDetailMainPhoto" src="${escapeHtml(mainPhoto)}" alt="${escapeHtml(title)}">
+          </div>
+          ${thumbs}
         </div>
         <div class="mytt-market-detail-info">
           <p class="mytt-market-detail-category">${escapeHtml(item.category)}</p>
@@ -295,15 +316,45 @@
     document.body.classList.add("mytt-market-modal-open");
   }
 
+  function clearPhotoHiddenFields() {
+    if (els.photoCount) els.photoCount.value = "0";
+    for (let i = 1; i <= 5; i++) {
+      const suffix = i === 1 ? "" : String(i);
+      const data = document.getElementById("myttMarketPhotoData" + suffix);
+      const name = document.getElementById("myttMarketPhotoName" + suffix);
+      const type = document.getElementById("myttMarketPhotoType" + suffix);
+      if (data) data.value = "";
+      if (name) name.value = "";
+      if (type) type.value = "";
+    }
+  }
+
+  function renderPhotoPreviews() {
+    if (!els.photoPreviewGrid) return;
+    if (!compressedPhotos.length) {
+      els.photoPreviewGrid.innerHTML = "";
+      els.photoPreviewWrap?.classList.add("hidden");
+      if (els.photoLabel) els.photoLabel.textContent = "Choose up to 5 item photos";
+      return;
+    }
+
+    els.photoPreviewGrid.innerHTML = compressedPhotos.map((photo,index)=>`
+      <div class="mytt-market-photo-preview-item">
+        <img src="${photo.dataUrl}" alt="Equipment photo ${index+1}">
+        <span>${index===0?"COVER":"PHOTO "+(index+1)}</span>
+        <button type="button" data-remove-market-photo="${index}" aria-label="Remove photo ${index+1}">×</button>
+      </div>`).join("");
+    els.photoPreviewWrap?.classList.remove("hidden");
+    if (els.photoLabel) {
+      els.photoLabel.textContent = `${compressedPhotos.length} photo${compressedPhotos.length===1?"":"s"} selected`;
+    }
+  }
+
   function resetPhoto() {
-    compressedPhoto = null;
+    compressedPhotos = [];
     if (els.photoInput) els.photoInput.value = "";
-    if (els.photoData) els.photoData.value = "";
-    if (els.photoName) els.photoName.value = "";
-    if (els.photoType) els.photoType.value = "";
-    if (els.photoLabel) els.photoLabel.textContent = "Choose item photo";
-    if (els.photoPreview) els.photoPreview.removeAttribute("src");
-    els.photoPreviewWrap?.classList.add("hidden");
+    clearPhotoHiddenFields();
+    renderPhotoPreviews();
   }
 
   function readImage(file) {
@@ -325,7 +376,7 @@
     if (file.size > 8 * 1024 * 1024) throw new Error("Photo is too large. Please use an image below 8 MB.");
 
     const img = await readImage(file);
-    const maxSide = 1600;
+    const maxSide = 1400;
     const ratio = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
     const width = Math.max(1, Math.round(img.naturalWidth * ratio));
     const height = Math.max(1, Math.round(img.naturalHeight * ratio));
@@ -336,7 +387,7 @@
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, width, height);
     ctx.drawImage(img, 0, 0, width, height);
-    const dataUrl = canvas.toDataURL("image/jpeg", 0.84);
+    const dataUrl = canvas.toDataURL("image/jpeg", 0.80);
     return {
       dataUrl,
       base64: dataUrl.split(",")[1],
@@ -388,16 +439,25 @@
       return;
     }
 
-    if (!compressedPhoto?.base64) {
-      showFormMessage("Please upload a clear photo of the actual item.", "error");
+    if (!compressedPhotos.length) {
+      showFormMessage("Please upload at least one clear photo of the actual item.", "error");
       return;
     }
 
     const id = makeSubmissionId();
     els.submissionId.value = id;
-    els.photoData.value = compressedPhoto.base64;
-    els.photoName.value = compressedPhoto.name;
-    els.photoType.value = compressedPhoto.type;
+    clearPhotoHiddenFields();
+    if (els.photoCount) els.photoCount.value = String(compressedPhotos.length);
+    compressedPhotos.forEach((photo,index)=>{
+      const n=index+1;
+      const suffix=n===1?"":String(n);
+      const data=document.getElementById("myttMarketPhotoData"+suffix);
+      const name=document.getElementById("myttMarketPhotoName"+suffix);
+      const type=document.getElementById("myttMarketPhotoType"+suffix);
+      if(data)data.value=photo.base64;
+      if(name)name.value=photo.name;
+      if(type)type.value=photo.type;
+    });
     form.action = webAppUrl;
 
     showFormMessage("Uploading listing for MYTT review...", "info");
@@ -422,23 +482,51 @@
   document.querySelectorAll("[data-close-market-detail]").forEach((el) => el.addEventListener("click", closeDetailModal));
 
   document.addEventListener("click", (event) => {
+    const removePhotoButton = event.target.closest("[data-remove-market-photo]");
+    if (removePhotoButton) {
+      const index = Number(removePhotoButton.getAttribute("data-remove-market-photo"));
+      if (Number.isInteger(index) && index >= 0 && index < compressedPhotos.length) {
+        compressedPhotos.splice(index, 1);
+        renderPhotoPreviews();
+        if (!compressedPhotos.length && els.photoInput) els.photoInput.value = "";
+      }
+      return;
+    }
+
+    const photoThumb = event.target.closest("[data-market-photo-src]");
+    if (photoThumb) {
+      const main = document.getElementById("myttMarketDetailMainPhoto");
+      if (main) main.src = photoThumb.getAttribute("data-market-photo-src") || "";
+      document.querySelectorAll(".mytt-market-detail-thumb").forEach(el=>el.classList.remove("active"));
+      photoThumb.classList.add("active");
+      return;
+    }
+
     const trigger = event.target.closest("[data-open-market-detail]");
     if (trigger) openDetail(trigger.getAttribute("data-open-market-detail"));
   });
 
   els.photoInput?.addEventListener("change", async () => {
-    const file = els.photoInput.files?.[0];
-    if (!file) return resetPhoto();
-    showFormMessage("Preparing photo...", "info");
+    const files = Array.from(els.photoInput.files || []);
+    if (!files.length) return resetPhoto();
+    if (files.length > 5) {
+      resetPhoto();
+      showFormMessage("You can upload a maximum of 5 photos per listing.", "error");
+      return;
+    }
+
+    showFormMessage(`Preparing ${files.length} photo${files.length===1?"":"s"}...`, "info");
     try {
-      compressedPhoto = await compressPhoto(file);
-      els.photoLabel.textContent = compressedPhoto.name;
-      els.photoPreview.src = compressedPhoto.dataUrl;
-      els.photoPreviewWrap.classList.remove("hidden");
+      const prepared = [];
+      for (const file of files) {
+        prepared.push(await compressPhoto(file));
+      }
+      compressedPhotos = prepared;
+      renderPhotoPreviews();
       showFormMessage("", "");
     } catch (err) {
       resetPhoto();
-      showFormMessage(err.message || "Unable to prepare photo.", "error");
+      showFormMessage(err.message || "Unable to prepare photos.", "error");
     }
   });
 

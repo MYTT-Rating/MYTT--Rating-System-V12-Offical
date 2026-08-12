@@ -151,8 +151,14 @@ function doPost(e) {
     const description = cleanText_(p.description, 800);
     const contact = cleanText_(p.contact, 30);
     const consent = cleanText_(p.consent, 10);
-    const photoData = String(p.photoData || "").trim();
-    const photoType = cleanText_(p.photoType, 50) || "image/jpeg";
+    const photoCount = Math.max(1, Math.min(5, Number(p.photoCount) || 1));
+    const submittedPhotos = [];
+    for (let i = 1; i <= photoCount; i++) {
+      const suffix = i === 1 ? "" : String(i);
+      const data = String(p["photoData" + suffix] || "").trim();
+      const type = cleanText_(p["photoType" + suffix], 50) || "image/jpeg";
+      if (data) submittedPhotos.push({ data: data, type: type });
+    }
 
     if (!/^MYTT\d{4,}$/i.test(myttId)) throw new Error("Please enter a valid MYTT ID.");
     if (!sellerName) throw new Error("Seller name is required.");
@@ -162,9 +168,10 @@ function doPost(e) {
     if (!Number.isFinite(price) || price < 1 || price > 99999) throw new Error("Please enter a valid price.");
     if (!location || !description || !contact) throw new Error("Location, description and contact are required.");
     if (consent !== "yes") throw new Error("Seller consent is required.");
-    if (!photoData) throw new Error("Item photo is required.");
+    if (!submittedPhotos.length) throw new Error("At least one item photo is required.");
+    if (submittedPhotos.length > 5) throw new Error("A maximum of 5 photos is allowed.");
 
-    const photo = saveMarketplacePhoto_(submissionId, photoData, photoType);
+    const photos = saveMarketplacePhotos_(submissionId, submittedPhotos);
     const now = new Date();
 
     sheet.appendRow([
@@ -181,8 +188,8 @@ function doPost(e) {
       location,
       description,
       contact,
-      photo.url,
-      photo.fileId,
+      JSON.stringify(photos.urls),
+      JSON.stringify(photos.fileIds),
       "",
       "",
       ""
@@ -232,7 +239,8 @@ function getApprovedMarketplaceListings_() {
       location: String(row[10] || ""),
       description: String(row[11] || ""),
       contact: String(row[12] || ""),
-      photoUrl: String(row[13] || "")
+      photoUrls: parseMarketplacePhotos_(row[13]),
+      photoUrl: parseMarketplacePhotos_(row[13])[0] || ""
     });
   });
 
@@ -283,29 +291,48 @@ function onEdit(e) {
   }
 }
 
-function saveMarketplacePhoto_(submissionId, base64Data, mimeType) {
+function saveMarketplacePhotos_(submissionId, submittedPhotos) {
   const props = PropertiesService.getScriptProperties();
   let folderId = props.getProperty(MYTT_MARKET.PROPERTY_FOLDER_ID);
   if (!folderId) throw new Error("Marketplace photo folder is not configured. Run setupMYTTGearMarket() first.");
 
-  const bytes = Utilities.base64Decode(base64Data);
-  if (bytes.length > 6 * 1024 * 1024) throw new Error("Photo is too large after processing.");
-
   const folder = DriveApp.getFolderById(folderId);
-  const blob = Utilities.newBlob(bytes, /^image\//i.test(mimeType) ? mimeType : "image/jpeg", submissionId + ".jpg");
-  const file = folder.createFile(blob);
+  const urls = [];
+  const fileIds = [];
+
+  submittedPhotos.slice(0, 5).forEach(function(photo, index) {
+    const bytes = Utilities.base64Decode(photo.data);
+    if (bytes.length > 6 * 1024 * 1024) throw new Error("Photo " + (index + 1) + " is too large after processing.");
+
+    const mimeType = /^image\//i.test(photo.type) ? photo.type : "image/jpeg";
+    const blob = Utilities.newBlob(bytes, mimeType, submissionId + "-" + (index + 1) + ".jpg");
+    const file = folder.createFile(blob);
+
+    try {
+      file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    } catch (err) {
+      throw new Error("Photos were uploaded, but public image access could not be enabled. Check your Google Workspace sharing policy.");
+    }
+
+    const fileId = file.getId();
+    fileIds.push(fileId);
+    urls.push("https://drive.google.com/thumbnail?id=" + encodeURIComponent(fileId) + "&sz=w1600");
+  });
+
+  return { urls: urls, fileIds: fileIds };
+}
+
+function parseMarketplacePhotos_(value) {
+  const text = String(value || "").trim();
+  if (!text) return [];
 
   try {
-    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-  } catch (err) {
-    throw new Error("Photo was uploaded, but public image access could not be enabled. Check your Google Workspace sharing policy.");
-  }
+    const parsed = JSON.parse(text);
+    if (Array.isArray(parsed)) return parsed.map(String).filter(Boolean);
+  } catch (_) {}
 
-  const fileId = file.getId();
-  return {
-    fileId: fileId,
-    url: "https://drive.google.com/thumbnail?id=" + encodeURIComponent(fileId) + "&sz=w1600"
-  };
+  // Backward compatibility with old single-photo rows.
+  return [text];
 }
 
 function getMarketplaceSheet_() {
