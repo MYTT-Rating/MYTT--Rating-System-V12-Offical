@@ -550,9 +550,16 @@ function renderPlayers(){
 
   const pageItems=list.slice(start,end);
 
-  grid.innerHTML=pageItems.map(x=>`
-    <article class="player-card player-card-neon" data-player="${encodeURIComponent(x.name)}">
+  grid.innerHTML=pageItems.map(x=>{
+    const tier=getTier(Number(x.lb.rating)||0);
+
+    return `
+    <article class="player-card player-card-neon player-card-icon-tier" data-player="${encodeURIComponent(x.name)}">
       <div class="player-card-neon-glow" aria-hidden="true"></div>
+
+      <div class="player-card-rank-icon ${tier.cls}" title="${tier.name}" aria-label="${tier.name} tier">
+        <span>${tier.icon}</span>
+      </div>
 
       <div class="player-card-top player-card-top-neon">
         <div class="player-card-avatar-wrap">
@@ -563,21 +570,18 @@ function renderPlayers(){
         <div class="player-card-identity">
           <h3>${x.name}</h3>
           <p class="player-card-id">${x.db?.id||"Leaderboard Player"}</p>
-          <div class="player-card-tier">${tierHTML(x.lb.rating)}</div>
         </div>
       </div>
 
       <div class="mini-stats mini-stats-neon">
-        <div class="mini-stat">
+        <div class="mini-stat mini-stat-rating">
           <small>Rating</small>
           <strong>${x.lb.rating}</strong>
         </div>
-
         <div class="mini-stat">
           <small>Peak</small>
           <strong>${x.lb.peak}</strong>
         </div>
-
         <div class="mini-stat">
           <small>Rank</small>
           <strong>${x.lb.rank && x.lb.rank!=="-" ? "#"+x.lb.rank : "#-"}</strong>
@@ -590,7 +594,8 @@ function renderPlayers(){
         <span>${x.db?.hand||"-"}</span>
       </div>
     </article>
-  `).join("");
+  `;
+  }).join("");
 
   renderPlayersPagination(
     list.length,
