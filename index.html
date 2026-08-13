@@ -18,8 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260813-ui-consistency">
-  <link rel="stylesheet" href="marketplace.css?v=20260813-ui-consistency">
+  <link rel="stylesheet" href="style.css?v=20260813-events-before-rank">
+  <link rel="stylesheet" href="marketplace.css?v=20260813-events-before-rank">
 </head>
 <body>
 <header class="site-header premium-header">
@@ -104,7 +104,26 @@
       <div class="hero-neon-divider" aria-hidden="true"></div>
     </div>
 
-    <section class="hero-rank-card-v5 hero-rank-card-final">
+    
+
+<section id="events" class="events-section">
+    <div class="section-head events-section-head">
+      <div>
+        <p class="kicker">Upcoming Matches</p>
+        <h2>Upcoming MYTT Events</h2>
+      </div>
+      <span id="eventsStatus" class="status">Checking events...</span>
+    </div>
+
+    <div id="eventsGrid" class="events-grid" aria-live="polite">
+      <div class="event-empty-state">
+        <span>🏓</span>
+        <strong>Loading upcoming MYTT events...</strong>
+      </div>
+    </div>
+  </section>
+
+<section class="hero-rank-card-v5 hero-rank-card-final">
       <div class="rank-card-glow"></div>
 
       <div class="rank-card-head-v5">
@@ -228,23 +247,6 @@
     </div>
   </section>
 
-
-  <section id="events" class="events-section">
-    <div class="section-head events-section-head">
-      <div>
-        <p class="kicker">Upcoming Matches</p>
-        <h2>Upcoming MYTT Events</h2>
-      </div>
-      <span id="eventsStatus" class="status">Checking events...</span>
-    </div>
-
-    <div id="eventsGrid" class="events-grid" aria-live="polite">
-      <div class="event-empty-state">
-        <span>🏓</span>
-        <strong>Loading upcoming MYTT events...</strong>
-      </div>
-    </div>
-  </section>
 
 
   <section id="players" class="players-section">
@@ -994,7 +996,7 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260813-ui-consistency"></script>
-<script src="marketplace.js?v=20260813-ui-consistency"></script>
+<script src="app.js?v=20260813-events-before-rank"></script>
+<script src="marketplace.js?v=20260813-events-before-rank"></script>
 </body>
 </html>
