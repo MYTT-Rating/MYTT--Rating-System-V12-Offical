@@ -2143,14 +2143,88 @@ function publishedRowsToEvents(rows){
   return events;
 }
 
+function sanitizeCachedUpcomingEvents(events){
+  if(!Array.isArray(events))return[];
+
+  return events
+    .map(event=>{
+      if(!event || typeof event!=="object")return null;
+
+      const date=normalizePublishedEventDate(event.date);
+      const deadline=normalizePublishedEventDate(
+        event.registrationDeadline || event.deadline
+      );
+      const capacity=Math.max(0,Number(event.capacity)||0);
+      const filled=Math.max(
+        0,
+        Number(
+          event.spotsFilled ??
+          event.filled ??
+          event.registered ??
+          0
+        ) || 0
+      );
+
+      const effectiveStatus=publishedEventStatus(
+        event.manualStatus || event.status || event.effectiveStatus,
+        date,
+        deadline,
+        capacity,
+        filled
+      );
+
+      if(effectiveStatus==="Completed")return null;
+
+      return {
+        ...event,
+        date,
+        dateDisplay:event.dateDisplay || publishedEventDateDisplay(date),
+        registrationDeadline:deadline,
+        registrationDeadlineDisplay:
+          event.registrationDeadlineDisplay ||
+          publishedEventDateDisplay(deadline).replace(/^[A-Za-z]{3},\s*/,""),
+        capacity,
+        spotsFilled:filled,
+        spotsRemaining:
+          capacity>0 ? Math.max(0,capacity-filled) : null,
+        effectiveStatus
+      };
+    })
+    .filter(Boolean)
+    .sort((a,b)=>{
+      const da=publishedEventDateObject(a.date);
+      const db=publishedEventDateObject(b.date);
+      return (da?da.getTime():Number.MAX_SAFE_INTEGER)-
+             (db?db.getTime():Number.MAX_SAFE_INTEGER);
+    });
+}
+
 function readCachedUpcomingEvents(){
   try{
     const raw=localStorage.getItem("mytt_upcoming_events_cache_v1");
     if(!raw)return[];
+
     const parsed=JSON.parse(raw);
     if(!parsed||!Array.isArray(parsed.events))return[];
-    return parsed.events;
-  }catch(_){return[]}
+
+    const sanitized=sanitizeCachedUpcomingEvents(parsed.events);
+
+    // Refresh the stored copy too, so expired events disappear permanently
+    // even if the device remains offline.
+    if(sanitized.length!==parsed.events.length){
+      localStorage.setItem(
+        "mytt_upcoming_events_cache_v1",
+        JSON.stringify({
+          savedAt:Date.now(),
+          events:sanitized
+        })
+      );
+    }
+
+    return sanitized;
+  }catch(_){
+    return[];
+  }
 }
 
 function cacheUpcomingEvents(events){
@@ -2335,7 +2409,8 @@ async function loadUpcomingEvents(options={}){
   // Secondary live source: existing public Apps Script JSONP endpoint.
   try{
     if(status)status.textContent="Refreshing events…";
-    const apiEvents=await loadEventsViaWebApp(timeoutMs);
+    const apiEventsRaw=await loadEventsViaWebApp(timeoutMs);
+    const apiEvents=sanitizeCachedUpcomingEvents(apiEventsRaw);
     upcomingEvents=apiEvents;
     cacheUpcomingEvents(apiEvents);
     renderUpcomingEvents();
