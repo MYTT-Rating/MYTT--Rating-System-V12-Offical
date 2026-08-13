@@ -5,34 +5,60 @@ function tierHTML(r){const t=getTier(r);return `<span class="tier-pill ${t.cls}"
 function progressHTML(r){const rating=Number(r)||0;const t=getTier(r);if(!t.next)return `<div class="tier-progress"><div class="tier-progress-top"><span>${t.icon} ${t.name}</span><span>Top Tier</span></div><div class="progress-track"><div class="progress-fill" style="width:100%"></div></div><div class="progress-note">You have reached MYTT Champion tier.</div></div>`;const base=t.min===-Infinity?1400:t.min;const pct=Math.max(0,Math.min(100,((rating-base)/(t.next-base))*100));const next=TIERS.find(x=>x.min===t.next);return `<div class="tier-progress"><div class="tier-progress-top"><span>${t.icon} ${t.name}</span><span>${next.icon} ${next.name}</span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="progress-note">${rating} / ${t.next} · ${t.next-rating} pts to ${next.name}</div></div>`}
 
 function rankJourneyHTML(r){
-  const rating = Number(r) || 0;
-  const tiers = TIERS.filter(t => t.min >= 1500);
-  const currentTier = getTier(rating);
+  const rating=Number(r)||0;
+  const currentTier=getTier(rating);
 
-  return `<div class="rank-journey-panel">
-    <div class="rank-journey-head">
+  if(!currentTier.next){
+    return `<div class="profile-rank-compact">
+      <div class="profile-rank-compact-head">
+        <div>
+          <small>MYTT RANK JOURNEY</small>
+          <h3>${currentTier.icon} ${currentTier.name}</h3>
+        </div>
+        <strong>${rating}</strong>
+      </div>
+
+      ${progressHTML(rating)}
+
+      <details class="profile-rank-details">
+        <summary>View Full Rank Journey</summary>
+        <div class="profile-rank-details-road">
+          ${TIERS.filter(t=>t.min>=1500).map(t=>`
+            <div class="profile-rank-detail-node ${rating>=t.min?"reached":""} ${currentTier.name===t.name?"current":""}">
+              <span>${t.icon}</span>
+              <strong>${t.name}</strong>
+              <small>${t.min}</small>
+            </div>
+          `).join("")}
+        </div>
+      </details>
+    </div>`;
+  }
+
+  const nextTier=TIERS.find(t=>t.min===currentTier.next);
+
+  return `<div class="profile-rank-compact">
+    <div class="profile-rank-compact-head">
       <div>
         <small>MYTT RANK JOURNEY</small>
-        <h3>Climb to the Top</h3>
+        <h3>Progress to ${nextTier?.name||"Next Tier"}</h3>
       </div>
-      <strong>${rating}</strong>
     </div>
 
-    <div class="rank-road">
-      ${tiers.map(t=>{
-        const reached = rating >= t.min;
-        const current = currentTier.name === t.name;
-        return `<div class="rank-node ${reached ? "reached" : ""} ${current ? "current" : ""}">
-          <div class="rank-dot">${t.icon}</div>
-          <span>${t.name}</span>
-          <small>${t.min}</small>
-        </div>`;
-      }).join("")}
-    </div>
+    ${progressHTML(rating)}
 
-    <div class="rank-journey-note">
-      ${progressHTML(r)}
-    </div>
+    <details class="profile-rank-details">
+      <summary>View Full Rank Journey</summary>
+      <div class="profile-rank-details-road">
+        ${TIERS.filter(t=>t.min>=1500).map(t=>`
+          <div class="profile-rank-detail-node ${rating>=t.min?"reached":""} ${currentTier.name===t.name?"current":""}">
+            <span>${t.icon}</span>
+            <strong>${t.name}</strong>
+            <small>${t.min}</small>
+          </div>
+        `).join("")}
+      </div>
+    </details>
   </div>`;
 }function parseCSV(t){const r=[];let row=[],cell="",q=false;for(let i=0;i<t.length;i++){const c=t[i],n=t[i+1];if(c=='"'&&q&&n=='"'){cell+='"';i++}else if(c=='"'){q=!q}else if(c==","&&!q){row.push(cell.trim());cell=""}else if((c=="\n"||c=="\r")&&!q){if(cell||row.length){row.push(cell.trim());r.push(row);row=[];cell=""}if(c=="\r"&&n=="\n")i++}else cell+=c}if(cell||row.length){row.push(cell.trim());r.push(row)}return r}
 function cleanRows(rows){return rows.filter(row=>row.some(cell=>String(cell).trim()!="")).slice(1)}
@@ -97,14 +123,16 @@ function achievementHTML(lb,name){
 function careerSummaryHTML(lb,name){
   const rec=parseRecord(lb.record);
   const matches=rec.wins+rec.losses;
-  return `<div class="profile-panel career-panel"><h3>📜 Career Summary</h3><div class="career-grid">
-    <div><small>Matches</small><strong>${matches}</strong></div>
-    <div><small>Wins</small><strong>${rec.wins}</strong></div>
-    <div><small>Losses</small><strong>${rec.losses}</strong></div>
-    <div><small>Highest Rating</small><strong>${lb.peak||"-"}</strong></div>
-    <div><small>Current Streak</small><strong>${currentStreak(name)}</strong></div>
-    <div><small>Win Rate</small><strong>${lb.winRate||"-"}</strong></div>
-  </div></div>`;
+
+  return `<div class="profile-panel career-panel">
+    <h3>📜 Career Summary</h3>
+    <div class="career-grid career-grid-compact">
+      <div><small>Matches</small><strong>${matches}</strong></div>
+      <div><small>Wins</small><strong>${rec.wins}</strong></div>
+      <div><small>Losses</small><strong>${rec.losses}</strong></div>
+      <div><small>Current Streak</small><strong>${currentStreak(name)}</strong></div>
+    </div>
+  </div>`;
 }
 function profileStatCard(label,value,icon){return `<div class="stat pro-stat"><span>${icon}</span><small>${label}</small><strong>${value}</strong></div>`}
 
@@ -313,13 +341,10 @@ function openProfile(name){
         </div>
       </div>
     </section>
-    <div class="profile-stats profile-stats-pro">
+    <div class="profile-stats profile-stats-pro profile-stats-core">
       ${profileStatCard("Current Rating",lb.rating,"📊")}
       ${profileStatCard("Peak Rating",lb.peak,"🚀")}
-      ${profileStatCard("Current Rank",`#${lb.rank||"-"}`,"🏆")}
-      ${profileStatCard("Record",lb.record,"🏓")}
       ${profileStatCard("Win Rate",lb.winRate,"🎯")}
-      ${profileStatCard("Matches",matches,"📅")}
     </div>
     ${rankJourneyHTML(lb.rating)}
     ${careerSummaryHTML(lb,playerName)}

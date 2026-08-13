@@ -4111,3 +4111,236 @@ td{
     scroll-behavior:auto !important;
   }
 }
+
+
+/* =========================================================
+   PLAYER PROFILE V2 — COMPACT INFORMATION HIERARCHY
+   ========================================================= */
+
+.profile-stats-core{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  margin-bottom:14px;
+}
+
+/* Compact Rank Journey — progress is the main information */
+.profile-rank-compact{
+  margin-top:14px;
+  padding:20px 22px;
+  border:1px solid rgba(239,68,68,.22);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 88% 0%,rgba(239,68,68,.075),transparent 32%),
+    rgba(255,255,255,.028);
+  box-shadow:0 14px 34px rgba(0,0,0,.22);
+}
+
+.profile-rank-compact-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:18px;
+  margin-bottom:15px;
+}
+
+.profile-rank-compact-head small{
+  display:block;
+  margin-bottom:5px;
+  color:#8f96a0;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.45px;
+  text-transform:uppercase;
+}
+
+.profile-rank-compact-head h3{
+  margin:0;
+  color:#f5f6f7;
+  font-size:20px;
+  line-height:1.15;
+}
+
+.profile-rank-compact-head>strong{
+  color:#fff;
+  font-size:25px;
+}
+
+/* Existing progressHTML gets a cleaner profile treatment */
+.profile-rank-compact .tier-progress{
+  margin:0;
+}
+
+.profile-rank-compact .tier-progress-top{
+  margin-bottom:9px;
+  font-size:14px;
+  font-weight:900;
+}
+
+.profile-rank-compact .progress-track{
+  height:12px !important;
+  border-radius:999px;
+  background:rgba(255,255,255,.11) !important;
+  overflow:hidden;
+}
+
+.profile-rank-compact .progress-fill{
+  height:100%;
+  border-radius:inherit;
+  box-shadow:none !important;
+}
+
+.profile-rank-compact .progress-note{
+  margin-top:9px;
+  color:#a9afb8;
+  font-size:13px;
+}
+
+/* Full rank list remains available, but collapsed by default */
+.profile-rank-details{
+  margin-top:14px;
+  border-top:1px solid rgba(255,255,255,.07);
+  padding-top:12px;
+}
+
+.profile-rank-details summary{
+  width:max-content;
+  color:#8f96a0;
+  font-size:11px;
+  font-weight:850;
+  cursor:pointer;
+  user-select:none;
+  list-style:none;
+  transition:color .16s ease;
+}
+
+.profile-rank-details summary::-webkit-details-marker{
+  display:none;
+}
+
+.profile-rank-details summary::after{
+  content:"  +";
+  color:#ef5555;
+}
+
+.profile-rank-details[open] summary::after{
+  content:"  −";
+}
+
+.profile-rank-details summary:hover{
+  color:#fff;
+}
+
+.profile-rank-details-road{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:8px;
+}
+
+.profile-rank-detail-node{
+  min-width:0;
+  padding:10px 7px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:11px;
+  background:rgba(255,255,255,.025);
+  text-align:center;
+  opacity:.48;
+}
+
+.profile-rank-detail-node.reached{
+  opacity:.82;
+  border-color:rgba(239,68,68,.15);
+}
+
+.profile-rank-detail-node.current{
+  opacity:1;
+  border-color:rgba(239,68,68,.45);
+  background:rgba(239,68,68,.075);
+}
+
+.profile-rank-detail-node span,
+.profile-rank-detail-node strong,
+.profile-rank-detail-node small{
+  display:block;
+}
+
+.profile-rank-detail-node span{
+  margin-bottom:5px;
+  font-size:17px;
+}
+
+.profile-rank-detail-node strong{
+  overflow:hidden;
+  color:#e8e9ec;
+  font-size:10px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.profile-rank-detail-node small{
+  margin-top:3px;
+  color:#757d88;
+  font-size:9px;
+}
+
+/* Career Summary now complements, instead of repeating, the main stats */
+.career-grid-compact{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+}
+
+.career-grid-compact div{
+  padding:13px 14px !important;
+}
+
+.career-grid-compact strong{
+  font-size:22px !important;
+}
+
+/* Slightly reduce vertical weight of the primary stat cards */
+.profile-stats-core .pro-stat{
+  min-height:132px;
+  padding:18px !important;
+}
+
+.profile-stats-core .pro-stat strong{
+  font-size:clamp(28px,3vw,36px) !important;
+}
+
+@media(max-width:850px){
+  .profile-stats-core{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+
+  .profile-rank-details-road{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+
+  .career-grid-compact{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+@media(max-width:560px){
+  .profile-stats-core{
+    grid-template-columns:1fr !important;
+  }
+
+  .profile-stats-core .pro-stat{
+    min-height:0;
+  }
+
+  .profile-rank-compact{
+    padding:17px 15px;
+  }
+
+  .profile-rank-compact-head{
+    align-items:flex-start;
+  }
+
+  .profile-rank-details-road{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .career-grid-compact{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
