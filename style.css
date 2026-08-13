@@ -4710,4 +4710,164 @@ td{
     padding-top:10px !important;
   }
 }
-\n\n/* =========================================================\n   OFFICIAL PLAYERS — FINAL ICON-ONLY TIER CARD\n   ========================================================= */\n.player-card.player-card-icon-tier{\n  position:relative;\n  min-height:0 !important;\n  height:auto !important;\n  padding:15px 15px 13px !important;\n}\n\n.player-card-rank-icon{\n  position:absolute;\n  top:10px;\n  right:10px;\n  z-index:5;\n  width:35px;\n  height:35px;\n  display:grid;\n  place-items:center;\n  border:1px solid rgba(255,75,75,.72);\n  border-radius:11px;\n  background:rgba(5,7,10,.94);\n  box-shadow:0 0 10px rgba(239,68,68,.15),0 0 0 1px rgba(255,255,255,.025) inset;\n}\n.player-card-rank-icon span{\n  display:block;\n  font-size:19px;\n  line-height:1;\n}\n.player-card-rank-icon.tier-novice{border-color:rgba(55,210,145,.60);box-shadow:0 0 10px rgba(55,210,145,.11)}\n.player-card-rank-icon.tier-rookie{border-color:rgba(115,210,55,.60);box-shadow:0 0 10px rgba(115,210,55,.11)}\n.player-card-rank-icon.tier-challenger{border-color:rgba(255,95,70,.72)}\n.player-card-rank-icon.tier-elite{border-color:rgba(255,208,45,.75);box-shadow:0 0 10px rgba(255,208,45,.12)}\n.player-card-rank-icon.tier-master{border-color:rgba(255,120,45,.75)}\n.player-card-rank-icon.tier-legend{border-color:rgba(255,203,60,.78)}\n.player-card-rank-icon.tier-grandmaster{border-color:rgba(55,215,235,.76);box-shadow:0 0 10px rgba(55,215,235,.11)}\n.player-card-rank-icon.tier-immortal{border-color:rgba(130,95,255,.76)}\n.player-card-rank-icon.tier-champion{border-color:rgba(255,160,75,.78)}\n\n/* Name block vertically aligned with the avatar */\n.player-card-top-neon{\n  grid-template-columns:72px minmax(0,1fr) !important;\n  align-items:center !important;\n  min-height:72px;\n  gap:12px !important;\n  padding-right:38px;\n}\n.player-card-avatar-wrap,\n.player-card-avatar-wrap .avatar{\n  width:72px !important;\n  height:72px !important;\n}\n.player-card-identity{\n  display:flex;\n  flex-direction:column;\n  justify-content:center;\n  min-width:0;\n  align-self:stretch;\n}\n.player-card-identity h3{\n  margin:0 0 5px !important;\n  font-size:18px !important;\n  line-height:1.05 !important;\n}\n.player-card-id{\n  margin:0 !important;\n  font-size:10px !important;\n}\n.player-card-tier{display:none !important}\n\n.mini-stats-neon{\n  margin-top:11px !important;\n  padding-top:10px !important;\n  gap:6px !important;\n}\n.mini-stats-neon .mini-stat{padding:7px 5px !important}\n.mini-stats-neon .mini-stat strong{color:#f4f5f7 !important}\n.mini-stats-neon .mini-stat-rating strong{\n  color:#ff4b4b !important;\n  text-shadow:0 0 9px rgba(255,75,75,.15);\n}\n.player-card-meta{margin-top:8px !important}\n.player-card.player-card-icon-tier::after{display:none !important}\n\n@media(max-width:759px){\n  .player-card.player-card-icon-tier{padding:13px 13px 11px !important}\n  .player-card-rank-icon{\n    top:9px;right:9px;width:30px;height:30px;border-radius:9px;\n  }\n  .player-card-rank-icon span{font-size:16px}\n  .player-card-top-neon{\n    grid-template-columns:62px minmax(0,1fr) !important;\n    min-height:62px;\n    gap:10px !important;\n    padding-right:31px;\n  }\n  .player-card-avatar-wrap,\n  .player-card-avatar-wrap .avatar{width:62px !important;height:62px !important}\n  .player-card-identity h3{font-size:16px !important;margin-bottom:4px !important}\n  .player-card-id{font-size:9px !important}\n  .mini-stats-neon{margin-top:9px !important;padding-top:9px !important}\n  .mini-stats-neon .mini-stat{padding:6px 4px !important}\n  .mini-stats-neon .mini-stat strong{font-size:14px !important}\n  .player-card-meta{margin-top:7px !important;font-size:9px !important}\n}\n
+
+
+/* =========================================================
+   OFFICIAL PLAYERS — FINAL ICON-ONLY TIER CARD
+   ========================================================= */
+.player-card.player-card-icon-tier{
+  position:relative;
+  min-height:0 !important;
+  height:auto !important;
+  padding:15px 15px 13px !important;
+}
+
+.player-card-rank-icon{
+  position:absolute;
+  top:10px;
+  right:10px;
+  z-index:5;
+  width:35px;
+  height:35px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,75,75,.72);
+  border-radius:11px;
+  background:rgba(5,7,10,.94);
+  box-shadow:0 0 10px rgba(239,68,68,.15),0 0 0 1px rgba(255,255,255,.025) inset;
+}
+.player-card-rank-icon span{
+  display:block;
+  font-size:19px;
+  line-height:1;
+}
+ .player-card-rank-icon[data-tier-icon="Novice"]{border-color:rgba(55,210,145,.60);box-shadow:0 0 10px rgba(55,210,145,.11)}
+ .player-card-rank-icon[data-tier-icon="Rookie"]{border-color:rgba(115,210,55,.60);box-shadow:0 0 10px rgba(115,210,55,.11)}
+ .player-card-rank-icon[data-tier-icon="Challenger"]{border-color:rgba(255,95,70,.72)}
+ .player-card-rank-icon[data-tier-icon="Elite"]{border-color:rgba(255,208,45,.75);box-shadow:0 0 10px rgba(255,208,45,.12)}
+ .player-card-rank-icon[data-tier-icon="Master"]{border-color:rgba(255,120,45,.75)}
+ .player-card-rank-icon[data-tier-icon="Legend"]{border-color:rgba(255,203,60,.78)}
+ .player-card-rank-icon[data-tier-icon="Grandmaster"]{border-color:rgba(55,215,235,.76);box-shadow:0 0 10px rgba(55,215,235,.11)}
+ .player-card-rank-icon[data-tier-icon="Immortal"]{border-color:rgba(130,95,255,.76)}
+ .player-card-rank-icon[data-tier-icon="MYTT Champion"]{border-color:rgba(255,160,75,.78)}
+
+/* Name block vertically aligned with the avatar */
+.player-card-top-neon{
+  grid-template-columns:72px minmax(0,1fr) !important;
+  align-items:center !important;
+  min-height:72px;
+  gap:12px !important;
+  padding-right:38px;
+}
+.player-card-avatar-wrap,
+.player-card-avatar-wrap .avatar{
+  width:72px !important;
+  height:72px !important;
+}
+.player-card-identity{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-width:0;
+  align-self:stretch;
+}
+.player-card-identity h3{
+  margin:0 0 5px !important;
+  font-size:18px !important;
+  line-height:1.05 !important;
+}
+.player-card-id{
+  margin:0 !important;
+  font-size:10px !important;
+}
+.player-card-tier{display:none !important}
+
+.mini-stats-neon{
+  margin-top:11px !important;
+  padding-top:10px !important;
+  gap:6px !important;
+}
+.mini-stats-neon .mini-stat{padding:7px 5px !important}
+.mini-stats-neon .mini-stat strong{color:#f4f5f7 !important}
+.mini-stats-neon .mini-stat-rating strong{
+  color:#ff4b4b !important;
+  text-shadow:0 0 9px rgba(255,75,75,.15);
+}
+.player-card-meta{margin-top:8px !important}
+.player-card.player-card-icon-tier::after{display:none !important}
+
+@media(max-width:759px){
+  .player-card.player-card-icon-tier{padding:13px 13px 11px !important}
+  .player-card-rank-icon{
+    top:9px;right:9px;width:30px;height:30px;border-radius:9px;
+  }
+  .player-card-rank-icon span{font-size:16px}
+  .player-card-top-neon{
+    grid-template-columns:62px minmax(0,1fr) !important;
+    min-height:62px;
+    gap:10px !important;
+    padding-right:31px;
+  }
+  .player-card-avatar-wrap,
+  .player-card-avatar-wrap .avatar{width:62px !important;height:62px !important}
+  .player-card-identity h3{font-size:16px !important;margin-bottom:4px !important}
+  .player-card-id{font-size:9px !important}
+  .mini-stats-neon{margin-top:9px !important;padding-top:9px !important}
+  .mini-stats-neon .mini-stat{padding:6px 4px !important}
+  .mini-stats-neon .mini-stat strong{font-size:14px !important}
+  .player-card-meta{margin-top:7px !important;font-size:9px !important}
+}
+
+
+/* ICON TIER — HARD ISOLATION FIX */
+.player-card.player-card-icon-tier > .player-card-rank-icon{
+  position:absolute !important;
+  top:10px !important;
+  right:10px !important;
+  left:auto !important;
+  bottom:auto !important;
+  width:35px !important;
+  min-width:35px !important;
+  max-width:35px !important;
+  height:35px !important;
+  min-height:35px !important;
+  max-height:35px !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:grid !important;
+  place-items:center !important;
+  overflow:hidden !important;
+  border-radius:11px !important;
+  background:rgba(5,7,10,.96) !important;
+  color:#fff !important;
+  line-height:1 !important;
+  z-index:8 !important;
+}
+.player-card.player-card-icon-tier > .player-card-rank-icon > span{
+  display:block !important;
+  width:auto !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  background:none !important;
+  font-size:19px !important;
+  line-height:1 !important;
+}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Novice"]{border-color:rgba(55,210,145,.65) !important;}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Rookie"]{border-color:rgba(115,210,55,.65) !important;}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Challenger"]{border-color:rgba(255,95,70,.75) !important;}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Elite"]{border-color:rgba(255,208,45,.78) !important;}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Master"]{border-color:rgba(255,120,45,.78) !important;}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Legend"]{border-color:rgba(255,203,60,.80) !important;}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Grandmaster"]{border-color:rgba(55,215,235,.78) !important;}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Immortal"]{border-color:rgba(130,95,255,.78) !important;}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="MYTT Champion"]{border-color:rgba(255,160,75,.82) !important;}
+@media(max-width:759px){
+  .player-card.player-card-icon-tier > .player-card-rank-icon{
+    top:9px !important;right:9px !important;
+    width:31px !important;min-width:31px !important;max-width:31px !important;
+    height:31px !important;min-height:31px !important;max-height:31px !important;
+    border-radius:9px !important;
+  }
+  .player-card.player-card-icon-tier > .player-card-rank-icon > span{font-size:17px !important;}
+}

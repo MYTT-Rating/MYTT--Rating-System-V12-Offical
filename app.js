@@ -557,7 +557,7 @@ function renderPlayers(){
     <article class="player-card player-card-neon player-card-icon-tier" data-player="${encodeURIComponent(x.name)}">
       <div class="player-card-neon-glow" aria-hidden="true"></div>
 
-      <div class="player-card-rank-icon ${tier.cls}" title="${tier.name}" aria-label="${tier.name} tier">
+      <div class="player-card-rank-icon" data-tier-icon="${tier.name}" title="${tier.name}" aria-label="${tier.name} tier">
         <span>${tier.icon}</span>
       </div>
 
