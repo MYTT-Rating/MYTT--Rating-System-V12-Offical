@@ -1169,3 +1169,89 @@ body.mytt-market-modal-open{
     flex-direction:column;
   }
 }
+
+
+/* =========================================================
+   MYTT MARKET — COMPACT HERO
+   Keeps the premium look while bringing listings higher.
+   ========================================================= */
+@media(min-width:681px){
+  .mytt-market-section{
+    padding-top:54px;
+  }
+
+  .mytt-market-hero{
+    min-height:190px;
+    grid-template-columns:minmax(0,1fr) 245px;
+    gap:24px;
+    padding:24px 28px;
+    border-radius:20px;
+  }
+
+  .mytt-market-hero h2{
+    margin:2px 0 8px;
+    font-size:clamp(38px,4.15vw,60px);
+    line-height:.96;
+  }
+
+  .mytt-market-subtitle{
+    max-width:720px;
+    font-size:14px;
+    line-height:1.55;
+  }
+
+  .mytt-market-trust-grid{
+    max-width:800px;
+    margin-top:17px;
+  }
+
+  .mytt-market-trust-item{
+    min-height:56px;
+    gap:10px;
+    padding:9px 13px;
+  }
+
+  .mytt-market-trust-item>span{
+    width:31px;
+    height:31px;
+    flex-basis:31px;
+  }
+
+  .mytt-market-trust-item strong{
+    font-size:11px;
+  }
+
+  .mytt-market-trust-item small{
+    font-size:9px;
+  }
+
+  .mytt-market-hero-action{
+    gap:12px;
+  }
+
+  .mytt-market-hero-icon{
+    width:108px;
+    height:108px;
+    font-size:56px;
+  }
+
+  .mytt-market-hero-action .mytt-market-sell-button{
+    min-height:46px;
+    font-size:14px;
+  }
+
+  .mytt-market-toolbar{
+    margin-top:14px;
+  }
+}
+
+/* Slightly tighter large desktop spacing */
+@media(min-width:1200px){
+  .mytt-market-section{
+    padding-top:50px;
+  }
+
+  .mytt-market-hero{
+    min-height:184px;
+  }
+}
