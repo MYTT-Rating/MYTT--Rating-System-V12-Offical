@@ -551,17 +551,23 @@ function renderPlayers(){
   const pageItems=list.slice(start,end);
 
   grid.innerHTML=pageItems.map(x=>`
-    <div class="player-card" data-player="${encodeURIComponent(x.name)}">
-      <div class="player-card-top">
-        ${avatarHTML(x.db,"avatar")}
-        <div>
+    <article class="player-card player-card-neon" data-player="${encodeURIComponent(x.name)}">
+      <div class="player-card-neon-glow" aria-hidden="true"></div>
+
+      <div class="player-card-top player-card-top-neon">
+        <div class="player-card-avatar-wrap">
+          ${avatarHTML(x.db,"avatar")}
+          <span class="player-card-avatar-ring" aria-hidden="true"></span>
+        </div>
+
+        <div class="player-card-identity">
           <h3>${x.name}</h3>
-          <p>${x.db?.id||"Leaderboard Player"}</p>
-          ${tierHTML(x.lb.rating)}
+          <p class="player-card-id">${x.db?.id||"Leaderboard Player"}</p>
+          <div class="player-card-tier">${tierHTML(x.lb.rating)}</div>
         </div>
       </div>
 
-      <div class="mini-stats">
+      <div class="mini-stats mini-stats-neon">
         <div class="mini-stat">
           <small>Rating</small>
           <strong>${x.lb.rating}</strong>
@@ -574,12 +580,16 @@ function renderPlayers(){
 
         <div class="mini-stat">
           <small>Rank</small>
-          <strong>#${x.lb.rank}</strong>
+          <strong>${x.lb.rank && x.lb.rank!=="-" ? "#"+x.lb.rank : "#-"}</strong>
         </div>
       </div>
 
-      <p>🏓 ${x.db?.grip||"-"} · ${x.db?.hand||"-"}</p>
-    </div>
+      <div class="player-card-meta">
+        <span>🏓 ${x.db?.grip||"-"}</span>
+        <span class="player-card-meta-dot">•</span>
+        <span>${x.db?.hand||"-"}</span>
+      </div>
+    </article>
   `).join("");
 
   renderPlayersPagination(
