@@ -1255,3 +1255,75 @@ body.mytt-market-modal-open{
     min-height:184px;
   }
 }
+
+
+/* =========================================================
+   MYTT MARKET — MINIMAL HERO
+   ========================================================= */
+.mytt-market-hero{
+  min-height:158px;
+  grid-template-columns:minmax(0,1fr) 220px;
+  padding-top:20px;
+  padding-bottom:20px;
+}
+
+.mytt-market-hero h2{
+  margin-bottom:7px;
+}
+
+.mytt-market-subtitle{
+  margin-bottom:0;
+  max-width:650px;
+  font-size:14px;
+}
+
+.mytt-market-hero-action{
+  gap:10px;
+}
+
+.mytt-market-hero-icon{
+  width:92px;
+  height:92px;
+  font-size:48px;
+}
+
+.mytt-market-hero-action .mytt-market-sell-button{
+  min-height:44px;
+}
+
+.mytt-market-toolbar{
+  margin-top:12px;
+}
+
+.mytt-market-safety-strip-minimal{
+  display:flex;
+  justify-content:flex-start;
+  align-items:center;
+  gap:24px;
+  padding:10px 2px 0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+}
+
+.mytt-market-safety-strip-minimal span{
+  color:#9da3ad;
+  font-size:11px;
+  font-weight:800;
+}
+
+@media(max-width:680px){
+  .mytt-market-hero{
+    min-height:0;
+    padding:20px 16px;
+  }
+
+  .mytt-market-hero h2{
+    font-size:36px;
+  }
+
+  .mytt-market-safety-strip-minimal{
+    gap:12px;
+    flex-wrap:wrap;
+  }
+}
