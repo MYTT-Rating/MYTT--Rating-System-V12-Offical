@@ -1447,3 +1447,32 @@ body.mytt-market-modal-open{
     font-size:34px !important;
   }
 }
+
+
+/* =========================================================
+   MARKET — PREMIUM POLISH V2
+   ========================================================= */
+.mytt-market-card{
+  background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.018)) !important;
+  border-color:rgba(255,255,255,.09) !important;
+  box-shadow:0 16px 36px rgba(0,0,0,.28) !important;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease !important;
+}
+.mytt-market-card:hover{
+  transform:translateY(-3px) !important;
+  border-color:rgba(239,68,68,.32) !important;
+  box-shadow:0 20px 42px rgba(0,0,0,.33) !important;
+}
+.mytt-market-card-image{overflow:hidden}
+.mytt-market-card-image img{transition:transform .28s ease,filter .28s ease}
+.mytt-market-card:hover .mytt-market-card-image img{
+  transform:scale(1.035);
+  filter:contrast(1.02) saturate(1.03);
+}
+.mytt-market-price{
+  color:#ff5252 !important;
+  text-shadow:none !important;
+}
+.mytt-market-hero{
+  box-shadow:0 16px 38px rgba(0,0,0,.30),0 0 0 1px rgba(255,255,255,.012) inset !important;
+}
