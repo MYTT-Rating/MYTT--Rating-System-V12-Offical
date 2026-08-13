@@ -1476,3 +1476,51 @@ body.mytt-market-modal-open{
 .mytt-market-hero{
   box-shadow:0 16px 38px rgba(0,0,0,.30),0 0 0 1px rgba(255,255,255,.012) inset !important;
 }
+
+
+/* =========================================================
+   MARKET DETAIL PHOTO — FULL IMAGE VIEW
+   Show the entire seller-uploaded photo without cropping.
+   ========================================================= */
+
+.mytt-market-detail-photo{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  aspect-ratio:4/3;
+  overflow:hidden !important;
+  background:
+    radial-gradient(circle at center,rgba(255,255,255,.025),transparent 62%),
+    #07080a !important;
+}
+
+.mytt-market-detail-photo img{
+  width:100% !important;
+  height:100% !important;
+  aspect-ratio:auto !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  display:block !important;
+  background:#07080a;
+}
+
+/* Thumbnails also show the full uploaded image. */
+.mytt-market-detail-thumb{
+  background:#07080a !important;
+}
+
+.mytt-market-detail-thumb img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+}
+
+/* Keep product-list card images unchanged; only detail/gallery is full-view. */
+@media(max-width:680px){
+  .mytt-market-detail-photo{
+    width:100% !important;
+    max-width:100% !important;
+    aspect-ratio:4/3;
+  }
+}
