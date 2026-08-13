@@ -2999,3 +2999,21 @@ document.addEventListener("click", function(e){
     window.__myttMobileLayoutTimer=setTimeout(stabilizeMobileLayout,120);
   });
 })();
+
+
+/* Mobile fixed-nav state safety */
+(function(){
+  function resetMobileNavState(){
+    if(window.innerWidth>860)return;
+    const header=document.querySelector(".premium-header");
+    const toggle=document.querySelector(".premium-mobile-toggle");
+    if(!header||!toggle)return;
+
+    header.classList.remove("nav-open");
+    toggle.setAttribute("aria-expanded","false");
+  }
+
+  window.addEventListener("pageshow",()=>{
+    setTimeout(resetMobileNavState,80);
+  });
+})();
