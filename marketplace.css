@@ -1327,3 +1327,123 @@ body.mytt-market-modal-open{
     flex-wrap:wrap;
   }
 }
+
+
+/* =========================================================
+   MARKET — MATCH GLOBAL MYTT DESIGN SYSTEM
+   ========================================================= */
+.mytt-market-section{
+  padding-top:54px !important;
+}
+
+.mytt-market-hero{
+  min-height:148px !important;
+  padding:20px 24px !important;
+  border-radius:18px !important;
+  border-color:rgba(239,68,68,.28) !important;
+  box-shadow:0 18px 46px rgba(0,0,0,.34),0 0 20px rgba(239,68,68,.055) !important;
+}
+
+.mytt-market-hero h2{
+  margin:2px 0 7px !important;
+  color:#f4f5f7;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:clamp(34px,3.8vw,48px) !important;
+  line-height:.98 !important;
+  font-style:italic;
+  font-weight:900 !important;
+  letter-spacing:-.025em !important;
+}
+
+.mytt-market-subtitle{
+  max-width:620px !important;
+  color:#9ca2ac !important;
+  font-size:13px !important;
+  line-height:1.5 !important;
+}
+
+.mytt-market-hero-icon{
+  width:84px !important;
+  height:84px !important;
+  font-size:44px !important;
+}
+
+.mytt-market-sell-button,
+.mytt-market-submit{
+  min-height:46px !important;
+  border-radius:12px !important;
+  font-size:13px !important;
+  font-weight:900 !important;
+  box-shadow:0 10px 24px rgba(190,20,28,.20) !important;
+}
+
+.mytt-market-toolbar{
+  margin-top:12px !important;
+  gap:10px !important;
+}
+
+.mytt-market-toolbar input,
+.mytt-market-toolbar select{
+  height:46px !important;
+  border-radius:12px !important;
+  border-color:rgba(255,255,255,.11) !important;
+  background:rgba(255,255,255,.042) !important;
+  font-size:13px !important;
+}
+
+.mytt-market-info-strip{
+  gap:18px !important;
+  margin-top:10px !important;
+  padding:8px 2px 0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  color:#8f96a0 !important;
+  font-size:10px !important;
+}
+
+.mytt-market-status{
+  margin:14px 2px 9px !important;
+  font-size:10px !important;
+}
+
+.mytt-market-card{
+  border-radius:18px !important;
+  border-color:rgba(239,68,68,.20) !important;
+  box-shadow:0 18px 46px rgba(0,0,0,.28),0 0 18px rgba(239,68,68,.04) !important;
+}
+
+.mytt-market-card:hover{
+  transform:translateY(-2px) !important;
+  border-color:rgba(239,68,68,.40) !important;
+  box-shadow:0 21px 50px rgba(0,0,0,.34),0 0 20px rgba(239,68,68,.065) !important;
+}
+
+.mytt-market-details-button,
+.mytt-market-contact-button{
+  min-height:40px !important;
+  border-radius:10px !important;
+  font-size:11px !important;
+}
+
+.mytt-market-details-button{
+  background:rgba(255,255,255,.035) !important;
+}
+
+.mytt-market-contact-button{
+  box-shadow:0 7px 16px rgba(190,20,28,.15) !important;
+}
+
+@media(max-width:680px){
+  .mytt-market-section{
+    padding-top:40px !important;
+  }
+
+  .mytt-market-hero{
+    padding:18px 16px !important;
+  }
+
+  .mytt-market-hero h2{
+    font-size:34px !important;
+  }
+}
