@@ -4871,3 +4871,237 @@ td{
   }
   .player-card.player-card-icon-tier > .player-card-rank-icon > span{font-size:17px !important;}
 }
+
+/* =========================================================
+   MYTT MOBILE LEADERBOARD — CARD VIEW
+   Desktop keeps the full table. Mobile becomes compact cards.
+   ========================================================= */
+@media (max-width: 768px){
+  #singles .board-card,
+  #doubles .board-card{
+    overflow:visible !important;
+    border:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+  }
+
+  #singles .table-scroll,
+  #doubles .table-scroll{
+    overflow:visible !important;
+    width:100% !important;
+  }
+
+  #singles table,
+  #doubles table,
+  #singles tbody,
+  #doubles tbody{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+  }
+
+  #singles thead,
+  #doubles thead{
+    display:none !important;
+  }
+
+  #singles tbody tr,
+  #doubles tbody tr{
+    position:relative;
+    display:grid !important;
+    grid-template-columns:64px minmax(0,1fr) 74px;
+    grid-template-areas:"rank name rating";
+    align-items:center;
+    gap:10px;
+    width:100% !important;
+    margin:0 0 11px !important;
+    padding:12px 12px !important;
+    border:1px solid rgba(239,68,68,.34);
+    border-radius:16px;
+    background:
+      radial-gradient(circle at 100% 0%,rgba(239,68,68,.08),transparent 34%),
+      linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+    box-shadow:0 10px 24px rgba(0,0,0,.24);
+  }
+
+  #singles tbody tr:hover,
+  #doubles tbody tr:hover{
+    background:
+      radial-gradient(circle at 100% 0%,rgba(239,68,68,.11),transparent 34%),
+      linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.022));
+  }
+
+  #singles tbody td,
+  #doubles tbody td{
+    display:block !important;
+    min-width:0 !important;
+    width:auto !important;
+    padding:0 !important;
+    border:0 !important;
+    text-align:left !important;
+    font-size:14px !important;
+    background:transparent !important;
+  }
+
+  /* Rank */
+  #singles tbody td:nth-child(1),
+  #doubles tbody td:nth-child(1){
+    grid-area:rank;
+    display:flex !important;
+    justify-content:flex-start;
+    align-items:center;
+  }
+
+  #singles .rank-badge,
+  #doubles .rank-badge{
+    min-width:54px !important;
+    height:34px !important;
+    padding:0 10px !important;
+    font-size:14px !important;
+  }
+
+  /* Player / Team */
+  #singles tbody td:nth-child(2),
+  #doubles tbody td:nth-child(2){
+    grid-area:name;
+    overflow:visible !important;
+    white-space:normal !important;
+    word-break:normal !important;
+    overflow-wrap:anywhere !important;
+    line-height:1.22 !important;
+  }
+
+  #singles .player-cell,
+  #doubles .player-cell{
+    gap:9px !important;
+    min-width:0;
+  }
+
+  #singles .player-cell span,
+  #doubles .player-cell span{
+    min-width:0;
+    white-space:normal !important;
+    overflow-wrap:anywhere;
+    font-size:15px !important;
+    font-weight:900;
+  }
+
+  #singles .row-avatar,
+  #doubles .row-avatar{
+    width:38px !important;
+    height:38px !important;
+    min-width:38px !important;
+    min-height:38px !important;
+    font-size:16px !important;
+  }
+
+  /* Doubles team wraps naturally instead of running off-screen */
+  #doubles .team-cell{
+    display:flex !important;
+    flex-wrap:wrap !important;
+    align-items:center !important;
+    gap:6px 7px !important;
+    min-width:0 !important;
+  }
+
+  #doubles .team-member{
+    display:flex !important;
+    align-items:center !important;
+    gap:6px !important;
+    min-width:0 !important;
+    max-width:100%;
+  }
+
+  #doubles .team-member span{
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    font-size:13px !important;
+    line-height:1.15 !important;
+  }
+
+  #doubles .team-plus{
+    flex:0 0 auto;
+    font-size:12px !important;
+    color:#9298a2;
+  }
+
+  /* Rating */
+  #singles tbody td:nth-child(4),
+  #doubles tbody td:nth-child(4){
+    grid-area:rating;
+    position:relative;
+    padding-top:13px !important;
+    color:#ff5353 !important;
+    text-align:right !important;
+    font-size:18px !important;
+    font-weight:950 !important;
+    white-space:nowrap !important;
+  }
+
+  #singles tbody td:nth-child(4)::before,
+  #doubles tbody td:nth-child(4)::before{
+    content:"RATING";
+    position:absolute;
+    top:0;
+    right:0;
+    color:#858c96;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:.08em;
+  }
+
+  /* Hide secondary desktop-only data on mobile. */
+  #singles tbody td:nth-child(3),
+  #singles tbody td:nth-child(5),
+  #singles tbody td:nth-child(6),
+  #singles tbody td:nth-child(7),
+  #doubles tbody td:nth-child(3),
+  #doubles tbody td:nth-child(5),
+  #doubles tbody td:nth-child(6),
+  #doubles tbody td:nth-child(7){
+    display:none !important;
+  }
+
+  #singles .leaderboard-expand-controls,
+  #doubles .leaderboard-expand-controls{
+    margin-top:4px;
+    padding:12px 0 4px !important;
+    background:transparent !important;
+  }
+}
+
+@media (max-width: 390px){
+  #singles tbody tr,
+  #doubles tbody tr{
+    grid-template-columns:58px minmax(0,1fr) 66px;
+    gap:8px;
+    padding:11px 10px !important;
+  }
+
+  #singles .rank-badge,
+  #doubles .rank-badge{
+    min-width:50px !important;
+    padding:0 8px !important;
+  }
+
+  #singles .row-avatar,
+  #doubles .row-avatar{
+    width:34px !important;
+    height:34px !important;
+    min-width:34px !important;
+    min-height:34px !important;
+  }
+
+  #singles .player-cell span{
+    font-size:14px !important;
+  }
+
+  #doubles .team-member span{
+    font-size:12px !important;
+  }
+
+  #singles tbody td:nth-child(4),
+  #doubles tbody td:nth-child(4){
+    font-size:16px !important;
+  }
+}
