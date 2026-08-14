@@ -18,8 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260814-mobile-modal-close-fix">
-  <link rel="stylesheet" href="marketplace.css?v=20260814-mobile-leaderboard-cards">
+  <link rel="stylesheet" href="style.css?v=20260814-mobile-page-nav-home-rank-v1">
+  <link rel="stylesheet" href="marketplace.css?v=20260814-mobile-page-nav-home-rank-v1">
 </head>
 <body>
 <header class="site-header premium-header">
@@ -86,7 +86,7 @@
 </header>
 
 <main id="home">
-  <section class="hero hero-home-final">
+  <section class="hero hero-home-final mobile-nav-page" data-mobile-page="home">
     <div class="hero-top-banner">
       <p class="kicker kicker-centered">
         <span aria-hidden="true"></span>
@@ -106,22 +106,7 @@
 
     
 
-<section id="events" class="events-section">
-    <div class="section-head events-section-head">
-      <div>
-        <p class="kicker">Upcoming Matches</p>
-        <h2>Upcoming MYTT Events</h2>
-      </div>
-      <span id="eventsStatus" class="status">Checking events...</span>
-    </div>
 
-    <div id="eventsGrid" class="events-grid" aria-live="polite">
-      <div class="event-empty-state">
-        <span>🏓</span>
-        <strong>Loading upcoming MYTT events...</strong>
-      </div>
-    </div>
-  </section>
 
 <section class="hero-rank-card-v5 hero-rank-card-final">
       <div class="rank-card-glow"></div>
@@ -249,7 +234,24 @@
 
 
 
-  <section id="players" class="players-section">
+<section id="events" class="events-section mobile-nav-page" data-mobile-page="events">
+    <div class="section-head events-section-head">
+      <div>
+        <p class="kicker">Upcoming Matches</p>
+        <h2>Upcoming MYTT Events</h2>
+      </div>
+      <span id="eventsStatus" class="status">Checking events...</span>
+    </div>
+
+    <div id="eventsGrid" class="events-grid" aria-live="polite">
+      <div class="event-empty-state">
+        <span>🏓</span>
+        <strong>Loading upcoming MYTT events...</strong>
+      </div>
+    </div>
+  </section>
+
+  <section id="players" class="players-section mobile-nav-page" data-mobile-page="players">
     <div class="section-head"><div><p class="kicker">Players</p><h2>Official Players</h2></div><span class="status">Official Profiles</span></div>
     <div class="players-toolbar">
       <input id="playersSearch" type="search" placeholder="Search official players or MYTT ID..." autocomplete="off">
@@ -273,7 +275,7 @@
     <div id="playersPagination" class="players-pagination" aria-label="Players pages"></div>
   </section>
 
-  <section id="singles" class="board-section">
+  <section id="singles" class="board-section mobile-nav-page" data-mobile-page="singles">
     <div class="section-head"><div><p class="kicker">Singles</p><h2>Singles Leaderboard</h2></div><span id="singlesStatus" class="status">Loading...</span></div>
     <div class="board-card">
       <div class="table-scroll"><table>
@@ -284,7 +286,7 @@
     </div>
   </section>
 
-  <section id="doubles" class="board-section">
+  <section id="doubles" class="board-section mobile-nav-page" data-mobile-page="doubles">
     <div class="section-head"><div><p class="kicker">Doubles</p><h2>Doubles Leaderboard</h2></div><span id="doublesStatus" class="status">Loading...</span></div>
     <div class="board-card">
       <div class="table-scroll"><table>
@@ -295,7 +297,7 @@
     </div>
   </section>
 
-<section id="market" class="mytt-market-section">
+<section id="market" class="mytt-market-section mobile-nav-page" data-mobile-page="market">
     <div class="mytt-market-hero">
       <div class="mytt-market-hero-copy">
         <p class="kicker">Community Marketplace</p>
@@ -348,6 +350,52 @@
     </div>
 
     <p class="mytt-market-disclaimer">MYTT provides a community listing platform only. Buyers and sellers are responsible for checking item condition, payment and collection arrangements.</p>
+  </section>
+
+
+
+  <section id="submitPage" class="submit-hub-section mobile-nav-page" data-mobile-page="submit" aria-labelledby="submitPageTitle">
+    <div class="section-head submit-hub-head">
+      <div>
+        <p class="kicker">Join / Submit</p>
+        <h2 id="submitPageTitle">MYTT Actions</h2>
+      </div>
+      <span class="status">Official Forms</span>
+    </div>
+
+    <div class="submit-hub-grid">
+      <button class="submit-hub-card submit-hub-card-primary" type="button" data-open-singles-form>
+        <span class="submit-hub-icon">🏓</span>
+        <span class="submit-hub-copy">
+          <strong>Submit Singles Result</strong>
+          <small id="mobileSinglesSubmitText">Open current singles submission</small>
+        </span>
+        <b>→</b>
+      </button>
+
+      <button class="submit-hub-card" type="button" data-open-doubles-form>
+        <span class="submit-hub-icon">👥</span>
+        <span class="submit-hub-copy">
+          <strong>Submit Doubles Result</strong>
+          <small id="mobileDoublesSubmitText">Open current doubles submission</small>
+        </span>
+        <b>→</b>
+      </button>
+
+      <button class="submit-hub-card submit-hub-card-join" type="button" data-open-join-form>
+        <span class="submit-hub-icon">👤</span>
+        <span class="submit-hub-copy">
+          <strong>Join MYTT</strong>
+          <small>Register as an official MYTT player</small>
+        </span>
+        <b>→</b>
+      </button>
+    </div>
+
+    <div class="submit-hub-note">
+      <span>✓</span>
+      <p>Use the official MYTT forms above. Submissions are reviewed before they are accepted or published.</p>
+    </div>
   </section>
 
 
@@ -996,8 +1044,8 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260814-mobile-tier-icon-clean"></script>
-<script src="marketplace.js?v=20260814-mobile-leaderboard-cards"></script>
+<script src="app.js?v=20260814-mobile-page-nav-home-rank-v1"></script>
+<script src="marketplace.js?v=20260814-mobile-page-nav-home-rank-v1"></script>
 <footer class="mytt-footer">
   <div class="mytt-footer-inner">
     <div class="mytt-footer-brand">

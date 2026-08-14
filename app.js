@@ -3059,3 +3059,129 @@ document.addEventListener("click", function(e){
     setTimeout(resetMobileNavState,80);
   });
 })();
+
+
+/* =========================================================
+   MYTT MOBILE ONE-PAGE-PER-NAV MODE — V1
+   ========================================================= */
+(function initMobilePageMode(){
+  const MOBILE_BREAKPOINT=860;
+  const PAGE_TARGETS=new Set(["home","events","players","singles","doubles","market","submit"]);
+
+  function isMobile(){
+    return window.innerWidth<=MOBILE_BREAKPOINT;
+  }
+
+  function normalizeTarget(value){
+    const raw=String(value||"").replace(/^#/,"");
+    return PAGE_TARGETS.has(raw)?raw:"home";
+  }
+
+  function getPageNodes(){
+    return [...document.querySelectorAll("main#home > .mobile-nav-page")];
+  }
+
+  function setHeaderActive(target){
+    document.querySelectorAll(".premium-nav .nav-link").forEach(link=>{
+      link.classList.toggle("active",link.dataset.target===target);
+    });
+  }
+
+  function showMobilePage(target,{scroll=true}={}){
+    target=normalizeTarget(target);
+
+    if(!isMobile()){
+      document.body.classList.remove("mytt-mobile-page-mode");
+      getPageNodes().forEach(node=>node.classList.remove("is-mobile-page-active"));
+      return;
+    }
+
+    document.body.classList.add("mytt-mobile-page-mode");
+
+    const nodes=getPageNodes();
+    let matched=false;
+    nodes.forEach(node=>{
+      const active=node.dataset.mobilePage===target;
+      node.classList.toggle("is-mobile-page-active",active);
+      if(active)matched=true;
+    });
+
+    if(!matched){
+      nodes.forEach(node=>node.classList.toggle("is-mobile-page-active",node.dataset.mobilePage==="home"));
+      target="home";
+    }
+
+    setHeaderActive(target);
+
+    if(scroll){
+      requestAnimationFrame(()=>{
+        window.scrollTo({top:0,left:0,behavior:"auto"});
+      });
+    }
+  }
+
+  function currentTargetFromHash(){
+    return normalizeTarget(location.hash||"#home");
+  }
+
+  document.addEventListener("click",event=>{
+    if(!isMobile())return;
+
+    const link=event.target.closest('a[href^="#"]');
+    if(!link)return;
+
+    const href=link.getAttribute("href")||"";
+    const target=normalizeTarget(link.dataset.target||href);
+    const raw=String(link.dataset.target||href).replace(/^#/,"");
+    if(!PAGE_TARGETS.has(raw))return;
+
+    event.preventDefault();
+
+    if(location.hash!==`#${target}`){
+      history.pushState(null,"",`#${target}`);
+    }
+
+    showMobilePage(target,{scroll:true});
+
+    const header=document.querySelector(".premium-header");
+    const toggle=document.querySelector(".premium-mobile-toggle");
+    if(header)header.classList.remove("nav-open");
+    if(toggle)toggle.setAttribute("aria-expanded","false");
+  });
+
+  window.addEventListener("popstate",()=>{
+    showMobilePage(currentTargetFromHash(),{scroll:true});
+  });
+
+  window.addEventListener("hashchange",()=>{
+    showMobilePage(currentTargetFromHash(),{scroll:true});
+  });
+
+  let lastMobile=isMobile();
+  window.addEventListener("resize",()=>{
+    const nowMobile=isMobile();
+    if(nowMobile!==lastMobile){
+      lastMobile=nowMobile;
+      showMobilePage(currentTargetFromHash(),{scroll:false});
+    }
+  });
+
+  function syncMobileSubmitStatus(){
+    const srcSingles=document.getElementById("singlesSubmitCtaText");
+    const srcDoubles=document.getElementById("doublesSubmitCtaText");
+    const mobileSingles=document.getElementById("mobileSinglesSubmitText");
+    const mobileDoubles=document.getElementById("mobileDoublesSubmitText");
+    if(srcSingles&&mobileSingles)mobileSingles.textContent=srcSingles.textContent||"Open current singles submission";
+    if(srcDoubles&&mobileDoubles)mobileDoubles.textContent=srcDoubles.textContent||"Open current doubles submission";
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",()=>{
+      showMobilePage(currentTargetFromHash(),{scroll:false});
+      setInterval(syncMobileSubmitStatus,1000);
+    });
+  }else{
+    showMobilePage(currentTargetFromHash(),{scroll:false});
+    setInterval(syncMobileSubmitStatus,1000);
+  }
+})();

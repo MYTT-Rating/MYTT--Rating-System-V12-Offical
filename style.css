@@ -5759,3 +5759,356 @@ td{
     font-size:25px !important;
   }
 }
+
+
+/* =========================================================
+   MYTT MOBILE PAGE MODE + HOME RANK JOURNEY — V1
+   Each navigation destination becomes its own mobile page.
+   Desktop remains a continuous website.
+   ========================================================= */
+
+/* Dedicated Join / Submit hub exists for mobile navigation only. */
+.submit-hub-section{
+  display:none;
+}
+
+@media (max-width:860px){
+  /* One navigation destination at a time. JS adds is-mobile-page-active. */
+  main#home > .mobile-nav-page{
+    display:none !important;
+  }
+
+  main#home > .mobile-nav-page.is-mobile-page-active{
+    display:block !important;
+  }
+
+  main#home > .mobile-nav-page{
+    min-height:calc(100dvh - 76px);
+    scroll-margin-top:76px;
+  }
+
+  /* Competition rules are supporting content, not a primary mobile nav page. */
+  #notice{
+    display:none !important;
+  }
+
+  /* HOME = brand statement + Rank Journey + compact quick actions. */
+  .hero-home-final.is-mobile-page-active{
+    min-height:calc(100dvh - 76px) !important;
+    gap:13px !important;
+    padding:18px 0 20px !important;
+  }
+
+  .hero-home-final .hero-top-banner{
+    flex:0 0 auto;
+  }
+
+  .hero-home-final .kicker-centered{
+    margin-bottom:10px !important;
+    font-size:9px !important;
+    letter-spacing:2.6px !important;
+  }
+
+  .hero-home-final .hero-title-row{
+    gap:4px 10px !important;
+    font-size:clamp(29px,8.4vw,43px) !important;
+    line-height:.92 !important;
+  }
+
+  .hero-home-final .hero-neon-divider{
+    height:3px !important;
+    margin-top:10px !important;
+  }
+
+  .hero-home-final .hero-rank-card-final{
+    flex:0 0 auto;
+    margin-top:0 !important;
+    padding:14px 13px 13px !important;
+    border-radius:20px !important;
+  }
+
+  .hero-home-final .rank-card-head-v5{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) auto !important;
+    align-items:center !important;
+    gap:10px !important;
+    margin-bottom:2px !important;
+  }
+
+  .hero-home-final .rank-card-head-v5 > div:first-child p{
+    margin:0 0 3px !important;
+    font-size:9px !important;
+    letter-spacing:2px !important;
+  }
+
+  .hero-home-final .rank-card-head-v5 h2{
+    margin:0 !important;
+    font-size:24px !important;
+    line-height:1 !important;
+  }
+
+  .hero-home-final .current-rating-v5{
+    width:auto !important;
+    min-width:126px;
+    display:grid !important;
+    grid-template-columns:auto auto !important;
+    grid-template-areas:"label pill" "rating pill" !important;
+    column-gap:8px !important;
+    padding:8px 9px !important;
+    border-radius:13px !important;
+  }
+
+  .hero-home-final .current-rating-v5 small{
+    font-size:7px !important;
+    letter-spacing:.7px !important;
+  }
+
+  .hero-home-final .current-rating-v5 strong{
+    margin-top:2px !important;
+    font-size:24px !important;
+    line-height:1 !important;
+  }
+
+  .hero-home-final .current-rating-v5 span{
+    padding:5px 7px !important;
+    font-size:9px !important;
+    white-space:nowrap !important;
+  }
+
+  .hero-home-final .homepage-rank-road{
+    display:flex !important;
+    justify-content:flex-start !important;
+    align-items:flex-start !important;
+    gap:0 !important;
+    margin:0 !important;
+    padding:12px 2px 34px !important;
+    overflow-x:auto !important;
+    overflow-y:visible !important;
+    scrollbar-width:none;
+  }
+
+  .hero-home-final .homepage-rank-road::-webkit-scrollbar{
+    display:none;
+  }
+
+  .hero-home-final .home-rank-node{
+    flex:0 0 54px !important;
+    width:54px !important;
+    min-width:54px !important;
+  }
+
+  .hero-home-final .home-rank-orb{
+    width:46px !important;
+    height:46px !important;
+    margin:0 auto 5px !important;
+    font-size:21px !important;
+  }
+
+  .hero-home-final .home-rank-node span{
+    min-height:20px !important;
+    font-size:7.5px !important;
+    line-height:1.05 !important;
+  }
+
+  .hero-home-final .home-rank-node small{
+    margin-top:2px !important;
+    font-size:8px !important;
+  }
+
+  .hero-home-final .home-rank-line{
+    flex:0 0 18px !important;
+    min-width:18px !important;
+    max-width:18px !important;
+    height:4px !important;
+    margin-top:21px !important;
+  }
+
+  .hero-home-final .you-marker{
+    top:72px !important;
+    font-size:9px !important;
+  }
+
+  .hero-home-final .you-marker em{
+    font-size:5.8px !important;
+    letter-spacing:.35px !important;
+  }
+
+  .hero-home-final .hero-progress-card{
+    padding:10px 11px !important;
+    border-radius:14px !important;
+  }
+
+  .hero-home-final .hero-progress-head{
+    margin-bottom:7px !important;
+    font-size:11px !important;
+  }
+
+  .hero-home-final .hero-progress-track{
+    height:8px !important;
+  }
+
+  .hero-home-final .hero-progress-card p{
+    margin-top:6px !important;
+    font-size:10px !important;
+  }
+
+  /* Home quick actions stay available but occupy far less vertical space. */
+  .hero-home-final .cta-grid-home-final{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:8px !important;
+    margin:0 !important;
+  }
+
+  .hero-home-final .cta-grid-home-final .cta{
+    min-height:62px !important;
+    padding:9px 10px !important;
+    border-radius:13px !important;
+    gap:8px !important;
+  }
+
+  .hero-home-final .cta-grid-home-final .cta>span{
+    font-size:24px !important;
+  }
+
+  .hero-home-final .cta-grid-home-final .cta strong{
+    font-size:10px !important;
+  }
+
+  .hero-home-final .cta-grid-home-final .cta small{
+    margin-top:2px !important;
+    font-size:7px !important;
+    line-height:1.15 !important;
+  }
+
+  /* Each feature page gets consistent top spacing below the fixed header. */
+  #events.mobile-nav-page,
+  #players.mobile-nav-page,
+  #singles.mobile-nav-page,
+  #doubles.mobile-nav-page,
+  #market.mobile-nav-page,
+  #submitPage.mobile-nav-page{
+    padding-top:18px !important;
+    padding-bottom:34px !important;
+  }
+
+  #events .section-head,
+  #players .section-head,
+  #singles .section-head,
+  #doubles .section-head,
+  #submitPage .section-head{
+    margin-bottom:14px !important;
+  }
+
+  /* Dedicated mobile Join / Submit page. */
+  #submitPage.submit-hub-section{
+    display:none !important;
+  }
+
+  #submitPage.submit-hub-section.is-mobile-page-active{
+    display:block !important;
+  }
+
+  .submit-hub-grid{
+    display:grid;
+    gap:11px;
+  }
+
+  .submit-hub-card{
+    width:100%;
+    min-height:92px;
+    display:grid;
+    grid-template-columns:52px minmax(0,1fr) auto;
+    align-items:center;
+    gap:12px;
+    padding:14px 15px;
+    border:1px solid rgba(255,255,255,.11);
+    border-radius:18px;
+    color:#fff;
+    text-align:left;
+    background:
+      radial-gradient(circle at 100% 0%,rgba(239,68,68,.10),transparent 38%),
+      linear-gradient(145deg,rgba(24,26,32,.96),rgba(8,9,12,.99));
+    box-shadow:0 16px 34px rgba(0,0,0,.30);
+  }
+
+  .submit-hub-card-primary{
+    border-color:rgba(255,67,67,.65);
+    background:
+      radial-gradient(circle at 95% 0%,rgba(255,82,82,.18),transparent 40%),
+      linear-gradient(145deg,rgba(95,13,15,.96),rgba(28,8,10,.99));
+  }
+
+  .submit-hub-card-join{
+    border-color:rgba(239,68,68,.34);
+  }
+
+  .submit-hub-icon{
+    width:52px;
+    height:52px;
+    display:grid;
+    place-items:center;
+    border-radius:15px;
+    border:1px solid rgba(255,72,72,.34);
+    background:rgba(239,68,68,.08);
+    font-size:28px;
+  }
+
+  .submit-hub-copy{
+    min-width:0;
+  }
+
+  .submit-hub-copy strong{
+    display:block;
+    font-size:15px;
+    line-height:1.15;
+    text-transform:uppercase;
+  }
+
+  .submit-hub-copy small{
+    display:block;
+    margin-top:5px;
+    color:#aeb3bc;
+    font-size:10px;
+    line-height:1.3;
+  }
+
+  .submit-hub-card>b{
+    color:#ff5555;
+    font-size:25px;
+  }
+
+  .submit-hub-note{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    margin-top:14px;
+    padding:12px 13px;
+    border:1px solid rgba(239,68,68,.18);
+    border-radius:15px;
+    background:rgba(0,0,0,.22);
+  }
+
+  .submit-hub-note>span{
+    color:#ff5656;
+    font-weight:950;
+  }
+
+  .submit-hub-note p{
+    margin:0;
+    color:#aeb3bc;
+    font-size:10px;
+    line-height:1.45;
+  }
+
+  /* When a page is selected, start it cleanly below the header. */
+  body.mytt-mobile-page-mode{
+    overflow-x:hidden !important;
+  }
+}
+
+@media (min-width:861px){
+  #submitPage{
+    display:none !important;
+  }
+}
