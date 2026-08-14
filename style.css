@@ -6112,3 +6112,13 @@ td{
     display:none !important;
   }
 }
+
+/* =========================================================
+   HOME QUICK ACTIONS — MOBILE SPACING
+   Add breathing room below Rank Journey.
+   ========================================================= */
+@media (max-width: 680px){
+  .hero-home-final .cta-grid-home-final{
+    margin-top:22px !important;
+  }
+}
