@@ -5664,3 +5664,98 @@ td{
     font-size:8.7px !important;
   }
 }
+
+/* =========================================================
+   MYTT MOBILE MODAL HEADER CLEARANCE FIX — 2026-08-14
+   Keep form titles and close buttons below the fixed 76px header.
+   Applies to Event Registration, Join MYTT, Singles and Doubles.
+   ========================================================= */
+@media (max-width:860px){
+  .result-modal{
+    top:76px !important;
+    right:0 !important;
+    bottom:0 !important;
+    left:0 !important;
+    height:calc(100dvh - 76px) !important;
+    min-height:0 !important;
+    padding:10px !important;
+    align-items:start !important;
+    z-index:4900 !important; /* below fixed header (5000), above page */
+    overflow:hidden !important;
+  }
+
+  .result-modal-backdrop{
+    top:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+    left:0 !important;
+  }
+
+  .result-modal-card,
+  #joinFormModal .result-modal-card,
+  .event-registration-modal-card{
+    width:100% !important;
+    max-height:calc(100dvh - 96px) !important;
+    margin:0 !important;
+    overflow-y:auto !important;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    border-radius:20px !important;
+  }
+
+  .result-modal-close{
+    position:sticky !important;
+    top:0 !important;
+    float:right !important;
+    margin:0 0 -42px 10px !important;
+    z-index:30 !important;
+    width:40px !important;
+    height:40px !important;
+    min-width:40px !important;
+    border:1px solid rgba(255,255,255,.20) !important;
+    border-radius:50% !important;
+    background:rgba(16,17,21,.96) !important;
+    color:#fff !important;
+    box-shadow:0 6px 22px rgba(0,0,0,.45),0 0 0 1px rgba(239,68,68,.12) inset !important;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    pointer-events:auto !important;
+    touch-action:manipulation;
+  }
+
+  .result-form-head{
+    padding-right:48px !important;
+  }
+
+  /* Older Join-specific rule used to push the card under the fixed header. */
+  #joinFormModal{
+    padding:10px !important;
+    align-items:start !important;
+    overflow:hidden !important;
+  }
+}
+
+@media (max-width:480px){
+  .result-modal{
+    top:76px !important;
+    height:calc(100dvh - 76px) !important;
+    padding:8px 0 0 !important;
+  }
+
+  .result-modal-card,
+  #joinFormModal .result-modal-card,
+  .event-registration-modal-card{
+    max-height:calc(100dvh - 84px) !important;
+    border-radius:18px 18px 0 0 !important;
+    padding-top:16px !important;
+  }
+
+  .result-modal-close{
+    top:0 !important;
+    right:auto !important;
+    width:38px !important;
+    height:38px !important;
+    min-width:38px !important;
+    font-size:25px !important;
+  }
+}
