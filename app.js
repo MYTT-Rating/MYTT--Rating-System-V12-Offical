@@ -2,6 +2,7 @@ const config=window.MYTT;let singlesPlayers=[],doublesTeams=[],playerDb=[],match
 const TIERS=[{min:-Infinity,name:"Novice",icon:"🌿",cls:"tier-novice",next:1500},{min:1500,name:"Rookie",icon:"🌱",cls:"tier-rookie",next:1600},{min:1600,name:"Challenger",icon:"⚔️",cls:"tier-challenger",next:1700},{min:1700,name:"Elite",icon:"⭐",cls:"tier-elite",next:1800},{min:1800,name:"Master",icon:"🔥",cls:"tier-master",next:1900},{min:1900,name:"Legend",icon:"👑",cls:"tier-legend",next:2000},{min:2000,name:"Grandmaster",icon:"💎",cls:"tier-grandmaster",next:2100},{min:2100,name:"Immortal",icon:"⚡",cls:"tier-immortal",next:2200},{min:2200,name:"MYTT Champion",icon:"🏆",cls:"tier-champion",next:null}];
 function getTier(r){const rating=Number(r)||0;let t=TIERS[0];for(const tier of TIERS){if(rating>=tier.min)t=tier}return t}
 function tierHTML(r){const t=getTier(r);return `<span class="tier-pill ${t.cls}">${t.icon} ${t.name}</span>`}
+function leaderboardTierIconHTML(r){const t=getTier(r);return `<span class="leaderboard-mobile-tier ${t.cls}" data-tier="${t.name}" title="${t.name}" aria-label="${t.name} tier">${t.icon}</span>`}
 function progressHTML(r){const rating=Number(r)||0;const t=getTier(r);if(!t.next)return `<div class="tier-progress"><div class="tier-progress-top"><span>${t.icon} ${t.name}</span><span>Top Tier</span></div><div class="progress-track"><div class="progress-fill" style="width:100%"></div></div><div class="progress-note">You have reached MYTT Champion tier.</div></div>`;const base=t.min===-Infinity?1400:t.min;const pct=Math.max(0,Math.min(100,((rating-base)/(t.next-base))*100));const next=TIERS.find(x=>x.min===t.next);return `<div class="tier-progress"><div class="tier-progress-top"><span>${t.icon} ${t.name}</span><span>${next.icon} ${next.name}</span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="progress-note">${rating} / ${t.next} · ${t.next-rating} pts to ${next.name}</div></div>`}
 
 function rankJourneyHTML(r){
@@ -145,11 +146,11 @@ function splitTeamName(teamName){
   return parts.length ? parts : [text];
 }
 
-function teamCellHTML(teamName){
+function teamCellHTML(teamName,tierIconHtml=""){
   const members = splitTeamName(teamName);
   if (members.length < 2) {
     const db = findDbByName(teamName);
-    return `<div class="player-cell">${avatarHTML(db,"row-avatar")}<span>${teamName} ↗</span></div>`;
+    return `<div class="player-cell">${avatarHTML(db,"row-avatar")}<div class="leaderboard-name-wrap"><span class="leaderboard-name-text">${teamName} ↗</span>${tierIconHtml}</div></div>`;
   }
 
   return `<div class="team-cell">
@@ -160,10 +161,11 @@ function teamCellHTML(teamName){
         <span>${member}</span>
       </div>`;
     }).join('<span class="team-plus">+</span>')}
+    ${tierIconHtml}
   </div>`;
 }
 
-function makeRow(item){const db=findDbByName(item.name);const tr=document.createElement("tr");tr.className="rank-"+String(item.rank||"").trim();const nameHtml=item.type==="doubles"?teamCellHTML(item.name):`<div class="player-cell">${avatarHTML(db,"row-avatar")}<span>${item.name} ↗</span></div>`;tr.innerHTML=`<td><span class="rank-badge">${rankLabel(item.rank)}</span></td><td class="name" ${item.type==="doubles"?"":`data-player="${encodeURIComponent(item.name)}"`}>${nameHtml}</td><td>${tierHTML(item.rating)}</td><td class="rating">${item.rating}</td><td>${item.record}</td><td>${item.winRate}</td><td>${item.peak}</td>`;return tr}
+function makeRow(item){const db=findDbByName(item.name);const tr=document.createElement("tr");tr.className="rank-"+String(item.rank||"").trim();const mobileTierIcon=leaderboardTierIconHTML(item.rating);const nameHtml=item.type==="doubles"?teamCellHTML(item.name,mobileTierIcon):`<div class="player-cell">${avatarHTML(db,"row-avatar")}<div class="leaderboard-name-wrap"><span class="leaderboard-name-text">${item.name} ↗</span>${mobileTierIcon}</div></div>`;tr.innerHTML=`<td><span class="rank-badge">${rankLabel(item.rank)}</span></td><td class="name" ${item.type==="doubles"?"":`data-player="${encodeURIComponent(item.name)}"`}>${nameHtml}</td><td>${tierHTML(item.rating)}</td><td class="rating">${item.rating}</td><td>${item.record}</td><td>${item.winRate}</td><td>${item.peak}</td>`;return tr}
 const LEADERBOARD_INITIAL_COUNT=10;
 const LEADERBOARD_STEP=10;
 
