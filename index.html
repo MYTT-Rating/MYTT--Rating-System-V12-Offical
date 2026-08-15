@@ -18,8 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260815-player-horizontal-fixed">
-  <link rel="stylesheet" href="marketplace.css?v=20260814-mobile-page-nav-home-rank-v1">
+  <link rel="stylesheet" href="style.css?v=20260815-mobile-stable-polish-v1">
+  <link rel="stylesheet" href="marketplace.css?v=20260815-mobile-stable-polish-v1">
 
 <style id="mytt-mobile-title-left-fix">
 @media (max-width: 768px){
@@ -130,6 +130,455 @@
     justify-self:end !important;
     align-self:end !important;
     margin:0 0 2px !important;
+  }
+}
+</style>
+
+
+<style id="mytt-mobile-stable-polish-v1">
+@media (max-width: 768px){
+  :root{
+    --mytt-mobile-red:rgba(239,68,68,.38);
+    --mytt-mobile-red-soft:rgba(239,68,68,.22);
+    --mytt-mobile-card-radius:18px;
+    --mytt-mobile-gap:12px;
+  }
+
+  /* =====================================================
+     1. HEADER — slightly shorter, same identity
+     ===================================================== */
+  .premium-header,
+  .site-header{
+    min-height:72px !important;
+  }
+
+  .premium-header-inner{
+    min-height:72px !important;
+    padding:9px 15px !important;
+    gap:10px !important;
+  }
+
+  .premium-brand{
+    gap:10px !important;
+    min-width:0 !important;
+  }
+
+  .premium-brand-mark{
+    width:48px !important;
+    height:48px !important;
+    min-width:48px !important;
+    font-size:26px !important;
+  }
+
+  .premium-brand-name{
+    font-size:24px !important;
+    line-height:1 !important;
+    letter-spacing:2px !important;
+  }
+
+  .premium-brand-sub{
+    margin-top:4px !important;
+    font-size:8.5px !important;
+    line-height:1.15 !important;
+    letter-spacing:.65px !important;
+    white-space:nowrap !important;
+  }
+
+  .premium-mobile-toggle{
+    width:52px !important;
+    height:52px !important;
+    min-width:52px !important;
+    border-radius:14px !important;
+  }
+
+  /* =====================================================
+     2. ONE APP, ONE HEADING SYSTEM
+     ===================================================== */
+  .mobile-nav-page{
+    min-height:calc(100svh - 72px);
+  }
+
+  #events,
+  #players,
+  #singles,
+  #doubles,
+  #market,
+  #submitPage{
+    padding-top:24px !important;
+  }
+
+  #events .section-head,
+  #players .section-head,
+  #singles .section-head,
+  #doubles .section-head,
+  #submitPage .section-head{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) auto !important;
+    align-items:end !important;
+    gap:10px !important;
+    margin:0 0 18px !important;
+    text-align:left !important;
+  }
+
+  #events .section-head > div:first-child,
+  #players .section-head > div:first-child,
+  #singles .section-head > div:first-child,
+  #doubles .section-head > div:first-child,
+  #submitPage .section-head > div:first-child{
+    min-width:0 !important;
+    margin:0 !important;
+    text-align:left !important;
+    justify-self:start !important;
+  }
+
+  #events .kicker,
+  #players .kicker,
+  #singles .kicker,
+  #doubles .kicker,
+  #market .kicker,
+  #submitPage .kicker{
+    margin:0 0 6px !important;
+    font-size:10.5px !important;
+    line-height:1 !important;
+    letter-spacing:3.4px !important;
+    text-align:left !important;
+  }
+
+  #events .section-head h2,
+  #players .section-head h2,
+  #singles .section-head h2,
+  #doubles .section-head h2,
+  #submitPage .section-head h2,
+  #submitPageTitle{
+    margin:0 !important;
+    max-width:none !important;
+    font-size:clamp(31px,8.8vw,40px) !important;
+    line-height:.94 !important;
+    letter-spacing:-.8px !important;
+    text-align:left !important;
+    transform:none !important;
+  }
+
+  #events .status,
+  #players .status,
+  #singles .status,
+  #doubles .status,
+  #submitPage .status{
+    align-self:end !important;
+    justify-self:end !important;
+    margin:0 0 1px !important;
+    padding:7px 10px !important;
+    font-size:10px !important;
+    line-height:1 !important;
+    border-radius:999px !important;
+  }
+
+  /* =====================================================
+     3. PLAYERS — search full row, filters 2-up
+     ===================================================== */
+  #players .players-toolbar{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    gap:10px !important;
+    margin:0 0 16px !important;
+  }
+
+  #players #playersSearch{
+    grid-column:1 / -1 !important;
+    width:100% !important;
+    min-width:0 !important;
+    min-height:50px !important;
+    padding:0 15px !important;
+    font-size:14px !important;
+    border-radius:14px !important;
+  }
+
+  #players #playersFilter,
+  #players #playersSort{
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+    min-height:48px !important;
+    padding:0 12px !important;
+    font-size:13px !important;
+    border-radius:14px !important;
+  }
+
+  /* Keep the finished horizontal player card; only harmonise its shell. */
+  #players .players-grid{
+    gap:var(--mytt-mobile-gap) !important;
+  }
+
+  #players .player-card{
+    border-radius:var(--mytt-mobile-card-radius) !important;
+    border-color:var(--mytt-mobile-red) !important;
+    box-shadow:0 10px 26px rgba(0,0,0,.27),0 0 12px rgba(239,68,68,.055) !important;
+  }
+
+  /* =====================================================
+     4. HOME RANK JOURNEY — compact + genuine horizontal scroll
+     ===================================================== */
+  .hero-home-final{
+    padding-top:22px !important;
+  }
+
+  .hero-top-banner{
+    margin-bottom:13px !important;
+  }
+
+  .hero-title-row{
+    font-size:clamp(31px,9vw,42px) !important;
+    line-height:.98 !important;
+  }
+
+  .hero-neon-divider{
+    margin-top:13px !important;
+  }
+
+  .hero-rank-card-v5.hero-rank-card-final{
+    margin-top:12px !important;
+    padding:13px 11px 11px !important;
+    border-radius:20px !important;
+    border-color:var(--mytt-mobile-red) !important;
+    box-shadow:0 12px 30px rgba(0,0,0,.3),0 0 14px rgba(239,68,68,.07) !important;
+  }
+
+  .rank-card-head-v5{
+    display:block !important;
+    margin:0 !important;
+  }
+
+  .rank-card-head-v5 > div:first-child p{
+    margin:0 0 5px !important;
+    font-size:10px !important;
+    line-height:1 !important;
+    letter-spacing:2.8px !important;
+  }
+
+  .rank-card-head-v5 > div:first-child h2{
+    display:none !important;
+  }
+
+  .current-rating-v5{
+    display:none !important;
+  }
+
+  .homepage-rank-road{
+    position:relative !important;
+    display:flex !important;
+    align-items:flex-start !important;
+    flex-wrap:nowrap !important;
+    gap:0 !important;
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    overscroll-behavior-x:contain !important;
+    -webkit-overflow-scrolling:touch !important;
+    scroll-snap-type:x proximity !important;
+    scrollbar-width:none !important;
+    padding:8px 5px 9px !important;
+    margin:0 !important;
+  }
+
+  .homepage-rank-road::-webkit-scrollbar{
+    display:none !important;
+  }
+
+  .homepage-rank-road .home-rank-node{
+    flex:0 0 68px !important;
+    width:68px !important;
+    min-width:68px !important;
+    scroll-snap-align:center !important;
+  }
+
+  .homepage-rank-road .home-rank-orb{
+    width:50px !important;
+    height:50px !important;
+    min-width:50px !important;
+    font-size:24px !important;
+  }
+
+  .homepage-rank-road .home-rank-node > span{
+    margin-top:6px !important;
+    font-size:9px !important;
+    line-height:1.05 !important;
+  }
+
+  .homepage-rank-road .home-rank-node > small{
+    margin-top:4px !important;
+    font-size:8px !important;
+  }
+
+  .homepage-rank-road .home-rank-line{
+    flex:0 0 24px !important;
+    width:24px !important;
+    min-width:24px !important;
+    margin-top:24px !important;
+  }
+
+  .homepage-rank-road .you-marker{
+    margin-top:4px !important;
+    font-size:7px !important;
+  }
+
+  .rank-scroll-hint{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:9px !important;
+    margin:0 0 7px !important;
+    color:rgba(255,255,255,.55) !important;
+    font-size:9px !important;
+    letter-spacing:.4px !important;
+  }
+
+  .rank-scroll-hint span{
+    color:#ff5b5b !important;
+    font-size:12px !important;
+  }
+
+  .hero-progress-card{
+    margin-top:5px !important;
+    padding:8px 10px !important;
+    border-radius:13px !important;
+  }
+
+  .hero-progress-head{
+    margin-bottom:6px !important;
+  }
+
+  .hero-progress-head strong{
+    font-size:10px !important;
+  }
+
+  .hero-progress-track{
+    height:5px !important;
+  }
+
+  .hero-progress-card p{
+    margin:6px 0 0 !important;
+    font-size:9.5px !important;
+  }
+
+  .cta-grid-home-final{
+    gap:10px !important;
+    margin-top:22px !important;
+  }
+
+  .cta-grid-home-final .cta{
+    min-height:72px !important;
+    padding:11px 12px !important;
+    border-radius:16px !important;
+    box-shadow:0 9px 24px rgba(0,0,0,.24) !important;
+  }
+
+  .cta-grid-home-final .cta > span{
+    font-size:25px !important;
+  }
+
+  .cta-grid-home-final .cta strong{
+    font-size:11.5px !important;
+    line-height:1.1 !important;
+  }
+
+  .cta-grid-home-final .cta small{
+    margin-top:4px !important;
+    font-size:8px !important;
+    line-height:1.15 !important;
+  }
+
+  /* =====================================================
+     5. CARD LANGUAGE — less glow, more premium consistency
+     ===================================================== */
+  #eventsGrid > *,
+  #singles .board-card,
+  #doubles .board-card,
+  #submitPage .submit-hub-card,
+  #submitPage .submit-hub-note,
+  #market .mytt-market-hero,
+  #market .mytt-market-toolbar,
+  #market .mytt-market-info-strip,
+  #myttMarketGrid > *{
+    border-radius:var(--mytt-mobile-card-radius) !important;
+    border-color:var(--mytt-mobile-red) !important;
+    box-shadow:0 10px 26px rgba(0,0,0,.26),0 0 12px rgba(239,68,68,.05) !important;
+  }
+
+  #submitPage .submit-hub-grid{
+    gap:12px !important;
+  }
+
+  #submitPage .submit-hub-card{
+    min-height:98px !important;
+    padding:14px !important;
+  }
+
+  #submitPage .submit-hub-icon{
+    width:58px !important;
+    height:58px !important;
+    min-width:58px !important;
+  }
+
+  #submitPage .submit-hub-copy strong{
+    font-size:15px !important;
+    line-height:1.15 !important;
+  }
+
+  #submitPage .submit-hub-copy small{
+    font-size:10px !important;
+    line-height:1.25 !important;
+  }
+
+  #market .mytt-market-hero{
+    padding:17px !important;
+  }
+
+  #market .mytt-market-hero h2{
+    font-size:clamp(31px,8.8vw,40px) !important;
+    line-height:.95 !important;
+  }
+
+  #market .mytt-market-subtitle{
+    font-size:11px !important;
+    line-height:1.4 !important;
+  }
+
+  #market .mytt-market-toolbar{
+    gap:9px !important;
+  }
+
+  /* Mobile leaderboard card polish, without changing its data logic. */
+  #singles tbody tr,
+  #doubles tbody tr{
+    border-radius:16px !important;
+    border-color:rgba(239,68,68,.3) !important;
+    box-shadow:0 8px 18px rgba(0,0,0,.2) !important;
+  }
+}
+
+@media (max-width: 390px){
+  .premium-brand-mark{
+    width:45px !important;
+    height:45px !important;
+    min-width:45px !important;
+  }
+  .premium-brand-name{font-size:22px !important;}
+  .premium-brand-sub{font-size:7.8px !important;}
+
+  #events .section-head h2,
+  #players .section-head h2,
+  #singles .section-head h2,
+  #doubles .section-head h2,
+  #submitPage .section-head h2,
+  #submitPageTitle{
+    font-size:29px !important;
+  }
+
+  #players #playersFilter,
+  #players #playersSort{
+    padding:0 9px !important;
+    font-size:12px !important;
   }
 }
 </style>
@@ -1158,8 +1607,8 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260815-player-horizontal-fixed"></script>
-<script src="marketplace.js?v=20260814-mobile-page-nav-home-rank-v1"></script>
+<script src="app.js?v=20260815-mobile-stable-polish-v1"></script>
+<script src="marketplace.js?v=20260815-mobile-stable-polish-v1"></script>
 <footer class="mytt-footer">
   <div class="mytt-footer-inner">
     <div class="mytt-footer-brand">
