@@ -18,8 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260815-mobile-stable-polish-v1">
-  <link rel="stylesheet" href="marketplace.css?v=20260815-mobile-stable-polish-v1">
+  <link rel="stylesheet" href="style.css?v=20260815-mobile-stable-polish-v2">
+  <link rel="stylesheet" href="marketplace.css?v=20260815-mobile-stable-polish-v2">
 
 <style id="mytt-mobile-title-left-fix">
 @media (max-width: 768px){
@@ -579,6 +579,59 @@
   #players #playersSort{
     padding:0 9px !important;
     font-size:12px !important;
+  }
+}
+</style>
+
+
+<style id="mytt-event-photo-bg-v2">
+/* Rating Day hero — dark arena photo background */
+.target-event-hero{
+  position:relative !important;
+  isolation:isolate !important;
+  overflow:hidden !important;
+  background:
+    linear-gradient(90deg,rgba(2,3,5,.97) 0%,rgba(2,3,5,.84) 37%,rgba(2,3,5,.34) 68%,rgba(2,3,5,.12) 100%),
+    url('event-rating-day-bg.jpg') right center / cover no-repeat !important;
+}
+
+/* Remove the old separate tech-art paddle so the new photo is the hero art */
+.target-event-hero .target-paddle-art{
+  display:none !important;
+}
+
+.target-event-hero .target-hero-content,
+.target-event-hero .target-hero-action{
+  position:relative !important;
+  z-index:2 !important;
+}
+
+/* subtle premium edge light, keeps the current neon language */
+.target-event-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.025),transparent 30%),
+    radial-gradient(circle at 80% 45%,rgba(239,68,68,.10),transparent 34%);
+}
+
+@media (max-width:768px){
+  .target-event-hero{
+    background:
+      linear-gradient(180deg,rgba(3,4,7,.20) 0%,rgba(3,4,7,.34) 34%,rgba(3,4,7,.92) 72%,rgba(3,4,7,.99) 100%),
+      linear-gradient(90deg,rgba(3,4,7,.80) 0%,rgba(3,4,7,.15) 68%,rgba(3,4,7,.08) 100%),
+      url('event-rating-day-bg.jpg') 72% 18% / auto 54% no-repeat,
+      #050608 !important;
+  }
+
+  .target-event-title,
+  .target-event-summary,
+  .target-hero-action{
+    position:relative !important;
+    z-index:3 !important;
   }
 }
 </style>
@@ -1607,8 +1660,8 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260815-mobile-stable-polish-v1"></script>
-<script src="marketplace.js?v=20260815-mobile-stable-polish-v1"></script>
+<script src="app.js?v=20260815-mobile-stable-polish-v2"></script>
+<script src="marketplace.js?v=20260815-mobile-stable-polish-v2"></script>
 <footer class="mytt-footer">
   <div class="mytt-footer-inner">
     <div class="mytt-footer-brand">
