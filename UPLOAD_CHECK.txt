@@ -1,0 +1,9 @@
+MYTT FINAL FRONTEND UPLOAD CHECK
+
+Upload ALL files in this folder directly to the ROOT of:
+MYTT--Rating-System-V12-Offical
+
+After upload, GitHub index.html should be about 78 KB and contain:
+20260816-final-integrated
+
+Do NOT upload this folder as a nested directory.
