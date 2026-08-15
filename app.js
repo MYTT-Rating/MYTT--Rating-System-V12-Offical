@@ -595,6 +595,41 @@ function renderPlayers(){
         <span class="player-card-meta-dot">•</span>
         <span>${x.db?.hand||"-"}</span>
       </div>
+
+      <div class="player-card-mobile-final" aria-hidden="true">
+        <div class="player-card-mobile-avatar">
+          ${avatarHTML(x.db,"avatar")}
+          <span class="player-card-mobile-avatar-ring" aria-hidden="true"></span>
+        </div>
+
+        <div class="player-card-mobile-content">
+          <div class="player-card-mobile-identity">
+            <h3>${x.name}</h3>
+            <p>${x.db?.id||"Leaderboard Player"}</p>
+          </div>
+
+          <div class="player-card-mobile-stats">
+            <div class="player-card-mobile-stat rating">
+              <small>Rating</small>
+              <strong>${x.lb.rating}</strong>
+            </div>
+            <div class="player-card-mobile-stat">
+              <small>Peak</small>
+              <strong>${x.lb.peak}</strong>
+            </div>
+            <div class="player-card-mobile-stat">
+              <small>Rank</small>
+              <strong>${x.lb.rank && x.lb.rank!=="-" ? "#"+x.lb.rank : "#-"}</strong>
+            </div>
+          </div>
+
+          <div class="player-card-mobile-meta">
+            <span>🏓 ${x.db?.grip||"-"}</span>
+            <i>•</i>
+            <span>${x.db?.hand||"-"}</span>
+          </div>
+        </div>
+      </div>
     </article>
   `;
   }).join("");
