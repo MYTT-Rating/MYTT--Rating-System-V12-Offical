@@ -6122,4 +6122,195 @@ td{
     margin-top:22px !important;
   }
 }
-\n\n/* =========================================================\n   MYTT MOBILE PLAYER CARD — FINAL HORIZONTAL LAYOUT V1\n   Large avatar left; identity + stats right. Desktop unchanged.\n   ========================================================= */\n.player-card-mobile-final{display:none;}\n\n@media(max-width:759px){\n  .players-grid{\n    grid-template-columns:1fr !important;\n    gap:12px !important;\n  }\n\n  .player-card.player-card-icon-tier{\n    min-height:0 !important;\n    height:auto !important;\n    padding:13px 13px !important;\n    border-radius:18px !important;\n  }\n\n  /* Hide desktop card layout on phones only. */\n  .player-card.player-card-icon-tier > .player-card-top-neon,\n  .player-card.player-card-icon-tier > .mini-stats-neon,\n  .player-card.player-card-icon-tier > .player-card-meta{\n    display:none !important;\n  }\n\n  .player-card-mobile-final{\n    display:grid !important;\n    grid-template-columns:94px minmax(0,1fr);\n    gap:14px;\n    align-items:center;\n    width:100%;\n    min-width:0;\n  }\n\n  .player-card-mobile-avatar{\n    position:relative;\n    width:94px;\n    height:94px;\n    align-self:center;\n  }\n\n  .player-card-mobile-avatar .avatar{\n    width:94px !important;\n    height:94px !important;\n    border:2px solid #ef4444 !important;\n    box-shadow:\n      0 0 0 4px rgba(239,68,68,.08),\n      0 0 18px rgba(239,68,68,.22) !important;\n  }\n\n  .player-card-mobile-avatar-ring{\n    position:absolute;\n    inset:-5px;\n    border:1px solid rgba(255,78,78,.34);\n    border-radius:50%;\n    pointer-events:none;\n  }\n\n  .player-card-mobile-content{\n    min-width:0;\n    padding-right:34px;\n    display:flex;\n    flex-direction:column;\n    justify-content:center;\n  }\n\n  .player-card-mobile-identity{\n    min-width:0;\n  }\n\n  .player-card-mobile-identity h3{\n    margin:0 0 3px !important;\n    color:#f7f7f8 !important;\n    font-size:18px !important;\n    line-height:1.08 !important;\n    font-weight:950 !important;\n    letter-spacing:-.01em;\n    overflow-wrap:anywhere;\n  }\n\n  .player-card-mobile-identity p{\n    margin:0 !important;\n    color:#8f96a1 !important;\n    font-size:9px !important;\n    line-height:1.15 !important;\n    font-weight:750 !important;\n    letter-spacing:.02em;\n  }\n\n  .player-card-mobile-stats{\n    display:grid;\n    grid-template-columns:repeat(3,minmax(0,1fr));\n    gap:6px;\n    margin-top:9px;\n  }\n\n  .player-card-mobile-stat{\n    min-width:0;\n    padding:6px 4px 5px;\n    border:1px solid rgba(239,68,68,.27);\n    border-radius:9px;\n    background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.015));\n    text-align:center;\n  }\n\n  .player-card-mobile-stat small{\n    display:block;\n    margin-bottom:2px;\n    color:#9299a4;\n    font-size:6.5px;\n    line-height:1;\n    font-weight:900;\n    letter-spacing:.08em;\n    text-transform:uppercase;\n  }\n\n  .player-card-mobile-stat strong{\n    display:block;\n    color:#f6f7f9;\n    font-size:14px;\n    line-height:1.08;\n    font-weight:950;\n    white-space:nowrap;\n  }\n\n  .player-card-mobile-stat.rating strong{\n    color:#ff4d4d;\n    text-shadow:0 0 8px rgba(255,77,77,.16);\n  }\n\n  .player-card-mobile-meta{\n    display:flex;\n    align-items:center;\n    gap:6px;\n    min-width:0;\n    margin-top:7px;\n    color:#aeb4bd;\n    font-size:9px;\n    line-height:1.15;\n    font-weight:650;\n    white-space:nowrap;\n    overflow:hidden;\n  }\n\n  .player-card-mobile-meta span{\n    min-width:0;\n    overflow:hidden;\n    text-overflow:ellipsis;\n  }\n\n  .player-card-mobile-meta i{\n    flex:0 0 auto;\n    color:#606771;\n    font-style:normal;\n  }\n\n  /* Tier icon remains embedded in the top-right, but slightly cleaner. */\n  .player-card.player-card-icon-tier > .player-card-rank-icon{\n    top:10px !important;\n    right:10px !important;\n    width:32px !important;\n    height:32px !important;\n  }\n\n  .player-card.player-card-icon-tier > .player-card-rank-icon > span{\n    font-size:17px !important;\n  }\n}\n\n@media(max-width:380px){\n  .player-card-mobile-final{\n    grid-template-columns:84px minmax(0,1fr);\n    gap:11px;\n  }\n\n  .player-card-mobile-avatar,\n  .player-card-mobile-avatar .avatar{\n    width:84px !important;\n    height:84px !important;\n  }\n\n  .player-card-mobile-content{padding-right:30px;}\n  .player-card-mobile-identity h3{font-size:16px !important;}\n  .player-card-mobile-stat strong{font-size:13px;}\n  .player-card-mobile-meta{font-size:8px;}\n}\n
+
+/* =========================================================
+   MYTT MOBILE PLAYER CARD — HORIZONTAL FIXED
+   Reuse the existing card DOM. NO duplicated mobile markup.
+   ========================================================= */
+@media (max-width:759px){
+  .players-grid{
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+  }
+
+  .player-card.player-card-neon.player-card-icon-tier{
+    display:grid !important;
+    grid-template-columns:98px minmax(0,1fr) !important;
+    grid-template-areas:
+      "avatar identity"
+      "avatar stats"
+      "avatar meta" !important;
+    column-gap:14px !important;
+    row-gap:6px !important;
+    align-items:center !important;
+    min-height:0 !important;
+    height:auto !important;
+    padding:14px 14px !important;
+    border-radius:18px !important;
+    overflow:hidden !important;
+  }
+
+  /* The old wrapper no longer takes its own row; its children become grid items. */
+  .player-card.player-card-icon-tier > .player-card-top-neon{
+    display:contents !important;
+  }
+
+  .player-card.player-card-icon-tier .player-card-avatar-wrap{
+    grid-area:avatar !important;
+    align-self:center !important;
+    justify-self:center !important;
+    width:98px !important;
+    height:98px !important;
+    margin:0 !important;
+  }
+
+  .player-card.player-card-icon-tier .player-card-avatar-wrap .avatar{
+    width:98px !important;
+    height:98px !important;
+    border:2px solid #ef4444 !important;
+    box-shadow:
+      0 0 0 4px rgba(239,68,68,.08),
+      0 0 18px rgba(239,68,68,.20) !important;
+  }
+
+  .player-card.player-card-icon-tier .player-card-avatar-ring{
+    inset:-5px !important;
+  }
+
+  .player-card.player-card-icon-tier .player-card-identity{
+    grid-area:identity !important;
+    align-self:end !important;
+    min-width:0 !important;
+    padding:0 36px 0 0 !important;
+    margin:0 !important;
+    display:block !important;
+  }
+
+  .player-card.player-card-icon-tier .player-card-identity h3{
+    margin:0 0 4px !important;
+    font-size:18px !important;
+    line-height:1.05 !important;
+    font-weight:950 !important;
+    color:#f7f7f8 !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  .player-card.player-card-icon-tier .player-card-id{
+    margin:0 !important;
+    font-size:9px !important;
+    line-height:1.15 !important;
+    color:#8f96a1 !important;
+    font-weight:750 !important;
+  }
+
+  .player-card.player-card-icon-tier > .mini-stats-neon{
+    grid-area:stats !important;
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:6px !important;
+    align-self:center !important;
+    margin:2px 0 0 !important;
+    padding:0 !important;
+    border-top:0 !important;
+    min-width:0 !important;
+  }
+
+  .player-card.player-card-icon-tier > .mini-stats-neon .mini-stat{
+    min-width:0 !important;
+    padding:6px 4px 5px !important;
+    border-radius:9px !important;
+    background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.015)) !important;
+  }
+
+  .player-card.player-card-icon-tier > .mini-stats-neon .mini-stat small{
+    margin:0 0 2px !important;
+    font-size:6.5px !important;
+    line-height:1 !important;
+    letter-spacing:.08em !important;
+  }
+
+  .player-card.player-card-icon-tier > .mini-stats-neon .mini-stat strong{
+    font-size:14px !important;
+    line-height:1.08 !important;
+    white-space:nowrap !important;
+  }
+
+  .player-card.player-card-icon-tier > .mini-stats-neon .mini-stat-rating strong{
+    color:#ff4d4d !important;
+    text-shadow:0 0 8px rgba(255,77,77,.16) !important;
+  }
+
+  .player-card.player-card-icon-tier > .player-card-meta{
+    grid-area:meta !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:6px !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    color:#adb3bc !important;
+    font-size:9px !important;
+    line-height:1.15 !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+  }
+
+  .player-card.player-card-icon-tier > .player-card-meta span{
+    min-width:0 !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+
+  .player-card.player-card-icon-tier > .player-card-meta .player-card-meta-dot{
+    flex:0 0 auto !important;
+    color:#626872 !important;
+  }
+
+  /* Embedded tier icon stays in the top-right corner. */
+  .player-card.player-card-icon-tier > .player-card-rank-icon{
+    top:10px !important;
+    right:10px !important;
+    width:31px !important;
+    min-width:31px !important;
+    max-width:31px !important;
+    height:31px !important;
+    min-height:31px !important;
+    max-height:31px !important;
+    border-radius:9px !important;
+  }
+
+  .player-card.player-card-icon-tier > .player-card-rank-icon > span{
+    font-size:17px !important;
+  }
+
+  .player-card.player-card-icon-tier > .player-card-neon-glow{
+    left:28% !important;
+    right:16% !important;
+  }
+}
+
+@media (max-width:390px){
+  .player-card.player-card-neon.player-card-icon-tier{
+    grid-template-columns:88px minmax(0,1fr) !important;
+    column-gap:11px !important;
+    padding:12px !important;
+  }
+
+  .player-card.player-card-icon-tier .player-card-avatar-wrap,
+  .player-card.player-card-icon-tier .player-card-avatar-wrap .avatar{
+    width:88px !important;
+    height:88px !important;
+  }
+
+  .player-card.player-card-icon-tier .player-card-identity h3{
+    font-size:16px !important;
+  }
+
+  .player-card.player-card-icon-tier > .mini-stats-neon .mini-stat strong{
+    font-size:13px !important;
+  }
+
+  .player-card.player-card-icon-tier > .player-card-meta{
+    font-size:8px !important;
+  }
+}
