@@ -1976,16 +1976,90 @@ function eventCardHTML(event){
   const pct=capacity>0?Math.max(0,Math.min(100,(filled/capacity)*100)):0;
 
   let registerButton;
+  let mobileRegisterButton;
   if(isOpen){
     registerButton=`<button class="target-register-button" type="button" data-register-event="${eventId}">
+      <span>REGISTER NOW</span><b>→</b>
+    </button>`;
+    mobileRegisterButton=`<button class="mobile-event-pro-register" type="button" data-register-event="${eventId}">
       <span>REGISTER NOW</span><b>→</b>
     </button>`;
   }else{
     const label=status.cls==="full"?"EVENT FULL":status.cls==="closed"?"REGISTRATION CLOSED":"OPENS SOON";
     registerButton=`<button class="target-register-button disabled" type="button" disabled><span>${eventEscapeHtml(label)}</span></button>`;
+    mobileRegisterButton=`<button class="mobile-event-pro-register disabled" type="button" disabled><span>${eventEscapeHtml(label)}</span></button>`;
   }
 
   return `<article class="target-event-shell">
+    <!-- Dedicated mobile event layout. Old target-event CSS cannot alter this structure. -->
+    <section class="mobile-event-pro" aria-label="${eventEscapeHtml(name)}">
+      <div class="mobile-event-pro-hero">
+        <div class="mobile-event-pro-stage">
+          <div class="mobile-event-pro-title">
+            <span>${eventEscapeHtml(title.top)}</span>
+            <strong>${eventEscapeHtml(title.main)}</strong>
+          </div>
+        </div>
+
+        <div class="mobile-event-pro-summary">
+          <div class="mobile-event-pro-summary-item mobile-event-pro-date">
+            <span class="mobile-event-pro-summary-icon">▦</span>
+            <div><strong>${dateMain}</strong><small>${weekday}</small></div>
+          </div>
+          <div class="mobile-event-pro-summary-item mobile-event-pro-status ${status.cls}">
+            <span class="mobile-event-pro-live-dot"></span>
+            <div><strong>${eventEscapeHtml(status.label)}</strong><small>${isOpen?"OPEN FOR REGISTRATION":"MYTT EVENT STATUS"}</small></div>
+          </div>
+          <div class="mobile-event-pro-summary-item mobile-event-pro-spots">
+            <b>${remaining}</b>
+            <div><strong>SPOTS REMAINING</strong><small>${capacity>0?"LIMITED SLOTS":"OPEN REGISTRATION"}</small></div>
+          </div>
+        </div>
+
+        <div class="mobile-event-pro-action">${mobileRegisterButton}</div>
+      </div>
+
+      <section class="mobile-event-pro-details">
+        <div class="mobile-event-pro-details-head">
+          <strong><span>//</span> EVENT DETAILS</strong>
+          <em>${eventId}</em>
+        </div>
+
+        <div class="mobile-event-pro-detail-grid">
+          <div class="mobile-event-pro-detail-card">
+            <span class="mobile-event-pro-detail-icon">◷</span>
+            <small>TIME</small>
+            <strong>${time}</strong>
+          </div>
+          <div class="mobile-event-pro-detail-card">
+            <span class="mobile-event-pro-detail-icon">●</span>
+            <small>VENUE</small>
+            <strong>${venue}</strong>
+          </div>
+          <div class="mobile-event-pro-detail-card">
+            <span class="mobile-event-pro-detail-icon">🏓</span>
+            <small>FORMAT</small>
+            <strong>${format}</strong>
+          </div>
+          <div class="mobile-event-pro-detail-card">
+            <span class="mobile-event-pro-detail-icon">♟</span>
+            <small>TOTAL SPOTS</small>
+            <strong>${capacity>0?capacity:"OPEN"}</strong>
+          </div>
+        </div>
+
+        <div class="mobile-event-pro-progress">
+          <div class="mobile-event-pro-progress-head">
+            <span>SPOTS FILLED</span>
+            <strong>${capacity>0?`${filled} / ${capacity}`:`${filled} REGISTERED`}</strong>
+          </div>
+          <div class="mobile-event-pro-progress-track"><span style="width:${pct}%"></span></div>
+          <div class="mobile-event-pro-note"><span>✓</span><p>${description}</p></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- Existing desktop event layout is preserved. -->
     <section class="target-event-hero">
       <div class="target-paddle-art" aria-hidden="true"></div>
 
