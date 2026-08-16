@@ -18,8 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260816-event-v6-clean-title-small-button">
-  <link rel="stylesheet" href="marketplace.css?v=20260816-event-v6-clean-title-small-button">
+  <link rel="stylesheet" href="style.css?v=20260816-event-v7-v5-title-small-button">
+  <link rel="stylesheet" href="marketplace.css?v=20260816-event-v7-v5-title-small-button">
 
 <style id="mytt-mobile-title-left-fix">
 @media (max-width: 768px){
@@ -2779,6 +2779,53 @@
 }
 </style>
 
+<style id="mytt-event-v7-restore-v5-title">
+/* V7: restore the approved V5 tournament title exactly; keep V6 compact register CTA. */
+@media (max-width:768px){
+  #events .me5-title span,
+  #events .me5-title strong{
+    display:block !important;
+    width:max-content !important;
+    max-width:none !important;
+    margin:0 !important;
+    color:transparent !important;
+    font-family:Impact,"Arial Black","Arial Narrow",sans-serif !important;
+    font-style:italic !important;
+    font-weight:1000 !important;
+    text-transform:uppercase !important;
+    background:linear-gradient(180deg,#ffffff 0%,#ffffff 27%,#d6d6d6 46%,#9b9b9b 64%,#f4f4f4 82%,#ffffff 100%) !important;
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+    -webkit-text-stroke:1px rgba(255,255,255,.88) !important;
+    transform-origin:left center !important;
+    text-shadow:none !important;
+    filter:
+      drop-shadow(0 3px 0 #6b070a)
+      drop-shadow(0 5px 0 #240204)
+      drop-shadow(0 0 7px rgba(255,38,38,.78)) !important;
+  }
+  #events .me5-title span{
+    margin-left:6px !important;
+    font-size:clamp(35px,11.2vw,50px) !important;
+    line-height:.86 !important;
+    letter-spacing:.08em !important;
+    transform:scaleX(.90) skewX(-2deg) !important;
+  }
+  #events .me5-title strong{
+    margin-top:2px !important;
+    white-space:nowrap !important;
+    font-size:clamp(52px,15.8vw,72px) !important;
+    line-height:.82 !important;
+    letter-spacing:-.025em !important;
+    transform:scaleX(.90) skewX(-2deg) !important;
+  }
+}
+@media (max-width:390px){
+  #events .me5-title span{font-size:36px !important;}
+  #events .me5-title strong{font-size:54px !important;transform:scaleX(.88) skewX(-2deg) !important;}
+}
+</style>
+
 </head>
 <body>
 <header class="site-header premium-header">
@@ -3803,8 +3850,8 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260816-event-v6-clean-title-small-button"></script>
-<script src="marketplace.js?v=20260816-event-v6-clean-title-small-button"></script>
+<script src="app.js?v=20260816-event-v7-v5-title-small-button"></script>
+<script src="marketplace.js?v=20260816-event-v7-v5-title-small-button"></script>
 <footer class="mytt-footer">
   <div class="mytt-footer-inner">
     <div class="mytt-footer-brand">

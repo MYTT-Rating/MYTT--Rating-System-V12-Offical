@@ -1,10 +1,5 @@
-MYTT Mobile Event V6
-
-Changes only:
-- Cleaner MYTT RATING DAY metallic title (removed busy multi-shadow effect)
-- Smaller Register Now button
-- Reduced button glow
-- No other mobile layout/functionality changed
-
-Upload all files directly to the GitHub repository root and replace existing files.
-Version marker: 20260816-event-v6-clean-title-small-button
+MYTT Mobile Event V7
+- Restores V5 MYTT RATING DAY title styling exactly
+- Keeps V6 smaller Register Now button
+- No other layout changes
+- Upload all files directly to GitHub repository root
