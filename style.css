@@ -6821,3 +6821,5 @@ td{
     display:none !important;
   }
 }
+
+@media (max-width:860px){ body.v15-more-open{overflow:hidden;} }

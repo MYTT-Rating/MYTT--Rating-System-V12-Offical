@@ -3294,64 +3294,83 @@ document.addEventListener("click", function(e){
 
 
 /* =========================================================
-   MYTT MOBILE BOTTOM NAV — V14
+   MYTT MOBILE BOTTOM NAV — V15 MORE FIX
+   Bottom nav markup appears after app.js in index.html, so
+   initialization must wait until the DOM is fully available.
    ========================================================= */
-(function initMobileBottomNavV14(){
-  const nav=document.querySelector('.v14-bottom-nav');
-  const moreBtn=document.querySelector('.v14-bottom-more');
-  const sheet=document.getElementById('v14MoreSheet');
-  const backdrop=document.getElementById('v14MoreBackdrop');
-  if(!nav||!moreBtn||!sheet||!backdrop) return;
+(function(){
+  function initMobileBottomNavV15(){
+    const nav=document.querySelector('.v14-bottom-nav');
+    const moreBtn=document.querySelector('.v14-bottom-more');
+    const sheet=document.getElementById('v14MoreSheet');
+    const backdrop=document.getElementById('v14MoreBackdrop');
+    if(!nav||!moreBtn||!sheet||!backdrop) return;
+    if(nav.dataset.v15Ready==='true') return;
+    nav.dataset.v15Ready='true';
 
-  const directTargets=new Set(['home','singles','events','doubles']);
-  const moreTargets=new Set(['players','market','submit']);
+    const directTargets=new Set(['home','singles','events','doubles']);
+    const moreTargets=new Set(['players','market','submit']);
 
-  function currentTarget(){
-    const raw=String(location.hash||'#home').replace(/^#/,'');
-    return raw || 'home';
-  }
+    function currentTarget(){
+      const raw=String(location.hash||'#home').replace(/^#/,'');
+      return raw || 'home';
+    }
 
-  function syncActive(){
-    const current=currentTarget();
-    nav.querySelectorAll('.v14-bottom-item').forEach(item=>{
-      const target=item.dataset.v14Target||'';
-      const active=(directTargets.has(current)&&target===current) || (target==='more'&&moreTargets.has(current));
-      item.classList.toggle('active',active);
+    function syncActive(){
+      const current=currentTarget();
+      nav.querySelectorAll('.v14-bottom-item').forEach(item=>{
+        const target=item.dataset.v14Target||'';
+        const active=(directTargets.has(current)&&target===current) || (target==='more'&&moreTargets.has(current));
+        item.classList.toggle('active',active);
+      });
+    }
+
+    function openMore(){
+      sheet.hidden=false;
+      backdrop.hidden=false;
+      moreBtn.setAttribute('aria-expanded','true');
+      moreBtn.classList.add('active');
+      document.body.classList.add('v15-more-open');
+    }
+
+    function closeMore(){
+      sheet.hidden=true;
+      backdrop.hidden=true;
+      moreBtn.setAttribute('aria-expanded','false');
+      document.body.classList.remove('v15-more-open');
+      syncActive();
+    }
+
+    moreBtn.addEventListener('click',function(event){
+      event.preventDefault();
+      event.stopPropagation();
+      if(sheet.hidden) openMore(); else closeMore();
     });
-  }
 
-  function openMore(){
-    sheet.hidden=false;
-    backdrop.hidden=false;
-    moreBtn.setAttribute('aria-expanded','true');
-    moreBtn.classList.add('active');
-  }
+    backdrop.addEventListener('click',closeMore);
+    const closeBtn=sheet.querySelector('.v14-more-close');
+    if(closeBtn) closeBtn.addEventListener('click',closeMore);
 
-  function closeMore(){
-    sheet.hidden=true;
-    backdrop.hidden=true;
-    moreBtn.setAttribute('aria-expanded','false');
+    nav.querySelectorAll('a[data-v14-target]').forEach(link=>{
+      link.addEventListener('click',closeMore);
+    });
+    sheet.querySelectorAll('a[data-v14-target]').forEach(link=>{
+      link.addEventListener('click',closeMore);
+    });
+
+    document.addEventListener('keydown',event=>{
+      if(event.key==='Escape' && !sheet.hidden) closeMore();
+    });
+
+    window.addEventListener('hashchange',syncActive);
+    window.addEventListener('popstate',syncActive);
+    window.addEventListener('pageshow',syncActive);
     syncActive();
   }
 
-  moreBtn.addEventListener('click',function(event){
-    event.preventDefault();
-    if(sheet.hidden) openMore(); else closeMore();
-  });
-
-  backdrop.addEventListener('click',closeMore);
-  const closeBtn=sheet.querySelector('.v14-more-close');
-  if(closeBtn) closeBtn.addEventListener('click',closeMore);
-
-  nav.querySelectorAll('a[data-v14-target]').forEach(link=>{
-    link.addEventListener('click',closeMore);
-  });
-  sheet.querySelectorAll('a[data-v14-target]').forEach(link=>{
-    link.addEventListener('click',closeMore);
-  });
-
-  window.addEventListener('hashchange',syncActive);
-  window.addEventListener('popstate',syncActive);
-  window.addEventListener('pageshow',syncActive);
-  syncActive();
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',initMobileBottomNavV15,{once:true});
+  }else{
+    initMobileBottomNavV15();
+  }
 })();
