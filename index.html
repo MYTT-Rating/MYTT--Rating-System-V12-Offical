@@ -18,8 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260816-event-v9-solid-metal-title">
-  <link rel="stylesheet" href="marketplace.css?v=20260816-event-v9-solid-metal-title">
+  <link rel="stylesheet" href="style.css?v=20260816-event-v10-metal-flat-details">
+  <link rel="stylesheet" href="marketplace.css?v=20260816-event-v10-metal-flat-details">
 
 <style id="mytt-mobile-title-left-fix">
 @media (max-width: 768px){
@@ -2847,6 +2847,191 @@
 }
 </style>
 
+
+<style id="mytt-event-v10-metal-flat-details">
+/* V10 — preserve V9 clean letters, restore smooth metal, flatten hero, add compact facts row. */
+.me10-facts{display:none;}
+
+@media (max-width:768px){
+  /* Smooth metallic fill: continuous gradient only, no hard band / split stops. */
+  #events .me5-title span,
+  #events .me5-title strong{
+    color:transparent !important;
+    -webkit-text-fill-color:transparent !important;
+    background:linear-gradient(180deg,#ffffff 0%,#f7f7f7 26%,#e7e7e7 54%,#c7c7c7 78%,#f3f3f3 100%) !important;
+    background-size:100% 100% !important;
+    background-repeat:no-repeat !important;
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+    -webkit-text-stroke:.8px rgba(255,255,255,.86) !important;
+    text-shadow:none !important;
+    filter:
+      drop-shadow(0 2px 0 #821015)
+      drop-shadow(0 4px 0 #310407)
+      drop-shadow(0 0 5px rgba(255,42,42,.48)) !important;
+  }
+
+  /* Make the hero much flatter. */
+  #events .me5-card{
+    height:350px !important;
+    min-height:350px !important;
+    max-height:350px !important;
+    border-radius:20px !important;
+  }
+
+  #events .me5-title{
+    top:17px !important;
+    left:24px !important;
+  }
+  #events .me5-title span{
+    font-size:clamp(31px,9.8vw,43px) !important;
+    line-height:.86 !important;
+  }
+  #events .me5-title strong{
+    font-size:clamp(46px,13.6vw,62px) !important;
+    line-height:.82 !important;
+  }
+
+  /* Lift paddle and button together. */
+  #events .me5-art{
+    left:2px !important;
+    bottom:69px !important;
+    width:52% !important;
+    height:48% !important;
+  }
+  #events .me5-register-wrap{
+    right:17px !important;
+    top:155px !important;
+    width:38% !important;
+    transform:none !important;
+  }
+  #events .me5-register{
+    min-height:60px !important;
+    height:60px !important;
+    padding:0 9px !important;
+    border-radius:12px !important;
+  }
+  #events .me5-register span{
+    font-size:12px !important;
+  }
+  #events .me5-register b{
+    font-size:18px !important;
+  }
+
+  /* Bottom status strip stays one row but is slightly shorter. */
+  #events .me5-summary{
+    height:68px !important;
+  }
+  #events .me5-summary-item{
+    padding:7px 6px !important;
+    gap:6px !important;
+  }
+  #events .me5-icon,
+  #events .me5-users{
+    width:25px !important;
+    height:25px !important;
+    min-width:25px !important;
+  }
+  #events .me5-live-dot{
+    width:12px !important;
+    height:12px !important;
+    min-width:12px !important;
+  }
+  #events .me5-summary-item strong{
+    font-size:8.8px !important;
+    line-height:1.05 !important;
+  }
+  #events .me5-summary-item small{
+    font-size:6.2px !important;
+    line-height:1.08 !important;
+  }
+  #events .me5-spots b{
+    font-size:27px !important;
+  }
+
+  /* Four compact facts directly under the hero, exactly one row. */
+  #events .me10-facts{
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:7px !important;
+    margin:10px 0 0 !important;
+    padding:0 !important;
+  }
+  #events .me10-fact{
+    min-width:0 !important;
+    min-height:82px !important;
+    padding:9px 6px 8px !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    text-align:center !important;
+    border:1px solid rgba(255,63,63,.28) !important;
+    border-radius:13px !important;
+    background:linear-gradient(180deg,rgba(14,12,15,.94),rgba(7,8,11,.98)) !important;
+    box-shadow:inset 0 0 18px rgba(255,35,35,.025) !important;
+  }
+  #events .me10-fact-icon{
+    width:28px !important;
+    height:28px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    margin-bottom:5px !important;
+    border:1px solid rgba(255,60,60,.46) !important;
+    border-radius:50% !important;
+    color:#ff4a4a !important;
+    font-size:15px !important;
+    line-height:1 !important;
+    box-shadow:0 0 10px rgba(255,38,38,.12) !important;
+  }
+  #events .me10-paddle{font-size:14px !important;}
+  #events .me10-fact small{
+    display:block !important;
+    margin:0 0 4px !important;
+    color:#ff5656 !important;
+    font-size:7.5px !important;
+    line-height:1 !important;
+    font-weight:900 !important;
+    letter-spacing:.08em !important;
+    white-space:nowrap !important;
+  }
+  #events .me10-fact strong{
+    display:block !important;
+    max-width:100% !important;
+    color:#fff !important;
+    font-size:9.2px !important;
+    line-height:1.12 !important;
+    font-weight:850 !important;
+    overflow:hidden !important;
+    display:-webkit-box !important;
+    -webkit-box-orient:vertical !important;
+    -webkit-line-clamp:2 !important;
+  }
+
+  /* Keep old mobile/desktop detail block hidden on mobile; V10 facts replace it. */
+  #events .target-event-details{display:none !important;}
+}
+
+@media (max-width:390px){
+  #events .me5-card{
+    height:330px !important;
+    min-height:330px !important;
+    max-height:330px !important;
+  }
+  #events .me5-title{top:15px !important;left:20px !important;}
+  #events .me5-title span{font-size:30px !important;}
+  #events .me5-title strong{font-size:45px !important;}
+  #events .me5-art{bottom:64px !important;width:50% !important;height:45% !important;}
+  #events .me5-register-wrap{top:145px !important;right:14px !important;width:39% !important;}
+  #events .me5-register{height:56px !important;min-height:56px !important;}
+  #events .me5-summary{height:64px !important;}
+  #events .me10-facts{gap:5px !important;}
+  #events .me10-fact{min-height:78px !important;padding-left:4px !important;padding-right:4px !important;}
+  #events .me10-fact strong{font-size:8.5px !important;}
+}
+</style>
+
 </head>
 <body>
 <header class="site-header premium-header">
@@ -3871,8 +4056,8 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260816-event-v9-solid-metal-title"></script>
-<script src="marketplace.js?v=20260816-event-v9-solid-metal-title"></script>
+<script src="app.js?v=20260816-event-v10-metal-flat-details"></script>
+<script src="marketplace.js?v=20260816-event-v10-metal-flat-details"></script>
 <footer class="mytt-footer">
   <div class="mytt-footer-inner">
     <div class="mytt-footer-brand">

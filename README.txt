@@ -1,5 +1,3 @@
-MYTT Mobile Event V7
-- Restores V5 MYTT RATING DAY title styling exactly
-- Keeps V6 smaller Register Now button
-- No other layout changes
-- Upload all files directly to GitHub repository root
+MYTT Mobile Event V10 — smooth metallic title, flatter hero, lifted paddle/register button, and four compact event facts in one row.
+Upload all files to repository root.
+Version: 20260816-event-v10-metal-flat-details

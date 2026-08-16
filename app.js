@@ -2029,6 +2029,30 @@ function eventCardHTML(event){
       </div>
     </section>
 
+    <!-- V10 compact mobile event facts: four items, one row. -->
+    <section class="me10-facts" aria-label="Event information">
+      <div class="me10-fact">
+        <span class="me10-fact-icon" aria-hidden="true">◷</span>
+        <small>TIME</small>
+        <strong>${time}</strong>
+      </div>
+      <div class="me10-fact">
+        <span class="me10-fact-icon" aria-hidden="true">●</span>
+        <small>VENUE</small>
+        <strong>${venue}</strong>
+      </div>
+      <div class="me10-fact">
+        <span class="me10-fact-icon me10-paddle" aria-hidden="true">🏓</span>
+        <small>FORMAT</small>
+        <strong>${format}</strong>
+      </div>
+      <div class="me10-fact">
+        <span class="me10-fact-icon" aria-hidden="true">♟</span>
+        <small>TOTAL SPOTS</small>
+        <strong>${capacity || "—"}</strong>
+      </div>
+    </section>
+
     <!-- MYTT mobile Event V4: isolated structure, no legacy Event CSS. -->
     <section class="mytt-event-v4" aria-label="${eventEscapeHtml(name)}">
       <div class="me4-kicker">UPCOMING EVENT</div>
