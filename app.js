@@ -1977,59 +1977,78 @@ function eventCardHTML(event){
 
   let registerButton;
   if(isOpen){
-    registerButton=`<button class="event-pro-register" type="button" data-register-event="${eventId}"><span>REGISTER NOW</span><b>→</b></button>`;
+    registerButton=`<button class="target-register-button" type="button" data-register-event="${eventId}">
+      <span>REGISTER NOW</span><b>→</b>
+    </button>`;
   }else{
     const label=status.cls==="full"?"EVENT FULL":status.cls==="closed"?"REGISTRATION CLOSED":"OPENS SOON";
-    registerButton=`<button class="event-pro-register disabled" type="button" disabled><span>${eventEscapeHtml(label)}</span></button>`;
+    registerButton=`<button class="target-register-button disabled" type="button" disabled><span>${eventEscapeHtml(label)}</span></button>`;
   }
 
-  return `<article class="event-pro-shell">
-    <section class="event-pro-hero">
-      <div class="event-pro-copy">
-        <div class="event-pro-kicker">${eventEscapeHtml(title.top)}</div>
-        <h3 class="event-pro-title">${eventEscapeHtml(title.main)}</h3>
-        <div class="event-pro-accent" aria-hidden="true"><span></span></div>
+  return `<article class="target-event-shell">
+    <section class="target-event-hero">
+      <div class="target-paddle-art" aria-hidden="true"></div>
+
+      <div class="target-hero-content">
+        <div class="target-event-title">
+          <span>${eventEscapeHtml(title.top)}</span>
+          <strong>${eventEscapeHtml(title.main)}</strong>
+        </div>
+
+        <div class="target-event-summary">
+          <div class="target-summary-item target-date-summary">
+            <span class="target-summary-icon target-calendar-icon">▦</span>
+            <div><strong>${dateMain}</strong><small>${weekday}</small></div>
+          </div>
+          <i></i>
+          <div class="target-summary-item target-status-summary ${status.cls}">
+            <span class="target-live-dot"></span>
+            <div><strong>${eventEscapeHtml(status.label)}</strong><small>${isOpen?"OPEN FOR REGISTRATION":"MYTT EVENT STATUS"}</small></div>
+          </div>
+          <i></i>
+          <div class="target-summary-item target-spots-summary">
+            <span class="target-people-icon">♟</span>
+            <b>${remaining}</b>
+            <div><strong>SPOTS REMAINING</strong><small>${capacity>0?"LIMITED SLOTS AVAILABLE":"OPEN REGISTRATION"}</small></div>
+          </div>
+        </div>
       </div>
 
-      <div class="event-pro-art" aria-hidden="true">
-        <img src="event-pro-art.png" alt="">
-      </div>
-
-      <div class="event-pro-summary">
-        <div class="event-pro-summary-item event-pro-date">
-          <span class="event-pro-summary-icon">▦</span>
-          <div><strong>${dateMain}</strong><small>${weekday}</small></div>
-        </div>
-        <div class="event-pro-summary-item event-pro-status ${status.cls}">
-          <span class="event-pro-live-dot"></span>
-          <div><strong>${eventEscapeHtml(status.label)}</strong><small>${isOpen?"OPEN FOR REGISTRATION":"MYTT EVENT STATUS"}</small></div>
-        </div>
-        <div class="event-pro-summary-item event-pro-spots">
-          <b>${remaining}</b>
-          <div><strong>SPOTS REMAINING</strong><small>${capacity>0?"LIMITED SLOTS AVAILABLE":"OPEN REGISTRATION"}</small></div>
-        </div>
-      </div>
-
-      <div class="event-pro-action">${registerButton}</div>
+      <div class="target-hero-action">${registerButton}</div>
     </section>
 
-    <section class="event-pro-details">
-      <div class="event-pro-details-head">
-        <div class="event-pro-details-title"><span>//</span><strong>OFFICIAL EVENT DETAILS</strong></div>
-        <span class="event-pro-id">${eventId}</span>
+    <section class="target-event-details">
+      <div class="target-details-heading">
+        <div class="target-details-title"><span>//</span><strong>OFFICIAL EVENT DETAILS</strong></div>
+        <div class="target-details-line"></div>
+        <span class="target-event-id">${eventId}</span>
       </div>
 
-      <div class="event-pro-detail-grid">
-        <div class="event-pro-detail-card"><span class="event-pro-detail-icon">◷</span><div><small>TIME</small><strong>${time}</strong></div></div>
-        <div class="event-pro-detail-card"><span class="event-pro-detail-icon">●</span><div><small>VENUE</small><strong>${venue}</strong></div></div>
-        <div class="event-pro-detail-card"><span class="event-pro-detail-icon">🏓</span><div><small>FORMAT</small><strong>${format}</strong></div></div>
-        <div class="event-pro-detail-card"><span class="event-pro-detail-icon">🏆</span><div><small>TOTAL SPOTS</small><strong>${capacity>0?capacity:"OPEN"}</strong></div></div>
+      <div class="target-tech-grid">
+        <div class="target-tech-card">
+          <div class="target-tech-icon target-clock">◷</div>
+          <div><small>TIME</small><strong>${time}</strong></div>
+        </div>
+        <div class="target-tech-card">
+          <div class="target-tech-icon target-pin">●</div>
+          <div><small>VENUE</small><strong>${venue}</strong></div>
+        </div>
+        <div class="target-tech-card">
+          <div class="target-tech-icon target-ping">🏓</div>
+          <div><small>FORMAT</small><strong>${format}</strong></div>
+        </div>
+        <div class="target-tech-card">
+          <div class="target-tech-icon target-team">♟</div>
+          <div><small>TOTAL SPOTS</small><strong>${capacity>0?capacity:"OPEN"}</strong></div>
+        </div>
       </div>
 
-      <div class="event-pro-progress">
-        <div class="event-pro-progress-head"><span>SPOTS FILLED</span><strong>${capacity>0?`${filled} / ${capacity}`:`${filled} REGISTERED`}</strong></div>
-        <div class="event-pro-progress-track"><span style="width:${pct}%"></span></div>
-        <div class="event-pro-description"><span>✓</span><p>${description}</p></div>
+      <div class="target-progress-panel">
+        <div class="target-progress-head"><span>SPOTS FILLED</span><strong>${capacity>0?`${filled} / ${capacity}`:`${filled} REGISTERED`}</strong></div>
+        <div class="target-progress-track"><span style="width:${pct}%"></span></div>
+        <div class="target-progress-footer">
+          <div class="target-description"><span>✓</span><p>${description}</p></div>
+        </div>
       </div>
     </section>
   </article>`;
