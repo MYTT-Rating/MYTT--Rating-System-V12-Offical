@@ -2128,6 +2128,265 @@
 }
 </style>
 
+
+<style id="mytt-event-exact-code-v4">
+/* =========================================================
+   MOBILE EVENT V4 — isolated from every legacy Event layout.
+   Matches the approved red/black tech card direction.
+   ========================================================= */
+.mytt-event-v4{display:none;}
+
+@media (max-width:768px){
+  /* Only the new V4 Event exists visually on mobile. */
+  #events .events-section-head{display:none !important;}
+  #events .target-event-shell > .mobile-event-pro,
+  #events .target-event-shell > .target-event-hero,
+  #events .target-event-shell > .target-event-details{display:none !important;}
+  #events .target-event-shell{display:block !important;margin:0 !important;}
+  #eventsGrid{display:block !important;}
+
+  #events .mytt-event-v4{
+    display:block !important;
+    width:100% !important;
+    padding:8px 0 12px !important;
+  }
+
+  #events .me4-kicker{
+    margin:0 0 14px 5px !important;
+    font-size:13px !important;
+    font-weight:850 !important;
+    letter-spacing:.30em !important;
+    color:#ff4949 !important;
+    text-transform:uppercase !important;
+  }
+
+  #events .me4-card{
+    position:relative !important;
+    width:100% !important;
+    height:472px !important;
+    overflow:hidden !important;
+    border:1px solid rgba(255,62,62,.92) !important;
+    border-radius:22px !important;
+    background:
+      radial-gradient(circle at 72% 46%,rgba(255,36,36,.20),transparent 30%),
+      linear-gradient(142deg,transparent 0 43%,rgba(255,45,45,.14) 44% 45%,transparent 46% 100%),
+      repeating-linear-gradient(135deg,rgba(255,50,50,.07) 0 1px,transparent 1px 16px),
+      linear-gradient(180deg,#09090c 0%,#050507 100%) !important;
+    box-shadow:
+      0 0 0 1px rgba(255,52,52,.14),
+      0 0 18px rgba(255,29,29,.20),
+      inset 0 0 28px rgba(255,34,34,.055),
+      0 18px 36px rgba(0,0,0,.35) !important;
+  }
+
+  #events .me4-card::before{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    pointer-events:none !important;
+    z-index:1 !important;
+    background:
+      linear-gradient(120deg,transparent 0 62%,rgba(255,46,46,.18) 63% 64%,transparent 65% 100%),
+      radial-gradient(circle at 92% 16%,rgba(255,44,44,.18),transparent 18%) !important;
+  }
+
+  /* Metallic tournament title — CSS, not an image. */
+  #events .me4-title{
+    position:absolute !important;
+    z-index:6 !important;
+    top:24px !important;
+    left:22px !important;
+    right:18px !important;
+    pointer-events:none !important;
+    text-transform:uppercase !important;
+  }
+  #events .me4-title span{
+    display:block !important;
+    margin:0 0 1px 7px !important;
+    font-family:Impact,"Arial Black","Arial Narrow",sans-serif !important;
+    font-size:clamp(35px,9.8vw,48px) !important;
+    font-style:italic !important;
+    font-weight:900 !important;
+    line-height:.88 !important;
+    letter-spacing:.08em !important;
+    color:transparent !important;
+    background:linear-gradient(180deg,#fff 0%,#f8f8f8 40%,#b7b7b7 64%,#fff 100%) !important;
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+    -webkit-text-stroke:.8px rgba(255,255,255,.66) !important;
+    filter:drop-shadow(0 3px 0 #6b070a) drop-shadow(0 0 6px rgba(255,42,42,.52)) !important;
+  }
+  #events .me4-title strong{
+    display:block !important;
+    margin:0 !important;
+    white-space:nowrap !important;
+    font-family:Impact,"Arial Black","Arial Narrow",sans-serif !important;
+    font-size:clamp(51px,14.2vw,72px) !important;
+    font-style:italic !important;
+    font-weight:1000 !important;
+    line-height:.84 !important;
+    letter-spacing:-.045em !important;
+    color:transparent !important;
+    background:linear-gradient(180deg,#fff 0%,#f5f5f5 35%,#b1b1b1 67%,#fff 100%) !important;
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+    -webkit-text-stroke:1px rgba(255,255,255,.82) !important;
+    filter:drop-shadow(0 4px 0 #74070b) drop-shadow(0 0 7px rgba(255,38,38,.64)) !important;
+  }
+
+  /* Existing paddle asset used as artwork, blended into the tech background. */
+  #events .me4-art{
+    position:absolute !important;
+    z-index:3 !important;
+    left:14px !important;
+    bottom:88px !important;
+    width:51% !important;
+    height:42% !important;
+    background:url('event-paddle.png') center / cover no-repeat !important;
+    border-radius:18px !important;
+    -webkit-mask-image:linear-gradient(90deg,#000 0 74%,rgba(0,0,0,.76) 86%,transparent 100%),linear-gradient(180deg,#000 0 80%,rgba(0,0,0,.82) 91%,transparent 100%) !important;
+    -webkit-mask-composite:source-in !important;
+    mask-image:linear-gradient(90deg,#000 0 74%,rgba(0,0,0,.76) 86%,transparent 100%) !important;
+    filter:saturate(1.08) contrast(1.07) brightness(.97) !important;
+    box-shadow:inset 0 0 18px rgba(0,0,0,.22) !important;
+  }
+
+  #events .me4-register-wrap{
+    position:absolute !important;
+    z-index:8 !important;
+    right:22px !important;
+    top:205px !important;
+    width:46% !important;
+  }
+  #events .me4-register{
+    position:relative !important;
+    width:100% !important;
+    min-height:86px !important;
+    padding:0 15px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:12px !important;
+    border:1px solid rgba(255,255,255,.62) !important;
+    border-radius:13px !important;
+    color:#fff !important;
+    background:linear-gradient(180deg,#ff3939 0%,#c70d13 100%) !important;
+    box-shadow:
+      0 0 0 4px rgba(255,40,40,.14),
+      0 0 22px rgba(255,25,25,.55),
+      inset 0 0 0 1px rgba(255,255,255,.15) !important;
+    clip-path:polygon(6% 0,100% 0,100% 82%,94% 100%,0 100%,0 18%) !important;
+  }
+  #events .me4-register::after{
+    content:"" !important;
+    position:absolute !important;
+    inset:6px !important;
+    border:1px solid rgba(255,255,255,.20) !important;
+    border-radius:9px !important;
+    pointer-events:none !important;
+  }
+  #events .me4-register span{
+    font-size:16px !important;
+    font-weight:900 !important;
+    letter-spacing:.02em !important;
+    white-space:nowrap !important;
+  }
+  #events .me4-register b{
+    font-size:23px !important;
+    line-height:1 !important;
+  }
+  #events .me4-register.disabled{opacity:.54 !important;box-shadow:none !important;}
+
+  /* Bottom three cells exactly in one row. */
+  #events .me4-summary{
+    position:absolute !important;
+    z-index:9 !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+    min-height:92px !important;
+    display:grid !important;
+    grid-template-columns:1.02fr 1.08fr .95fr !important;
+    background:rgba(4,5,8,.96) !important;
+    border-top:1px solid rgba(255,64,64,.26) !important;
+  }
+  #events .me4-summary-item{
+    min-width:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:8px !important;
+    padding:12px 9px !important;
+    border-right:1px solid rgba(255,255,255,.10) !important;
+  }
+  #events .me4-summary-item:last-child{border-right:0 !important;}
+  #events .me4-icon{
+    width:34px !important;
+    height:34px !important;
+    min-width:34px !important;
+    color:#ff4242 !important;
+  }
+  #events .me4-icon svg{
+    display:block !important;
+    width:100% !important;
+    height:100% !important;
+    fill:none !important;
+    stroke:currentColor !important;
+    stroke-width:1.8 !important;
+    stroke-linecap:round !important;
+    stroke-linejoin:round !important;
+  }
+  #events .me4-live-dot{
+    width:15px !important;
+    height:15px !important;
+    min-width:15px !important;
+    border-radius:50% !important;
+    background:#28e53e !important;
+    box-shadow:0 0 14px rgba(40,229,62,.82) !important;
+  }
+  #events .me4-summary-item strong{
+    display:block !important;
+    font-size:10px !important;
+    line-height:1.08 !important;
+    font-weight:900 !important;
+    color:#fff !important;
+  }
+  #events .me4-summary-item small{
+    display:block !important;
+    margin-top:4px !important;
+    font-size:7px !important;
+    line-height:1.1 !important;
+    color:rgba(255,255,255,.68) !important;
+  }
+  #events .me4-spots{gap:5px !important;}
+  #events .me4-spots b{
+    flex:0 0 auto !important;
+    font-size:31px !important;
+    line-height:.9 !important;
+    color:#ff3939 !important;
+    font-weight:1000 !important;
+  }
+
+  /* Explicit user choice: no Event Details section on mobile. */
+  #events .target-event-details{display:none !important;}
+}
+
+@media (max-width:390px){
+  #events .me4-card{height:448px !important;}
+  #events .me4-title{top:22px !important;left:18px !important;}
+  #events .me4-title span{font-size:32px !important;}
+  #events .me4-title strong{font-size:52px !important;}
+  #events .me4-art{left:10px !important;width:52% !important;bottom:88px !important;}
+  #events .me4-register-wrap{right:16px !important;top:200px !important;width:48% !important;}
+  #events .me4-register{min-height:80px !important;}
+  #events .me4-register span{font-size:14px !important;}
+  #events .me4-summary-item{padding-left:6px !important;padding-right:6px !important;gap:6px !important;}
+  #events .me4-icon{width:29px !important;height:29px !important;min-width:29px !important;}
+  #events .me4-summary-item strong{font-size:8.8px !important;}
+  #events .me4-summary-item small{font-size:6.2px !important;}
+  #events .me4-spots b{font-size:28px !important;}
+}
+</style>
+
 </head>
 <body>
 <header class="site-header premium-header">
@@ -3152,8 +3411,8 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260816-mobile-event-hero-only-v3"></script>
-<script src="marketplace.js?v=20260816-mobile-event-hero-only-v3"></script>
+<script src="app.js?v=20260816-event-exact-code-v4"></script>
+<script src="marketplace.js?v=20260816-event-exact-code-v4"></script>
 <footer class="mytt-footer">
   <div class="mytt-footer-inner">
     <div class="mytt-footer-brand">
