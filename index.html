@@ -18,8 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260816-mobile-event-pro-dom-v2">
-  <link rel="stylesheet" href="marketplace.css?v=20260816-mobile-event-pro-dom-v2">
+  <link rel="stylesheet" href="style.css?v=20260816-mobile-event-hero-only-v3">
+  <link rel="stylesheet" href="marketplace.css?v=20260816-mobile-event-hero-only-v3">
 
 <style id="mytt-mobile-title-left-fix">
 @media (max-width: 768px){
@@ -1851,6 +1851,283 @@
 }
 </style>
 
+
+<style id="mytt-mobile-event-hero-only-v3">
+/* =========================================================
+   MOBILE EVENT HERO ONLY V3
+   Approved direction: tech red/black hero, metallic title,
+   paddle + ball visual, register CTA, 3 status cells only.
+   Event Details are intentionally omitted on mobile.
+   ========================================================= */
+@media (max-width:768px){
+  #events.mobile-nav-page{
+    padding-top:18px !important;
+    padding-bottom:26px !important;
+  }
+
+  /* Mobile heading becomes one clean kicker only. */
+  #events .events-section-head{
+    display:block !important;
+    margin:0 0 14px !important;
+  }
+  #events .events-section-head > div{
+    display:block !important;
+  }
+  #events .events-section-head .kicker{
+    display:block !important;
+    margin:0 !important;
+    font-size:12px !important;
+    font-weight:850 !important;
+    letter-spacing:.30em !important;
+    color:#ff4d4d !important;
+    text-transform:uppercase !important;
+  }
+  #events .events-section-head .kicker::after{
+    content:" EVENT";
+  }
+  #events .events-section-head h2,
+  #events .events-section-head .status{
+    display:none !important;
+  }
+
+  #events .target-event-shell > .target-event-hero,
+  #events .target-event-shell > .target-event-details{
+    display:none !important;
+  }
+  #events .target-event-shell{
+    display:block !important;
+    margin:0 !important;
+  }
+
+  #events .mobile-event-pro{
+    display:block !important;
+    width:100% !important;
+  }
+
+  #events .mobile-event-pro-hero{
+    position:relative !important;
+    min-height:410px !important;
+    overflow:hidden !important;
+    border:1px solid rgba(255,63,63,.74) !important;
+    border-radius:22px !important;
+    background:
+      radial-gradient(circle at 78% 40%,rgba(255,45,45,.18),transparent 28%),
+      linear-gradient(145deg,rgba(255,45,45,.09),transparent 30%),
+      repeating-linear-gradient(135deg,rgba(255,47,47,.08) 0 1px,transparent 1px 18px),
+      linear-gradient(180deg,#0b080b 0%,#050507 100%) !important;
+    box-shadow:
+      0 0 0 1px rgba(255,57,57,.12),
+      0 0 22px rgba(255,31,31,.18),
+      0 14px 30px rgba(0,0,0,.32) !important;
+  }
+  #events .mobile-event-pro-hero::before{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    pointer-events:none !important;
+    background:
+      linear-gradient(128deg,transparent 0 54%,rgba(255,39,39,.18) 55% 56%,transparent 57% 100%),
+      linear-gradient(160deg,transparent 0 72%,rgba(255,45,45,.08) 73% 74%,transparent 75% 100%) !important;
+    z-index:1 !important;
+  }
+  #events .mobile-event-pro-hero::after{
+    content:"" !important;
+    position:absolute !important;
+    left:18px !important;
+    bottom:78px !important;
+    width:54% !important;
+    height:44% !important;
+    background:url('event-paddle.png') left bottom / contain no-repeat !important;
+    filter:saturate(1.08) contrast(1.04) !important;
+    pointer-events:none !important;
+    z-index:2 !important;
+  }
+
+  #events .mobile-event-pro-stage{
+    position:absolute !important;
+    inset:0 !important;
+    height:auto !important;
+    background:none !important;
+    overflow:visible !important;
+    z-index:3 !important;
+  }
+  #events .mobile-event-pro-stage::after{display:none !important;}
+
+  #events .mobile-event-pro-title{
+    position:absolute !important;
+    left:22px !important;
+    right:18px !important;
+    top:22px !important;
+    width:auto !important;
+    z-index:4 !important;
+    text-transform:uppercase !important;
+    pointer-events:none !important;
+  }
+  #events .mobile-event-pro-title > span{
+    display:block !important;
+    margin:0 0 1px 3px !important;
+    font-family:Impact,"Arial Black","Arial Narrow",sans-serif !important;
+    font-size:clamp(26px,7.4vw,34px) !important;
+    font-style:italic !important;
+    font-weight:950 !important;
+    line-height:.95 !important;
+    letter-spacing:.11em !important;
+    color:#fff !important;
+    -webkit-text-stroke:.6px rgba(255,78,78,.45) !important;
+    text-shadow:0 3px 0 rgba(117,9,12,.78),0 0 12px rgba(255,41,41,.16) !important;
+  }
+  #events .mobile-event-pro-title > strong{
+    display:block !important;
+    max-width:none !important;
+    margin:0 !important;
+    font-family:Impact,"Arial Black","Arial Narrow",sans-serif !important;
+    font-size:clamp(49px,13.8vw,70px) !important;
+    font-style:italic !important;
+    font-weight:1000 !important;
+    line-height:.82 !important;
+    letter-spacing:-.035em !important;
+    color:#fff !important;
+    -webkit-text-stroke:1px rgba(255,56,56,.76) !important;
+    text-shadow:
+      0 4px 0 rgba(112,5,10,.96),
+      0 1px 0 #fff,
+      0 0 14px rgba(255,35,35,.20) !important;
+  }
+
+  /* Register button floats on the right, like the approved mockup. */
+  #events .mobile-event-pro-action{
+    position:absolute !important;
+    top:190px !important;
+    right:20px !important;
+    width:47% !important;
+    padding:0 !important;
+    z-index:6 !important;
+  }
+  #events .mobile-event-pro-register{
+    width:100% !important;
+    min-height:82px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:14px !important;
+    padding:0 14px !important;
+    border:1px solid rgba(255,255,255,.27) !important;
+    border-radius:18px !important;
+    background:linear-gradient(180deg,#ff3939 0%,#cf1217 100%) !important;
+    color:#fff !important;
+    box-shadow:
+      0 0 0 4px rgba(255,55,55,.13),
+      inset 0 0 0 1px rgba(255,255,255,.14),
+      0 0 20px rgba(255,28,28,.48) !important;
+  }
+  #events .mobile-event-pro-register::before{
+    content:"" !important;
+    position:absolute !important;
+    inset:6px !important;
+    border:1px solid rgba(255,255,255,.14) !important;
+    border-radius:13px !important;
+    pointer-events:none !important;
+  }
+  #events .mobile-event-pro-register span{
+    font-size:15px !important;
+    font-weight:950 !important;
+    letter-spacing:.02em !important;
+  }
+  #events .mobile-event-pro-register b{
+    font-size:22px !important;
+    line-height:1 !important;
+  }
+  #events .mobile-event-pro-register.disabled{
+    opacity:.54 !important;
+    box-shadow:none !important;
+  }
+
+  /* 3 summary cells lock to the bottom of the hero. */
+  #events .mobile-event-pro-summary{
+    position:absolute !important;
+    left:16px !important;
+    right:16px !important;
+    bottom:15px !important;
+    z-index:7 !important;
+    display:grid !important;
+    grid-template-columns:1.05fr 1.18fr .92fr !important;
+    margin:0 !important;
+    overflow:hidden !important;
+    border:1px solid rgba(255,255,255,.07) !important;
+    border-radius:15px !important;
+    background:linear-gradient(180deg,rgba(9,10,14,.93),rgba(4,5,8,.96)) !important;
+    box-shadow:0 6px 16px rgba(0,0,0,.28) !important;
+  }
+  #events .mobile-event-pro-summary-item{
+    min-width:0 !important;
+    min-height:65px !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:7px !important;
+    padding:8px 7px !important;
+    border-right:1px solid rgba(255,255,255,.08) !important;
+  }
+  #events .mobile-event-pro-summary-item:last-child{border-right:0 !important;}
+  #events .mobile-event-pro-summary-icon{
+    width:30px !important;
+    height:30px !important;
+    min-width:30px !important;
+    display:grid !important;
+    place-items:center !important;
+    border:1px solid rgba(255,65,65,.65) !important;
+    border-radius:9px !important;
+    color:#ff4a4a !important;
+    font-size:14px !important;
+  }
+  #events .mobile-event-pro-live-dot{
+    width:13px !important;
+    height:13px !important;
+    min-width:13px !important;
+    border-radius:999px !important;
+    background:#27e43c !important;
+    box-shadow:0 0 13px rgba(39,228,60,.70) !important;
+  }
+  #events .mobile-event-pro-summary-item strong{
+    display:block !important;
+    font-size:9.4px !important;
+    line-height:1.03 !important;
+    font-weight:900 !important;
+    color:#fff !important;
+  }
+  #events .mobile-event-pro-summary-item small{
+    display:block !important;
+    margin-top:4px !important;
+    font-size:6.5px !important;
+    line-height:1.08 !important;
+    letter-spacing:.025em !important;
+    color:rgba(255,255,255,.60) !important;
+  }
+  #events .mobile-event-pro-spots{gap:5px !important;}
+  #events .mobile-event-pro-spots > b{
+    flex:0 0 auto !important;
+    font-size:29px !important;
+    line-height:.88 !important;
+    font-weight:1000 !important;
+    color:#ff4141 !important;
+  }
+
+  /* No Event Details on mobile, by design. */
+  #events .mobile-event-pro-details{display:none !important;}
+}
+
+@media (max-width:390px){
+  #events .mobile-event-pro-hero{min-height:392px !important;}
+  #events .mobile-event-pro-title > span{font-size:23px !important;}
+  #events .mobile-event-pro-title > strong{font-size:47px !important;}
+  #events .mobile-event-pro-action{top:184px !important;right:17px !important;width:48% !important;}
+  #events .mobile-event-pro-register{min-height:76px !important;}
+  #events .mobile-event-pro-hero::after{left:14px !important;width:55% !important;bottom:78px !important;}
+  #events .mobile-event-pro-summary{left:12px !important;right:12px !important;}
+  #events .mobile-event-pro-summary-item{padding-left:5px !important;padding-right:5px !important;}
+  #events .mobile-event-pro-summary-item strong{font-size:8.6px !important;}
+}
+</style>
+
 </head>
 <body>
 <header class="site-header premium-header">
@@ -2875,8 +3152,8 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260816-mobile-event-pro-dom-v2"></script>
-<script src="marketplace.js?v=20260816-mobile-event-pro-dom-v2"></script>
+<script src="app.js?v=20260816-mobile-event-hero-only-v3"></script>
+<script src="marketplace.js?v=20260816-mobile-event-hero-only-v3"></script>
 <footer class="mytt-footer">
   <div class="mytt-footer-inner">
     <div class="mytt-footer-brand">

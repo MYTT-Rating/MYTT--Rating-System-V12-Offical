@@ -2019,44 +2019,6 @@ function eventCardHTML(event){
         <div class="mobile-event-pro-action">${mobileRegisterButton}</div>
       </div>
 
-      <section class="mobile-event-pro-details">
-        <div class="mobile-event-pro-details-head">
-          <strong><span>//</span> EVENT DETAILS</strong>
-          <em>${eventId}</em>
-        </div>
-
-        <div class="mobile-event-pro-detail-grid">
-          <div class="mobile-event-pro-detail-card">
-            <span class="mobile-event-pro-detail-icon">◷</span>
-            <small>TIME</small>
-            <strong>${time}</strong>
-          </div>
-          <div class="mobile-event-pro-detail-card">
-            <span class="mobile-event-pro-detail-icon">●</span>
-            <small>VENUE</small>
-            <strong>${venue}</strong>
-          </div>
-          <div class="mobile-event-pro-detail-card">
-            <span class="mobile-event-pro-detail-icon">🏓</span>
-            <small>FORMAT</small>
-            <strong>${format}</strong>
-          </div>
-          <div class="mobile-event-pro-detail-card">
-            <span class="mobile-event-pro-detail-icon">♟</span>
-            <small>TOTAL SPOTS</small>
-            <strong>${capacity>0?capacity:"OPEN"}</strong>
-          </div>
-        </div>
-
-        <div class="mobile-event-pro-progress">
-          <div class="mobile-event-pro-progress-head">
-            <span>SPOTS FILLED</span>
-            <strong>${capacity>0?`${filled} / ${capacity}`:`${filled} REGISTERED`}</strong>
-          </div>
-          <div class="mobile-event-pro-progress-track"><span style="width:${pct}%"></span></div>
-          <div class="mobile-event-pro-note"><span>✓</span><p>${description}</p></div>
-        </div>
-      </section>
     </section>
 
     <!-- Existing desktop event layout is preserved. -->
