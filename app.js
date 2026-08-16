@@ -1976,122 +1976,16 @@ function eventCardHTML(event){
   const pct=capacity>0?Math.max(0,Math.min(100,(filled/capacity)*100)):0;
 
   let registerButton;
-  let mobileRegisterButton;
   if(isOpen){
     registerButton=`<button class="target-register-button" type="button" data-register-event="${eventId}">
-      <span>REGISTER NOW</span><b>→</b>
-    </button>`;
-    mobileRegisterButton=`<button class="mobile-event-pro-register" type="button" data-register-event="${eventId}">
       <span>REGISTER NOW</span><b>→</b>
     </button>`;
   }else{
     const label=status.cls==="full"?"EVENT FULL":status.cls==="closed"?"REGISTRATION CLOSED":"OPENS SOON";
     registerButton=`<button class="target-register-button disabled" type="button" disabled><span>${eventEscapeHtml(label)}</span></button>`;
-    mobileRegisterButton=`<button class="mobile-event-pro-register disabled" type="button" disabled><span>${eventEscapeHtml(label)}</span></button>`;
   }
 
   return `<article class="target-event-shell">
-    <!-- MYTT mobile Event V5: exact hero-only mobile layout. -->
-    <section class="mytt-event-v5" aria-label="${eventEscapeHtml(name)}">
-      <div class="me5-kicker">UPCOMING EVENT</div>
-
-      <div class="me5-card">
-        <div class="me5-title" aria-label="${eventEscapeHtml(name)}">
-          <span>${eventEscapeHtml(title.top)}</span>
-          <strong>${eventEscapeHtml(title.main)}</strong>
-        </div>
-
-        <div class="me5-art" aria-hidden="true"></div>
-
-        <div class="me5-register-wrap">${mobileRegisterButton.replaceAll('mobile-event-pro-register','me5-register')}</div>
-
-        <div class="me5-summary">
-          <div class="me5-summary-item me5-date">
-            <span class="me5-icon me5-calendar" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M7 3.5v4M17 3.5v4M3.5 9.5h17M7.5 13h2M12 13h2M16.5 13h.1M7.5 17h2M12 17h2M16.5 17h.1"/></svg>
-            </span>
-            <div><strong>${dateMain}</strong><small>${weekday}</small></div>
-          </div>
-
-          <div class="me5-summary-item me5-status ${status.cls}">
-            <span class="me5-live-dot" aria-hidden="true"></span>
-            <div><strong>${eventEscapeHtml(status.label)}</strong></div>
-          </div>
-
-          <div class="me5-summary-item me5-spots">
-            <span class="me5-users" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3.5 20c.4-4 2.4-6 5.5-6s5.1 2 5.5 6M14.5 14.4c3.3.2 5.2 2 5.5 5.6"/></svg>
-            </span>
-            <b>${remaining}</b>
-            <div><strong>SPOTS LEFT</strong></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- V10 compact mobile event facts: four items, one row. -->
-    <section class="me10-facts" aria-label="Event information">
-      <div class="me10-fact">
-        <span class="me10-fact-icon" aria-hidden="true">◷</span>
-        <small>TIME</small>
-        <strong>${time}</strong>
-      </div>
-      <div class="me10-fact">
-        <span class="me10-fact-icon" aria-hidden="true">●</span>
-        <small>VENUE</small>
-        <strong>${venue}</strong>
-      </div>
-      <div class="me10-fact">
-        <span class="me10-fact-icon me10-paddle" aria-hidden="true">🏓</span>
-        <small>FORMAT</small>
-        <strong>${format}</strong>
-      </div>
-      <div class="me10-fact">
-        <span class="me10-fact-icon" aria-hidden="true">♟</span>
-        <small>TOTAL SPOTS</small>
-        <strong>${capacity || "—"}</strong>
-      </div>
-    </section>
-
-    <!-- MYTT mobile Event V4: isolated structure, no legacy Event CSS. -->
-    <section class="mytt-event-v4" aria-label="${eventEscapeHtml(name)}">
-      <div class="me4-kicker">UPCOMING EVENT</div>
-
-      <div class="me4-card">
-        <div class="me4-title" aria-label="${eventEscapeHtml(name)}">
-          <span>${eventEscapeHtml(title.top)}</span>
-          <strong>${eventEscapeHtml(title.main)}</strong>
-        </div>
-
-        <div class="me4-art" aria-hidden="true"></div>
-
-        <div class="me4-register-wrap">${mobileRegisterButton.replaceAll('mobile-event-pro-register','me4-register')}</div>
-
-        <div class="me4-summary">
-          <div class="me4-summary-item me4-date">
-            <span class="me4-icon me4-calendar" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M7 3.5v4M17 3.5v4M3.5 9.5h17M7.5 13h2M12 13h2M16.5 13h.1M7.5 17h2M12 17h2M16.5 17h.1"/></svg>
-            </span>
-            <div><strong>${dateMain}</strong><small>${weekday}</small></div>
-          </div>
-
-          <div class="me4-summary-item me4-status ${status.cls}">
-            <span class="me4-live-dot" aria-hidden="true"></span>
-            <div><strong>${eventEscapeHtml(status.label)}</strong><small>${isOpen?"OPEN FOR REGISTRATION":"MYTT EVENT STATUS"}</small></div>
-          </div>
-
-          <div class="me4-summary-item me4-spots">
-            <span class="me4-icon me4-users" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3.5 20c.4-4 2.4-6 5.5-6s5.1 2 5.5 6M14.5 14.4c3.3.2 5.2 2 5.5 5.6"/></svg>
-            </span>
-            <b>${remaining}</b>
-            <div><strong>SPOTS REMAINING</strong><small>${capacity>0?"LIMITED SLOTS AVAILABLE":"OPEN REGISTRATION"}</small></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Existing desktop event layout is preserved. -->
     <section class="target-event-hero">
       <div class="target-paddle-art" aria-hidden="true"></div>
 
@@ -3290,4 +3184,83 @@ document.addEventListener("click", function(e){
     showMobilePage(currentTargetFromHash(),{scroll:false});
     setInterval(syncMobileSubmitStatus,1000);
   }
+})();
+
+
+/* =========================================================
+   MYTT MOBILE BOTTOM NAV + MORE SHEET
+   ========================================================= */
+(function initMyttBottomNav(){
+  const MOBILE_BREAKPOINT=860;
+  const directTargets=new Set(["home","events","singles","doubles"]);
+  const moreTargets=new Set(["players","market","submit"]);
+
+  function isMobile(){ return window.innerWidth<=MOBILE_BREAKPOINT; }
+  function normalizeTarget(value){
+    const raw=String(value||"").replace(/^#/,"");
+    return raw||"home";
+  }
+
+  const nav=document.querySelector('.mytt-bottom-nav');
+  const moreButton=document.querySelector('.mytt-bottom-more');
+  const sheet=document.getElementById('myttMoreSheet');
+  const backdrop=document.getElementById('myttMoreBackdrop');
+  if(!nav||!moreButton||!sheet||!backdrop)return;
+
+  function setActive(target){
+    target=normalizeTarget(target);
+    nav.querySelectorAll('.mytt-bottom-link').forEach(link=>{
+      const t=link.dataset.target||'';
+      const isMore=t==='more' && moreTargets.has(target);
+      const isDirect=t===target && directTargets.has(target);
+      link.classList.toggle('active', isMore || isDirect);
+    });
+  }
+
+  function openMore(){
+    if(!isMobile())return;
+    sheet.hidden=false;
+    backdrop.hidden=false;
+    moreButton.classList.add('active');
+    moreButton.setAttribute('aria-expanded','true');
+    document.body.classList.add('mytt-more-open');
+  }
+
+  function closeMore(){
+    sheet.hidden=true;
+    backdrop.hidden=true;
+    moreButton.setAttribute('aria-expanded','false');
+    document.body.classList.remove('mytt-more-open');
+    setActive(normalizeTarget(location.hash||'#home'));
+  }
+
+  moreButton.addEventListener('click', function(e){
+    e.preventDefault();
+    if(sheet.hidden) openMore(); else closeMore();
+  });
+
+  backdrop.addEventListener('click', closeMore);
+  const closeBtn=sheet.querySelector('.mytt-more-sheet-close');
+  if(closeBtn) closeBtn.addEventListener('click', closeMore);
+
+  nav.querySelectorAll('.mytt-bottom-link[data-target]').forEach(link=>{
+    link.addEventListener('click', function(){
+      const target=this.dataset.target||'';
+      if(target!=='more') closeMore();
+    });
+  });
+  sheet.querySelectorAll('a[data-target]').forEach(link=>{
+    link.addEventListener('click', closeMore);
+  });
+
+  function sync(){
+    const target=normalizeTarget(location.hash||'#home');
+    setActive(target);
+    if(!isMobile()) closeMore();
+  }
+
+  window.addEventListener('hashchange', sync);
+  window.addEventListener('resize', sync);
+  window.addEventListener('pageshow', sync);
+  sync();
 })();
