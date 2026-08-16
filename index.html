@@ -18,8 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260816-event-v11-clean-status">
-  <link rel="stylesheet" href="marketplace.css?v=20260816-event-v11-clean-status">
+  <link rel="stylesheet" href="style.css?v=20260816-event-v12-clean-metal-compact">
+  <link rel="stylesheet" href="marketplace.css?v=20260816-event-v12-clean-metal-compact">
 
 <style id="mytt-mobile-title-left-fix">
 @media (max-width: 768px){
@@ -3070,6 +3070,176 @@
   #events .me5-spots strong{font-size:7.8px !important;}
 }
 </style>
+
+<style id="mytt-event-v12-clean-metal-compact">
+/* V12 — no internal title cut-lines; metallic depth via solid silver + edge shadows only. */
+@media (max-width:768px){
+  /* Narrower mobile event block. */
+  #events .mytt-event-v5{
+    box-sizing:border-box !important;
+    width:100% !important;
+    padding:0 14px 14px !important;
+  }
+  #events .me5-kicker{
+    margin-left:4px !important;
+  }
+
+  /* Flatter hero. */
+  #events .me5-card{
+    width:100% !important;
+    height:315px !important;
+    min-height:315px !important;
+    max-height:315px !important;
+    border-radius:19px !important;
+  }
+
+  /* Clean metallic type: no background gradient = no internal slicing/bands. */
+  #events .me5-title span,
+  #events .me5-title strong{
+    color:#f2f2f0 !important;
+    -webkit-text-fill-color:#f2f2f0 !important;
+    background:none !important;
+    -webkit-background-clip:border-box !important;
+    background-clip:border-box !important;
+    -webkit-text-stroke:.7px rgba(255,255,255,.94) !important;
+    text-shadow:
+      0 -1px 0 #ffffff,
+      0 1px 0 #c7c7c4,
+      0 2px 0 #8e8e8b,
+      0 3px 0 #720d12,
+      0 5px 0 #2c0305,
+      0 0 7px rgba(255,45,45,.46) !important;
+    filter:none !important;
+  }
+
+  #events .me5-title{
+    top:14px !important;
+    left:22px !important;
+  }
+  #events .me5-title span{
+    font-size:clamp(29px,9.4vw,40px) !important;
+    line-height:.86 !important;
+  }
+  #events .me5-title strong{
+    font-size:clamp(43px,12.9vw,58px) !important;
+    line-height:.82 !important;
+  }
+
+  /* Lift paddle/ball and CTA noticeably. */
+  #events .me5-art{
+    left:0 !important;
+    bottom:92px !important;
+    width:50% !important;
+    height:43% !important;
+  }
+  #events .me5-register-wrap{
+    top:123px !important;
+    right:17px !important;
+    width:36% !important;
+    transform:none !important;
+  }
+  #events .me5-register{
+    height:56px !important;
+    min-height:56px !important;
+    padding:0 9px !important;
+    border-radius:11px !important;
+  }
+  #events .me5-register span{
+    font-size:11.5px !important;
+    white-space:nowrap !important;
+  }
+  #events .me5-register b{
+    font-size:17px !important;
+  }
+
+  /* Status strip stays simple and compact. */
+  #events .me5-summary{
+    height:62px !important;
+    grid-template-columns:1.04fr 1.08fr .88fr !important;
+  }
+  #events .me5-summary-item{
+    min-width:0 !important;
+    padding:6px 6px !important;
+    gap:5px !important;
+  }
+  #events .me5-icon,
+  #events .me5-users{
+    width:23px !important;
+    height:23px !important;
+    min-width:23px !important;
+  }
+  #events .me5-live-dot{
+    width:11px !important;
+    height:11px !important;
+    min-width:11px !important;
+  }
+  #events .me5-summary-item strong{
+    font-size:8.2px !important;
+    line-height:1.05 !important;
+  }
+  #events .me5-summary-item small{
+    font-size:6px !important;
+    line-height:1.05 !important;
+  }
+  #events .me5-status small,
+  #events .me5-spots small{display:none !important;}
+  #events .me5-spots b{
+    font-size:24px !important;
+  }
+  #events .me5-spots strong{
+    font-size:7.7px !important;
+    line-height:1 !important;
+  }
+
+  /* Keep the four facts below in a single compact row. */
+  #events .me10-facts{
+    box-sizing:border-box !important;
+    width:calc(100% - 28px) !important;
+    margin:9px auto 0 !important;
+    gap:6px !important;
+  }
+  #events .me10-fact{
+    min-height:74px !important;
+    padding:8px 4px 7px !important;
+    border-radius:12px !important;
+  }
+  #events .me10-fact-icon{
+    width:25px !important;
+    height:25px !important;
+    margin-bottom:4px !important;
+    font-size:13px !important;
+  }
+  #events .me10-fact small{
+    font-size:7px !important;
+    margin-bottom:3px !important;
+  }
+  #events .me10-fact strong{
+    font-size:8.4px !important;
+    line-height:1.1 !important;
+  }
+}
+
+@media (max-width:390px){
+  #events .mytt-event-v5{padding-left:12px !important;padding-right:12px !important;}
+  #events .me5-card{
+    height:300px !important;
+    min-height:300px !important;
+    max-height:300px !important;
+  }
+  #events .me5-title{top:13px !important;left:19px !important;}
+  #events .me5-title span{font-size:28px !important;}
+  #events .me5-title strong{font-size:42px !important;}
+  #events .me5-art{bottom:87px !important;width:49% !important;height:41% !important;}
+  #events .me5-register-wrap{top:116px !important;right:14px !important;width:37% !important;}
+  #events .me5-register{height:52px !important;min-height:52px !important;}
+  #events .me5-register span{font-size:10.5px !important;}
+  #events .me5-summary{height:59px !important;}
+  #events .me10-facts{width:calc(100% - 24px) !important;gap:5px !important;}
+  #events .me10-fact{min-height:70px !important;}
+  #events .me10-fact strong{font-size:8px !important;}
+}
+</style>
+
 </head>
 <body>
 <header class="site-header premium-header">
@@ -4094,8 +4264,8 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260816-event-v11-clean-status"></script>
-<script src="marketplace.js?v=20260816-event-v11-clean-status"></script>
+<script src="app.js?v=20260816-event-v12-clean-metal-compact"></script>
+<script src="marketplace.js?v=20260816-event-v12-clean-metal-compact"></script>
 <footer class="mytt-footer">
   <div class="mytt-footer-inner">
     <div class="mytt-footer-brand">
