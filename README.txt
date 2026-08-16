@@ -1,8 +1,10 @@
-MYTT MOBILE EVENT HERO EXACT V5
+MYTT Mobile Event V6
 
-Upload ALL files in this folder directly to the GitHub repository root.
+Changes only:
+- Cleaner MYTT RATING DAY metallic title (removed busy multi-shadow effect)
+- Smaller Register Now button
+- Reduced button glow
+- No other mobile layout/functionality changed
 
-Verification after upload:
-1. app.js search: mytt-event-v5
-2. index.html search: 20260816-event-hero-exact-v5
-3. Mobile: legacy Upcoming MYTT Events heading and Event Details are hidden.
+Upload all files directly to the GitHub repository root and replace existing files.
+Version marker: 20260816-event-v6-clean-title-small-button

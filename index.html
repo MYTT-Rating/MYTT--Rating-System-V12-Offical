@@ -18,8 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260816-mobile-event-hero-only-v3">
-  <link rel="stylesheet" href="marketplace.css?v=20260816-mobile-event-hero-only-v3">
+  <link rel="stylesheet" href="style.css?v=20260816-event-v6-clean-title-small-button">
+  <link rel="stylesheet" href="marketplace.css?v=20260816-event-v6-clean-title-small-button">
 
 <style id="mytt-mobile-title-left-fix">
 @media (max-width: 768px){
@@ -2700,6 +2700,85 @@
 }
 </style>
 
+
+<style id="mytt-event-v6-clean-title-small-button">
+/* V6 — only refine the mobile event title and Register Now button. */
+@media (max-width:768px){
+  /* Cleaner metallic title: remove the busy multi-layer effects. */
+  #events .me5-title span,
+  #events .me5-title strong{
+    color:transparent !important;
+    background:linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f7f7f7 33%,
+      #cfcfcf 58%,
+      #ffffff 100%
+    ) !important;
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+    -webkit-text-stroke:.65px rgba(255,78,78,.92) !important;
+    filter:none !important;
+    text-shadow:
+      0 2px 0 rgba(96,5,8,.90),
+      0 0 5px rgba(255,45,45,.24) !important;
+  }
+
+  #events .me5-title span{
+    letter-spacing:.075em !important;
+    transform:scaleX(.92) skewX(-1deg) !important;
+  }
+  #events .me5-title strong{
+    letter-spacing:-.02em !important;
+    transform:scaleX(.92) skewX(-1deg) !important;
+  }
+
+  /* Register button: intentionally smaller and quieter. */
+  #events .me5-register-wrap{
+    right:20px !important;
+    top:52% !important;
+    width:37% !important;
+    transform:translateY(-12%) !important;
+  }
+  #events .me5-register{
+    min-height:62px !important;
+    height:62px !important;
+    padding:0 10px !important;
+    gap:7px !important;
+    border-radius:11px !important;
+    box-shadow:
+      0 0 0 2px rgba(255,40,40,.12),
+      0 0 13px rgba(255,25,25,.36),
+      inset 0 0 0 1px rgba(255,255,255,.12) !important;
+  }
+  #events .me5-register::after{
+    inset:5px !important;
+    border-radius:7px !important;
+    border-color:rgba(255,255,255,.17) !important;
+  }
+  #events .me5-register span{
+    font-size:12px !important;
+    letter-spacing:.01em !important;
+  }
+  #events .me5-register b{
+    font-size:18px !important;
+  }
+}
+
+@media (max-width:390px){
+  #events .me5-register-wrap{
+    width:36% !important;
+    right:17px !important;
+  }
+  #events .me5-register{
+    min-height:58px !important;
+    height:58px !important;
+  }
+  #events .me5-register span{font-size:11px !important;}
+  #events .me5-register b{font-size:17px !important;}
+}
+</style>
+
 </head>
 <body>
 <header class="site-header premium-header">
@@ -3724,8 +3803,8 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260816-event-hero-exact-v5"></script>
-<script src="marketplace.js?v=20260816-event-hero-exact-v5"></script>
+<script src="app.js?v=20260816-event-v6-clean-title-small-button"></script>
+<script src="marketplace.js?v=20260816-event-v6-clean-title-small-button"></script>
 <footer class="mytt-footer">
   <div class="mytt-footer-inner">
     <div class="mytt-footer-brand">
