@@ -1,2 +1,1 @@
-MYTT Mobile Event V12 — clean metallic title without internal cut-lines; narrower/flatter hero; paddle and Register raised; compact four-fact row retained.
-Upload all files to the GitHub repository root.
+MYTT V14 stable mobile bottom navigation. Built directly from working V12 Event version. Event hero styles are untouched. JS syntax validated before release.

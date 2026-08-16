@@ -6581,4 +6581,243 @@ td{
     font-size:28px !important;
   }
 }
-\n\n/* =========================================================\n   MYTT MOBILE BOTTOM NAV V13 — CLEAN / ISOLATED\n   Does not touch Event card/title/background classes.\n   ========================================================= */\n@media (max-width:860px){\n  body{\n    padding-bottom:calc(72px + env(safe-area-inset-bottom, 0px));\n  }\n\n  .mytt-mobile-bottom-nav{\n    position:fixed;\n    left:0;\n    right:0;\n    bottom:0;\n    z-index:5200;\n    display:grid;\n    grid-template-columns:repeat(5,minmax(0,1fr));\n    align-items:center;\n    height:64px;\n    box-sizing:content-box;\n    padding:4px 8px env(safe-area-inset-bottom, 0px);\n    background:rgba(6,7,10,.94);\n    border-top:1px solid rgba(255,255,255,.07);\n    box-shadow:0 -5px 18px rgba(0,0,0,.22);\n    -webkit-backdrop-filter:blur(12px);\n    backdrop-filter:blur(12px);\n  }\n\n  .mytt-mobile-bottom-nav::before{\n    content:"";\n    position:absolute;\n    top:0;\n    left:22%;\n    right:22%;\n    height:1px;\n    background:linear-gradient(90deg,transparent,rgba(255,72,72,.24),transparent);\n    pointer-events:none;\n  }\n\n  .mbn-item{\n    appearance:none;\n    -webkit-appearance:none;\n    position:relative;\n    min-width:0;\n    height:56px;\n    margin:0;\n    padding:5px 2px 4px;\n    border:0;\n    border-radius:12px;\n    background:transparent;\n    color:#8f96a3;\n    text-decoration:none;\n    font:inherit;\n    display:flex;\n    flex-direction:column;\n    align-items:center;\n    justify-content:center;\n    gap:4px;\n    cursor:pointer;\n    box-shadow:none;\n  }\n\n  .mbn-icon{\n    width:25px;\n    height:25px;\n    display:grid;\n    place-items:center;\n    border:0;\n    border-radius:0;\n    background:transparent;\n    box-shadow:none;\n  }\n\n  .mbn-icon svg{\n    width:21px;\n    height:21px;\n    fill:none;\n    stroke:currentColor;\n    stroke-width:1.75;\n    stroke-linecap:round;\n    stroke-linejoin:round;\n  }\n\n  .mbn-item > span:last-child{\n    font-size:10px;\n    line-height:1;\n    font-weight:700;\n    letter-spacing:.01em;\n  }\n\n  .mbn-item.active{\n    color:#ff5555;\n    background:transparent;\n    box-shadow:none;\n  }\n\n  .mbn-item.active::after{\n    content:"";\n    position:absolute;\n    left:50%;\n    bottom:0;\n    width:18px;\n    height:2px;\n    transform:translateX(-50%);\n    border-radius:99px;\n    background:#ff5151;\n    box-shadow:0 0 8px rgba(255,70,70,.35);\n  }\n\n  /* Events gets only a subtle red icon tile — no thick black ring / no oversized bubble. */\n  .mbn-events .mbn-icon{\n    width:34px;\n    height:34px;\n    margin-top:-4px;\n    border-radius:11px;\n    color:#ff6767;\n    background:rgba(255,63,63,.10);\n    border:1px solid rgba(255,84,84,.16);\n  }\n  .mbn-events .mbn-icon svg{width:19px;height:19px;}\n  .mbn-events.active .mbn-icon{\n    color:#fff;\n    background:linear-gradient(180deg,#ff5f5f,#e63d3d);\n    border-color:rgba(255,255,255,.12);\n    box-shadow:0 5px 12px rgba(238,52,52,.20);\n  }\n\n  .mbn-backdrop{\n    position:fixed;\n    inset:0;\n    z-index:5190;\n    background:rgba(0,0,0,.46);\n    -webkit-backdrop-filter:blur(2px);\n    backdrop-filter:blur(2px);\n  }\n\n  .mbn-sheet{\n    position:fixed;\n    left:12px;\n    right:12px;\n    bottom:calc(76px + env(safe-area-inset-bottom, 0px));\n    z-index:5195;\n    padding:12px;\n    border-radius:18px;\n    background:#0c0e13;\n    border:1px solid rgba(255,255,255,.08);\n    box-shadow:0 18px 42px rgba(0,0,0,.42);\n  }\n\n  .mbn-sheet-handle{\n    width:34px;\n    height:3px;\n    margin:0 auto 9px;\n    border-radius:99px;\n    background:rgba(255,255,255,.2);\n  }\n  .mbn-sheet-title{\n    margin:0 0 11px 2px;\n    color:#fff;\n    font-size:16px;\n    font-weight:800;\n  }\n  .mbn-sheet-close{\n    position:absolute;\n    top:8px;\n    right:9px;\n    width:31px;\n    height:31px;\n    padding:0;\n    border:0;\n    border-radius:9px;\n    background:rgba(255,255,255,.05);\n    color:#cfd2d8;\n    font-size:20px;\n    line-height:1;\n  }\n  .mbn-sheet-links{\n    display:grid;\n    grid-template-columns:repeat(3,minmax(0,1fr));\n    gap:8px;\n  }\n  .mbn-sheet-links a{\n    min-width:0;\n    padding:12px 9px;\n    border-radius:13px;\n    background:rgba(255,255,255,.025);\n    border:1px solid rgba(255,255,255,.055);\n    color:#fff;\n    text-decoration:none;\n    display:flex;\n    flex-direction:column;\n    gap:5px;\n  }\n  .mbn-sheet-links a > span{color:#ff5757;font-size:18px;line-height:1;}\n  .mbn-sheet-links strong{font-size:12.5px;line-height:1.15;}\n  .mbn-sheet-links small{font-size:9.5px;line-height:1.2;color:#8e95a1;}\n\n  .mytt-footer{\n    padding-bottom:calc(70px + env(safe-area-inset-bottom, 0px));\n  }\n}\n\n@media (min-width:861px){\n  .mytt-mobile-bottom-nav,.mbn-backdrop,.mbn-sheet{display:none !important;}\n}\n
+
+
+/* =========================================================
+   MYTT MOBILE BOTTOM NAV — V14
+   ISOLATED: selectors intentionally use only v14-* classes.
+   ========================================================= */
+@media (max-width:860px){
+  body{
+    padding-bottom:calc(76px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .v14-bottom-nav{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:4900;
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    align-items:center;
+    gap:2px;
+    min-height:66px;
+    padding:7px 8px calc(7px + env(safe-area-inset-bottom, 0px));
+    background:rgba(7,8,12,.94);
+    border-top:1px solid rgba(255,255,255,.055);
+    box-shadow:0 -6px 20px rgba(0,0,0,.18);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+  }
+
+  .v14-bottom-nav::before{
+    content:"";
+    position:absolute;
+    left:22%;
+    right:22%;
+    top:0;
+    height:1px;
+    background:linear-gradient(90deg,transparent,rgba(255,70,70,.25),transparent);
+    pointer-events:none;
+  }
+
+  .v14-bottom-item{
+    appearance:none;
+    border:0;
+    outline:0;
+    text-decoration:none;
+    color:#8f97a5;
+    background:transparent;
+    min-width:0;
+    min-height:52px;
+    padding:4px 2px;
+    border-radius:12px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    font:inherit;
+    cursor:pointer;
+    position:relative;
+  }
+
+  .v14-bottom-icon{
+    width:25px;
+    height:25px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .v14-bottom-icon svg,
+  .v14-more-icon svg{
+    width:100%;
+    height:100%;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+
+  .v14-bottom-label{
+    font-size:10px;
+    line-height:1;
+    font-weight:700;
+    letter-spacing:.025em;
+  }
+
+  .v14-bottom-item.active{
+    color:#ff5b5b;
+  }
+
+  .v14-bottom-item.active::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:0;
+    width:18px;
+    height:2px;
+    border-radius:999px;
+    transform:translateX(-50%);
+    background:#ff5454;
+    box-shadow:0 0 8px rgba(255,84,84,.42);
+  }
+
+  /* Events is highlighted, but deliberately no thick black border / giant bubble. */
+  .v14-bottom-events .v14-bottom-icon{
+    width:34px;
+    height:34px;
+    border-radius:12px;
+    color:#fff;
+    background:linear-gradient(180deg,#ff6262,#e83e3e);
+    box-shadow:0 5px 14px rgba(238,55,55,.22), inset 0 1px 0 rgba(255,255,255,.22);
+    padding:7px;
+  }
+
+  .v14-bottom-events .v14-bottom-label{
+    color:#e9ebef;
+  }
+
+  .v14-bottom-events.active .v14-bottom-icon{
+    box-shadow:0 6px 16px rgba(238,55,55,.28),0 0 14px rgba(255,70,70,.12),inset 0 1px 0 rgba(255,255,255,.25);
+  }
+
+  .v14-bottom-more.active{
+    color:#ff5b5b;
+  }
+
+  .v14-more-backdrop{
+    position:fixed;
+    inset:0;
+    z-index:4880;
+    background:rgba(0,0,0,.48);
+    backdrop-filter:blur(2px);
+    -webkit-backdrop-filter:blur(2px);
+  }
+
+  .v14-more-sheet{
+    position:fixed;
+    left:12px;
+    right:12px;
+    bottom:calc(74px + env(safe-area-inset-bottom, 0px));
+    z-index:4890;
+    padding:10px 14px 16px;
+    border-radius:20px;
+    background:linear-gradient(180deg,rgba(16,17,23,.98),rgba(8,9,13,.99));
+    border:1px solid rgba(255,255,255,.07);
+    box-shadow:0 16px 38px rgba(0,0,0,.46);
+  }
+
+  .v14-more-handle{
+    width:38px;
+    height:3px;
+    margin:0 auto 10px;
+    border-radius:999px;
+    background:rgba(255,255,255,.2);
+  }
+
+  .v14-more-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:12px;
+  }
+
+  .v14-more-head div{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+
+  .v14-more-head small{
+    color:#ff5b5b;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:.14em;
+  }
+
+  .v14-more-head strong{
+    color:#fff;
+    font-size:18px;
+    line-height:1.1;
+  }
+
+  .v14-more-close{
+    width:32px;
+    height:32px;
+    border:0;
+    border-radius:10px;
+    background:rgba(255,255,255,.055);
+    color:#d9dde5;
+    font-size:22px;
+    line-height:1;
+  }
+
+  .v14-more-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:8px;
+  }
+
+  .v14-more-grid a{
+    min-width:0;
+    min-height:96px;
+    padding:12px 10px;
+    border-radius:15px;
+    text-decoration:none;
+    color:#fff;
+    background:rgba(255,255,255,.025);
+    border:1px solid rgba(255,255,255,.055);
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+
+  .v14-more-icon{
+    width:26px;
+    height:26px;
+    color:#ff6262;
+  }
+
+  .v14-more-grid strong{
+    font-size:12px;
+    line-height:1.2;
+  }
+
+  .v14-more-grid small{
+    color:#9299a6;
+    font-size:9.5px;
+    line-height:1.25;
+  }
+}
+
+@media (min-width:861px){
+  .v14-bottom-nav,
+  .v14-more-backdrop,
+  .v14-more-sheet{
+    display:none !important;
+  }
+}

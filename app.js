@@ -3291,4 +3291,67 @@ document.addEventListener("click", function(e){
     setInterval(syncMobileSubmitStatus,1000);
   }
 })();
-\n\n/* =========================================================\n   MYTT MOBILE BOTTOM NAV V13\n   ========================================================= */\n(function initMobileBottomNavV13(){\n  const nav=document.querySelector('.mytt-mobile-bottom-nav');\n  const moreBtn=document.querySelector('.mbn-more');\n  const sheet=document.getElementById('myttMobileMore');\n  const backdrop=document.getElementById('myttMobileMoreBackdrop');\n  if(!nav||!moreBtn||!sheet||!backdrop)return;\n\n  const moreTargets=new Set(['players','market','submit']);\n  const directTargets=new Set(['home','singles','events','doubles']);\n\n  function targetFromHash(){\n    const t=(location.hash||'#home').replace(/^#/,'');\n    return t||'home';\n  }\n\n  function syncActive(){\n    const current=targetFromHash();\n    nav.querySelectorAll('.mbn-item').forEach(item=>{\n      const target=item.dataset.target||'';\n      const active=(directTargets.has(current)&&target===current) || (target==='more'&&moreTargets.has(current));\n      item.classList.toggle('active',active);\n    });\n  }\n\n  function openMore(){\n    sheet.hidden=false;\n    backdrop.hidden=false;\n    moreBtn.setAttribute('aria-expanded','true');\n    moreBtn.classList.add('active');\n  }\n\n  function closeMore(){\n    sheet.hidden=true;\n    backdrop.hidden=true;\n    moreBtn.setAttribute('aria-expanded','false');\n    syncActive();\n  }\n\n  moreBtn.addEventListener('click',function(e){\n    e.preventDefault();\n    if(sheet.hidden)openMore();else closeMore();\n  });\n\n  backdrop.addEventListener('click',closeMore);\n  const close=sheet.querySelector('.mbn-sheet-close');\n  if(close)close.addEventListener('click',closeMore);\n\n  nav.querySelectorAll('a[data-target]').forEach(a=>a.addEventListener('click',closeMore));\n  sheet.querySelectorAll('a[data-target]').forEach(a=>a.addEventListener('click',closeMore));\n\n  window.addEventListener('hashchange',syncActive);\n  window.addEventListener('popstate',syncActive);\n  window.addEventListener('pageshow',syncActive);\n  syncActive();\n})();\n
+
+
+/* =========================================================
+   MYTT MOBILE BOTTOM NAV — V14
+   ========================================================= */
+(function initMobileBottomNavV14(){
+  const nav=document.querySelector('.v14-bottom-nav');
+  const moreBtn=document.querySelector('.v14-bottom-more');
+  const sheet=document.getElementById('v14MoreSheet');
+  const backdrop=document.getElementById('v14MoreBackdrop');
+  if(!nav||!moreBtn||!sheet||!backdrop) return;
+
+  const directTargets=new Set(['home','singles','events','doubles']);
+  const moreTargets=new Set(['players','market','submit']);
+
+  function currentTarget(){
+    const raw=String(location.hash||'#home').replace(/^#/,'');
+    return raw || 'home';
+  }
+
+  function syncActive(){
+    const current=currentTarget();
+    nav.querySelectorAll('.v14-bottom-item').forEach(item=>{
+      const target=item.dataset.v14Target||'';
+      const active=(directTargets.has(current)&&target===current) || (target==='more'&&moreTargets.has(current));
+      item.classList.toggle('active',active);
+    });
+  }
+
+  function openMore(){
+    sheet.hidden=false;
+    backdrop.hidden=false;
+    moreBtn.setAttribute('aria-expanded','true');
+    moreBtn.classList.add('active');
+  }
+
+  function closeMore(){
+    sheet.hidden=true;
+    backdrop.hidden=true;
+    moreBtn.setAttribute('aria-expanded','false');
+    syncActive();
+  }
+
+  moreBtn.addEventListener('click',function(event){
+    event.preventDefault();
+    if(sheet.hidden) openMore(); else closeMore();
+  });
+
+  backdrop.addEventListener('click',closeMore);
+  const closeBtn=sheet.querySelector('.v14-more-close');
+  if(closeBtn) closeBtn.addEventListener('click',closeMore);
+
+  nav.querySelectorAll('a[data-v14-target]').forEach(link=>{
+    link.addEventListener('click',closeMore);
+  });
+  sheet.querySelectorAll('a[data-v14-target]').forEach(link=>{
+    link.addEventListener('click',closeMore);
+  });
+
+  window.addEventListener('hashchange',syncActive);
+  window.addEventListener('popstate',syncActive);
+  window.addEventListener('pageshow',syncActive);
+  syncActive();
+})();
