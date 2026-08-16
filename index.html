@@ -18,8 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260816-event-v8-smooth-title">
-  <link rel="stylesheet" href="marketplace.css?v=20260816-event-v8-smooth-title">
+  <link rel="stylesheet" href="style.css?v=20260816-event-v9-solid-metal-title">
+  <link rel="stylesheet" href="marketplace.css?v=20260816-event-v9-solid-metal-title">
 
 <style id="mytt-mobile-title-left-fix">
 @media (max-width: 768px){
@@ -2827,27 +2827,18 @@
 </style>
 
 
-<style id="mytt-event-v8-smooth-metal-title">
-/* V8 — preserve V7 typography exactly; only remove the internal band/split artifacts. */
+<style id="mytt-event-v9-solid-metal-title">
+/* V9 — keep V7 typography/size/3D edge exactly; remove only internal split/banding. */
 @media (max-width:768px){
   #events .me5-title span,
   #events .me5-title strong{
-    /* Same metallic feel, but with a much smoother tonal transition. */
-    background:linear-gradient(
-      180deg,
-      #ffffff 0%,
-      #fbfbfb 24%,
-      #eeeeee 47%,
-      #d4d4d4 68%,
-      #f4f4f4 86%,
-      #ffffff 100%
-    ) !important;
-    -webkit-background-clip:text !important;
-    background-clip:text !important;
-    -webkit-text-stroke:.85px rgba(255,255,255,.88) !important;
-    -webkit-font-smoothing:antialiased !important;
-    text-rendering:geometricPrecision !important;
-    /* Keep V7's approved red 3D edge/shadow exactly. */
+    background:none !important;
+    -webkit-background-clip:border-box !important;
+    background-clip:border-box !important;
+    color:#f7f7f7 !important;
+    -webkit-text-fill-color:#f7f7f7 !important;
+    -webkit-text-stroke:1px rgba(255,255,255,.88) !important;
+    text-shadow:none !important;
     filter:
       drop-shadow(0 3px 0 #6b070a)
       drop-shadow(0 5px 0 #240204)
@@ -3880,8 +3871,8 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260816-event-v8-smooth-title"></script>
-<script src="marketplace.js?v=20260816-event-v8-smooth-title"></script>
+<script src="app.js?v=20260816-event-v9-solid-metal-title"></script>
+<script src="marketplace.js?v=20260816-event-v9-solid-metal-title"></script>
 <footer class="mytt-footer">
   <div class="mytt-footer-inner">
     <div class="mytt-footer-brand">
