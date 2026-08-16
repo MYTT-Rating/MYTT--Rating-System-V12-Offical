@@ -1,18 +1,19 @@
-MYTT JS/CSS REPLACEMENT FIX
+MYTT MOBILE EVENT PRO V2 — ROOT VERIFIED
 
-Upload ONLY these two files to the ROOT of the GitHub repository:
+Upload ALL files in this folder directly to the ROOT of the GitHub repository.
+Do not upload the folder itself.
+
+Files that MUST be replaced:
+- index.html
 - app.js
 - style.css
+- event-pro-art.png
+- event-rating-day-bg.jpg
+- event-paddle.png
 
-They must REPLACE the existing files with the same names.
-
-Expected sizes after replacement:
-- app.js: 115,915 bytes (~113 KB / ~116 KB displayed depending on UI)
-- style.css: 166,700 bytes (~163 KB / ~167 KB displayed depending on UI)
-
-Do NOT create a subfolder.
-Do NOT rename the files.
-
-After commit, check GitHub:
-- app.js should no longer be ~21.2 KB
-- style.css should no longer be ~31.9 KB
+Verification after upload:
+1. Open app.js on GitHub and search: mobile-event-pro
+   It MUST return matches.
+2. Open index.html on GitHub and search: 20260816-mobile-event-pro-dom-v2
+   It MUST return matches.
+3. If either string is missing, the new mobile Event layout is NOT deployed.
