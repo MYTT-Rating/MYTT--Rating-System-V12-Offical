@@ -2015,7 +2015,7 @@ function eventCardHTML(event){
 
           <div class="me5-summary-item me5-status ${status.cls}">
             <span class="me5-live-dot" aria-hidden="true"></span>
-            <div><strong>${eventEscapeHtml(status.label)}</strong><small>${isOpen?"OPEN FOR REGISTRATION":"MYTT EVENT STATUS"}</small></div>
+            <div><strong>${eventEscapeHtml(status.label)}</strong></div>
           </div>
 
           <div class="me5-summary-item me5-spots">
@@ -2023,7 +2023,7 @@ function eventCardHTML(event){
               <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3.5 20c.4-4 2.4-6 5.5-6s5.1 2 5.5 6M14.5 14.4c3.3.2 5.2 2 5.5 5.6"/></svg>
             </span>
             <b>${remaining}</b>
-            <div><strong>SPOTS REMAINING</strong><small>${capacity>0?"LIMITED SLOTS AVAILABLE":"OPEN REGISTRATION"}</small></div>
+            <div><strong>SPOTS LEFT</strong></div>
           </div>
         </div>
       </div>
