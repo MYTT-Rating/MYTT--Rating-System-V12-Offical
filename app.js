@@ -1991,6 +1991,44 @@ function eventCardHTML(event){
   }
 
   return `<article class="target-event-shell">
+    <!-- MYTT mobile Event V5: exact hero-only mobile layout. -->
+    <section class="mytt-event-v5" aria-label="${eventEscapeHtml(name)}">
+      <div class="me5-kicker">UPCOMING EVENT</div>
+
+      <div class="me5-card">
+        <div class="me5-title" aria-label="${eventEscapeHtml(name)}">
+          <span>${eventEscapeHtml(title.top)}</span>
+          <strong>${eventEscapeHtml(title.main)}</strong>
+        </div>
+
+        <div class="me5-art" aria-hidden="true"></div>
+
+        <div class="me5-register-wrap">${mobileRegisterButton.replaceAll('mobile-event-pro-register','me5-register')}</div>
+
+        <div class="me5-summary">
+          <div class="me5-summary-item me5-date">
+            <span class="me5-icon me5-calendar" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M7 3.5v4M17 3.5v4M3.5 9.5h17M7.5 13h2M12 13h2M16.5 13h.1M7.5 17h2M12 17h2M16.5 17h.1"/></svg>
+            </span>
+            <div><strong>${dateMain}</strong><small>${weekday}</small></div>
+          </div>
+
+          <div class="me5-summary-item me5-status ${status.cls}">
+            <span class="me5-live-dot" aria-hidden="true"></span>
+            <div><strong>${eventEscapeHtml(status.label)}</strong><small>${isOpen?"OPEN FOR REGISTRATION":"MYTT EVENT STATUS"}</small></div>
+          </div>
+
+          <div class="me5-summary-item me5-spots">
+            <span class="me5-users" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3.5 20c.4-4 2.4-6 5.5-6s5.1 2 5.5 6M14.5 14.4c3.3.2 5.2 2 5.5 5.6"/></svg>
+            </span>
+            <b>${remaining}</b>
+            <div><strong>SPOTS REMAINING</strong><small>${capacity>0?"LIMITED SLOTS AVAILABLE":"OPEN REGISTRATION"}</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- MYTT mobile Event V4: isolated structure, no legacy Event CSS. -->
     <section class="mytt-event-v4" aria-label="${eventEscapeHtml(name)}">
       <div class="me4-kicker">UPCOMING EVENT</div>

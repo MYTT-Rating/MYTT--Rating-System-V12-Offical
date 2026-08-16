@@ -2387,6 +2387,319 @@
 }
 </style>
 
+
+<style id="mytt-event-hero-exact-v5">
+/* =========================================================
+   MYTT MOBILE EVENT V5 — HERO ONLY
+   Dedicated DOM + dedicated CSS. No legacy mobile Event UI.
+   ========================================================= */
+.mytt-event-v5{display:none;}
+
+@media (max-width:768px){
+  /* Remove every legacy mobile event heading/card/detail block. */
+  #events > .section-head,
+  #events .events-section-head,
+  #events .target-event-shell > .mytt-event-v4,
+  #events .target-event-shell > .mobile-event-pro,
+  #events .target-event-shell > .target-event-hero,
+  #events .target-event-shell > .target-event-details{
+    display:none !important;
+  }
+
+  #events{
+    padding-top:22px !important;
+  }
+  #eventsGrid{
+    display:block !important;
+    width:100% !important;
+    margin:0 !important;
+  }
+  #events .target-event-shell{
+    display:block !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+
+  #events .mytt-event-v5{
+    display:block !important;
+    width:100% !important;
+    margin:0 !important;
+    padding:0 0 16px !important;
+  }
+
+  #events .me5-kicker{
+    margin:0 0 15px 6px !important;
+    color:#ff4a4a !important;
+    font-size:13px !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+    letter-spacing:.30em !important;
+    text-transform:uppercase !important;
+  }
+
+  #events .me5-card{
+    position:relative !important;
+    width:100% !important;
+    height:min(108vw,420px) !important;
+    min-height:385px !important;
+    max-height:420px !important;
+    overflow:hidden !important;
+    isolation:isolate !important;
+    border:1px solid rgba(255,66,66,.96) !important;
+    border-radius:22px !important;
+    background:
+      radial-gradient(circle at 78% 44%,rgba(255,35,35,.22),transparent 32%),
+      linear-gradient(122deg,transparent 0 58%,rgba(255,48,48,.14) 59% 60%,transparent 61% 100%),
+      repeating-linear-gradient(135deg,rgba(255,56,56,.075) 0 1px,transparent 1px 15px),
+      linear-gradient(180deg,#0a090c 0%,#050507 100%) !important;
+    box-shadow:
+      0 0 0 1px rgba(255,55,55,.14),
+      0 0 20px rgba(255,26,26,.25),
+      inset 0 0 32px rgba(255,38,38,.065),
+      0 18px 36px rgba(0,0,0,.34) !important;
+  }
+
+  #events .me5-card::before{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    z-index:1 !important;
+    pointer-events:none !important;
+    background:
+      linear-gradient(120deg,transparent 0 54%,rgba(255,50,50,.16) 55% 56%,transparent 57% 100%),
+      radial-gradient(circle at 90% 17%,rgba(255,42,42,.17),transparent 18%),
+      repeating-linear-gradient(90deg,transparent 0 18px,rgba(255,255,255,.012) 18px 19px) !important;
+  }
+  #events .me5-card::after{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    z-index:4 !important;
+    pointer-events:none !important;
+    background:
+      linear-gradient(180deg,rgba(0,0,0,0) 0 67%,rgba(0,0,0,.18) 73%,rgba(0,0,0,.82) 84%,rgba(0,0,0,.96) 100%) !important;
+  }
+
+  /* Metallic tournament title. */
+  #events .me5-title{
+    position:absolute !important;
+    z-index:8 !important;
+    top:24px !important;
+    left:28px !important;
+    right:10px !important;
+    pointer-events:none !important;
+    text-transform:uppercase !important;
+  }
+  #events .me5-title span,
+  #events .me5-title strong{
+    display:block !important;
+    width:max-content !important;
+    max-width:none !important;
+    margin:0 !important;
+    color:transparent !important;
+    font-family:Impact,"Arial Black","Arial Narrow",sans-serif !important;
+    font-style:italic !important;
+    font-weight:1000 !important;
+    text-transform:uppercase !important;
+    background:linear-gradient(180deg,#ffffff 0%,#ffffff 27%,#d6d6d6 46%,#9b9b9b 64%,#f4f4f4 82%,#ffffff 100%) !important;
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+    -webkit-text-stroke:1px rgba(255,255,255,.88) !important;
+    transform-origin:left center !important;
+    filter:
+      drop-shadow(0 3px 0 #6b070a)
+      drop-shadow(0 5px 0 #240204)
+      drop-shadow(0 0 7px rgba(255,38,38,.78)) !important;
+  }
+  #events .me5-title span{
+    margin-left:6px !important;
+    font-size:clamp(35px,11.2vw,50px) !important;
+    line-height:.86 !important;
+    letter-spacing:.08em !important;
+    transform:scaleX(.90) skewX(-2deg) !important;
+  }
+  #events .me5-title strong{
+    margin-top:2px !important;
+    white-space:nowrap !important;
+    font-size:clamp(52px,15.8vw,72px) !important;
+    line-height:.82 !important;
+    letter-spacing:-.025em !important;
+    transform:scaleX(.90) skewX(-2deg) !important;
+  }
+
+  /* Paddle/photo blended into the card — no visible square image panel. */
+  #events .me5-art{
+    position:absolute !important;
+    z-index:3 !important;
+    left:-4px !important;
+    bottom:76px !important;
+    width:66% !important;
+    height:55% !important;
+    background:url('event-paddle.png') left bottom / contain no-repeat !important;
+    mix-blend-mode:screen !important;
+    opacity:.97 !important;
+    filter:saturate(1.10) contrast(1.08) brightness(1.00) !important;
+    pointer-events:none !important;
+  }
+  #events .me5-art::after{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    background:linear-gradient(90deg,transparent 0 68%,rgba(7,7,10,.55) 84%,#07070a 100%) !important;
+    pointer-events:none !important;
+  }
+
+  /* Register button sits to the right of the paddle, like the approved mockup. */
+  #events .me5-register-wrap{
+    position:absolute !important;
+    z-index:10 !important;
+    right:18px !important;
+    top:50% !important;
+    width:46% !important;
+    transform:translateY(-18%) !important;
+  }
+  #events .me5-register{
+    position:relative !important;
+    width:100% !important;
+    min-height:84px !important;
+    padding:0 12px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:10px !important;
+    border:1px solid rgba(255,255,255,.75) !important;
+    border-radius:13px !important;
+    color:#fff !important;
+    background:linear-gradient(180deg,#ff3e3e 0%,#c60d13 100%) !important;
+    box-shadow:
+      0 0 0 4px rgba(255,40,40,.14),
+      0 0 24px rgba(255,25,25,.60),
+      inset 0 0 0 1px rgba(255,255,255,.16) !important;
+    clip-path:polygon(6% 0,100% 0,100% 82%,94% 100%,0 100%,0 18%) !important;
+  }
+  #events .me5-register::after{
+    content:"" !important;
+    position:absolute !important;
+    inset:6px !important;
+    border:1px solid rgba(255,255,255,.24) !important;
+    border-radius:9px !important;
+    clip-path:inherit !important;
+    pointer-events:none !important;
+  }
+  #events .me5-register span{
+    position:relative !important;
+    z-index:1 !important;
+    font-size:15px !important;
+    font-weight:950 !important;
+    line-height:1 !important;
+    letter-spacing:.015em !important;
+    white-space:nowrap !important;
+  }
+  #events .me5-register b{
+    position:relative !important;
+    z-index:1 !important;
+    font-size:22px !important;
+    line-height:1 !important;
+  }
+  #events .me5-register.disabled{opacity:.55 !important;box-shadow:none !important;}
+
+  /* Date / registration / spots: one clean row at the bottom. */
+  #events .me5-summary{
+    position:absolute !important;
+    z-index:12 !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+    height:82px !important;
+    display:grid !important;
+    grid-template-columns:1fr 1.10fr 1.12fr !important;
+    background:rgba(3,4,7,.965) !important;
+    border-top:1px solid rgba(255,63,63,.30) !important;
+  }
+  #events .me5-summary-item{
+    min-width:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:7px !important;
+    padding:9px 7px !important;
+    border-right:1px solid rgba(255,255,255,.10) !important;
+  }
+  #events .me5-summary-item:last-child{border-right:0 !important;}
+  #events .me5-icon,
+  #events .me5-users{
+    width:29px !important;
+    height:29px !important;
+    min-width:29px !important;
+    color:#ff4343 !important;
+  }
+  #events .me5-icon svg,
+  #events .me5-users svg{
+    display:block !important;
+    width:100% !important;
+    height:100% !important;
+    fill:none !important;
+    stroke:currentColor !important;
+    stroke-width:1.8 !important;
+    stroke-linecap:round !important;
+    stroke-linejoin:round !important;
+  }
+  #events .me5-live-dot{
+    width:14px !important;
+    height:14px !important;
+    min-width:14px !important;
+    border-radius:50% !important;
+    background:#2ce445 !important;
+    box-shadow:0 0 13px rgba(44,228,69,.86) !important;
+  }
+  #events .me5-summary-item strong{
+    display:block !important;
+    margin:0 !important;
+    color:#fff !important;
+    font-size:9px !important;
+    font-weight:950 !important;
+    line-height:1.05 !important;
+  }
+  #events .me5-summary-item small{
+    display:block !important;
+    margin-top:3px !important;
+    color:rgba(255,255,255,.60) !important;
+    font-size:6.8px !important;
+    font-weight:650 !important;
+    line-height:1.08 !important;
+    letter-spacing:.035em !important;
+  }
+  #events .me5-spots{
+    gap:5px !important;
+  }
+  #events .me5-spots b{
+    flex:0 0 auto !important;
+    margin-right:1px !important;
+    color:#ff4444 !important;
+    font-size:30px !important;
+    font-weight:1000 !important;
+    line-height:.88 !important;
+  }
+}
+
+@media (max-width:390px){
+  #events .me5-card{
+    height:min(109vw,405px) !important;
+    min-height:380px !important;
+  }
+  #events .me5-title{left:22px !important;top:22px !important;}
+  #events .me5-title span{font-size:36px !important;}
+  #events .me5-title strong{font-size:54px !important;transform:scaleX(.88) skewX(-2deg) !important;}
+  #events .me5-register-wrap{right:15px !important;width:46% !important;}
+  #events .me5-register{min-height:78px !important;}
+  #events .me5-register span{font-size:13.5px !important;}
+  #events .me5-summary-item{padding-left:5px !important;padding-right:5px !important;gap:5px !important;}
+  #events .me5-icon,#events .me5-users{width:27px !important;height:27px !important;min-width:27px !important;}
+  #events .me5-summary-item strong{font-size:8.3px !important;}
+  #events .me5-summary-item small{font-size:6.2px !important;}
+  #events .me5-spots b{font-size:28px !important;}
+}
+</style>
+
 </head>
 <body>
 <header class="site-header premium-header">
@@ -3411,8 +3724,8 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260816-event-exact-code-v4"></script>
-<script src="marketplace.js?v=20260816-event-exact-code-v4"></script>
+<script src="app.js?v=20260816-event-hero-exact-v5"></script>
+<script src="marketplace.js?v=20260816-event-hero-exact-v5"></script>
 <footer class="mytt-footer">
   <div class="mytt-footer-inner">
     <div class="mytt-footer-brand">
