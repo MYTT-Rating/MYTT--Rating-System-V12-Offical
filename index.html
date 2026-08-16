@@ -18,8 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260816-mobile-polish-v4">
-  <link rel="stylesheet" href="marketplace.css?v=20260816-mobile-polish-v2">
+  <link rel="stylesheet" href="style.css?v=20260817-event-v13-clean-bottom-nav">
+  <link rel="stylesheet" href="marketplace.css?v=20260817-event-v13-clean-bottom-nav">
 
 <style id="mytt-mobile-title-left-fix">
 @media (max-width: 768px){
@@ -1085,6 +1085,2162 @@
   .target-event-title > strong{font-size:46px !important;}
 }
 </style>
+<style id="mytt-mobile-event-final-compact-v1">
+@media (max-width:768px){
+  /* ===== FINAL MOBILE EVENT — compact, premium, one-screen rhythm ===== */
+  #events.mobile-nav-page{
+    padding-top:14px !important;
+    padding-bottom:24px !important;
+  }
+
+  #events .events-section-head{
+    margin-bottom:12px !important;
+    align-items:flex-end !important;
+  }
+  #events .events-section-head .kicker{
+    margin-bottom:5px !important;
+    font-size:9px !important;
+    letter-spacing:3.4px !important;
+  }
+  #events .events-section-head h2{
+    max-width:10ch !important;
+    margin:0 !important;
+    font-size:clamp(31px,8.8vw,39px) !important;
+    line-height:.88 !important;
+    letter-spacing:-.035em !important;
+  }
+  #events .events-section-head .status{
+    padding:7px 10px !important;
+    font-size:9px !important;
+  }
+
+  #eventsGrid{
+    gap:12px !important;
+  }
+  #events .target-event-shell{
+    gap:12px !important;
+  }
+
+  /* Hero is intentionally short. Art is a separate visual, not a giant background. */
+  #events .target-event-hero{
+    position:relative !important;
+    min-height:0 !important;
+    height:372px !important;
+    border-radius:22px !important;
+    overflow:hidden !important;
+    border:1px solid rgba(255,68,68,.46) !important;
+    background:
+      radial-gradient(circle at 80% 26%,rgba(255,46,46,.14),transparent 32%),
+      linear-gradient(145deg,rgba(18,7,10,.94) 0%,rgba(6,8,12,.985) 47%,rgba(15,5,8,.96) 100%),
+      repeating-linear-gradient(135deg,rgba(255,60,60,.025) 0 1px,transparent 1px 18px),
+      #05070a !important;
+    box-shadow:
+      0 14px 32px rgba(0,0,0,.34),
+      inset 0 0 0 1px rgba(255,255,255,.025),
+      0 0 18px rgba(255,35,35,.10) !important;
+  }
+
+  #events .target-event-hero::before{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    z-index:1 !important;
+    pointer-events:none !important;
+    background:
+      linear-gradient(118deg,transparent 0 58%,rgba(255,54,54,.14) 72%,transparent 86%),
+      linear-gradient(180deg,rgba(255,255,255,.018),transparent 24%) !important;
+  }
+  #events .target-event-hero::after{
+    content:"" !important;
+    position:absolute !important;
+    left:16px !important;
+    right:16px !important;
+    top:198px !important;
+    height:1px !important;
+    z-index:2 !important;
+    background:linear-gradient(90deg,rgba(255,55,55,.75),rgba(255,55,55,.08),transparent) !important;
+    box-shadow:0 0 10px rgba(255,40,40,.30) !important;
+  }
+
+  /* Use the strong paddle image as a contained art layer. */
+  #events .target-paddle-art{
+    display:block !important;
+    position:absolute !important;
+    z-index:2 !important;
+    top:38px !important;
+    right:-8px !important;
+    width:62% !important;
+    height:155px !important;
+    opacity:.96 !important;
+    border:0 !important;
+    border-radius:0 !important;
+    background:url('event-pro-art.png') 50% 54% / cover no-repeat !important;
+    filter:saturate(1.04) contrast(1.03) brightness(.92) !important;
+    box-shadow:none !important;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 12%,#000 30%,#000 100%) !important;
+    mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 12%,#000 30%,#000 100%) !important;
+    pointer-events:none !important;
+  }
+
+  #events .target-hero-content{
+    position:absolute !important;
+    inset:0 !important;
+    z-index:3 !important;
+    width:100% !important;
+    min-height:0 !important;
+    height:100% !important;
+    padding:20px 16px 0 !important;
+    display:block !important;
+  }
+
+  #events .target-event-title{
+    position:absolute !important;
+    top:24px !important;
+    left:18px !important;
+    z-index:4 !important;
+    width:48% !important;
+    margin:0 !important;
+    padding:0 !important;
+    text-align:left !important;
+  }
+  #events .target-event-title>span{
+    display:block !important;
+    margin:0 0 2px !important;
+    font-size:15px !important;
+    font-style:italic !important;
+    font-weight:900 !important;
+    letter-spacing:.16em !important;
+    color:#fff !important;
+  }
+  #events .target-event-title>strong{
+    display:block !important;
+    max-width:none !important;
+    margin:0 !important;
+    font-size:clamp(38px,10.5vw,48px) !important;
+    line-height:.82 !important;
+    letter-spacing:-.045em !important;
+    font-style:italic !important;
+    font-weight:1000 !important;
+    color:#fff !important;
+    text-transform:uppercase !important;
+    text-shadow:
+      0 2px 0 rgba(255,68,68,.64),
+      0 0 15px rgba(255,50,50,.16) !important;
+  }
+
+  /* Date / status / remaining are one clean row. */
+  #events .target-event-summary{
+    position:absolute !important;
+    left:14px !important;
+    right:14px !important;
+    bottom:78px !important;
+    width:auto !important;
+    min-height:67px !important;
+    padding:8px 7px !important;
+    display:grid !important;
+    grid-template-columns:1.08fr 1.28fr .92fr !important;
+    gap:0 !important;
+    align-items:center !important;
+    border:1px solid rgba(255,255,255,.07) !important;
+    border-radius:15px !important;
+    background:rgba(6,8,12,.88) !important;
+    backdrop-filter:blur(9px) !important;
+    box-shadow:inset 0 0 0 1px rgba(255,54,54,.025) !important;
+  }
+  #events .target-event-summary>i{display:none !important;}
+  #events .target-summary-item{
+    min-width:0 !important;
+    min-height:48px !important;
+    padding:2px 7px !important;
+    gap:6px !important;
+    display:flex !important;
+    align-items:center !important;
+    border-right:1px solid rgba(255,255,255,.08) !important;
+  }
+  #events .target-summary-item:last-child{
+    border-right:0 !important;
+    padding-right:2px !important;
+  }
+  #events .target-summary-item:first-child{padding-left:2px !important;}
+  #events .target-summary-icon{
+    width:28px !important;
+    height:28px !important;
+    min-width:28px !important;
+    border-radius:9px !important;
+    font-size:13px !important;
+  }
+  #events .target-live-dot{
+    width:12px !important;
+    height:12px !important;
+    min-width:12px !important;
+  }
+  #events .target-summary-item strong{
+    display:block !important;
+    font-size:9.5px !important;
+    line-height:1.05 !important;
+    letter-spacing:0 !important;
+    white-space:normal !important;
+  }
+  #events .target-summary-item small{
+    display:block !important;
+    margin-top:3px !important;
+    font-size:6.5px !important;
+    line-height:1.1 !important;
+    letter-spacing:.05em !important;
+    white-space:normal !important;
+  }
+  #events .target-people-icon{display:none !important;}
+  #events .target-spots-summary b{
+    flex:0 0 auto !important;
+    font-size:27px !important;
+    line-height:.9 !important;
+    color:#ff4b4b !important;
+  }
+
+  /* CTA fixed to bottom of the short hero. */
+  #events .target-hero-action{
+    position:absolute !important;
+    z-index:5 !important;
+    left:14px !important;
+    right:14px !important;
+    bottom:14px !important;
+    width:auto !important;
+    padding:0 !important;
+  }
+  #events .target-register-button{
+    width:100% !important;
+    min-height:52px !important;
+    height:52px !important;
+    padding:0 18px !important;
+    border-radius:14px !important;
+    gap:10px !important;
+    background:linear-gradient(180deg,#ff4d4d,#ec2c2c) !important;
+    border:1px solid rgba(255,255,255,.15) !important;
+    box-shadow:0 8px 22px rgba(255,35,35,.22),inset 0 0 0 1px rgba(255,255,255,.09) !important;
+  }
+  #events .target-register-button::before{
+    inset:4px !important;
+    border-radius:10px !important;
+  }
+  #events .target-register-button span{
+    font-size:14px !important;
+    font-weight:950 !important;
+    letter-spacing:.025em !important;
+  }
+  #events .target-register-button b{
+    font-size:20px !important;
+  }
+
+  /* ===== Event Details — all 4 items in ONE ROW ===== */
+  #events .target-event-details{
+    margin:0 !important;
+    padding:14px 12px 13px !important;
+    border-radius:20px !important;
+    border:1px solid rgba(255,70,70,.20) !important;
+    background:linear-gradient(180deg,rgba(8,10,14,.97),rgba(6,8,12,.985)) !important;
+    box-shadow:0 10px 24px rgba(0,0,0,.25) !important;
+  }
+  #events .target-details-heading{
+    min-height:31px !important;
+    margin:0 0 9px !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:8px !important;
+  }
+  #events .target-details-title{
+    min-width:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:6px !important;
+  }
+  #events .target-details-title>span{
+    font-size:14px !important;
+  }
+  #events .target-details-title>strong{
+    font-size:10px !important;
+    letter-spacing:.11em !important;
+    white-space:nowrap !important;
+  }
+  #events .target-details-line{display:none !important;}
+  #events .target-event-id{
+    margin-left:auto !important;
+    padding:6px 8px !important;
+    border-radius:9px !important;
+    font-size:8.5px !important;
+    letter-spacing:.10em !important;
+  }
+
+  #events .target-tech-grid{
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:6px !important;
+    width:100% !important;
+    overflow:visible !important;
+  }
+  #events .target-tech-card{
+    min-width:0 !important;
+    min-height:81px !important;
+    padding:8px 5px !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    justify-content:flex-start !important;
+    gap:5px !important;
+    border-radius:12px !important;
+    border:1px solid rgba(255,72,72,.17) !important;
+    background:rgba(10,12,17,.82) !important;
+    clip-path:none !important;
+    box-shadow:none !important;
+  }
+  #events .target-tech-icon{
+    width:29px !important;
+    height:29px !important;
+    min-width:29px !important;
+    border-radius:50% !important;
+    font-size:14px !important;
+  }
+  #events .target-tech-card>div:last-child{
+    min-width:0 !important;
+    width:100% !important;
+  }
+  #events .target-tech-card small{
+    display:block !important;
+    margin-bottom:3px !important;
+    font-size:7px !important;
+    line-height:1 !important;
+    letter-spacing:.09em !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+  #events .target-tech-card strong{
+    display:block !important;
+    width:100% !important;
+    font-size:9px !important;
+    line-height:1.13 !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  #events .target-progress-panel{
+    margin-top:9px !important;
+    padding:9px 8px 8px !important;
+    border-radius:12px !important;
+    background:rgba(8,10,14,.72) !important;
+  }
+  #events .target-progress-head{
+    margin-bottom:6px !important;
+  }
+  #events .target-progress-head span,
+  #events .target-progress-head strong{
+    font-size:9px !important;
+    letter-spacing:.08em !important;
+  }
+  #events .target-progress-track{
+    height:7px !important;
+    border-radius:999px !important;
+  }
+  #events .target-progress-footer{
+    margin-top:7px !important;
+  }
+  #events .target-description{
+    gap:7px !important;
+  }
+  #events .target-description span{
+    font-size:11px !important;
+  }
+  #events .target-description p{
+    margin:0 !important;
+    font-size:8px !important;
+    line-height:1.2 !important;
+  }
+}
+
+@media (max-width:390px){
+  #events .target-event-hero{height:356px !important;}
+  #events .target-paddle-art{height:145px !important;width:61% !important;}
+  #events .target-event-title>strong{font-size:36px !important;}
+  #events .target-event-summary{bottom:74px !important;}
+  #events .target-summary-item strong{font-size:8.5px !important;}
+  #events .target-summary-item small{font-size:6px !important;}
+  #events .target-spots-summary b{font-size:25px !important;}
+  #events .target-register-button{height:48px !important;min-height:48px !important;}
+  #events .target-tech-card strong{font-size:8.4px !important;}
+  #events .target-tech-card small{font-size:6.6px !important;}
+}
+</style>
+
+
+<style id="mytt-mobile-event-pro-dom-v2">
+/* New mobile-only Event DOM. Desktop keeps the existing target-event layout. */
+.mobile-event-pro{display:none;}
+
+@media (max-width:768px){
+  #events.mobile-nav-page{
+    padding-top:14px !important;
+    padding-bottom:24px !important;
+  }
+
+  #events .events-section-head{
+    margin-bottom:12px !important;
+  }
+
+  #events .events-section-head h2{
+    max-width:235px !important;
+    font-size:clamp(30px,8.7vw,38px) !important;
+    line-height:.90 !important;
+    letter-spacing:-.8px !important;
+  }
+
+  #events .events-section-head .status{
+    padding:7px 10px !important;
+    font-size:10px !important;
+  }
+
+  /* The old event hero/details are completely disabled on phones. */
+  #events .target-event-shell > .target-event-hero,
+  #events .target-event-shell > .target-event-details{
+    display:none !important;
+  }
+
+  #events .target-event-shell{
+    display:block !important;
+    margin:0 !important;
+  }
+
+  #events .mobile-event-pro{
+    display:block !important;
+    width:100% !important;
+  }
+
+  #events .mobile-event-pro-hero{
+    position:relative !important;
+    overflow:hidden !important;
+    border:1px solid rgba(255,70,70,.48) !important;
+    border-radius:22px !important;
+    background:#05070b !important;
+    box-shadow:
+      0 12px 28px rgba(0,0,0,.30),
+      0 0 17px rgba(255,44,44,.10),
+      inset 0 0 0 1px rgba(255,255,255,.02) !important;
+  }
+
+  #events .mobile-event-pro-stage{
+    position:relative !important;
+    height:205px !important;
+    overflow:hidden !important;
+    background:
+      linear-gradient(90deg,rgba(5,7,11,.92) 0%,rgba(5,7,11,.68) 34%,rgba(5,7,11,.12) 70%,rgba(5,7,11,.02) 100%),
+      linear-gradient(180deg,rgba(5,7,11,.03) 0%,rgba(5,7,11,.06) 66%,rgba(5,7,11,.74) 100%),
+      url('event-rating-day-bg.jpg') 68% center / cover no-repeat !important;
+  }
+
+  #events .mobile-event-pro-stage::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+      linear-gradient(118deg,transparent 0 62%,rgba(255,56,56,.13) 77%,transparent 89%),
+      radial-gradient(circle at 81% 78%,rgba(255,39,39,.13),transparent 24%);
+  }
+
+  #events .mobile-event-pro-title{
+    position:absolute !important;
+    z-index:2 !important;
+    left:18px !important;
+    top:22px !important;
+    width:56% !important;
+    color:#fff !important;
+    text-transform:uppercase !important;
+    pointer-events:none !important;
+  }
+
+  #events .mobile-event-pro-title > span{
+    display:block !important;
+    margin:0 0 3px 2px !important;
+    font-family:Impact,"Arial Narrow",Arial,sans-serif !important;
+    font-size:18px !important;
+    font-style:italic !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+    letter-spacing:.13em !important;
+    color:#fff !important;
+    text-shadow:0 2px 0 rgba(195,28,28,.72) !important;
+  }
+
+  #events .mobile-event-pro-title > strong{
+    display:block !important;
+    max-width:4.6ch !important;
+    margin:0 !important;
+    font-family:Impact,"Arial Narrow",Arial,sans-serif !important;
+    font-size:clamp(46px,13.2vw,62px) !important;
+    font-style:italic !important;
+    font-weight:900 !important;
+    line-height:.82 !important;
+    letter-spacing:-.035em !important;
+    color:#fff !important;
+    -webkit-text-stroke:.7px rgba(255,72,72,.70) !important;
+    text-shadow:
+      0 3px 0 rgba(123,8,12,.95),
+      0 0 15px rgba(255,35,35,.18) !important;
+  }
+
+  #events .mobile-event-pro-summary{
+    display:grid !important;
+    grid-template-columns:1fr 1.15fr .9fr !important;
+    align-items:stretch !important;
+    margin:0 12px !important;
+    border:1px solid rgba(255,255,255,.065) !important;
+    border-radius:16px !important;
+    overflow:hidden !important;
+    background:linear-gradient(180deg,rgba(10,12,17,.96),rgba(6,8,12,.98)) !important;
+  }
+
+  #events .mobile-event-pro-summary-item{
+    min-width:0 !important;
+    min-height:67px !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:7px !important;
+    padding:9px 7px !important;
+    border-right:1px solid rgba(255,255,255,.07) !important;
+  }
+  #events .mobile-event-pro-summary-item:last-child{border-right:0 !important;}
+
+  #events .mobile-event-pro-summary-icon{
+    width:31px !important;
+    height:31px !important;
+    min-width:31px !important;
+    display:grid !important;
+    place-items:center !important;
+    border:1px solid rgba(255,70,70,.55) !important;
+    border-radius:10px !important;
+    color:#ff5353 !important;
+    font-size:15px !important;
+  }
+
+  #events .mobile-event-pro-live-dot{
+    width:13px !important;
+    height:13px !important;
+    min-width:13px !important;
+    border-radius:999px !important;
+    background:#25e33d !important;
+    box-shadow:0 0 12px rgba(37,227,61,.55) !important;
+  }
+
+  #events .mobile-event-pro-summary-item strong{
+    display:block !important;
+    font-size:9.5px !important;
+    line-height:1.05 !important;
+    font-weight:900 !important;
+    color:#fff !important;
+  }
+  #events .mobile-event-pro-summary-item small{
+    display:block !important;
+    margin-top:4px !important;
+    font-size:6.6px !important;
+    line-height:1.08 !important;
+    font-weight:700 !important;
+    letter-spacing:.04em !important;
+    color:rgba(255,255,255,.57) !important;
+  }
+
+  #events .mobile-event-pro-spots{
+    gap:5px !important;
+  }
+  #events .mobile-event-pro-spots > b{
+    flex:0 0 auto !important;
+    font-size:29px !important;
+    line-height:.9 !important;
+    color:#ff4b4b !important;
+    font-weight:950 !important;
+  }
+
+  #events .mobile-event-pro-action{
+    padding:12px !important;
+  }
+  #events .mobile-event-pro-register{
+    position:relative !important;
+    width:100% !important;
+    min-height:56px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:14px !important;
+    border:1px solid rgba(255,255,255,.18) !important;
+    border-radius:16px !important;
+    background:linear-gradient(180deg,#ff5050 0%,#ec2828 100%) !important;
+    color:#fff !important;
+    box-shadow:
+      0 0 0 4px rgba(255,64,64,.08),
+      0 8px 22px rgba(255,34,34,.24),
+      inset 0 0 0 1px rgba(255,255,255,.08) !important;
+    font:inherit !important;
+  }
+  #events .mobile-event-pro-register span{
+    font-size:15px !important;
+    font-weight:950 !important;
+    letter-spacing:.03em !important;
+  }
+  #events .mobile-event-pro-register b{
+    font-size:22px !important;
+  }
+  #events .mobile-event-pro-register.disabled{
+    opacity:.55 !important;
+    box-shadow:none !important;
+  }
+
+  #events .mobile-event-pro-details{
+    margin-top:12px !important;
+    padding:14px 12px 13px !important;
+    border:1px solid rgba(255,70,70,.24) !important;
+    border-radius:20px !important;
+    background:linear-gradient(180deg,rgba(8,10,15,.97),rgba(5,7,11,.99)) !important;
+    box-shadow:0 10px 24px rgba(0,0,0,.24) !important;
+  }
+
+  #events .mobile-event-pro-details-head{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    gap:8px !important;
+    margin:0 0 10px !important;
+  }
+  #events .mobile-event-pro-details-head > strong{
+    min-width:0 !important;
+    font-size:11px !important;
+    line-height:1 !important;
+    letter-spacing:.11em !important;
+    color:#ff5151 !important;
+  }
+  #events .mobile-event-pro-details-head > strong span{
+    margin-right:6px !important;
+  }
+  #events .mobile-event-pro-details-head > em{
+    flex:0 0 auto !important;
+    padding:7px 9px !important;
+    border:1px solid rgba(255,255,255,.14) !important;
+    border-radius:11px !important;
+    background:rgba(255,255,255,.03) !important;
+    font-size:9px !important;
+    font-style:normal !important;
+    font-weight:850 !important;
+    letter-spacing:.10em !important;
+    color:rgba(255,255,255,.85) !important;
+  }
+
+  #events .mobile-event-pro-detail-grid{
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:6px !important;
+  }
+  #events .mobile-event-pro-detail-card{
+    min-width:0 !important;
+    min-height:83px !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    padding:8px 4px 7px !important;
+    border:1px solid rgba(255,70,70,.18) !important;
+    border-radius:13px !important;
+    background:linear-gradient(180deg,rgba(12,14,20,.96),rgba(8,10,14,.98)) !important;
+    text-align:center !important;
+    overflow:hidden !important;
+  }
+  #events .mobile-event-pro-detail-icon{
+    width:29px !important;
+    height:29px !important;
+    min-height:29px !important;
+    display:grid !important;
+    place-items:center !important;
+    margin-bottom:5px !important;
+    border:1px solid rgba(255,69,69,.42) !important;
+    border-radius:999px !important;
+    color:#ff5151 !important;
+    font-size:14px !important;
+  }
+  #events .mobile-event-pro-detail-card small{
+    width:100% !important;
+    min-width:0 !important;
+    font-size:7px !important;
+    line-height:1 !important;
+    font-weight:850 !important;
+    letter-spacing:.07em !important;
+    color:#ff5252 !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+  #events .mobile-event-pro-detail-card strong{
+    width:100% !important;
+    min-width:0 !important;
+    margin-top:5px !important;
+    font-size:8.8px !important;
+    line-height:1.13 !important;
+    color:#fff !important;
+    word-break:normal !important;
+    overflow-wrap:anywhere !important;
+  }
+
+  #events .mobile-event-pro-progress{
+    margin-top:10px !important;
+    padding:10px 9px 9px !important;
+    border:1px solid rgba(255,255,255,.07) !important;
+    border-radius:13px !important;
+    background:rgba(255,255,255,.018) !important;
+  }
+  #events .mobile-event-pro-progress-head{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    gap:10px !important;
+  }
+  #events .mobile-event-pro-progress-head span{
+    font-size:8px !important;
+    font-weight:850 !important;
+    letter-spacing:.11em !important;
+    color:rgba(255,255,255,.72) !important;
+  }
+  #events .mobile-event-pro-progress-head strong{
+    font-size:11px !important;
+    color:#fff !important;
+  }
+  #events .mobile-event-pro-progress-track{
+    height:5px !important;
+    margin-top:7px !important;
+    overflow:hidden !important;
+    border-radius:999px !important;
+    background:rgba(255,255,255,.08) !important;
+  }
+  #events .mobile-event-pro-progress-track span{
+    display:block !important;
+    height:100% !important;
+    border-radius:inherit !important;
+    background:linear-gradient(90deg,#ff3434,#ff5b5b) !important;
+    box-shadow:0 0 8px rgba(255,55,55,.34) !important;
+  }
+  #events .mobile-event-pro-note{
+    display:flex !important;
+    align-items:center !important;
+    gap:7px !important;
+    margin-top:8px !important;
+  }
+  #events .mobile-event-pro-note span{
+    color:#ff5252 !important;
+    font-size:10px !important;
+  }
+  #events .mobile-event-pro-note p{
+    min-width:0 !important;
+    margin:0 !important;
+    font-size:8px !important;
+    line-height:1.2 !important;
+    color:rgba(255,255,255,.54) !important;
+  }
+}
+
+@media (max-width:390px){
+  #events .mobile-event-pro-stage{height:194px !important;}
+  #events .mobile-event-pro-title > strong{font-size:44px !important;}
+  #events .mobile-event-pro-summary-item{padding-left:5px !important;padding-right:5px !important;}
+  #events .mobile-event-pro-summary-item strong{font-size:8.8px !important;}
+  #events .mobile-event-pro-detail-grid{gap:5px !important;}
+  #events .mobile-event-pro-detail-card{padding-left:3px !important;padding-right:3px !important;}
+  #events .mobile-event-pro-detail-card strong{font-size:8.2px !important;}
+}
+</style>
+
+
+<style id="mytt-mobile-event-hero-only-v3">
+/* =========================================================
+   MOBILE EVENT HERO ONLY V3
+   Approved direction: tech red/black hero, metallic title,
+   paddle + ball visual, register CTA, 3 status cells only.
+   Event Details are intentionally omitted on mobile.
+   ========================================================= */
+@media (max-width:768px){
+  #events.mobile-nav-page{
+    padding-top:18px !important;
+    padding-bottom:26px !important;
+  }
+
+  /* Mobile heading becomes one clean kicker only. */
+  #events .events-section-head{
+    display:block !important;
+    margin:0 0 14px !important;
+  }
+  #events .events-section-head > div{
+    display:block !important;
+  }
+  #events .events-section-head .kicker{
+    display:block !important;
+    margin:0 !important;
+    font-size:12px !important;
+    font-weight:850 !important;
+    letter-spacing:.30em !important;
+    color:#ff4d4d !important;
+    text-transform:uppercase !important;
+  }
+  #events .events-section-head .kicker::after{
+    content:" EVENT";
+  }
+  #events .events-section-head h2,
+  #events .events-section-head .status{
+    display:none !important;
+  }
+
+  #events .target-event-shell > .target-event-hero,
+  #events .target-event-shell > .target-event-details{
+    display:none !important;
+  }
+  #events .target-event-shell{
+    display:block !important;
+    margin:0 !important;
+  }
+
+  #events .mobile-event-pro{
+    display:block !important;
+    width:100% !important;
+  }
+
+  #events .mobile-event-pro-hero{
+    position:relative !important;
+    min-height:410px !important;
+    overflow:hidden !important;
+    border:1px solid rgba(255,63,63,.74) !important;
+    border-radius:22px !important;
+    background:
+      radial-gradient(circle at 78% 40%,rgba(255,45,45,.18),transparent 28%),
+      linear-gradient(145deg,rgba(255,45,45,.09),transparent 30%),
+      repeating-linear-gradient(135deg,rgba(255,47,47,.08) 0 1px,transparent 1px 18px),
+      linear-gradient(180deg,#0b080b 0%,#050507 100%) !important;
+    box-shadow:
+      0 0 0 1px rgba(255,57,57,.12),
+      0 0 22px rgba(255,31,31,.18),
+      0 14px 30px rgba(0,0,0,.32) !important;
+  }
+  #events .mobile-event-pro-hero::before{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    pointer-events:none !important;
+    background:
+      linear-gradient(128deg,transparent 0 54%,rgba(255,39,39,.18) 55% 56%,transparent 57% 100%),
+      linear-gradient(160deg,transparent 0 72%,rgba(255,45,45,.08) 73% 74%,transparent 75% 100%) !important;
+    z-index:1 !important;
+  }
+  #events .mobile-event-pro-hero::after{
+    content:"" !important;
+    position:absolute !important;
+    left:18px !important;
+    bottom:78px !important;
+    width:54% !important;
+    height:44% !important;
+    background:url('event-paddle.png') left bottom / contain no-repeat !important;
+    filter:saturate(1.08) contrast(1.04) !important;
+    pointer-events:none !important;
+    z-index:2 !important;
+  }
+
+  #events .mobile-event-pro-stage{
+    position:absolute !important;
+    inset:0 !important;
+    height:auto !important;
+    background:none !important;
+    overflow:visible !important;
+    z-index:3 !important;
+  }
+  #events .mobile-event-pro-stage::after{display:none !important;}
+
+  #events .mobile-event-pro-title{
+    position:absolute !important;
+    left:22px !important;
+    right:18px !important;
+    top:22px !important;
+    width:auto !important;
+    z-index:4 !important;
+    text-transform:uppercase !important;
+    pointer-events:none !important;
+  }
+  #events .mobile-event-pro-title > span{
+    display:block !important;
+    margin:0 0 1px 3px !important;
+    font-family:Impact,"Arial Black","Arial Narrow",sans-serif !important;
+    font-size:clamp(26px,7.4vw,34px) !important;
+    font-style:italic !important;
+    font-weight:950 !important;
+    line-height:.95 !important;
+    letter-spacing:.11em !important;
+    color:#fff !important;
+    -webkit-text-stroke:.6px rgba(255,78,78,.45) !important;
+    text-shadow:0 3px 0 rgba(117,9,12,.78),0 0 12px rgba(255,41,41,.16) !important;
+  }
+  #events .mobile-event-pro-title > strong{
+    display:block !important;
+    max-width:none !important;
+    margin:0 !important;
+    font-family:Impact,"Arial Black","Arial Narrow",sans-serif !important;
+    font-size:clamp(49px,13.8vw,70px) !important;
+    font-style:italic !important;
+    font-weight:1000 !important;
+    line-height:.82 !important;
+    letter-spacing:-.035em !important;
+    color:#fff !important;
+    -webkit-text-stroke:1px rgba(255,56,56,.76) !important;
+    text-shadow:
+      0 4px 0 rgba(112,5,10,.96),
+      0 1px 0 #fff,
+      0 0 14px rgba(255,35,35,.20) !important;
+  }
+
+  /* Register button floats on the right, like the approved mockup. */
+  #events .mobile-event-pro-action{
+    position:absolute !important;
+    top:190px !important;
+    right:20px !important;
+    width:47% !important;
+    padding:0 !important;
+    z-index:6 !important;
+  }
+  #events .mobile-event-pro-register{
+    width:100% !important;
+    min-height:82px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:14px !important;
+    padding:0 14px !important;
+    border:1px solid rgba(255,255,255,.27) !important;
+    border-radius:18px !important;
+    background:linear-gradient(180deg,#ff3939 0%,#cf1217 100%) !important;
+    color:#fff !important;
+    box-shadow:
+      0 0 0 4px rgba(255,55,55,.13),
+      inset 0 0 0 1px rgba(255,255,255,.14),
+      0 0 20px rgba(255,28,28,.48) !important;
+  }
+  #events .mobile-event-pro-register::before{
+    content:"" !important;
+    position:absolute !important;
+    inset:6px !important;
+    border:1px solid rgba(255,255,255,.14) !important;
+    border-radius:13px !important;
+    pointer-events:none !important;
+  }
+  #events .mobile-event-pro-register span{
+    font-size:15px !important;
+    font-weight:950 !important;
+    letter-spacing:.02em !important;
+  }
+  #events .mobile-event-pro-register b{
+    font-size:22px !important;
+    line-height:1 !important;
+  }
+  #events .mobile-event-pro-register.disabled{
+    opacity:.54 !important;
+    box-shadow:none !important;
+  }
+
+  /* 3 summary cells lock to the bottom of the hero. */
+  #events .mobile-event-pro-summary{
+    position:absolute !important;
+    left:16px !important;
+    right:16px !important;
+    bottom:15px !important;
+    z-index:7 !important;
+    display:grid !important;
+    grid-template-columns:1.05fr 1.18fr .92fr !important;
+    margin:0 !important;
+    overflow:hidden !important;
+    border:1px solid rgba(255,255,255,.07) !important;
+    border-radius:15px !important;
+    background:linear-gradient(180deg,rgba(9,10,14,.93),rgba(4,5,8,.96)) !important;
+    box-shadow:0 6px 16px rgba(0,0,0,.28) !important;
+  }
+  #events .mobile-event-pro-summary-item{
+    min-width:0 !important;
+    min-height:65px !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:7px !important;
+    padding:8px 7px !important;
+    border-right:1px solid rgba(255,255,255,.08) !important;
+  }
+  #events .mobile-event-pro-summary-item:last-child{border-right:0 !important;}
+  #events .mobile-event-pro-summary-icon{
+    width:30px !important;
+    height:30px !important;
+    min-width:30px !important;
+    display:grid !important;
+    place-items:center !important;
+    border:1px solid rgba(255,65,65,.65) !important;
+    border-radius:9px !important;
+    color:#ff4a4a !important;
+    font-size:14px !important;
+  }
+  #events .mobile-event-pro-live-dot{
+    width:13px !important;
+    height:13px !important;
+    min-width:13px !important;
+    border-radius:999px !important;
+    background:#27e43c !important;
+    box-shadow:0 0 13px rgba(39,228,60,.70) !important;
+  }
+  #events .mobile-event-pro-summary-item strong{
+    display:block !important;
+    font-size:9.4px !important;
+    line-height:1.03 !important;
+    font-weight:900 !important;
+    color:#fff !important;
+  }
+  #events .mobile-event-pro-summary-item small{
+    display:block !important;
+    margin-top:4px !important;
+    font-size:6.5px !important;
+    line-height:1.08 !important;
+    letter-spacing:.025em !important;
+    color:rgba(255,255,255,.60) !important;
+  }
+  #events .mobile-event-pro-spots{gap:5px !important;}
+  #events .mobile-event-pro-spots > b{
+    flex:0 0 auto !important;
+    font-size:29px !important;
+    line-height:.88 !important;
+    font-weight:1000 !important;
+    color:#ff4141 !important;
+  }
+
+  /* No Event Details on mobile, by design. */
+  #events .mobile-event-pro-details{display:none !important;}
+}
+
+@media (max-width:390px){
+  #events .mobile-event-pro-hero{min-height:392px !important;}
+  #events .mobile-event-pro-title > span{font-size:23px !important;}
+  #events .mobile-event-pro-title > strong{font-size:47px !important;}
+  #events .mobile-event-pro-action{top:184px !important;right:17px !important;width:48% !important;}
+  #events .mobile-event-pro-register{min-height:76px !important;}
+  #events .mobile-event-pro-hero::after{left:14px !important;width:55% !important;bottom:78px !important;}
+  #events .mobile-event-pro-summary{left:12px !important;right:12px !important;}
+  #events .mobile-event-pro-summary-item{padding-left:5px !important;padding-right:5px !important;}
+  #events .mobile-event-pro-summary-item strong{font-size:8.6px !important;}
+}
+</style>
+
+
+<style id="mytt-event-exact-code-v4">
+/* =========================================================
+   MOBILE EVENT V4 — isolated from every legacy Event layout.
+   Matches the approved red/black tech card direction.
+   ========================================================= */
+.mytt-event-v4{display:none;}
+
+@media (max-width:768px){
+  /* Only the new V4 Event exists visually on mobile. */
+  #events .events-section-head{display:none !important;}
+  #events .target-event-shell > .mobile-event-pro,
+  #events .target-event-shell > .target-event-hero,
+  #events .target-event-shell > .target-event-details{display:none !important;}
+  #events .target-event-shell{display:block !important;margin:0 !important;}
+  #eventsGrid{display:block !important;}
+
+  #events .mytt-event-v4{
+    display:block !important;
+    width:100% !important;
+    padding:8px 0 12px !important;
+  }
+
+  #events .me4-kicker{
+    margin:0 0 14px 5px !important;
+    font-size:13px !important;
+    font-weight:850 !important;
+    letter-spacing:.30em !important;
+    color:#ff4949 !important;
+    text-transform:uppercase !important;
+  }
+
+  #events .me4-card{
+    position:relative !important;
+    width:100% !important;
+    height:472px !important;
+    overflow:hidden !important;
+    border:1px solid rgba(255,62,62,.92) !important;
+    border-radius:22px !important;
+    background:
+      radial-gradient(circle at 72% 46%,rgba(255,36,36,.20),transparent 30%),
+      linear-gradient(142deg,transparent 0 43%,rgba(255,45,45,.14) 44% 45%,transparent 46% 100%),
+      repeating-linear-gradient(135deg,rgba(255,50,50,.07) 0 1px,transparent 1px 16px),
+      linear-gradient(180deg,#09090c 0%,#050507 100%) !important;
+    box-shadow:
+      0 0 0 1px rgba(255,52,52,.14),
+      0 0 18px rgba(255,29,29,.20),
+      inset 0 0 28px rgba(255,34,34,.055),
+      0 18px 36px rgba(0,0,0,.35) !important;
+  }
+
+  #events .me4-card::before{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    pointer-events:none !important;
+    z-index:1 !important;
+    background:
+      linear-gradient(120deg,transparent 0 62%,rgba(255,46,46,.18) 63% 64%,transparent 65% 100%),
+      radial-gradient(circle at 92% 16%,rgba(255,44,44,.18),transparent 18%) !important;
+  }
+
+  /* Metallic tournament title — CSS, not an image. */
+  #events .me4-title{
+    position:absolute !important;
+    z-index:6 !important;
+    top:24px !important;
+    left:22px !important;
+    right:18px !important;
+    pointer-events:none !important;
+    text-transform:uppercase !important;
+  }
+  #events .me4-title span{
+    display:block !important;
+    margin:0 0 1px 7px !important;
+    font-family:Impact,"Arial Black","Arial Narrow",sans-serif !important;
+    font-size:clamp(35px,9.8vw,48px) !important;
+    font-style:italic !important;
+    font-weight:900 !important;
+    line-height:.88 !important;
+    letter-spacing:.08em !important;
+    color:transparent !important;
+    background:linear-gradient(180deg,#fff 0%,#f8f8f8 40%,#b7b7b7 64%,#fff 100%) !important;
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+    -webkit-text-stroke:.8px rgba(255,255,255,.66) !important;
+    filter:drop-shadow(0 3px 0 #6b070a) drop-shadow(0 0 6px rgba(255,42,42,.52)) !important;
+  }
+  #events .me4-title strong{
+    display:block !important;
+    margin:0 !important;
+    white-space:nowrap !important;
+    font-family:Impact,"Arial Black","Arial Narrow",sans-serif !important;
+    font-size:clamp(51px,14.2vw,72px) !important;
+    font-style:italic !important;
+    font-weight:1000 !important;
+    line-height:.84 !important;
+    letter-spacing:-.045em !important;
+    color:transparent !important;
+    background:linear-gradient(180deg,#fff 0%,#f5f5f5 35%,#b1b1b1 67%,#fff 100%) !important;
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+    -webkit-text-stroke:1px rgba(255,255,255,.82) !important;
+    filter:drop-shadow(0 4px 0 #74070b) drop-shadow(0 0 7px rgba(255,38,38,.64)) !important;
+  }
+
+  /* Existing paddle asset used as artwork, blended into the tech background. */
+  #events .me4-art{
+    position:absolute !important;
+    z-index:3 !important;
+    left:14px !important;
+    bottom:88px !important;
+    width:51% !important;
+    height:42% !important;
+    background:url('event-paddle.png') center / cover no-repeat !important;
+    border-radius:18px !important;
+    -webkit-mask-image:linear-gradient(90deg,#000 0 74%,rgba(0,0,0,.76) 86%,transparent 100%),linear-gradient(180deg,#000 0 80%,rgba(0,0,0,.82) 91%,transparent 100%) !important;
+    -webkit-mask-composite:source-in !important;
+    mask-image:linear-gradient(90deg,#000 0 74%,rgba(0,0,0,.76) 86%,transparent 100%) !important;
+    filter:saturate(1.08) contrast(1.07) brightness(.97) !important;
+    box-shadow:inset 0 0 18px rgba(0,0,0,.22) !important;
+  }
+
+  #events .me4-register-wrap{
+    position:absolute !important;
+    z-index:8 !important;
+    right:22px !important;
+    top:205px !important;
+    width:46% !important;
+  }
+  #events .me4-register{
+    position:relative !important;
+    width:100% !important;
+    min-height:86px !important;
+    padding:0 15px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:12px !important;
+    border:1px solid rgba(255,255,255,.62) !important;
+    border-radius:13px !important;
+    color:#fff !important;
+    background:linear-gradient(180deg,#ff3939 0%,#c70d13 100%) !important;
+    box-shadow:
+      0 0 0 4px rgba(255,40,40,.14),
+      0 0 22px rgba(255,25,25,.55),
+      inset 0 0 0 1px rgba(255,255,255,.15) !important;
+    clip-path:polygon(6% 0,100% 0,100% 82%,94% 100%,0 100%,0 18%) !important;
+  }
+  #events .me4-register::after{
+    content:"" !important;
+    position:absolute !important;
+    inset:6px !important;
+    border:1px solid rgba(255,255,255,.20) !important;
+    border-radius:9px !important;
+    pointer-events:none !important;
+  }
+  #events .me4-register span{
+    font-size:16px !important;
+    font-weight:900 !important;
+    letter-spacing:.02em !important;
+    white-space:nowrap !important;
+  }
+  #events .me4-register b{
+    font-size:23px !important;
+    line-height:1 !important;
+  }
+  #events .me4-register.disabled{opacity:.54 !important;box-shadow:none !important;}
+
+  /* Bottom three cells exactly in one row. */
+  #events .me4-summary{
+    position:absolute !important;
+    z-index:9 !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+    min-height:92px !important;
+    display:grid !important;
+    grid-template-columns:1.02fr 1.08fr .95fr !important;
+    background:rgba(4,5,8,.96) !important;
+    border-top:1px solid rgba(255,64,64,.26) !important;
+  }
+  #events .me4-summary-item{
+    min-width:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:8px !important;
+    padding:12px 9px !important;
+    border-right:1px solid rgba(255,255,255,.10) !important;
+  }
+  #events .me4-summary-item:last-child{border-right:0 !important;}
+  #events .me4-icon{
+    width:34px !important;
+    height:34px !important;
+    min-width:34px !important;
+    color:#ff4242 !important;
+  }
+  #events .me4-icon svg{
+    display:block !important;
+    width:100% !important;
+    height:100% !important;
+    fill:none !important;
+    stroke:currentColor !important;
+    stroke-width:1.8 !important;
+    stroke-linecap:round !important;
+    stroke-linejoin:round !important;
+  }
+  #events .me4-live-dot{
+    width:15px !important;
+    height:15px !important;
+    min-width:15px !important;
+    border-radius:50% !important;
+    background:#28e53e !important;
+    box-shadow:0 0 14px rgba(40,229,62,.82) !important;
+  }
+  #events .me4-summary-item strong{
+    display:block !important;
+    font-size:10px !important;
+    line-height:1.08 !important;
+    font-weight:900 !important;
+    color:#fff !important;
+  }
+  #events .me4-summary-item small{
+    display:block !important;
+    margin-top:4px !important;
+    font-size:7px !important;
+    line-height:1.1 !important;
+    color:rgba(255,255,255,.68) !important;
+  }
+  #events .me4-spots{gap:5px !important;}
+  #events .me4-spots b{
+    flex:0 0 auto !important;
+    font-size:31px !important;
+    line-height:.9 !important;
+    color:#ff3939 !important;
+    font-weight:1000 !important;
+  }
+
+  /* Explicit user choice: no Event Details section on mobile. */
+  #events .target-event-details{display:none !important;}
+}
+
+@media (max-width:390px){
+  #events .me4-card{height:448px !important;}
+  #events .me4-title{top:22px !important;left:18px !important;}
+  #events .me4-title span{font-size:32px !important;}
+  #events .me4-title strong{font-size:52px !important;}
+  #events .me4-art{left:10px !important;width:52% !important;bottom:88px !important;}
+  #events .me4-register-wrap{right:16px !important;top:200px !important;width:48% !important;}
+  #events .me4-register{min-height:80px !important;}
+  #events .me4-register span{font-size:14px !important;}
+  #events .me4-summary-item{padding-left:6px !important;padding-right:6px !important;gap:6px !important;}
+  #events .me4-icon{width:29px !important;height:29px !important;min-width:29px !important;}
+  #events .me4-summary-item strong{font-size:8.8px !important;}
+  #events .me4-summary-item small{font-size:6.2px !important;}
+  #events .me4-spots b{font-size:28px !important;}
+}
+</style>
+
+
+<style id="mytt-event-hero-exact-v5">
+/* =========================================================
+   MYTT MOBILE EVENT V5 — HERO ONLY
+   Dedicated DOM + dedicated CSS. No legacy mobile Event UI.
+   ========================================================= */
+.mytt-event-v5{display:none;}
+
+@media (max-width:768px){
+  /* Remove every legacy mobile event heading/card/detail block. */
+  #events > .section-head,
+  #events .events-section-head,
+  #events .target-event-shell > .mytt-event-v4,
+  #events .target-event-shell > .mobile-event-pro,
+  #events .target-event-shell > .target-event-hero,
+  #events .target-event-shell > .target-event-details{
+    display:none !important;
+  }
+
+  #events{
+    padding-top:22px !important;
+  }
+  #eventsGrid{
+    display:block !important;
+    width:100% !important;
+    margin:0 !important;
+  }
+  #events .target-event-shell{
+    display:block !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+
+  #events .mytt-event-v5{
+    display:block !important;
+    width:100% !important;
+    margin:0 !important;
+    padding:0 0 16px !important;
+  }
+
+  #events .me5-kicker{
+    margin:0 0 15px 6px !important;
+    color:#ff4a4a !important;
+    font-size:13px !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+    letter-spacing:.30em !important;
+    text-transform:uppercase !important;
+  }
+
+  #events .me5-card{
+    position:relative !important;
+    width:100% !important;
+    height:min(108vw,420px) !important;
+    min-height:385px !important;
+    max-height:420px !important;
+    overflow:hidden !important;
+    isolation:isolate !important;
+    border:1px solid rgba(255,66,66,.96) !important;
+    border-radius:22px !important;
+    background:
+      radial-gradient(circle at 78% 44%,rgba(255,35,35,.22),transparent 32%),
+      linear-gradient(122deg,transparent 0 58%,rgba(255,48,48,.14) 59% 60%,transparent 61% 100%),
+      repeating-linear-gradient(135deg,rgba(255,56,56,.075) 0 1px,transparent 1px 15px),
+      linear-gradient(180deg,#0a090c 0%,#050507 100%) !important;
+    box-shadow:
+      0 0 0 1px rgba(255,55,55,.14),
+      0 0 20px rgba(255,26,26,.25),
+      inset 0 0 32px rgba(255,38,38,.065),
+      0 18px 36px rgba(0,0,0,.34) !important;
+  }
+
+  #events .me5-card::before{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    z-index:1 !important;
+    pointer-events:none !important;
+    background:
+      linear-gradient(120deg,transparent 0 54%,rgba(255,50,50,.16) 55% 56%,transparent 57% 100%),
+      radial-gradient(circle at 90% 17%,rgba(255,42,42,.17),transparent 18%),
+      repeating-linear-gradient(90deg,transparent 0 18px,rgba(255,255,255,.012) 18px 19px) !important;
+  }
+  #events .me5-card::after{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    z-index:4 !important;
+    pointer-events:none !important;
+    background:
+      linear-gradient(180deg,rgba(0,0,0,0) 0 67%,rgba(0,0,0,.18) 73%,rgba(0,0,0,.82) 84%,rgba(0,0,0,.96) 100%) !important;
+  }
+
+  /* Metallic tournament title. */
+  #events .me5-title{
+    position:absolute !important;
+    z-index:8 !important;
+    top:24px !important;
+    left:28px !important;
+    right:10px !important;
+    pointer-events:none !important;
+    text-transform:uppercase !important;
+  }
+  #events .me5-title span,
+  #events .me5-title strong{
+    display:block !important;
+    width:max-content !important;
+    max-width:none !important;
+    margin:0 !important;
+    color:transparent !important;
+    font-family:Impact,"Arial Black","Arial Narrow",sans-serif !important;
+    font-style:italic !important;
+    font-weight:1000 !important;
+    text-transform:uppercase !important;
+    background:linear-gradient(180deg,#ffffff 0%,#ffffff 27%,#d6d6d6 46%,#9b9b9b 64%,#f4f4f4 82%,#ffffff 100%) !important;
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+    -webkit-text-stroke:1px rgba(255,255,255,.88) !important;
+    transform-origin:left center !important;
+    filter:
+      drop-shadow(0 3px 0 #6b070a)
+      drop-shadow(0 5px 0 #240204)
+      drop-shadow(0 0 7px rgba(255,38,38,.78)) !important;
+  }
+  #events .me5-title span{
+    margin-left:6px !important;
+    font-size:clamp(35px,11.2vw,50px) !important;
+    line-height:.86 !important;
+    letter-spacing:.08em !important;
+    transform:scaleX(.90) skewX(-2deg) !important;
+  }
+  #events .me5-title strong{
+    margin-top:2px !important;
+    white-space:nowrap !important;
+    font-size:clamp(52px,15.8vw,72px) !important;
+    line-height:.82 !important;
+    letter-spacing:-.025em !important;
+    transform:scaleX(.90) skewX(-2deg) !important;
+  }
+
+  /* Paddle/photo blended into the card — no visible square image panel. */
+  #events .me5-art{
+    position:absolute !important;
+    z-index:3 !important;
+    left:-4px !important;
+    bottom:76px !important;
+    width:66% !important;
+    height:55% !important;
+    background:url('event-paddle.png') left bottom / contain no-repeat !important;
+    mix-blend-mode:screen !important;
+    opacity:.97 !important;
+    filter:saturate(1.10) contrast(1.08) brightness(1.00) !important;
+    pointer-events:none !important;
+  }
+  #events .me5-art::after{
+    content:"" !important;
+    position:absolute !important;
+    inset:0 !important;
+    background:linear-gradient(90deg,transparent 0 68%,rgba(7,7,10,.55) 84%,#07070a 100%) !important;
+    pointer-events:none !important;
+  }
+
+  /* Register button sits to the right of the paddle, like the approved mockup. */
+  #events .me5-register-wrap{
+    position:absolute !important;
+    z-index:10 !important;
+    right:18px !important;
+    top:50% !important;
+    width:46% !important;
+    transform:translateY(-18%) !important;
+  }
+  #events .me5-register{
+    position:relative !important;
+    width:100% !important;
+    min-height:84px !important;
+    padding:0 12px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:10px !important;
+    border:1px solid rgba(255,255,255,.75) !important;
+    border-radius:13px !important;
+    color:#fff !important;
+    background:linear-gradient(180deg,#ff3e3e 0%,#c60d13 100%) !important;
+    box-shadow:
+      0 0 0 4px rgba(255,40,40,.14),
+      0 0 24px rgba(255,25,25,.60),
+      inset 0 0 0 1px rgba(255,255,255,.16) !important;
+    clip-path:polygon(6% 0,100% 0,100% 82%,94% 100%,0 100%,0 18%) !important;
+  }
+  #events .me5-register::after{
+    content:"" !important;
+    position:absolute !important;
+    inset:6px !important;
+    border:1px solid rgba(255,255,255,.24) !important;
+    border-radius:9px !important;
+    clip-path:inherit !important;
+    pointer-events:none !important;
+  }
+  #events .me5-register span{
+    position:relative !important;
+    z-index:1 !important;
+    font-size:15px !important;
+    font-weight:950 !important;
+    line-height:1 !important;
+    letter-spacing:.015em !important;
+    white-space:nowrap !important;
+  }
+  #events .me5-register b{
+    position:relative !important;
+    z-index:1 !important;
+    font-size:22px !important;
+    line-height:1 !important;
+  }
+  #events .me5-register.disabled{opacity:.55 !important;box-shadow:none !important;}
+
+  /* Date / registration / spots: one clean row at the bottom. */
+  #events .me5-summary{
+    position:absolute !important;
+    z-index:12 !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+    height:82px !important;
+    display:grid !important;
+    grid-template-columns:1fr 1.10fr 1.12fr !important;
+    background:rgba(3,4,7,.965) !important;
+    border-top:1px solid rgba(255,63,63,.30) !important;
+  }
+  #events .me5-summary-item{
+    min-width:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:7px !important;
+    padding:9px 7px !important;
+    border-right:1px solid rgba(255,255,255,.10) !important;
+  }
+  #events .me5-summary-item:last-child{border-right:0 !important;}
+  #events .me5-icon,
+  #events .me5-users{
+    width:29px !important;
+    height:29px !important;
+    min-width:29px !important;
+    color:#ff4343 !important;
+  }
+  #events .me5-icon svg,
+  #events .me5-users svg{
+    display:block !important;
+    width:100% !important;
+    height:100% !important;
+    fill:none !important;
+    stroke:currentColor !important;
+    stroke-width:1.8 !important;
+    stroke-linecap:round !important;
+    stroke-linejoin:round !important;
+  }
+  #events .me5-live-dot{
+    width:14px !important;
+    height:14px !important;
+    min-width:14px !important;
+    border-radius:50% !important;
+    background:#2ce445 !important;
+    box-shadow:0 0 13px rgba(44,228,69,.86) !important;
+  }
+  #events .me5-summary-item strong{
+    display:block !important;
+    margin:0 !important;
+    color:#fff !important;
+    font-size:9px !important;
+    font-weight:950 !important;
+    line-height:1.05 !important;
+  }
+  #events .me5-summary-item small{
+    display:block !important;
+    margin-top:3px !important;
+    color:rgba(255,255,255,.60) !important;
+    font-size:6.8px !important;
+    font-weight:650 !important;
+    line-height:1.08 !important;
+    letter-spacing:.035em !important;
+  }
+  #events .me5-spots{
+    gap:5px !important;
+  }
+  #events .me5-spots b{
+    flex:0 0 auto !important;
+    margin-right:1px !important;
+    color:#ff4444 !important;
+    font-size:30px !important;
+    font-weight:1000 !important;
+    line-height:.88 !important;
+  }
+}
+
+@media (max-width:390px){
+  #events .me5-card{
+    height:min(109vw,405px) !important;
+    min-height:380px !important;
+  }
+  #events .me5-title{left:22px !important;top:22px !important;}
+  #events .me5-title span{font-size:36px !important;}
+  #events .me5-title strong{font-size:54px !important;transform:scaleX(.88) skewX(-2deg) !important;}
+  #events .me5-register-wrap{right:15px !important;width:46% !important;}
+  #events .me5-register{min-height:78px !important;}
+  #events .me5-register span{font-size:13.5px !important;}
+  #events .me5-summary-item{padding-left:5px !important;padding-right:5px !important;gap:5px !important;}
+  #events .me5-icon,#events .me5-users{width:27px !important;height:27px !important;min-width:27px !important;}
+  #events .me5-summary-item strong{font-size:8.3px !important;}
+  #events .me5-summary-item small{font-size:6.2px !important;}
+  #events .me5-spots b{font-size:28px !important;}
+}
+</style>
+
+
+<style id="mytt-event-v6-clean-title-small-button">
+/* V6 — only refine the mobile event title and Register Now button. */
+@media (max-width:768px){
+  /* Cleaner metallic title: remove the busy multi-layer effects. */
+  #events .me5-title span,
+  #events .me5-title strong{
+    color:transparent !important;
+    background:linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f7f7f7 33%,
+      #cfcfcf 58%,
+      #ffffff 100%
+    ) !important;
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+    -webkit-text-stroke:.65px rgba(255,78,78,.92) !important;
+    filter:none !important;
+    text-shadow:
+      0 2px 0 rgba(96,5,8,.90),
+      0 0 5px rgba(255,45,45,.24) !important;
+  }
+
+  #events .me5-title span{
+    letter-spacing:.075em !important;
+    transform:scaleX(.92) skewX(-1deg) !important;
+  }
+  #events .me5-title strong{
+    letter-spacing:-.02em !important;
+    transform:scaleX(.92) skewX(-1deg) !important;
+  }
+
+  /* Register button: intentionally smaller and quieter. */
+  #events .me5-register-wrap{
+    right:20px !important;
+    top:52% !important;
+    width:37% !important;
+    transform:translateY(-12%) !important;
+  }
+  #events .me5-register{
+    min-height:62px !important;
+    height:62px !important;
+    padding:0 10px !important;
+    gap:7px !important;
+    border-radius:11px !important;
+    box-shadow:
+      0 0 0 2px rgba(255,40,40,.12),
+      0 0 13px rgba(255,25,25,.36),
+      inset 0 0 0 1px rgba(255,255,255,.12) !important;
+  }
+  #events .me5-register::after{
+    inset:5px !important;
+    border-radius:7px !important;
+    border-color:rgba(255,255,255,.17) !important;
+  }
+  #events .me5-register span{
+    font-size:12px !important;
+    letter-spacing:.01em !important;
+  }
+  #events .me5-register b{
+    font-size:18px !important;
+  }
+}
+
+@media (max-width:390px){
+  #events .me5-register-wrap{
+    width:36% !important;
+    right:17px !important;
+  }
+  #events .me5-register{
+    min-height:58px !important;
+    height:58px !important;
+  }
+  #events .me5-register span{font-size:11px !important;}
+  #events .me5-register b{font-size:17px !important;}
+}
+</style>
+
+<style id="mytt-event-v7-restore-v5-title">
+/* V7: restore the approved V5 tournament title exactly; keep V6 compact register CTA. */
+@media (max-width:768px){
+  #events .me5-title span,
+  #events .me5-title strong{
+    display:block !important;
+    width:max-content !important;
+    max-width:none !important;
+    margin:0 !important;
+    color:transparent !important;
+    font-family:Impact,"Arial Black","Arial Narrow",sans-serif !important;
+    font-style:italic !important;
+    font-weight:1000 !important;
+    text-transform:uppercase !important;
+    background:linear-gradient(180deg,#ffffff 0%,#ffffff 27%,#d6d6d6 46%,#9b9b9b 64%,#f4f4f4 82%,#ffffff 100%) !important;
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+    -webkit-text-stroke:1px rgba(255,255,255,.88) !important;
+    transform-origin:left center !important;
+    text-shadow:none !important;
+    filter:
+      drop-shadow(0 3px 0 #6b070a)
+      drop-shadow(0 5px 0 #240204)
+      drop-shadow(0 0 7px rgba(255,38,38,.78)) !important;
+  }
+  #events .me5-title span{
+    margin-left:6px !important;
+    font-size:clamp(35px,11.2vw,50px) !important;
+    line-height:.86 !important;
+    letter-spacing:.08em !important;
+    transform:scaleX(.90) skewX(-2deg) !important;
+  }
+  #events .me5-title strong{
+    margin-top:2px !important;
+    white-space:nowrap !important;
+    font-size:clamp(52px,15.8vw,72px) !important;
+    line-height:.82 !important;
+    letter-spacing:-.025em !important;
+    transform:scaleX(.90) skewX(-2deg) !important;
+  }
+}
+@media (max-width:390px){
+  #events .me5-title span{font-size:36px !important;}
+  #events .me5-title strong{font-size:54px !important;transform:scaleX(.88) skewX(-2deg) !important;}
+}
+</style>
+
+
+<style id="mytt-event-v9-solid-metal-title">
+/* V9 — keep V7 typography/size/3D edge exactly; remove only internal split/banding. */
+@media (max-width:768px){
+  #events .me5-title span,
+  #events .me5-title strong{
+    background:none !important;
+    -webkit-background-clip:border-box !important;
+    background-clip:border-box !important;
+    color:#f7f7f7 !important;
+    -webkit-text-fill-color:#f7f7f7 !important;
+    -webkit-text-stroke:1px rgba(255,255,255,.88) !important;
+    text-shadow:none !important;
+    filter:
+      drop-shadow(0 3px 0 #6b070a)
+      drop-shadow(0 5px 0 #240204)
+      drop-shadow(0 0 7px rgba(255,38,38,.78)) !important;
+  }
+}
+</style>
+
+
+<style id="mytt-event-v10-metal-flat-details">
+/* V10 — preserve V9 clean letters, restore smooth metal, flatten hero, add compact facts row. */
+.me10-facts{display:none;}
+
+@media (max-width:768px){
+  /* Smooth metallic fill: continuous gradient only, no hard band / split stops. */
+  #events .me5-title span,
+  #events .me5-title strong{
+    color:transparent !important;
+    -webkit-text-fill-color:transparent !important;
+    background:linear-gradient(180deg,#ffffff 0%,#f7f7f7 26%,#e7e7e7 54%,#c7c7c7 78%,#f3f3f3 100%) !important;
+    background-size:100% 100% !important;
+    background-repeat:no-repeat !important;
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+    -webkit-text-stroke:.8px rgba(255,255,255,.86) !important;
+    text-shadow:none !important;
+    filter:
+      drop-shadow(0 2px 0 #821015)
+      drop-shadow(0 4px 0 #310407)
+      drop-shadow(0 0 5px rgba(255,42,42,.48)) !important;
+  }
+
+  /* Make the hero much flatter. */
+  #events .me5-card{
+    height:350px !important;
+    min-height:350px !important;
+    max-height:350px !important;
+    border-radius:20px !important;
+  }
+
+  #events .me5-title{
+    top:17px !important;
+    left:24px !important;
+  }
+  #events .me5-title span{
+    font-size:clamp(31px,9.8vw,43px) !important;
+    line-height:.86 !important;
+  }
+  #events .me5-title strong{
+    font-size:clamp(46px,13.6vw,62px) !important;
+    line-height:.82 !important;
+  }
+
+  /* Lift paddle and button together. */
+  #events .me5-art{
+    left:2px !important;
+    bottom:69px !important;
+    width:52% !important;
+    height:48% !important;
+  }
+  #events .me5-register-wrap{
+    right:17px !important;
+    top:155px !important;
+    width:38% !important;
+    transform:none !important;
+  }
+  #events .me5-register{
+    min-height:60px !important;
+    height:60px !important;
+    padding:0 9px !important;
+    border-radius:12px !important;
+  }
+  #events .me5-register span{
+    font-size:12px !important;
+  }
+  #events .me5-register b{
+    font-size:18px !important;
+  }
+
+  /* Bottom status strip stays one row but is slightly shorter. */
+  #events .me5-summary{
+    height:68px !important;
+  }
+  #events .me5-summary-item{
+    padding:7px 6px !important;
+    gap:6px !important;
+  }
+  #events .me5-icon,
+  #events .me5-users{
+    width:25px !important;
+    height:25px !important;
+    min-width:25px !important;
+  }
+  #events .me5-live-dot{
+    width:12px !important;
+    height:12px !important;
+    min-width:12px !important;
+  }
+  #events .me5-summary-item strong{
+    font-size:8.8px !important;
+    line-height:1.05 !important;
+  }
+  #events .me5-summary-item small{
+    font-size:6.2px !important;
+    line-height:1.08 !important;
+  }
+  #events .me5-spots b{
+    font-size:27px !important;
+  }
+
+  /* Four compact facts directly under the hero, exactly one row. */
+  #events .me10-facts{
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:7px !important;
+    margin:10px 0 0 !important;
+    padding:0 !important;
+  }
+  #events .me10-fact{
+    min-width:0 !important;
+    min-height:82px !important;
+    padding:9px 6px 8px !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    text-align:center !important;
+    border:1px solid rgba(255,63,63,.28) !important;
+    border-radius:13px !important;
+    background:linear-gradient(180deg,rgba(14,12,15,.94),rgba(7,8,11,.98)) !important;
+    box-shadow:inset 0 0 18px rgba(255,35,35,.025) !important;
+  }
+  #events .me10-fact-icon{
+    width:28px !important;
+    height:28px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    margin-bottom:5px !important;
+    border:1px solid rgba(255,60,60,.46) !important;
+    border-radius:50% !important;
+    color:#ff4a4a !important;
+    font-size:15px !important;
+    line-height:1 !important;
+    box-shadow:0 0 10px rgba(255,38,38,.12) !important;
+  }
+  #events .me10-paddle{font-size:14px !important;}
+  #events .me10-fact small{
+    display:block !important;
+    margin:0 0 4px !important;
+    color:#ff5656 !important;
+    font-size:7.5px !important;
+    line-height:1 !important;
+    font-weight:900 !important;
+    letter-spacing:.08em !important;
+    white-space:nowrap !important;
+  }
+  #events .me10-fact strong{
+    display:block !important;
+    max-width:100% !important;
+    color:#fff !important;
+    font-size:9.2px !important;
+    line-height:1.12 !important;
+    font-weight:850 !important;
+    overflow:hidden !important;
+    display:-webkit-box !important;
+    -webkit-box-orient:vertical !important;
+    -webkit-line-clamp:2 !important;
+  }
+
+  /* Keep old mobile/desktop detail block hidden on mobile; V10 facts replace it. */
+  #events .target-event-details{display:none !important;}
+}
+
+@media (max-width:390px){
+  #events .me5-card{
+    height:330px !important;
+    min-height:330px !important;
+    max-height:330px !important;
+  }
+  #events .me5-title{top:15px !important;left:20px !important;}
+  #events .me5-title span{font-size:30px !important;}
+  #events .me5-title strong{font-size:45px !important;}
+  #events .me5-art{bottom:64px !important;width:50% !important;height:45% !important;}
+  #events .me5-register-wrap{top:145px !important;right:14px !important;width:39% !important;}
+  #events .me5-register{height:56px !important;min-height:56px !important;}
+  #events .me5-summary{height:64px !important;}
+  #events .me10-facts{gap:5px !important;}
+  #events .me10-fact{min-height:78px !important;padding-left:4px !important;padding-right:4px !important;}
+  #events .me10-fact strong{font-size:8.5px !important;}
+}
+</style>
+
+
+<style id="mytt-event-v11-clean-status">
+@media (max-width:768px){
+  /* V11: remove duplicated second-line copy and keep the three summary cells readable. */
+  #events .me5-status small,
+  #events .me5-spots small{display:none !important;}
+
+  #events .me5-summary{
+    grid-template-columns:1.02fr 1.12fr .86fr !important;
+  }
+  #events .me5-status strong{
+    font-size:8.7px !important;
+    line-height:1.08 !important;
+    white-space:normal !important;
+  }
+  #events .me5-spots{
+    gap:4px !important;
+    padding-left:5px !important;
+    padding-right:4px !important;
+  }
+  #events .me5-spots b{
+    font-size:26px !important;
+    line-height:.9 !important;
+  }
+  #events .me5-spots strong{
+    font-size:8.4px !important;
+    line-height:1.02 !important;
+    white-space:normal !important;
+    overflow:visible !important;
+  }
+}
+@media (max-width:390px){
+  #events .me5-summary{grid-template-columns:1.02fr 1.1fr .88fr !important;}
+  #events .me5-summary-item strong{font-size:8px !important;}
+  #events .me5-spots b{font-size:24px !important;}
+  #events .me5-spots strong{font-size:7.8px !important;}
+}
+</style>
+
+<style id="mytt-event-v12-clean-metal-compact">
+/* V12 — no internal title cut-lines; metallic depth via solid silver + edge shadows only. */
+@media (max-width:768px){
+  /* Narrower mobile event block. */
+  #events .mytt-event-v5{
+    box-sizing:border-box !important;
+    width:100% !important;
+    padding:0 14px 14px !important;
+  }
+  #events .me5-kicker{
+    margin-left:4px !important;
+  }
+
+  /* Flatter hero. */
+  #events .me5-card{
+    width:100% !important;
+    height:315px !important;
+    min-height:315px !important;
+    max-height:315px !important;
+    border-radius:19px !important;
+  }
+
+  /* Clean metallic type: no background gradient = no internal slicing/bands. */
+  #events .me5-title span,
+  #events .me5-title strong{
+    color:#f2f2f0 !important;
+    -webkit-text-fill-color:#f2f2f0 !important;
+    background:none !important;
+    -webkit-background-clip:border-box !important;
+    background-clip:border-box !important;
+    -webkit-text-stroke:.7px rgba(255,255,255,.94) !important;
+    text-shadow:
+      0 -1px 0 #ffffff,
+      0 1px 0 #c7c7c4,
+      0 2px 0 #8e8e8b,
+      0 3px 0 #720d12,
+      0 5px 0 #2c0305,
+      0 0 7px rgba(255,45,45,.46) !important;
+    filter:none !important;
+  }
+
+  #events .me5-title{
+    top:14px !important;
+    left:22px !important;
+  }
+  #events .me5-title span{
+    font-size:clamp(29px,9.4vw,40px) !important;
+    line-height:.86 !important;
+  }
+  #events .me5-title strong{
+    font-size:clamp(43px,12.9vw,58px) !important;
+    line-height:.82 !important;
+  }
+
+  /* Lift paddle/ball and CTA noticeably. */
+  #events .me5-art{
+    left:0 !important;
+    bottom:92px !important;
+    width:50% !important;
+    height:43% !important;
+  }
+  #events .me5-register-wrap{
+    top:123px !important;
+    right:17px !important;
+    width:36% !important;
+    transform:none !important;
+  }
+  #events .me5-register{
+    height:56px !important;
+    min-height:56px !important;
+    padding:0 9px !important;
+    border-radius:11px !important;
+  }
+  #events .me5-register span{
+    font-size:11.5px !important;
+    white-space:nowrap !important;
+  }
+  #events .me5-register b{
+    font-size:17px !important;
+  }
+
+  /* Status strip stays simple and compact. */
+  #events .me5-summary{
+    height:62px !important;
+    grid-template-columns:1.04fr 1.08fr .88fr !important;
+  }
+  #events .me5-summary-item{
+    min-width:0 !important;
+    padding:6px 6px !important;
+    gap:5px !important;
+  }
+  #events .me5-icon,
+  #events .me5-users{
+    width:23px !important;
+    height:23px !important;
+    min-width:23px !important;
+  }
+  #events .me5-live-dot{
+    width:11px !important;
+    height:11px !important;
+    min-width:11px !important;
+  }
+  #events .me5-summary-item strong{
+    font-size:8.2px !important;
+    line-height:1.05 !important;
+  }
+  #events .me5-summary-item small{
+    font-size:6px !important;
+    line-height:1.05 !important;
+  }
+  #events .me5-status small,
+  #events .me5-spots small{display:none !important;}
+  #events .me5-spots b{
+    font-size:24px !important;
+  }
+  #events .me5-spots strong{
+    font-size:7.7px !important;
+    line-height:1 !important;
+  }
+
+  /* Keep the four facts below in a single compact row. */
+  #events .me10-facts{
+    box-sizing:border-box !important;
+    width:calc(100% - 28px) !important;
+    margin:9px auto 0 !important;
+    gap:6px !important;
+  }
+  #events .me10-fact{
+    min-height:74px !important;
+    padding:8px 4px 7px !important;
+    border-radius:12px !important;
+  }
+  #events .me10-fact-icon{
+    width:25px !important;
+    height:25px !important;
+    margin-bottom:4px !important;
+    font-size:13px !important;
+  }
+  #events .me10-fact small{
+    font-size:7px !important;
+    margin-bottom:3px !important;
+  }
+  #events .me10-fact strong{
+    font-size:8.4px !important;
+    line-height:1.1 !important;
+  }
+}
+
+@media (max-width:390px){
+  #events .mytt-event-v5{padding-left:12px !important;padding-right:12px !important;}
+  #events .me5-card{
+    height:300px !important;
+    min-height:300px !important;
+    max-height:300px !important;
+  }
+  #events .me5-title{top:13px !important;left:19px !important;}
+  #events .me5-title span{font-size:28px !important;}
+  #events .me5-title strong{font-size:42px !important;}
+  #events .me5-art{bottom:87px !important;width:49% !important;height:41% !important;}
+  #events .me5-register-wrap{top:116px !important;right:14px !important;width:37% !important;}
+  #events .me5-register{height:52px !important;min-height:52px !important;}
+  #events .me5-register span{font-size:10.5px !important;}
+  #events .me5-summary{height:59px !important;}
+  #events .me10-facts{width:calc(100% - 24px) !important;gap:5px !important;}
+  #events .me10-fact{min-height:70px !important;}
+  #events .me10-fact strong{font-size:8px !important;}
+}
+</style>
+
+<!-- MYTT VERSION: 20260817-event-v13-clean-bottom-nav -->
 </head>
 <body>
 <header class="site-header premium-header">
@@ -2109,73 +4265,48 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260816-mobile-polish-v4"></script>
-<script src="marketplace.js?v=20260816-mobile-polish-v4"></script>
+<script src="app.js?v=20260817-event-v13-clean-bottom-nav"></script>
+<script src="marketplace.js?v=20260817-event-v13-clean-bottom-nav"></script>
 
-<div class="mytt-bottom-nav" aria-label="Mobile bottom navigation">
-  <a href="#home" class="mytt-bottom-link" data-target="home">
-    <span class="mytt-bottom-icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M9.5 20v-5h5v5"/></svg>
-    </span>
-    <span class="mytt-bottom-label">Home</span>
+<!-- MYTT Mobile Bottom Navigation V13 — intentionally isolated from Event styles -->
+<nav class="mytt-mobile-bottom-nav" aria-label="Mobile navigation">
+  <a href="#home" class="mbn-item" data-target="home" aria-label="Home">
+    <span class="mbn-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5 12 3l8.5 7.5"/><path d="M5.5 9.5V21h13V9.5"/><path d="M9.5 21v-6h5v6"/></svg></span>
+    <span>Home</span>
   </a>
-  <a href="#singles" class="mytt-bottom-link" data-target="singles">
-    <span class="mytt-bottom-icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="7" r="2.4"/><path d="M10 8.2 14.2 10"/><path d="M10.2 10.2 8.8 16.5"/><path d="M14.2 10 18 6.3"/><path d="M9.2 16.5 14 21"/><circle cx="18.5" cy="5.5" r="1.2" fill="currentColor" stroke="none"/></svg>
-    </span>
-    <span class="mytt-bottom-label">Singles</span>
+
+  <a href="#singles" class="mbn-item" data-target="singles" aria-label="Singles">
+    <span class="mbn-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="6.8" r="2.3"/><path d="M9.7 8.4 13 10.3M10.2 10.6l-1.4 5.7M13 10.3l4.2-4.1M9 16.3l4.6 4.2"/><circle cx="18.3" cy="5.2" r="1.1"/></svg></span>
+    <span>Singles</span>
   </a>
-  <a href="#events" class="mytt-bottom-link mytt-bottom-link--primary" data-target="events" aria-label="Events">
-    <span class="mytt-bottom-link-badge">Hot</span>
-    <span class="mytt-bottom-icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8l-.7 3.2 2.7 2.3-3.3 1.5-.6 3.5L12 12.9l-2.1 1.6-.6-3.5L6 9.5l2.7-2.3L8 4Z"/><path d="M12 14.5V21"/><path d="M9 21h6"/></svg>
-    </span>
-    <span class="mytt-bottom-label">Events</span>
+
+  <a href="#events" class="mbn-item mbn-events" data-target="events" aria-label="Events">
+    <span class="mbn-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v3.1c0 3-2.2 5.4-5 5.4s-5-2.4-5-5.4V4Z"/><path d="M9 13.5h6M12 12.5V19M8.5 20h7"/><path d="M7 6H4v1.4c0 2.6 1.5 4.3 4 4.6M17 6h3v1.4c0 2.6-1.5 4.3-4 4.6"/></svg></span>
+    <span>Events</span>
   </a>
-  <a href="#doubles" class="mytt-bottom-link" data-target="doubles">
-    <span class="mytt-bottom-icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="7.2" r="2.1"/><circle cx="15.8" cy="7.2" r="2.1"/><path d="M4.8 17c.6-2.2 2.2-3.4 4.7-3.4 2.2 0 3.7.9 4.5 2.7"/><path d="M12 17c.6-2.2 2.2-3.4 4.7-3.4 1.1 0 2 .2 2.8.6"/><circle cx="19.2" cy="17.2" r="1.1" fill="currentColor" stroke="none"/></svg>
-    </span>
-    <span class="mytt-bottom-label">Doubles</span>
+
+  <a href="#doubles" class="mbn-item" data-target="doubles" aria-label="Doubles">
+    <span class="mbn-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7.5" cy="7.2" r="2.2"/><circle cx="16.2" cy="7.2" r="2.2"/><path d="M3.8 18.5c.5-3.3 2.1-5 4.7-5s4.2 1.7 4.7 5M11.3 18.5c.5-3.3 2.1-5 4.7-5 1.6 0 2.9.6 3.7 1.8"/></svg></span>
+    <span>Doubles</span>
   </a>
-  <button type="button" class="mytt-bottom-link mytt-bottom-more" data-target="more" aria-haspopup="true" aria-expanded="false">
-    <span class="mytt-bottom-icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.3" fill="currentColor" stroke="none"/></svg>
-    </span>
-    <span class="mytt-bottom-label">More</span>
+
+  <button type="button" class="mbn-item mbn-more" data-target="more" aria-label="More" aria-expanded="false">
+    <span class="mbn-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></span>
+    <span>More</span>
   </button>
-</div>
+</nav>
 
-<div class="mytt-more-sheet" id="myttMoreSheet" hidden>
-  <div class="mytt-more-sheet-handle"></div>
-  <button type="button" class="mytt-more-sheet-close" aria-label="Close more menu">×</button>
-  <div class="mytt-more-sheet-eyebrow">Quick access</div>
-  <div class="mytt-more-sheet-head">Explore MYTT</div>
-  <div class="mytt-more-sheet-grid">
-    <a href="#players" class="mytt-more-item" data-target="players">
-      <span class="mytt-more-item-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7.5" r="3.1"/><path d="M5.8 19c1.4-3 3.6-4.5 6.2-4.5s4.8 1.5 6.2 4.5"/></svg>
-      </span>
-      <strong>Players</strong>
-      <small>Official profiles</small>
-    </a>
-    <a href="#market" class="mytt-more-item" data-target="market">
-      <span class="mytt-more-item-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8V7a5 5 0 0 1 10 0v1"/><path d="M5.5 8.5h13l-1 10H6.5l-1-10Z"/><path d="M9.5 11.5h5"/></svg>
-      </span>
-      <strong>Market</strong>
-      <small>Gear listings</small>
-    </a>
-    <a href="#submit" class="mytt-more-item" data-target="submit">
-      <span class="mytt-more-item-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/><path d="M6.5 3.5h11a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3h-11a3 3 0 0 1-3-3v-11a3 3 0 0 1 3-3Z"/></svg>
-      </span>
-      <strong>Join / Submit</strong>
-      <small>Forms & actions</small>
-    </a>
+<div id="myttMobileMoreBackdrop" class="mbn-backdrop" hidden></div>
+<div id="myttMobileMore" class="mbn-sheet" hidden>
+  <div class="mbn-sheet-handle" aria-hidden="true"></div>
+  <div class="mbn-sheet-title">More</div>
+  <button class="mbn-sheet-close" type="button" aria-label="Close">×</button>
+  <div class="mbn-sheet-links">
+    <a href="#players" data-target="players"><span>◉</span><strong>Players</strong><small>Official profiles</small></a>
+    <a href="#market" data-target="market"><span>◇</span><strong>Market</strong><small>Gear listings</small></a>
+    <a href="#submit" data-target="submit"><span>＋</span><strong>Join / Submit</strong><small>Official forms</small></a>
   </div>
 </div>
-<div class="mytt-more-sheet-backdrop" id="myttMoreBackdrop" hidden></div>
 
 <footer class="mytt-footer">
   <div class="mytt-footer-inner">
