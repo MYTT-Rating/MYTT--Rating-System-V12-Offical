@@ -19,7 +19,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
   <link rel="stylesheet" href="style.css?v=20260817-event-v17-category-fix">
-  <link rel="stylesheet" href="marketplace.css?v=20260817-event-v14-stable-clean-bottom-nav">
+  <link rel="stylesheet" href="marketplace.css?v=20260817-market-v18-clean">
 
 <style id="mytt-mobile-title-left-fix">
 @media (max-width: 768px){
@@ -3240,6 +3240,200 @@
 }
 </style>
 
+
+<style id="mytt-market-mobile-clean-v18">
+@media (max-width:680px){
+  /* Market page: compact, calmer hierarchy */
+  #market.mytt-market-section{
+    padding-left:12px !important;
+    padding-right:12px !important;
+  }
+
+  #market .mytt-market-hero{
+    position:relative !important;
+    display:block !important;
+    min-height:170px !important;
+    padding:18px !important;
+    margin:0 0 12px !important;
+    overflow:hidden !important;
+    border-radius:20px !important;
+    border:1px solid rgba(239,68,68,.28) !important;
+    background:
+      radial-gradient(circle at 92% 18%,rgba(239,68,68,.14),transparent 34%),
+      linear-gradient(145deg,#0b0d12 0%,#101219 62%,#16090b 100%) !important;
+    box-shadow:0 10px 24px rgba(0,0,0,.24),0 0 10px rgba(239,68,68,.04) !important;
+  }
+
+  #market .mytt-market-hero::after{
+    opacity:.22 !important;
+  }
+
+  #market .mytt-market-hero-copy{
+    position:relative !important;
+    z-index:2 !important;
+    width:100% !important;
+    max-width:none !important;
+    padding:0 !important;
+  }
+
+  #market .mytt-market-hero .kicker{
+    margin:0 0 7px !important;
+    font-size:9.5px !important;
+    line-height:1.1 !important;
+    letter-spacing:.18em !important;
+  }
+
+  #market .mytt-market-hero h2{
+    margin:0 !important;
+    font-size:clamp(27px,7.6vw,33px) !important;
+    line-height:1 !important;
+    letter-spacing:-.025em !important;
+    white-space:nowrap !important;
+  }
+
+  #market .mytt-market-subtitle{
+    max-width:185px !important;
+    margin:10px 0 0 !important;
+    font-size:10.5px !important;
+    line-height:1.38 !important;
+    color:rgba(233,236,242,.68) !important;
+  }
+
+  #market .mytt-market-hero-action{
+    position:absolute !important;
+    z-index:3 !important;
+    right:16px !important;
+    bottom:16px !important;
+    width:auto !important;
+    margin:0 !important;
+    padding:0 !important;
+    display:block !important;
+  }
+
+  #market .mytt-market-hero-icon{
+    display:none !important;
+  }
+
+  #market .mytt-market-sell-button,
+  #market .mytt-market-hero-action .mytt-market-sell-button{
+    width:auto !important;
+    min-width:132px !important;
+    min-height:42px !important;
+    height:42px !important;
+    padding:0 15px !important;
+    border-radius:13px !important;
+    font-size:11.5px !important;
+    font-weight:800 !important;
+    letter-spacing:.01em !important;
+    border:1px solid rgba(255,255,255,.16) !important;
+    box-shadow:0 7px 18px rgba(214,30,37,.22),inset 0 1px 0 rgba(255,255,255,.18) !important;
+  }
+
+  #market .mytt-market-toolbar{
+    display:grid !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:8px !important;
+    padding:0 !important;
+    margin:0 0 8px !important;
+    background:transparent !important;
+    border:0 !important;
+    box-shadow:none !important;
+  }
+
+  #market .mytt-market-search-wrap{
+    grid-column:1 / -1 !important;
+    min-height:46px !important;
+    border-radius:14px !important;
+    border:1px solid rgba(255,255,255,.09) !important;
+    background:rgba(13,15,20,.82) !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.025) !important;
+  }
+
+  #market .mytt-market-toolbar input,
+  #market .mytt-market-toolbar select{
+    height:46px !important;
+    min-height:46px !important;
+    border-radius:14px !important;
+    border:1px solid rgba(255,255,255,.09) !important;
+    background-color:rgba(13,15,20,.84) !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.025) !important;
+    font-size:11px !important;
+  }
+
+  #market .mytt-market-search-wrap input{
+    border:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+  }
+
+  #market .mytt-market-info-strip{
+    display:flex !important;
+    align-items:center !important;
+    flex-wrap:nowrap !important;
+    gap:13px !important;
+    margin:2px 0 7px !important;
+    padding:4px 3px !important;
+    border:0 !important;
+    border-radius:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    color:rgba(228,232,239,.62) !important;
+    font-size:8.8px !important;
+    line-height:1.2 !important;
+  }
+
+  #market .mytt-market-info-strip span{
+    white-space:nowrap !important;
+  }
+
+  #market .mytt-market-info-strip span::first-letter{
+    color:#ef5350 !important;
+  }
+
+  #market .mytt-market-status{
+    margin:2px 0 8px !important;
+    padding:0 2px !important;
+    font-size:9px !important;
+    line-height:1.2 !important;
+    letter-spacing:.08em !important;
+    color:rgba(217,221,228,.54) !important;
+  }
+
+  #market .mytt-market-empty{
+    min-height:112px !important;
+    border-radius:16px !important;
+    border-color:rgba(255,255,255,.08) !important;
+    background:rgba(10,12,16,.72) !important;
+    box-shadow:none !important;
+  }
+
+  #market .mytt-market-retry{
+    color:#fff !important;
+  }
+
+  #market .mytt-market-disclaimer{
+    margin-top:12px !important;
+    font-size:8.5px !important;
+    line-height:1.4 !important;
+    color:rgba(213,217,224,.45) !important;
+  }
+}
+
+@media (max-width:360px){
+  #market .mytt-market-hero h2{
+    font-size:26px !important;
+  }
+  #market .mytt-market-subtitle{
+    max-width:155px !important;
+  }
+  #market .mytt-market-sell-button,
+  #market .mytt-market-hero-action .mytt-market-sell-button{
+    min-width:122px !important;
+    padding:0 12px !important;
+    font-size:10.8px !important;
+  }
+}
+</style>
 </head>
 <body>
 <header class="site-header premium-header">
@@ -4262,7 +4456,7 @@ window.MYTT = {
 };
 </script>
 <script src="app.js?v=20260817-event-v17-category-fix"></script>
-<script src="marketplace.js?v=20260817-event-v14-stable-clean-bottom-nav"></script>
+<script src="marketplace.js?v=20260817-market-v18-clean"></script>
 <footer class="mytt-footer">
   <div class="mytt-footer-inner">
     <div class="mytt-footer-brand">
