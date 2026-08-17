@@ -2609,30 +2609,18 @@ function configureEventCategories(event){
   const e=eventFormEls();
   if(!e.category)return;
 
-  const format=String(event?.format||"").toLowerCase();
-  let options;
-
-  const hasSingles=format.includes("single");
-  const hasDoubles=format.includes("double");
-
-  if(hasSingles&&!hasDoubles){
-    options=[["Singles","Singles"]];
-  }else if(hasDoubles&&!hasSingles){
-    options=[["Doubles","Doubles"]];
-  }else{
-    options=[
-      ["","Select category"],
-      ["Singles","Singles"],
-      ["Doubles","Doubles"],
-      ["Singles + Doubles","Both — Singles + Doubles"]
-    ];
-  }
+  // MYTT Rating Day registration can accept Singles, Doubles, or both.
+  // Do not restrict the selector only because the event Format text contains "Singles".
+  const options=[
+    ["","Select category"],
+    ["Singles","Singles"],
+    ["Doubles","Doubles"],
+    ["Singles + Doubles","Singles + Doubles"]
+  ];
 
   e.category.innerHTML=options
     .map(([value,label])=>`<option value="${eventEscapeHtml(value)}">${eventEscapeHtml(label)}</option>`)
     .join("");
-
-  if(options.length===1)e.category.value=options[0][0];
 
   updateEventPartnerVisibility();
 }
