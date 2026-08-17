@@ -6823,3 +6823,155 @@ td{
 }
 
 @media (max-width:860px){ body.v15-more-open{overflow:hidden;} }
+
+
+/* =========================================================
+   MYTT EVENT REGISTRATION — V16 COMPACT + SUCCESS VISIBILITY FIX
+   ========================================================= */
+/* Critical: this success panel must never appear before a successful submit. */
+#eventRegistrationSuccessState.hidden{
+  display:none !important;
+}
+
+/* When the registration/result modal is open, free the phone's bottom area. */
+@media (max-width:860px){
+  body.result-modal-open .v14-bottom-nav,
+  body.result-modal-open .v15-bottom-nav,
+  body.result-modal-open .mytt-bottom-nav{
+    display:none !important;
+  }
+
+  #eventRegistrationModal .event-registration-modal-card{
+    padding:14px 14px 16px !important;
+  }
+
+  #eventRegistrationModal .result-form-head{
+    margin-bottom:10px !important;
+    padding-right:44px !important;
+  }
+
+  #eventRegistrationModal .result-form-head .kicker{
+    margin-bottom:4px !important;
+    font-size:10px !important;
+    letter-spacing:2px !important;
+  }
+
+  #eventRegistrationModal .result-form-head h2{
+    font-size:24px !important;
+    line-height:1.02 !important;
+  }
+
+  #eventRegistrationModal .result-form-head > p:last-child{
+    margin:6px 0 0 !important;
+    font-size:12px !important;
+    line-height:1.35 !important;
+  }
+
+  #eventRegistrationModal .event-registration-summary{
+    margin:0 0 11px !important;
+    padding:10px 11px !important;
+    border-radius:13px !important;
+    gap:10px !important;
+    flex-direction:row !important;
+    align-items:center !important;
+  }
+
+  #eventRegistrationModal .event-registration-summary > div:first-child{
+    min-width:0 !important;
+    flex:1 1 auto !important;
+  }
+
+  #eventRegistrationModal .event-registration-summary strong{
+    margin-top:2px !important;
+    font-size:15px !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+
+  #eventRegistrationModal .event-registration-summary-meta{
+    flex:0 0 auto !important;
+    text-align:right !important;
+    gap:2px !important;
+    font-size:9.5px !important;
+    line-height:1.25 !important;
+  }
+
+  #eventRegistrationForm{
+    gap:10px !important;
+  }
+
+  #eventRegistrationForm .result-player-grid{
+    gap:10px !important;
+  }
+
+  #eventRegistrationForm .result-field{
+    gap:5px !important;
+  }
+
+  #eventRegistrationForm .result-field > span{
+    font-size:11px !important;
+    letter-spacing:.8px !important;
+  }
+
+  #eventRegistrationForm .result-field input,
+  #eventRegistrationForm .result-field select{
+    min-height:46px !important;
+    height:46px !important;
+    padding:0 12px !important;
+    border-radius:12px !important;
+    font-size:14px !important;
+  }
+
+  #eventRegistrationForm textarea{
+    min-height:58px !important;
+    height:58px !important;
+    padding:10px 12px !important;
+    border-radius:12px !important;
+    resize:none !important;
+    font-size:14px !important;
+  }
+
+  #eventRegistrationForm .result-form-status{
+    min-height:0 !important;
+    padding:0 !important;
+    font-size:12px !important;
+  }
+
+  #eventRegistrationForm .result-form-status:empty{
+    display:none !important;
+  }
+
+  #eventRegistrationSubmitButton{
+    min-height:50px !important;
+    border-radius:14px !important;
+    font-size:15px !important;
+  }
+
+  #eventRegistrationForm .result-form-note{
+    margin:-2px 4px 0 !important;
+    font-size:10.5px !important;
+    line-height:1.35 !important;
+  }
+
+  #eventRegistrationSuccessState{
+    min-height:260px !important;
+    padding:24px 10px !important;
+  }
+}
+
+@media (max-width:520px){
+  #eventRegistrationModal .result-form-head > p:last-child{
+    display:none !important;
+  }
+
+  #eventRegistrationModal .event-registration-summary-meta{
+    max-width:46% !important;
+  }
+
+  #eventRegistrationModal .event-registration-summary-meta span{
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+}
