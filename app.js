@@ -2733,10 +2733,51 @@ function handleEventRegistrationServerResult(data){
     if(e.status)e.status.textContent="";
     e.form?.classList.add("hidden");
     e.success?.classList.remove("hidden");
-    if(e.successText)e.successText.textContent=message;
+
+    // Event registration is instant-confirmation. Older backend deployments
+    // may still return legacy wording such as "pending admin review" even
+    // though an accepted registration has already been recorded. Never show
+    // that stale wording to the player after an accepted response.
+    const legacyPendingCopy=/pending|admin\s*(?:review|approval)|review\s*(?:and\s*)?approval/i.test(message);
+    const confirmedMessage=legacyPendingCopy
+      ? "Your registration is confirmed and your place has been reserved for this event."
+      : (message||"Your registration is confirmed and your place has been reserved for this event.");
+
+    if(e.successText)e.successText.textContent=confirmedMessage;
     if(e.submit)e.submit.textContent="Submit Registration";
 
-    setTimeout(()=>loadUpcomingEvents(),400);
+    // Update the visible event immediately from the authoritative server
+    // response, so Spots Remaining changes without waiting for Sheet publish.
+    const confirmedEventId=String(data.eventId||e.eventId?.value||"").trim();
+    const serverFilled=Number(data.spotsFilled);
+    const serverCapacity=Number(data.capacity);
+    const localEvent=upcomingEvents.find(item=>String(item?.eventId||"").trim()===confirmedEventId);
+
+    if(localEvent&&Number.isFinite(serverFilled)){
+      localEvent.spotsFilled=Math.max(0,serverFilled);
+      if(Number.isFinite(serverCapacity)&&serverCapacity>=0)localEvent.capacity=serverCapacity;
+      if(Number(localEvent.capacity)>0){
+        localEvent.spotsRemaining=Math.max(0,Number(localEvent.capacity)-localEvent.spotsFilled);
+        if(localEvent.spotsRemaining===0)localEvent.effectiveStatus="Full";
+      }
+      cacheUpcomingEvents(upcomingEvents);
+      renderUpcomingEvents();
+    }
+
+    // Then sync from the Events Web App, whose counts are calculated directly
+    // from Event Registrations. Fall back to the normal loader if needed.
+    setTimeout(async()=>{
+      try{
+        const apiEventsRaw=await loadEventsViaWebApp(12000);
+        const apiEvents=sanitizeCachedUpcomingEvents(apiEventsRaw);
+        upcomingEvents=apiEvents;
+        cacheUpcomingEvents(apiEvents);
+        renderUpcomingEvents();
+      }catch(err){
+        console.warn("Post-registration Events API refresh failed",err);
+        loadUpcomingEvents({maxAttempts:1,timeoutMs:12000});
+      }
+    },650);
     return true;
   }
 
