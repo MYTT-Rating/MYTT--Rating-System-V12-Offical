@@ -1,4 +1,4 @@
-/* MYTT MOBILE V20.10 — larger safe generated single-line home title */
+/* MYTT MOBILE V20.11 — larger + slightly taller safe single-line home title */
 @media (max-width:860px){
   .hero-home-final{
     padding-top:12px !important;
@@ -24,13 +24,13 @@
     flex-wrap:nowrap !important;
     align-items:center !important;
     justify-content:center !important;
-    gap:5px !important;
+    gap:4px !important;
     box-sizing:border-box !important;
     width:100% !important;
     max-width:100% !important;
     min-width:0 !important;
     margin:0 auto !important;
-    padding:0 6px !important;
+    padding:2px 4px !important;
     font-size:0 !important;
     line-height:1 !important;
     letter-spacing:0 !important;
@@ -51,26 +51,27 @@
     font-family:inherit !important;
     font-style:italic !important;
     font-weight:900 !important;
-    line-height:1 !important;
-    letter-spacing:-1.15px !important;
+    line-height:1.05 !important;
+    letter-spacing:-1.35px !important;
     white-space:nowrap !important;
-    transform:none !important;
+    transform:scaleY(1.04) !important;
+    transform-origin:center !important;
   }
 
   body #home .hero-home-final .hero-top-banner h1.hero-title-row::before{
     content:"PLAY. COMPETE. IMPROVE." !important;
     color:#fff !important;
-    font-size:22px !important;
+    font-size:24px !important;
   }
 
   body #home .hero-home-final .hero-top-banner h1.hero-title-row::after{
     content:"RANK." !important;
     color:#ff4d4d !important;
-    font-size:22px !important;
+    font-size:24px !important;
   }
 
   .hero-home-final .hero-neon-divider{
-    margin-top:8px !important;
+    margin-top:9px !important;
   }
 
   .hero-home-final .hero-rank-card-v5.hero-rank-card-final{
@@ -84,24 +85,28 @@
 
 @media (max-width:390px){
   body #home .hero-home-final .hero-top-banner h1.hero-title-row{
-    gap:4px !important;
-    padding:0 5px !important;
+    gap:3px !important;
+    padding:2px 3px !important;
   }
   body #home .hero-home-final .hero-top-banner h1.hero-title-row::before,
   body #home .hero-home-final .hero-top-banner h1.hero-title-row::after{
-    font-size:21px !important;
-    letter-spacing:-1.2px !important;
+    font-size:22px !important;
+    line-height:1.05 !important;
+    letter-spacing:-1.3px !important;
+    transform:scaleY(1.04) !important;
   }
 }
 
 @media (max-width:350px){
   body #home .hero-home-final .hero-top-banner h1.hero-title-row{
-    gap:3px !important;
-    padding:0 4px !important;
+    gap:2px !important;
+    padding:2px 2px !important;
   }
   body #home .hero-home-final .hero-top-banner h1.hero-title-row::before,
   body #home .hero-home-final .hero-top-banner h1.hero-title-row::after{
-    font-size:18.5px !important;
-    letter-spacing:-1.25px !important;
+    font-size:19.5px !important;
+    line-height:1.05 !important;
+    letter-spacing:-1.2px !important;
+    transform:scaleY(1.04) !important;
   }
 }
