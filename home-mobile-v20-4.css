@@ -1,4 +1,4 @@
-/* MYTT MOBILE V20.9 — larger safe generated single-line home title */
+/* MYTT MOBILE V20.10 — larger safe generated single-line home title */
 @media (max-width:860px){
   .hero-home-final{
     padding-top:12px !important;
@@ -30,7 +30,7 @@
     max-width:100% !important;
     min-width:0 !important;
     margin:0 auto !important;
-    padding:0 8px !important;
+    padding:0 6px !important;
     font-size:0 !important;
     line-height:1 !important;
     letter-spacing:0 !important;
@@ -52,7 +52,7 @@
     font-style:italic !important;
     font-weight:900 !important;
     line-height:1 !important;
-    letter-spacing:-1px !important;
+    letter-spacing:-1.15px !important;
     white-space:nowrap !important;
     transform:none !important;
   }
@@ -60,13 +60,13 @@
   body #home .hero-home-final .hero-top-banner h1.hero-title-row::before{
     content:"PLAY. COMPETE. IMPROVE." !important;
     color:#fff !important;
-    font-size:20px !important;
+    font-size:22px !important;
   }
 
   body #home .hero-home-final .hero-top-banner h1.hero-title-row::after{
     content:"RANK." !important;
     color:#ff4d4d !important;
-    font-size:20px !important;
+    font-size:22px !important;
   }
 
   .hero-home-final .hero-neon-divider{
@@ -85,23 +85,23 @@
 @media (max-width:390px){
   body #home .hero-home-final .hero-top-banner h1.hero-title-row{
     gap:4px !important;
-    padding:0 6px !important;
+    padding:0 5px !important;
   }
   body #home .hero-home-final .hero-top-banner h1.hero-title-row::before,
   body #home .hero-home-final .hero-top-banner h1.hero-title-row::after{
-    font-size:19px !important;
-    letter-spacing:-1.05px !important;
+    font-size:21px !important;
+    letter-spacing:-1.2px !important;
   }
 }
 
 @media (max-width:350px){
   body #home .hero-home-final .hero-top-banner h1.hero-title-row{
     gap:3px !important;
-    padding:0 5px !important;
+    padding:0 4px !important;
   }
   body #home .hero-home-final .hero-top-banner h1.hero-title-row::before,
   body #home .hero-home-final .hero-top-banner h1.hero-title-row::after{
-    font-size:17px !important;
-    letter-spacing:-1.1px !important;
+    font-size:18.5px !important;
+    letter-spacing:-1.25px !important;
   }
 }
