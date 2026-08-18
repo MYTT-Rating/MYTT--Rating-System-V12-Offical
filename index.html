@@ -18,8 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260818-mobile-v20">
-  <link rel="stylesheet" href="marketplace.css?v=20260818-mobile-v20">
+  <link rel="stylesheet" href="style.css?v=20260818-mobile-v20-1">
+  <link rel="stylesheet" href="marketplace.css?v=20260818-mobile-v20-1">
 
 <style id="mytt-mobile-title-left-fix">
 @media (max-width: 768px){
@@ -3632,6 +3632,76 @@
 }
 </style>
 
+
+<style id="mytt-mobile-v20-1-profile-clearance">
+/* =========================================================
+   MYTT MOBILE V20.1 — Player Profile header clearance
+   Keep the profile sheet fully below the compact 60px header.
+   ========================================================= */
+@media (max-width:860px){
+  #profileModal{
+    top:var(--mytt-mobile-header,60px) !important;
+    right:0 !important;
+    bottom:0 !important;
+    left:0 !important;
+    height:calc(100dvh - var(--mytt-mobile-header,60px)) !important;
+    padding:8px 0 0 !important;
+    place-items:start center !important;
+    overflow:hidden !important;
+    z-index:4900 !important;
+  }
+
+  #profileModal .modal-backdrop{
+    inset:0 !important;
+  }
+
+  #profileModal .modal-card{
+    width:100% !important;
+    max-height:calc(100dvh - var(--mytt-mobile-header,60px) - 8px) !important;
+    margin:0 !important;
+    padding:0 12px 26px !important;
+    overflow-y:auto !important;
+    overscroll-behavior:contain !important;
+    -webkit-overflow-scrolling:touch !important;
+    border-radius:18px 18px 0 0 !important;
+  }
+
+  #profileModal .modal-close{
+    position:sticky !important;
+    top:10px !important;
+    right:auto !important;
+    float:right !important;
+    margin:10px 8px -48px 0 !important;
+    width:46px !important;
+    height:46px !important;
+    min-width:46px !important;
+    border:1px solid rgba(255,255,255,.18) !important;
+    border-radius:50% !important;
+    background:rgba(18,18,20,.88) !important;
+    color:#fff !important;
+    font-size:30px !important;
+    line-height:1 !important;
+    box-shadow:0 8px 24px rgba(0,0,0,.40), inset 0 1px 0 rgba(255,255,255,.12) !important;
+    backdrop-filter:blur(10px) !important;
+    -webkit-backdrop-filter:blur(10px) !important;
+    z-index:50 !important;
+  }
+
+  #profileContent{
+    clear:both !important;
+    padding:18px 8px 30px !important;
+  }
+
+  #profileContent .profile-hero-pro{
+    margin-top:0 !important;
+  }
+
+  #profileContent .profile-avatar-pro{
+    margin-top:2px !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header class="site-header premium-header">
@@ -4654,8 +4724,8 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260818-mobile-v20"></script>
-<script src="marketplace.js?v=20260818-mobile-v20"></script>
+<script src="app.js?v=20260818-mobile-v20-1"></script>
+<script src="marketplace.js?v=20260818-mobile-v20-1"></script>
 <footer class="mytt-footer">
   <div class="mytt-footer-inner">
     <div class="mytt-footer-brand">
