@@ -1,4 +1,4 @@
-/* MYTT MOBILE V20.6 — compact home hero, force-safe single-line title */
+/* MYTT MOBILE V20.7 — safe generated single-line home title */
 @media (max-width:860px){
   .hero-home-final{
     padding-top:12px !important;
@@ -15,9 +15,8 @@
     display:none !important;
   }
 
-  /* Extra specificity is intentional: index.html contains a later legacy
-     .hero-title-row !important rule. This selector must outrank it. */
-  .hero-home-final .hero-top-banner .hero-title-row{
+  /* Completely bypass the legacy four-span title layout on mobile. */
+  body #home .hero-home-final .hero-top-banner h1.hero-title-row{
     position:relative !important;
     left:auto !important;
     right:auto !important;
@@ -32,27 +31,43 @@
     max-width:100% !important;
     min-width:0 !important;
     margin:0 auto !important;
-    padding:0 12px !important;
-    font-size:15px !important;
-    line-height:1.05 !important;
-    letter-spacing:-.55px !important;
+    padding:0 10px !important;
+    font-size:0 !important;
+    line-height:1 !important;
+    letter-spacing:0 !important;
     white-space:nowrap !important;
     overflow:visible !important;
   }
 
-  .hero-home-final .hero-top-banner .hero-title-row > span{
+  body #home .hero-home-final .hero-top-banner h1.hero-title-row > span{
+    display:none !important;
+  }
+
+  body #home .hero-home-final .hero-top-banner h1.hero-title-row::before,
+  body #home .hero-home-final .hero-top-banner h1.hero-title-row::after{
     display:inline-block !important;
     flex:0 0 auto !important;
-    min-width:0 !important;
-    width:auto !important;
-    max-width:none !important;
     margin:0 !important;
     padding:0 !important;
-    font-size:15px !important;
-    line-height:1.05 !important;
-    letter-spacing:-.55px !important;
+    font-family:inherit !important;
+    font-style:italic !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+    letter-spacing:-.7px !important;
     white-space:nowrap !important;
     transform:none !important;
+  }
+
+  body #home .hero-home-final .hero-top-banner h1.hero-title-row::before{
+    content:"PLAY. COMPETE. IMPROVE." !important;
+    color:#fff !important;
+    font-size:14px !important;
+  }
+
+  body #home .hero-home-final .hero-top-banner h1.hero-title-row::after{
+    content:"RANK." !important;
+    color:#ff4d4d !important;
+    font-size:14px !important;
   }
 
   .hero-home-final .hero-neon-divider{
@@ -69,29 +84,25 @@
 }
 
 @media (max-width:390px){
-  .hero-home-final .hero-top-banner .hero-title-row{
+  body #home .hero-home-final .hero-top-banner h1.hero-title-row{
     gap:3px !important;
-    padding:0 9px !important;
-    font-size:14px !important;
-    letter-spacing:-.65px !important;
+    padding:0 8px !important;
   }
-
-  .hero-home-final .hero-top-banner .hero-title-row > span{
-    font-size:14px !important;
-    letter-spacing:-.65px !important;
+  body #home .hero-home-final .hero-top-banner h1.hero-title-row::before,
+  body #home .hero-home-final .hero-top-banner h1.hero-title-row::after{
+    font-size:13px !important;
+    letter-spacing:-.75px !important;
   }
 }
 
 @media (max-width:350px){
-  .hero-home-final .hero-top-banner .hero-title-row{
+  body #home .hero-home-final .hero-top-banner h1.hero-title-row{
     gap:2px !important;
-    padding:0 7px !important;
-    font-size:12.5px !important;
-    letter-spacing:-.7px !important;
+    padding:0 6px !important;
   }
-
-  .hero-home-final .hero-top-banner .hero-title-row > span{
-    font-size:12.5px !important;
-    letter-spacing:-.7px !important;
+  body #home .hero-home-final .hero-top-banner h1.hero-title-row::before,
+  body #home .hero-home-final .hero-top-banner h1.hero-title-row::after{
+    font-size:12px !important;
+    letter-spacing:-.8px !important;
   }
 }
