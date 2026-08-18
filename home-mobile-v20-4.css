@@ -1,4 +1,4 @@
-/* MYTT MOBILE V20.4 — compact home hero */
+/* MYTT MOBILE V20.5 — compact home hero, safe single-line title */
 @media (max-width:860px){
   .hero-home-final{
     padding-top:12px !important;
@@ -6,6 +6,9 @@
 
   .hero-top-banner{
     margin:0 0 5px !important;
+    width:100% !important;
+    max-width:100% !important;
+    overflow:visible !important;
   }
 
   .hero-top-banner .kicker-centered{
@@ -13,24 +16,38 @@
   }
 
   .hero-title-row{
+    position:relative !important;
+    left:auto !important;
+    right:auto !important;
+    transform:none !important;
     display:flex !important;
     flex-wrap:nowrap !important;
     align-items:center !important;
     justify-content:center !important;
-    gap:6px !important;
-    width:100% !important;
-    margin:0 !important;
-    padding:0 4px !important;
-    font-size:clamp(17px,5.2vw,23px) !important;
-    line-height:1 !important;
-    letter-spacing:-.7px !important;
+    gap:3px !important;
+    width:calc(100% - 16px) !important;
+    max-width:calc(100vw - 24px) !important;
+    min-width:0 !important;
+    margin:0 auto !important;
+    padding:0 !important;
+    font-size:clamp(13px,4vw,17px) !important;
+    line-height:1.05 !important;
+    letter-spacing:-.75px !important;
     white-space:nowrap !important;
+    overflow:visible !important;
   }
 
   .hero-title-row > span{
     display:inline-block !important;
     flex:0 0 auto !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    font-size:inherit !important;
+    line-height:inherit !important;
+    letter-spacing:inherit !important;
     white-space:nowrap !important;
+    transform:none !important;
   }
 
   .hero-neon-divider{
@@ -46,11 +63,19 @@
   }
 }
 
-@media (max-width:360px){
+@media (max-width:390px){
   .hero-title-row{
-    gap:4px !important;
-    padding:0 2px !important;
-    font-size:clamp(15.5px,4.9vw,18px) !important;
+    gap:2px !important;
+    width:calc(100% - 12px) !important;
+    max-width:calc(100vw - 18px) !important;
+    font-size:clamp(12.5px,3.85vw,15px) !important;
+    letter-spacing:-.8px !important;
+  }
+}
+
+@media (max-width:350px){
+  .hero-title-row{
+    font-size:12px !important;
     letter-spacing:-.9px !important;
   }
 }
