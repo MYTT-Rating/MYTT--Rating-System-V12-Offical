@@ -18,8 +18,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <link rel="stylesheet" href="style.css?v=20260817-event-v17-category-fix">
-  <link rel="stylesheet" href="marketplace.css?v=20260817-market-v18-clean">
+  <link rel="stylesheet" href="style.css?v=20260818-mobile-v20">
+  <link rel="stylesheet" href="marketplace.css?v=20260818-mobile-v20">
 
 <style id="mytt-mobile-title-left-fix">
 @media (max-width: 768px){
@@ -1174,7 +1174,7 @@
     opacity:.96 !important;
     border:0 !important;
     border-radius:0 !important;
-    background:url('event-pro-art.png') 50% 54% / cover no-repeat !important;
+    background:url('event-pro-art.webp') 50% 54% / cover no-repeat !important;
     filter:saturate(1.04) contrast(1.03) brightness(.92) !important;
     box-shadow:none !important;
     -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 12%,#000 30%,#000 100%) !important;
@@ -1937,7 +1937,7 @@
     bottom:78px !important;
     width:54% !important;
     height:44% !important;
-    background:url('event-paddle.png') left bottom / contain no-repeat !important;
+    background:url('event-paddle.webp') left bottom / contain no-repeat !important;
     filter:saturate(1.08) contrast(1.04) !important;
     pointer-events:none !important;
     z-index:2 !important;
@@ -2242,7 +2242,7 @@
     bottom:88px !important;
     width:51% !important;
     height:42% !important;
-    background:url('event-paddle.png') center / cover no-repeat !important;
+    background:url('event-paddle.webp') center / cover no-repeat !important;
     border-radius:18px !important;
     -webkit-mask-image:linear-gradient(90deg,#000 0 74%,rgba(0,0,0,.76) 86%,transparent 100%),linear-gradient(180deg,#000 0 80%,rgba(0,0,0,.82) 91%,transparent 100%) !important;
     -webkit-mask-composite:source-in !important;
@@ -2535,7 +2535,7 @@
     bottom:76px !important;
     width:66% !important;
     height:55% !important;
-    background:url('event-paddle.png') left bottom / contain no-repeat !important;
+    background:url('event-paddle.webp') left bottom / contain no-repeat !important;
     mix-blend-mode:screen !important;
     opacity:.97 !important;
     filter:saturate(1.10) contrast(1.08) brightness(1.00) !important;
@@ -3434,6 +3434,204 @@
   }
 }
 </style>
+
+<style id="mytt-mobile-v20-usability">
+/* =========================================================
+   MYTT MOBILE V20 — usability / readability / speed-safe UI
+   Keeps V18/V19 visual direction; improves phone ergonomics.
+   ========================================================= */
+@media (max-width:860px){
+  :root{--mytt-mobile-header:60px !important;}
+
+  /* App-like compact header: bottom nav is the single phone navigation. */
+  .premium-header,
+  .site-header{
+    min-height:60px !important;
+  }
+  .premium-header-inner{
+    min-height:60px !important;
+    padding:7px 14px !important;
+    gap:8px !important;
+  }
+  .premium-brand{gap:9px !important;}
+  .premium-brand-mark{
+    width:40px !important;
+    height:40px !important;
+    min-width:40px !important;
+    font-size:22px !important;
+  }
+  .premium-brand-name{
+    font-size:21px !important;
+    letter-spacing:1.7px !important;
+  }
+  .premium-brand-sub{
+    margin-top:3px !important;
+    font-size:9px !important;
+    line-height:1.1 !important;
+    letter-spacing:.4px !important;
+  }
+  .premium-mobile-toggle,
+  .premium-header-badge,
+  .premium-nav{
+    display:none !important;
+  }
+  .mobile-nav-page{
+    min-height:calc(100svh - 60px) !important;
+  }
+
+  /* Minimum readable sizes for key phone UI. */
+  .cta-grid-home-final .cta strong{font-size:12px !important;}
+  .cta-grid-home-final .cta small{font-size:9.5px !important;line-height:1.22 !important;}
+  .homepage-rank-road .home-rank-node > span{font-size:10px !important;}
+  .homepage-rank-road .home-rank-node > small{font-size:9px !important;}
+  .homepage-rank-road .you-marker{font-size:9px !important;}
+  .rank-scroll-hint{font-size:9.5px !important;}
+  .hero-home-final .hero-rank-card-final::after{
+    content:"SWIPE TO EXPLORE →" !important;
+    font-size:8.5px !important;
+    letter-spacing:.08em !important;
+  }
+  .hero-progress-card p{font-size:10px !important;}
+
+  /* All phone form controls stay >=16px to prevent iOS Safari auto-zoom. */
+  .result-modal-card input,
+  .result-modal-card select,
+  .result-modal-card textarea,
+  #market input,
+  #market select,
+  #market textarea,
+  .mytt-market-modal input,
+  .mytt-market-modal select,
+  .mytt-market-modal textarea{
+    font-size:16px !important;
+  }
+
+  /* Event modal: short flow, folded notes, sticky confirmation action. */
+  #eventRegistrationForm .result-field input,
+  #eventRegistrationForm .result-field select{
+    font-size:16px !important;
+  }
+  #eventRegistrationForm textarea{
+    font-size:16px !important;
+    min-height:72px !important;
+    height:72px !important;
+  }
+  .event-notes-details{
+    border:1px solid rgba(255,255,255,.09) !important;
+    border-radius:12px !important;
+    background:rgba(255,255,255,.025) !important;
+    overflow:hidden !important;
+  }
+  .event-notes-details > summary{
+    min-height:44px !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:7px !important;
+    padding:0 12px !important;
+    cursor:pointer !important;
+    list-style:none !important;
+    font-size:12px !important;
+    font-weight:850 !important;
+    color:rgba(255,255,255,.86) !important;
+  }
+  .event-notes-details > summary::-webkit-details-marker{display:none !important;}
+  .event-notes-details > summary small{
+    margin-left:auto !important;
+    font-size:10px !important;
+    font-weight:700 !important;
+    color:rgba(255,255,255,.48) !important;
+  }
+  .event-notes-details[open] > summary{
+    border-bottom:1px solid rgba(255,255,255,.07) !important;
+  }
+  .event-notes-field{
+    padding:10px !important;
+  }
+  .event-registration-submit-dock{
+    position:sticky !important;
+    bottom:-16px !important;
+    z-index:8 !important;
+    margin:2px -14px -16px !important;
+    padding:10px 14px calc(12px + env(safe-area-inset-bottom)) !important;
+    background:linear-gradient(180deg,rgba(8,10,14,.60),rgba(8,10,14,.99) 28%) !important;
+    border-top:1px solid rgba(255,255,255,.075) !important;
+    backdrop-filter:blur(12px) !important;
+  }
+  .event-registration-submit-dock .result-form-note{
+    margin:6px 4px 0 !important;
+    font-size:10px !important;
+  }
+  #eventRegistrationSubmitButton{
+    width:100% !important;
+    min-height:52px !important;
+    font-size:15.5px !important;
+  }
+
+  /* Event hero summary: keep one row, but make labels genuinely readable. */
+  #events .me5-summary-item strong{
+    font-size:9.5px !important;
+    line-height:1.08 !important;
+  }
+  #events .me5-summary-item small{
+    font-size:9px !important;
+  }
+  #events .me5-status strong,
+  #events .me5-spots strong{
+    font-size:9.3px !important;
+  }
+
+  /* Four event facts become a comfortable 2×2 phone grid. */
+  #events .me10-facts{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:8px !important;
+    width:calc(100% - 28px) !important;
+    margin:10px auto 0 !important;
+  }
+  #events .me10-fact{
+    min-height:78px !important;
+    padding:9px 8px 8px !important;
+    justify-content:center !important;
+  }
+  #events .me10-fact-icon{
+    width:27px !important;
+    height:27px !important;
+    margin-bottom:5px !important;
+    font-size:14px !important;
+  }
+  #events .me10-fact small{
+    margin-bottom:4px !important;
+    font-size:9px !important;
+    letter-spacing:.07em !important;
+  }
+  #events .me10-fact strong{
+    font-size:11px !important;
+    line-height:1.18 !important;
+    -webkit-line-clamp:2 !important;
+  }
+
+  /* Market controls should not be the only tiny text on the app. */
+  #market .mytt-market-info-strip{font-size:9.5px !important;}
+  #market .mytt-market-status{font-size:9.5px !important;}
+  #market .mytt-market-disclaimer{font-size:9.5px !important;line-height:1.45 !important;}
+
+  /* Player cards: no 6–8px stat labels on real phones. */
+  .player-card.player-card-icon-tier > .mini-stats-neon .mini-stat small{font-size:9px !important;}
+  .player-card.player-card-icon-tier > .player-card-meta{font-size:9.5px !important;}
+
+  /* One footer only; phone app pages use bottom navigation instead. */
+  .mytt-footer{display:none !important;}
+}
+
+@media (max-width:390px){
+  .premium-brand-sub{font-size:8.8px !important;}
+  #events .me5-summary-item strong,
+  #events .me5-status strong,
+  #events .me5-spots strong{font-size:9px !important;}
+  #events .me10-facts{gap:7px !important;width:calc(100% - 24px) !important;}
+  #events .me10-fact strong{font-size:10.5px !important;}
+}
+</style>
+
 </head>
 <body>
 <header class="site-header premium-header">
@@ -3926,7 +4124,7 @@
       </div>
 
       <div class="result-player-grid">
-        <label class="result-field">
+        <label id="eventCategoryField" class="result-field">
           <span>Category <em>Required</em></span>
           <select id="eventRegistrationCategory" name="category" required>
             <option value="">Select category</option>
@@ -3956,24 +4154,28 @@
                required>
       </label>
 
-      <label class="result-field">
-        <span>Notes <small>Optional</small></span>
-        <textarea id="eventRegistrationNotes"
-                  name="notes"
-                  rows="2"
-                  maxlength="500"
-                  placeholder="Anything MYTT should know?"></textarea>
-      </label>
+      <details id="eventRegistrationNotesDetails" class="event-notes-details">
+        <summary>＋ Add a note <small>Optional</small></summary>
+        <label class="result-field event-notes-field">
+          <span>Notes <small>Optional</small></span>
+          <textarea id="eventRegistrationNotes"
+                    name="notes"
+                    rows="2"
+                    maxlength="500"
+                    placeholder="Anything MYTT should know?"></textarea>
+        </label>
+      </details>
 
       <div id="eventRegistrationFormStatus"
            class="result-form-status"
            aria-live="polite"></div>
 
-      <button id="eventRegistrationSubmitButton"
-              class="result-submit"
-              type="submit">Submit Registration</button>
-
-      <p class="result-form-note">Successful registration confirms your place automatically. No admin approval is required.</p>
+      <div class="event-registration-submit-dock">
+        <button id="eventRegistrationSubmitButton"
+                class="result-submit"
+                type="submit">Confirm Registration</button>
+        <p class="result-form-note">Successful registration confirms your place automatically. No admin approval is required.</p>
+      </div>
     </form>
 
     <div id="eventRegistrationSuccessState" class="join-success-state hidden">
@@ -4430,8 +4632,6 @@
   </div>
 </div>
 
-<footer><strong>🏓 MYTT</strong><span>Malaysia Table Tennis Rating System</span><span>© 2026 MYTT. All Rights Reserved.</span></footer>
-
 <script>
 window.MYTT = {
   singlesCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSXGQ-Pfqt9eY3wGYsSdbvEUtzhi3CeeBvGe06j3e5jXOkucz2vTtaQ7SbQTJu_qdwRfBYxNoqmi6R2/pub?gid=0&single=true&output=csv",
@@ -4454,8 +4654,8 @@ window.MYTT = {
   marketplaceWebAppUrl: "https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec"
 };
 </script>
-<script src="app.js?v=20260817-event-v19-auto-confirm"></script>
-<script src="marketplace.js?v=20260817-market-v18-clean"></script>
+<script src="app.js?v=20260818-mobile-v20"></script>
+<script src="marketplace.js?v=20260818-mobile-v20"></script>
 <footer class="mytt-footer">
   <div class="mytt-footer-inner">
     <div class="mytt-footer-brand">

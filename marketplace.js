@@ -538,11 +538,28 @@
     else if (!els.sellModal?.classList.contains("hidden")) closeSellModal();
   });
 
-  window.addEventListener("online", () => loadListings(true));
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") loadListings(true);
-  });
+  function marketShouldLoad(){
+    if (window.innerWidth > 860) return true;
+    return String(location.hash || "#home").replace(/^#/, "") === "market";
+  }
 
-  loadListings(false);
-  setInterval(() => loadListings(true), 90000);
+  function loadMarketIfRelevant(silent=true){
+    if (!marketShouldLoad()) return;
+    loadListings(silent);
+  }
+
+  window.addEventListener("online", () => loadMarketIfRelevant(true));
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") loadMarketIfRelevant(true);
+  });
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest('a[href="#market"]');
+    if (!link) return;
+    setTimeout(() => loadListings(false), 0);
+  });
+  window.addEventListener("hashchange", () => loadMarketIfRelevant(false));
+
+  // Desktop keeps eager loading. Phones wait until Market is actually opened.
+  if (marketShouldLoad()) loadListings(false);
+  setInterval(() => loadMarketIfRelevant(true), 90000);
 })();

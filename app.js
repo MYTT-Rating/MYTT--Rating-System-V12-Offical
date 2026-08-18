@@ -927,7 +927,7 @@ function handleSinglesServerResult(data){
     fe.status.classList.add("success");
     fe.submit.textContent="Submit Another Result";
     prepareNextSinglesResult();
-    setTimeout(()=>loadAll(),700);
+    setTimeout(()=>refreshAfterSinglesSubmission(),700);
     return true;
   }
 
@@ -935,7 +935,7 @@ function handleSinglesServerResult(data){
     fe.status.textContent="✕ "+message;
     fe.status.classList.add("rejected");
     fe.submit.textContent="Submit Result";
-    setTimeout(()=>loadAll(),700);
+    setTimeout(()=>refreshAfterSinglesSubmission(),700);
     return true;
   }
 
@@ -1690,7 +1690,7 @@ function handleDoublesServerResult(data){
     fe.status.classList.add("success");
     fe.submit.textContent="Submit Another Result";
     prepareNextDoublesResult();
-    setTimeout(()=>loadAll(),700);
+    setTimeout(()=>refreshAfterDoublesSubmission(),700);
     return true;
   }
 
@@ -1698,7 +1698,7 @@ function handleDoublesServerResult(data){
     fe.status.textContent="✕ "+message;
     fe.status.classList.add("rejected");
     fe.submit.textContent="Submit Result";
-    setTimeout(()=>loadAll(),700);
+    setTimeout(()=>refreshAfterDoublesSubmission(),700);
     return true;
   }
 
@@ -1856,10 +1856,12 @@ function eventFormEls(){
     venue:document.getElementById("eventRegistrationVenue"),
     playerName:document.getElementById("eventRegistrationPlayerName"),
     myttId:document.getElementById("eventRegistrationMyttId"),
+    categoryField:document.getElementById("eventCategoryField"),
     category:document.getElementById("eventRegistrationCategory"),
     partnerField:document.getElementById("eventDoublesPartnerField"),
     partner:document.getElementById("eventRegistrationDoublesPartner"),
     contact:document.getElementById("eventRegistrationContact"),
+    notesDetails:document.getElementById("eventRegistrationNotesDetails"),
     notes:document.getElementById("eventRegistrationNotes"),
     status:document.getElementById("eventRegistrationFormStatus"),
     submit:document.getElementById("eventRegistrationSubmitButton"),
@@ -2609,18 +2611,36 @@ function configureEventCategories(event){
   const e=eventFormEls();
   if(!e.category)return;
 
-  // MYTT Rating Day registration can accept Singles, Doubles, or both.
-  // Do not restrict the selector only because the event Format text contains "Singles".
-  const options=[
-    ["","Select category"],
-    ["Singles","Singles"],
-    ["Doubles","Doubles"],
-    ["Singles + Doubles","Singles + Doubles"]
-  ];
+  const format=String(event?.format||"").toLowerCase();
+  const hasSingles=/single/.test(format);
+  const hasDoubles=/double/.test(format);
+
+  let options;
+  let fixedValue="";
+
+  // When the event itself only offers one category, do not ask the player
+  // to make a meaningless extra selection on a phone.
+  if(hasSingles&&!hasDoubles){
+    options=[["Singles","Singles"]];
+    fixedValue="Singles";
+  }else if(hasDoubles&&!hasSingles){
+    options=[["Doubles","Doubles"]];
+    fixedValue="Doubles";
+  }else{
+    options=[
+      ["","Select category"],
+      ["Singles","Singles"],
+      ["Doubles","Doubles"],
+      ["Singles + Doubles","Singles + Doubles"]
+    ];
+  }
 
   e.category.innerHTML=options
     .map(([value,label])=>`<option value="${eventEscapeHtml(value)}">${eventEscapeHtml(label)}</option>`)
     .join("");
+
+  if(fixedValue)e.category.value=fixedValue;
+  e.categoryField?.classList.toggle("hidden",Boolean(fixedValue));
 
   updateEventPartnerVisibility();
 }
@@ -2647,8 +2667,10 @@ function resetEventRegistrationForm(){
   }
   if(e.submit){
     e.submit.disabled=false;
-    e.submit.textContent="Submit Registration";
+    e.submit.textContent="Confirm Registration";
   }
+  e.categoryField?.classList.remove("hidden");
+  e.notesDetails?.removeAttribute("open");
   e.partnerField?.classList.add("hidden");
   e.form.classList.remove("hidden");
   e.success?.classList.add("hidden");
@@ -2744,7 +2766,7 @@ function handleEventRegistrationServerResult(data){
       : (message||"Your registration is confirmed and your place has been reserved for this event.");
 
     if(e.successText)e.successText.textContent=confirmedMessage;
-    if(e.submit)e.submit.textContent="Submit Registration";
+    if(e.submit)e.submit.textContent="Confirm Registration";
 
     // Update the visible event immediately from the authoritative server
     // response, so Spots Remaining changes without waiting for Sheet publish.
@@ -2785,7 +2807,7 @@ function handleEventRegistrationServerResult(data){
     e.status.textContent="⚠ "+message;
     e.status.classList.add("error");
   }
-  if(e.submit)e.submit.textContent="Submit Registration";
+  if(e.submit)e.submit.textContent="Confirm Registration";
   return true;
 }
 
@@ -2799,7 +2821,7 @@ function requestEventRegistrationStatus(submissionId,token,attempt){
     eventRegistrationSubmitted=false;
     if(e.submit){
       e.submit.disabled=false;
-      e.submit.textContent="Submit Registration";
+      e.submit.textContent="Confirm Registration";
     }
     if(e.status){
       e.status.classList.add("error");
@@ -3003,14 +3025,125 @@ function bindEvents(){
     else closeProfile();
   }})
 }
-async function loadMatchResults(){if(!config.matchResultsCsv)return;try{const rows=await fetchRows(config.matchResultsCsv);matchResults=rows.map(rowToMatch).filter(m=>m.playerA&&m.playerB)}catch(e){console.error("Failed to load match results",e);matchResults=[]}}
-async function loadAll(){await loadPlayerDb();await loadMatchResults();await loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles");await loadLeaderboard(config.doublesCsv,"doublesBody","doublesStatus","doubles","doubles");await loadActivePlayers();await loadActiveDoublesTeams();renderPlayers();renderSearch();renderEventPlayerSuggestions()}
+async function loadMatchResults(){if(!config.matchResultsCsv)return false;try{const rows=await fetchRows(config.matchResultsCsv);matchResults=rows.map(rowToMatch).filter(m=>m.playerA&&m.playerB);return true}catch(e){console.error("Failed to load match results",e);matchResults=[];return false}}
+
+const myttDataState={doublesLoaded:false,matchesLoaded:false};
+let myttDoublesLoadPromise=null;
+let myttMatchesLoadPromise=null;
+
+function ensureDoublesData(){
+  if(myttDataState.doublesLoaded)return Promise.resolve();
+  if(myttDoublesLoadPromise)return myttDoublesLoadPromise;
+  myttDoublesLoadPromise=loadLeaderboard(config.doublesCsv,"doublesBody","doublesStatus","doubles","doubles")
+    .then(()=>{
+      const statusText=String(document.getElementById("doublesStatus")?.textContent||"");
+      myttDataState.doublesLoaded=!/load failed/i.test(statusText);
+    })
+    .finally(()=>{myttDoublesLoadPromise=null;});
+  return myttDoublesLoadPromise;
+}
+
+function ensureMatchData(){
+  if(myttDataState.matchesLoaded)return Promise.resolve();
+  if(myttMatchesLoadPromise)return myttMatchesLoadPromise;
+  myttMatchesLoadPromise=loadMatchResults()
+    .then(ok=>{myttDataState.matchesLoaded=Boolean(ok);})
+    .finally(()=>{myttMatchesLoadPromise=null;});
+  return myttMatchesLoadPromise;
+}
+
+function refreshAfterSinglesSubmission(){
+  Promise.allSettled([
+    loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),
+    loadActivePlayers(),
+    loadMatchResults().then(ok=>{myttDataState.matchesLoaded=Boolean(ok);})
+  ]);
+}
+
+function refreshAfterDoublesSubmission(){
+  Promise.allSettled([
+    loadLeaderboard(config.doublesCsv,"doublesBody","doublesStatus","doubles","doubles").then(()=>{
+      myttDataState.doublesLoaded=!/load failed/i.test(String(document.getElementById("doublesStatus")?.textContent||""));
+    }),
+    loadActiveDoublesTeams()
+  ]);
+}
+
+async function loadInitialData(){
+  const isPhone=window.innerWidth<=860;
+  const essential=[
+    loadPlayerDb(),
+    loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),
+    loadActivePlayers(),
+    loadActiveDoublesTeams()
+  ];
+
+  if(!isPhone){
+    essential.push(ensureDoublesData(),ensureMatchData());
+  }
+
+  await Promise.allSettled(essential);
+  renderPlayers();
+  renderSearch();
+  renderEventPlayerSuggestions();
+
+  // On phones, keep first paint light. Match history can warm in the
+  // background; Doubles waits until the user actually opens that page.
+  if(isPhone){
+    const idle=window.requestIdleCallback||((fn)=>setTimeout(fn,1600));
+    idle(()=>ensureMatchData(),{timeout:3500});
+  }
+}
+
+async function refreshVisibleData(){
+  if(document.visibilityState==="hidden")return;
+  const isPhone=window.innerWidth<=860;
+  const target=String(location.hash||"#home").replace(/^#/,"")||"home";
+
+  if(!isPhone){
+    await Promise.allSettled([
+      loadPlayerDb(),
+      loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),
+      loadLeaderboard(config.doublesCsv,"doublesBody","doublesStatus","doubles","doubles"),
+      loadMatchResults(),
+      loadActivePlayers(),
+      loadActiveDoublesTeams()
+    ]);
+    myttDataState.doublesLoaded=!/load failed/i.test(String(document.getElementById("doublesStatus")?.textContent||""));
+    myttDataState.matchesLoaded=matchResults.length>0 || myttDataState.matchesLoaded;
+    return;
+  }
+
+  const jobs=[];
+  if(target==="home")jobs.push(loadPlayerDb(),loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),loadActivePlayers(),loadActiveDoublesTeams());
+  if(target==="players")jobs.push(loadPlayerDb(),loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),ensureMatchData());
+  if(target==="singles")jobs.push(loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),loadActivePlayers());
+  if(target==="doubles")jobs.push(ensureDoublesData(),loadActiveDoublesTeams());
+  if(target==="submit")jobs.push(loadActivePlayers(),loadActiveDoublesTeams());
+  if(jobs.length)await Promise.allSettled(jobs);
+}
+
+config.ensurePageData=function(target){
+  const page=String(target||"");
+  if(page==="events")return loadUpcomingEvents({maxAttempts:1,timeoutMs:18000});
+  if(page==="doubles")return ensureDoublesData();
+  if(page==="players")return Promise.allSettled([ensureMatchData(),loadPlayerDb()]);
+  if(page==="singles")return Promise.allSettled([loadActivePlayers()]);
+  if(page==="submit")return Promise.allSettled([loadActivePlayers(),loadActiveDoublesTeams()]);
+  return Promise.resolve();
+};
+
 bindEvents();bindSinglesFormEvents();bindDoublesFormEvents();bindJoinFormEvents();bindEventRegistrationEvents();
-// Load Events immediately instead of waiting for every other spreadsheet request.
+// Events remain a first-class fast path; core data now loads in parallel.
 loadUpcomingEvents();
-loadAll();
-setInterval(loadAll,60000);
-setInterval(()=>loadUpcomingEvents({maxAttempts:1,timeoutMs:18000}),60000);
+loadInitialData();
+setInterval(refreshVisibleData,60000);
+setInterval(()=>{
+  if(document.visibilityState==="hidden")return;
+  const isPhone=window.innerWidth<=860;
+  const target=String(location.hash||"#home").replace(/^#/,"")||"home";
+  if(!isPhone||target==="events")loadUpcomingEvents({maxAttempts:1,timeoutMs:18000});
+},60000);
 
 // Mobile resilience: retry when connection returns or the tab becomes active again.
 window.addEventListener("online",()=>loadUpcomingEvents({maxAttempts:2,timeoutMs:18000}));
@@ -3247,6 +3380,7 @@ document.addEventListener("click", function(e){
     }
 
     setHeaderActive(target);
+    try{ window.MYTT?.ensurePageData?.(target); }catch(err){ console.warn("Deferred MYTT page load failed",err); }
 
     if(scroll){
       requestAnimationFrame(()=>{
