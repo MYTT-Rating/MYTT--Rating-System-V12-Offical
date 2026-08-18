@@ -1,0 +1,28 @@
+MYTT V20 DEPLOYMENT
+===================
+
+If you already deployed the V19 Event Auto-Confirm Apps Script:
+1. Do NOT change the Apps Script again.
+2. Unzip MYTT-MOBILE-V20.zip.
+3. Upload ALL files inside the ZIP to the ROOT of your GitHub Pages repository.
+4. Replace the old website files when prompted.
+5. Commit the changes and wait for the GitHub Pages deploy job to turn green.
+6. Open mytt.my in a private/incognito window or hard-refresh once.
+
+If you have NOT deployed the V19 Event Auto-Confirm Apps Script yet:
+1. Open the existing MYTT Events Apps Script project.
+2. Replace its code with MYTT_Events_Registration_WebApp_V20_AUTO_CONFIRM.gs.
+3. Deploy > Manage deployments > Edit the EXISTING Web App deployment > New version > Deploy.
+4. Keep the existing Web App URL unchanged.
+5. Then upload the V20 website files as described above.
+
+PHONE CHECK AFTER DEPLOYMENT
+- Header has no hamburger; bottom nav is the phone navigation.
+- Events > Time/Venue/Format/Total Spots appears in a readable 2 x 2 layout.
+- Register: Singles-only event does NOT show a Category selector.
+- Register: + Add a note expands Notes only when needed.
+- Register: Confirm Registration remains easy to reach near the bottom of the modal.
+- Inputs do not zoom the page on iPhone Safari.
+- More opens Players / Market / Join & Submit normally.
+- Market loads when opened.
+- Join MYTT still says it requires review; Event Register says confirmed immediately.
