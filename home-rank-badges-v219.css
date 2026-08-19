@@ -1,12 +1,13 @@
-/* MYTT V21.10 — use all 9 approved badges on the 9-step Home Rank Journey.
-   Home ranks start at Rookie, so artwork is intentionally remapped in sequence
-   from the first approved badge through the final gold badge. */
+/* MYTT V21.11 — natural, centered Home Rank Journey badges.
+   Keep every badge perfectly square and preserve the original artwork ratio.
+   Connector lines extend behind the badge instead of stretching the artwork. */
 .homepage-rank-road .home-rank-orb{
+  aspect-ratio:1 / 1 !important;
   background-repeat:no-repeat !important;
-  background-position:center !important;
-  background-size:108% 108% !important;
+  background-position:center center !important;
+  background-size:contain !important;
   image-rendering:auto !important;
-  image-rendering:-webkit-optimize-contrast !important;
+  transform:none;
 }
 
 .homepage-rank-road .tier-rookie-home .home-rank-orb{
@@ -35,13 +36,55 @@
 }
 .homepage-rank-road .tier-hof-home .home-rank-orb{
   background-image:url("./rank-badges/champion-standalone.webp") !important;
-  background-size:105% 105% !important;
 }
 
-/* Mobile: larger, easier-to-read badges and continuous connector lines. */
 @media (max-width:860px){
   .homepage-rank-road .home-rank-node{
-    flex:0 0 72px !important;
+    position:relative !important;
+    z-index:3 !important;
+    flex:0 0 74px !important;
+    width:74px !important;
+    min-width:74px !important;
+  }
+
+  .homepage-rank-road .home-rank-orb{
+    box-sizing:border-box !important;
+    width:70px !important;
+    height:70px !important;
+    min-width:70px !important;
+    min-height:70px !important;
+    max-width:70px !important;
+    max-height:70px !important;
+    margin:0 auto 7px !important;
+    background-size:contain !important;
+    background-position:center center !important;
+  }
+
+  .homepage-rank-road .home-rank-line{
+    position:relative !important;
+    z-index:1 !important;
+    flex:0 0 18px !important;
+    width:18px !important;
+    min-width:18px !important;
+    max-width:18px !important;
+    height:6px !important;
+    margin-top:32px !important;
+  }
+
+  /* Extend the colour underneath the transparent edge of each badge.
+     The node stays above the line, so the badge itself remains clean. */
+  .homepage-rank-road .home-rank-line::before,
+  .homepage-rank-road .home-rank-line::after{
+    width:16px !important;
+    height:6px !important;
+  }
+  .homepage-rank-road .home-rank-line::before{left:-13px !important;}
+  .homepage-rank-road .home-rank-line::after{right:-13px !important;}
+}
+
+@media (max-width:390px){
+  .homepage-rank-road .home-rank-node{
+    flex-basis:72px !important;
     width:72px !important;
     min-width:72px !important;
   }
@@ -51,50 +94,8 @@
     height:68px !important;
     min-width:68px !important;
     min-height:68px !important;
-    margin:0 auto 7px !important;
-    background-size:108% 108% !important;
-  }
-
-  .homepage-rank-road .tier-hof-home .home-rank-orb{
-    background-size:105% 105% !important;
-  }
-
-  .homepage-rank-road .home-rank-line{
-    flex:0 0 18px !important;
-    width:18px !important;
-    min-width:18px !important;
-    max-width:18px !important;
-    height:6px !important;
-    margin-top:31px !important;
-  }
-
-  .homepage-rank-road .home-rank-line::before,
-  .homepage-rank-road .home-rank-line::after{
-    width:10px !important;
-    height:6px !important;
-  }
-
-  .homepage-rank-road .home-rank-line::before{
-    left:-8px !important;
-  }
-
-  .homepage-rank-road .home-rank-line::after{
-    right:-8px !important;
-  }
-}
-
-@media (max-width:390px){
-  .homepage-rank-road .home-rank-node{
-    flex-basis:70px !important;
-    width:70px !important;
-    min-width:70px !important;
-  }
-
-  .homepage-rank-road .home-rank-orb{
-    width:66px !important;
-    height:66px !important;
-    min-width:66px !important;
-    min-height:66px !important;
+    max-width:68px !important;
+    max-height:68px !important;
   }
 
   .homepage-rank-road .home-rank-line{
@@ -102,6 +103,6 @@
     width:17px !important;
     min-width:17px !important;
     max-width:17px !important;
-    margin-top:30px !important;
+    margin-top:31px !important;
   }
 }
