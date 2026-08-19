@@ -1,0 +1,45 @@
+name: Apply V21.9 home badge cache bump
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-v219-home-badges.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bump marketplace CSS cache key
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          old = 'marketplace.css?v=20260819-mobile-v21-8'
+          new = 'marketplace.css?v=20260820-mobile-v21-9'
+          if old not in s:
+              raise SystemExit('Expected V21.8 marketplace cache key not found; refusing unsafe patch')
+          p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Commit patch
+        shell: bash
+        run: |
+          git config user.name "MYTT-Rating"
+          git config user.email "hangtbabm@gmail.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Load V21.9 unique home rank badges"
+          git push
