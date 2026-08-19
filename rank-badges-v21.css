@@ -1,5 +1,8 @@
-/* MYTT V21 — approved rank badge artwork only. No layout, label or rating changes. */
+/* MYTT V21.1 — approved rank badge artwork across home + player UI. No layout/rating changes. */
 
+/* =====================================================
+   HOME RANK JOURNEY — artwork only
+   ===================================================== */
 .homepage-rank-road .home-rank-orb{
   background-color:transparent !important;
   border:0 !important;
@@ -13,31 +16,128 @@
   background-repeat:no-repeat !important;
 }
 
+/* Correct artwork-to-rank mapping */
 .homepage-rank-road .tier-rookie-home .home-rank-orb,
-.homepage-rank-road .tier-challenger-home .home-rank-orb,
-.homepage-rank-road .tier-elite-home .home-rank-orb{
+.homepage-rank-road .tier-challenger-home .home-rank-orb{
   background-image:url("./rank-badges/row1.webp") !important;
 }
-.homepage-rank-road .tier-rookie-home .home-rank-orb{background-position:0% 0% !important;}
-.homepage-rank-road .tier-challenger-home .home-rank-orb{background-position:50% 0% !important;}
-.homepage-rank-road .tier-elite-home .home-rank-orb{background-position:100% 0% !important;}
+.homepage-rank-road .tier-rookie-home .home-rank-orb{background-position:50% 0% !important;}
+.homepage-rank-road .tier-challenger-home .home-rank-orb{background-position:100% 0% !important;}
 
+.homepage-rank-road .tier-elite-home .home-rank-orb,
 .homepage-rank-road .tier-master-home .home-rank-orb,
-.homepage-rank-road .tier-legend-home .home-rank-orb,
-.homepage-rank-road .tier-grandmaster-home .home-rank-orb{
+.homepage-rank-road .tier-legend-home .home-rank-orb{
   background-image:url("./rank-badges/row2.webp") !important;
 }
-.homepage-rank-road .tier-master-home .home-rank-orb{background-position:0% 0% !important;}
-.homepage-rank-road .tier-legend-home .home-rank-orb{background-position:50% 0% !important;}
-.homepage-rank-road .tier-grandmaster-home .home-rank-orb{background-position:100% 0% !important;}
+.homepage-rank-road .tier-elite-home .home-rank-orb{background-position:0% 0% !important;}
+.homepage-rank-road .tier-master-home .home-rank-orb{background-position:50% 0% !important;}
+.homepage-rank-road .tier-legend-home .home-rank-orb{background-position:100% 0% !important;}
 
+.homepage-rank-road .tier-grandmaster-home .home-rank-orb,
 .homepage-rank-road .tier-immortal-home .home-rank-orb,
 .homepage-rank-road .tier-champion-home .home-rank-orb,
 .homepage-rank-road .tier-hof-home .home-rank-orb{
   background-image:url("./rank-badges/row3.webp") !important;
 }
-.homepage-rank-road .tier-immortal-home .home-rank-orb{background-position:0% 0% !important;}
-.homepage-rank-road .tier-champion-home .home-rank-orb{background-position:50% 0% !important;}
+.homepage-rank-road .tier-grandmaster-home .home-rank-orb{background-position:0% 0% !important;}
+.homepage-rank-road .tier-immortal-home .home-rank-orb{background-position:50% 0% !important;}
+.homepage-rank-road .tier-champion-home .home-rank-orb,
 .homepage-rank-road .tier-hof-home .home-rank-orb{background-position:100% 0% !important;}
-
 .homepage-rank-road .home-rank-node.active .home-rank-orb{outline:0 !important;}
+
+/* =====================================================
+   PLAYER PAGE / PROFILE — replace emoji tier pill with
+   approved badge + existing tier name
+   ===================================================== */
+body .tier-pill,
+#profileContent .profile-badges .tier-pill{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:6px !important;
+  color:transparent !important;
+  font-size:0 !important;
+  line-height:1 !important;
+  white-space:nowrap !important;
+}
+
+body .tier-pill::before,
+#profileContent .profile-badges .tier-pill::before{
+  content:"" !important;
+  display:inline-block !important;
+  width:28px !important;
+  height:28px !important;
+  min-width:28px !important;
+  background-repeat:no-repeat !important;
+  background-size:300% 100% !important;
+  background-color:transparent !important;
+  flex:0 0 28px !important;
+}
+body .tier-pill::after,
+#profileContent .profile-badges .tier-pill::after{
+  font-size:12px !important;
+  line-height:1 !important;
+  font-weight:900 !important;
+  color:#fff !important;
+  letter-spacing:.1px !important;
+}
+
+body .tier-novice::before{background-image:url("./rank-badges/row1.webp") !important;background-position:0% 0% !important;}
+body .tier-rookie::before{background-image:url("./rank-badges/row1.webp") !important;background-position:50% 0% !important;}
+body .tier-challenger::before{background-image:url("./rank-badges/row1.webp") !important;background-position:100% 0% !important;}
+body .tier-elite::before{background-image:url("./rank-badges/row2.webp") !important;background-position:0% 0% !important;}
+body .tier-master::before{background-image:url("./rank-badges/row2.webp") !important;background-position:50% 0% !important;}
+body .tier-legend::before{background-image:url("./rank-badges/row2.webp") !important;background-position:100% 0% !important;}
+body .tier-grandmaster::before{background-image:url("./rank-badges/row3.webp") !important;background-position:0% 0% !important;}
+body .tier-immortal::before{background-image:url("./rank-badges/row3.webp") !important;background-position:50% 0% !important;}
+body .tier-champion::before{background-image:url("./rank-badges/row3.webp") !important;background-position:100% 0% !important;}
+
+body .tier-novice::after{content:"Novice" !important;}
+body .tier-rookie::after{content:"Rookie" !important;}
+body .tier-challenger::after{content:"Challenger" !important;}
+body .tier-elite::after{content:"Elite" !important;}
+body .tier-master::after{content:"Master" !important;}
+body .tier-legend::after{content:"Legend" !important;}
+body .tier-grandmaster::after{content:"Grandmaster" !important;}
+body .tier-immortal::after{content:"Immortal" !important;}
+body .tier-champion::after{content:"MYTT Champion" !important;}
+
+/* Mobile leaderboard's icon-only tier marker */
+.leaderboard-mobile-tier{
+  color:transparent !important;
+  font-size:0 !important;
+  background-repeat:no-repeat !important;
+  background-size:300% 100% !important;
+  background-color:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+.leaderboard-mobile-tier.tier-novice{background-image:url("./rank-badges/row1.webp") !important;background-position:0% 0% !important;}
+.leaderboard-mobile-tier.tier-rookie{background-image:url("./rank-badges/row1.webp") !important;background-position:50% 0% !important;}
+.leaderboard-mobile-tier.tier-challenger{background-image:url("./rank-badges/row1.webp") !important;background-position:100% 0% !important;}
+.leaderboard-mobile-tier.tier-elite{background-image:url("./rank-badges/row2.webp") !important;background-position:0% 0% !important;}
+.leaderboard-mobile-tier.tier-master{background-image:url("./rank-badges/row2.webp") !important;background-position:50% 0% !important;}
+.leaderboard-mobile-tier.tier-legend{background-image:url("./rank-badges/row2.webp") !important;background-position:100% 0% !important;}
+.leaderboard-mobile-tier.tier-grandmaster{background-image:url("./rank-badges/row3.webp") !important;background-position:0% 0% !important;}
+.leaderboard-mobile-tier.tier-immortal{background-image:url("./rank-badges/row3.webp") !important;background-position:50% 0% !important;}
+.leaderboard-mobile-tier.tier-champion{background-image:url("./rank-badges/row3.webp") !important;background-position:100% 0% !important;}
+
+/* Full Rank Journey inside player profile — artwork only */
+.profile-rank-detail-node > span{
+  display:block !important;
+  width:34px !important;
+  height:34px !important;
+  margin:0 auto 5px !important;
+  font-size:0 !important;
+  color:transparent !important;
+  background-repeat:no-repeat !important;
+  background-size:300% 100% !important;
+}
+.profile-rank-detail-node:nth-child(1) > span{background-image:url("./rank-badges/row1.webp") !important;background-position:50% 0% !important;}
+.profile-rank-detail-node:nth-child(2) > span{background-image:url("./rank-badges/row1.webp") !important;background-position:100% 0% !important;}
+.profile-rank-detail-node:nth-child(3) > span{background-image:url("./rank-badges/row2.webp") !important;background-position:0% 0% !important;}
+.profile-rank-detail-node:nth-child(4) > span{background-image:url("./rank-badges/row2.webp") !important;background-position:50% 0% !important;}
+.profile-rank-detail-node:nth-child(5) > span{background-image:url("./rank-badges/row2.webp") !important;background-position:100% 0% !important;}
+.profile-rank-detail-node:nth-child(6) > span{background-image:url("./rank-badges/row3.webp") !important;background-position:0% 0% !important;}
+.profile-rank-detail-node:nth-child(7) > span{background-image:url("./rank-badges/row3.webp") !important;background-position:50% 0% !important;}
+.profile-rank-detail-node:nth-child(8) > span{background-image:url("./rank-badges/row3.webp") !important;background-position:100% 0% !important;}
