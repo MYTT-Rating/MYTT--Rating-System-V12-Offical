@@ -1,10 +1,12 @@
-/* MYTT V21.9 — use all 9 approved badges on the 9-step Home Rank Journey.
+/* MYTT V21.10 — use all 9 approved badges on the 9-step Home Rank Journey.
    Home ranks start at Rookie, so artwork is intentionally remapped in sequence
    from the first approved badge through the final gold badge. */
 .homepage-rank-road .home-rank-orb{
   background-repeat:no-repeat !important;
   background-position:center !important;
-  background-size:contain !important;
+  background-size:108% 108% !important;
+  image-rendering:auto !important;
+  image-rendering:-webkit-optimize-contrast !important;
 }
 
 .homepage-rank-road .tier-rookie-home .home-rank-orb{
@@ -33,4 +35,73 @@
 }
 .homepage-rank-road .tier-hof-home .home-rank-orb{
   background-image:url("./rank-badges/champion-standalone.webp") !important;
+  background-size:105% 105% !important;
+}
+
+/* Mobile: larger, easier-to-read badges and continuous connector lines. */
+@media (max-width:860px){
+  .homepage-rank-road .home-rank-node{
+    flex:0 0 72px !important;
+    width:72px !important;
+    min-width:72px !important;
+  }
+
+  .homepage-rank-road .home-rank-orb{
+    width:68px !important;
+    height:68px !important;
+    min-width:68px !important;
+    min-height:68px !important;
+    margin:0 auto 7px !important;
+    background-size:108% 108% !important;
+  }
+
+  .homepage-rank-road .tier-hof-home .home-rank-orb{
+    background-size:105% 105% !important;
+  }
+
+  .homepage-rank-road .home-rank-line{
+    flex:0 0 18px !important;
+    width:18px !important;
+    min-width:18px !important;
+    max-width:18px !important;
+    height:6px !important;
+    margin-top:31px !important;
+  }
+
+  .homepage-rank-road .home-rank-line::before,
+  .homepage-rank-road .home-rank-line::after{
+    width:10px !important;
+    height:6px !important;
+  }
+
+  .homepage-rank-road .home-rank-line::before{
+    left:-8px !important;
+  }
+
+  .homepage-rank-road .home-rank-line::after{
+    right:-8px !important;
+  }
+}
+
+@media (max-width:390px){
+  .homepage-rank-road .home-rank-node{
+    flex-basis:70px !important;
+    width:70px !important;
+    min-width:70px !important;
+  }
+
+  .homepage-rank-road .home-rank-orb{
+    width:66px !important;
+    height:66px !important;
+    min-width:66px !important;
+    min-height:66px !important;
+  }
+
+  .homepage-rank-road .home-rank-line{
+    flex-basis:17px !important;
+    width:17px !important;
+    min-width:17px !important;
+    max-width:17px !important;
+    margin-top:30px !important;
+  }
 }
