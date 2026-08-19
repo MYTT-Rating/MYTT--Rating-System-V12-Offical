@@ -1,0 +1,43 @@
+/* MYTT V21 — approved rank badge artwork only. No layout, label or rating changes. */
+
+.homepage-rank-road .home-rank-orb{
+  background-color:transparent !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  color:transparent !important;
+  font-size:0 !important;
+  line-height:0 !important;
+  overflow:visible !important;
+  background-size:300% 100% !important;
+  background-repeat:no-repeat !important;
+}
+
+.homepage-rank-road .tier-rookie-home .home-rank-orb,
+.homepage-rank-road .tier-challenger-home .home-rank-orb,
+.homepage-rank-road .tier-elite-home .home-rank-orb{
+  background-image:url("./rank-badges/row1.webp") !important;
+}
+.homepage-rank-road .tier-rookie-home .home-rank-orb{background-position:0% 0% !important;}
+.homepage-rank-road .tier-challenger-home .home-rank-orb{background-position:50% 0% !important;}
+.homepage-rank-road .tier-elite-home .home-rank-orb{background-position:100% 0% !important;}
+
+.homepage-rank-road .tier-master-home .home-rank-orb,
+.homepage-rank-road .tier-legend-home .home-rank-orb,
+.homepage-rank-road .tier-grandmaster-home .home-rank-orb{
+  background-image:url("./rank-badges/row2.webp") !important;
+}
+.homepage-rank-road .tier-master-home .home-rank-orb{background-position:0% 0% !important;}
+.homepage-rank-road .tier-legend-home .home-rank-orb{background-position:50% 0% !important;}
+.homepage-rank-road .tier-grandmaster-home .home-rank-orb{background-position:100% 0% !important;}
+
+.homepage-rank-road .tier-immortal-home .home-rank-orb,
+.homepage-rank-road .tier-champion-home .home-rank-orb,
+.homepage-rank-road .tier-hof-home .home-rank-orb{
+  background-image:url("./rank-badges/row3.webp") !important;
+}
+.homepage-rank-road .tier-immortal-home .home-rank-orb{background-position:0% 0% !important;}
+.homepage-rank-road .tier-champion-home .home-rank-orb{background-position:50% 0% !important;}
+.homepage-rank-road .tier-hof-home .home-rank-orb{background-position:100% 0% !important;}
+
+.homepage-rank-road .home-rank-node.active .home-rank-orb{outline:0 !important;}
