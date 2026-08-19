@@ -1,6 +1,6 @@
 @import url("./marketplace-base-v20-3.css?v=20260818-base-v20-3");
 @import url("./home-mobile-v20-4.css?v=20260818-home-v20-11");
-@import url("./rank-badges-v21.css?v=20260819-rank-v21-3");
+@import url("./rank-badges-v21.css?v=20260819-rank-v21-4");
 
 /* MYTT MOBILE V20.3 — COMPACT PLAYER PROFILE */
 @media (max-width:860px){
@@ -94,4 +94,11 @@
   #profileContent .profile-stats-core{gap:5px !important;}
   #profileContent .profile-stats-core .pro-stat{padding:10px 5px 9px !important;}
   #profileContent .profile-stats-core .pro-stat strong{font-size:21px !important;}
+}
+
+/* FINAL V21.3 PROFILE BADGE OVERRIDE
+   This comes after the compact mobile rules so legacy app.js emoji cannot reappear. */
+#profileContent .profile-badges .tier-pill{
+  font-size:0 !important;
+  color:transparent !important;
 }
