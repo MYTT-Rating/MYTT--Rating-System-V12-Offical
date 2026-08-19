@@ -1,0 +1,36 @@
+/* MYTT V21.9 — use all 9 approved badges on the 9-step Home Rank Journey.
+   Home ranks start at Rookie, so artwork is intentionally remapped in sequence
+   from the first approved badge through the final gold badge. */
+.homepage-rank-road .home-rank-orb{
+  background-repeat:no-repeat !important;
+  background-position:center !important;
+  background-size:contain !important;
+}
+
+.homepage-rank-road .tier-rookie-home .home-rank-orb{
+  background-image:url("./rank-badges/novice-standalone.webp") !important;
+}
+.homepage-rank-road .tier-challenger-home .home-rank-orb{
+  background-image:url("./rank-badges/rookie-standalone.webp") !important;
+}
+.homepage-rank-road .tier-elite-home .home-rank-orb{
+  background-image:url("./rank-badges/challenger-standalone.webp") !important;
+}
+.homepage-rank-road .tier-master-home .home-rank-orb{
+  background-image:url("./rank-badges/elite-standalone.webp") !important;
+}
+.homepage-rank-road .tier-legend-home .home-rank-orb{
+  background-image:url("./rank-badges/master-standalone.webp") !important;
+}
+.homepage-rank-road .tier-grandmaster-home .home-rank-orb{
+  background-image:url("./rank-badges/legend-standalone.webp") !important;
+}
+.homepage-rank-road .tier-immortal-home .home-rank-orb{
+  background-image:url("./rank-badges/grandmaster-standalone.webp") !important;
+}
+.homepage-rank-road .tier-champion-home .home-rank-orb{
+  background-image:url("./rank-badges/immortal-standalone.webp") !important;
+}
+.homepage-rank-road .tier-hof-home .home-rank-orb{
+  background-image:url("./rank-badges/champion-standalone.webp") !important;
+}
