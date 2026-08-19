@@ -1,0 +1,58 @@
+name: Apply V21.8 badge fix
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-v218-badge-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch leaderboard renderer and cache versions
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          app = Path('app.js')
+          s = app.read_text(encoding='utf-8')
+          old = 'function leaderboardTierIconHTML(r){const t=getTier(r);return `<span class="leaderboard-mobile-tier ${t.cls}" data-tier="${t.name}" title="${t.name}" aria-label="${t.name} tier">${t.icon}</span>`}'
+          new = 'function leaderboardTierIconHTML(r){const t=getTier(r);const badge=t.cls.replace("tier-","")+"-standalone.webp";return `<img class="leaderboard-mobile-tier ${t.cls}" src="rank-badges/${badge}" alt="" aria-hidden="true" title="${t.name}" loading="lazy">`}'
+          if old not in s:
+              raise SystemExit('Expected leaderboardTierIconHTML source not found; refusing unsafe patch')
+          app.write_text(s.replace(old, new, 1), encoding='utf-8')
+
+          index = Path('index.html')
+          h = index.read_text(encoding='utf-8')
+          old_css = 'marketplace.css?v=20260819-mobile-v21-5'
+          old_js = 'app.js?v=20260818-mobile-v20-2'
+          if old_css not in h:
+              raise SystemExit('Expected marketplace.css cache key not found; refusing unsafe patch')
+          if old_js not in h:
+              raise SystemExit('Expected app.js cache key not found; refusing unsafe patch')
+          h = h.replace(old_css, 'marketplace.css?v=20260819-mobile-v21-8', 1)
+          h = h.replace(old_js, 'app.js?v=20260819-mobile-v21-8', 1)
+          index.write_text(h, encoding='utf-8')
+          PY
+
+      - name: Commit patch
+        shell: bash
+        run: |
+          git config user.name "MYTT-Rating"
+          git config user.email "hangtbabm@gmail.com"
+          git add app.js index.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Apply V21.8 mobile leaderboard badge fix"
+          git push
