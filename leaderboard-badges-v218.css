@@ -1,5 +1,5 @@
 /* MYTT V21.8 — standalone mobile leaderboard badges.
-   No emoji, no sprite slicing, no generated tier text. */
+   Works with the legacy span fallback and the final img renderer. */
 @media (max-width:768px){
   html body #singles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
   html body #doubles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
@@ -35,41 +35,32 @@
     display:none !important;
   }
 
-  html body #singles .leaderboard-mobile-tier.tier-novice,
-  html body #doubles .leaderboard-mobile-tier.tier-novice{
-    background-image:url("./rank-badges/novice-standalone.webp") !important;
-  }
-  html body #singles .leaderboard-mobile-tier.tier-rookie,
-  html body #doubles .leaderboard-mobile-tier.tier-rookie{
-    background-image:url("./rank-badges/rookie-standalone.webp") !important;
-  }
-  html body #singles .leaderboard-mobile-tier.tier-challenger,
-  html body #doubles .leaderboard-mobile-tier.tier-challenger{
-    background-image:url("./rank-badges/challenger-standalone.webp") !important;
-  }
-  html body #singles .leaderboard-mobile-tier.tier-elite,
-  html body #doubles .leaderboard-mobile-tier.tier-elite{
-    background-image:url("./rank-badges/elite-standalone.webp") !important;
-  }
-  html body #singles .leaderboard-mobile-tier.tier-master,
-  html body #doubles .leaderboard-mobile-tier.tier-master{
-    background-image:url("./rank-badges/master-standalone.webp") !important;
-  }
-  html body #singles .leaderboard-mobile-tier.tier-legend,
-  html body #doubles .leaderboard-mobile-tier.tier-legend{
-    background-image:url("./rank-badges/legend-standalone.webp") !important;
-  }
-  html body #singles .leaderboard-mobile-tier.tier-grandmaster,
-  html body #doubles .leaderboard-mobile-tier.tier-grandmaster{
-    background-image:url("./rank-badges/grandmaster-standalone.webp") !important;
-  }
-  html body #singles .leaderboard-mobile-tier.tier-immortal,
-  html body #doubles .leaderboard-mobile-tier.tier-immortal{
-    background-image:url("./rank-badges/immortal-standalone.webp") !important;
-  }
-  html body #singles .leaderboard-mobile-tier.tier-champion,
-  html body #doubles .leaderboard-mobile-tier.tier-champion{
-    background-image:url("./rank-badges/champion-standalone.webp") !important;
+  /* Legacy span fallback — standalone image per tier, no sprite slicing. */
+  html body #singles span.leaderboard-mobile-tier.tier-novice,
+  html body #doubles span.leaderboard-mobile-tier.tier-novice{background-image:url("./rank-badges/novice-standalone.webp") !important;}
+  html body #singles span.leaderboard-mobile-tier.tier-rookie,
+  html body #doubles span.leaderboard-mobile-tier.tier-rookie{background-image:url("./rank-badges/rookie-standalone.webp") !important;}
+  html body #singles span.leaderboard-mobile-tier.tier-challenger,
+  html body #doubles span.leaderboard-mobile-tier.tier-challenger{background-image:url("./rank-badges/challenger-standalone.webp") !important;}
+  html body #singles span.leaderboard-mobile-tier.tier-elite,
+  html body #doubles span.leaderboard-mobile-tier.tier-elite{background-image:url("./rank-badges/elite-standalone.webp") !important;}
+  html body #singles span.leaderboard-mobile-tier.tier-master,
+  html body #doubles span.leaderboard-mobile-tier.tier-master{background-image:url("./rank-badges/master-standalone.webp") !important;}
+  html body #singles span.leaderboard-mobile-tier.tier-legend,
+  html body #doubles span.leaderboard-mobile-tier.tier-legend{background-image:url("./rank-badges/legend-standalone.webp") !important;}
+  html body #singles span.leaderboard-mobile-tier.tier-grandmaster,
+  html body #doubles span.leaderboard-mobile-tier.tier-grandmaster{background-image:url("./rank-badges/grandmaster-standalone.webp") !important;}
+  html body #singles span.leaderboard-mobile-tier.tier-immortal,
+  html body #doubles span.leaderboard-mobile-tier.tier-immortal{background-image:url("./rank-badges/immortal-standalone.webp") !important;}
+  html body #singles span.leaderboard-mobile-tier.tier-champion,
+  html body #doubles span.leaderboard-mobile-tier.tier-champion{background-image:url("./rank-badges/champion-standalone.webp") !important;}
+
+  /* Final renderer is a real image: let the file itself provide all artwork. */
+  html body #singles img.leaderboard-mobile-tier,
+  html body #doubles img.leaderboard-mobile-tier{
+    object-fit:contain !important;
+    object-position:center !important;
+    background:none !important;
   }
 }
 
