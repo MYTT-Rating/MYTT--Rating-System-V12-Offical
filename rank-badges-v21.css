@@ -1,4 +1,4 @@
-/* MYTT V21.1 — approved rank badge artwork across home + player UI. No layout/rating changes. */
+/* MYTT V21.2 — approved rank badge artwork across home + player UI. No layout/rating changes. */
 
 /* =====================================================
    HOME RANK JOURNEY — artwork only
@@ -16,7 +16,6 @@
   background-repeat:no-repeat !important;
 }
 
-/* Correct artwork-to-rank mapping */
 .homepage-rank-road .tier-rookie-home .home-rank-orb,
 .homepage-rank-road .tier-challenger-home .home-rank-orb{
   background-image:url("./rank-badges/row1.webp") !important;
@@ -46,8 +45,7 @@
 .homepage-rank-road .home-rank-node.active .home-rank-orb{outline:0 !important;}
 
 /* =====================================================
-   PLAYER PAGE / PROFILE — replace emoji tier pill with
-   approved badge + existing tier name
+   PLAYER PAGE / PROFILE — tier pill
    ===================================================== */
 body .tier-pill,
 #profileContent .profile-badges .tier-pill{
@@ -60,7 +58,6 @@ body .tier-pill,
   line-height:1 !important;
   white-space:nowrap !important;
 }
-
 body .tier-pill::before,
 #profileContent .profile-badges .tier-pill::before{
   content:"" !important;
@@ -102,7 +99,7 @@ body .tier-grandmaster::after{content:"Grandmaster" !important;}
 body .tier-immortal::after{content:"Immortal" !important;}
 body .tier-champion::after{content:"MYTT Champion" !important;}
 
-/* Mobile leaderboard's icon-only tier marker */
+/* Mobile leaderboard icon-only tier marker */
 .leaderboard-mobile-tier{
   color:transparent !important;
   font-size:0 !important;
@@ -122,7 +119,7 @@ body .tier-champion::after{content:"MYTT Champion" !important;}
 .leaderboard-mobile-tier.tier-immortal{background-image:url("./rank-badges/row3.webp") !important;background-position:50% 0% !important;}
 .leaderboard-mobile-tier.tier-champion{background-image:url("./rank-badges/row3.webp") !important;background-position:100% 0% !important;}
 
-/* Full Rank Journey inside player profile — artwork only */
+/* Full Rank Journey inside player profile */
 .profile-rank-detail-node > span{
   display:block !important;
   width:34px !important;
@@ -141,3 +138,96 @@ body .tier-champion::after{content:"MYTT Champion" !important;}
 .profile-rank-detail-node:nth-child(6) > span{background-image:url("./rank-badges/row3.webp") !important;background-position:0% 0% !important;}
 .profile-rank-detail-node:nth-child(7) > span{background-image:url("./rank-badges/row3.webp") !important;background-position:50% 0% !important;}
 .profile-rank-detail-node:nth-child(8) > span{background-image:url("./rank-badges/row3.webp") !important;background-position:100% 0% !important;}
+
+/* =====================================================
+   PLAYER PROFILE PROGRESS — remove the remaining legacy
+   emoji rendered directly by app.js and rebuild with the
+   approved badge artwork.
+   ===================================================== */
+#profileContent .tier-progress-top > span{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:6px !important;
+  font-size:0 !important;
+  color:transparent !important;
+}
+#profileContent .tier-progress-top > span::before{
+  content:"" !important;
+  display:inline-block !important;
+  width:24px !important;
+  height:24px !important;
+  min-width:24px !important;
+  background-repeat:no-repeat !important;
+  background-size:300% 100% !important;
+}
+#profileContent .tier-progress-top > span::after{
+  font-size:12px !important;
+  line-height:1 !important;
+  font-weight:900 !important;
+  color:#fff !important;
+}
+
+/* current tier */
+#profileContent:has(.tier-pill.tier-novice) .tier-progress-top > span:first-child::before{background-image:url("./rank-badges/row1.webp");background-position:0% 0%;}
+#profileContent:has(.tier-pill.tier-rookie) .tier-progress-top > span:first-child::before{background-image:url("./rank-badges/row1.webp");background-position:50% 0%;}
+#profileContent:has(.tier-pill.tier-challenger) .tier-progress-top > span:first-child::before{background-image:url("./rank-badges/row1.webp");background-position:100% 0%;}
+#profileContent:has(.tier-pill.tier-elite) .tier-progress-top > span:first-child::before{background-image:url("./rank-badges/row2.webp");background-position:0% 0%;}
+#profileContent:has(.tier-pill.tier-master) .tier-progress-top > span:first-child::before{background-image:url("./rank-badges/row2.webp");background-position:50% 0%;}
+#profileContent:has(.tier-pill.tier-legend) .tier-progress-top > span:first-child::before{background-image:url("./rank-badges/row2.webp");background-position:100% 0%;}
+#profileContent:has(.tier-pill.tier-grandmaster) .tier-progress-top > span:first-child::before{background-image:url("./rank-badges/row3.webp");background-position:0% 0%;}
+#profileContent:has(.tier-pill.tier-immortal) .tier-progress-top > span:first-child::before{background-image:url("./rank-badges/row3.webp");background-position:50% 0%;}
+#profileContent:has(.tier-pill.tier-champion) .tier-progress-top > span:first-child::before{background-image:url("./rank-badges/row3.webp");background-position:100% 0%;}
+
+#profileContent:has(.tier-pill.tier-novice) .tier-progress-top > span:first-child::after{content:"Novice";}
+#profileContent:has(.tier-pill.tier-rookie) .tier-progress-top > span:first-child::after{content:"Rookie";}
+#profileContent:has(.tier-pill.tier-challenger) .tier-progress-top > span:first-child::after{content:"Challenger";}
+#profileContent:has(.tier-pill.tier-elite) .tier-progress-top > span:first-child::after{content:"Elite";}
+#profileContent:has(.tier-pill.tier-master) .tier-progress-top > span:first-child::after{content:"Master";}
+#profileContent:has(.tier-pill.tier-legend) .tier-progress-top > span:first-child::after{content:"Legend";}
+#profileContent:has(.tier-pill.tier-grandmaster) .tier-progress-top > span:first-child::after{content:"Grandmaster";}
+#profileContent:has(.tier-pill.tier-immortal) .tier-progress-top > span:first-child::after{content:"Immortal";}
+#profileContent:has(.tier-pill.tier-champion) .tier-progress-top > span:first-child::after{content:"MYTT Champion";}
+
+/* next tier */
+#profileContent:has(.tier-pill.tier-novice) .tier-progress-top > span:nth-child(2)::before{background-image:url("./rank-badges/row1.webp");background-position:50% 0%;}
+#profileContent:has(.tier-pill.tier-rookie) .tier-progress-top > span:nth-child(2)::before{background-image:url("./rank-badges/row1.webp");background-position:100% 0%;}
+#profileContent:has(.tier-pill.tier-challenger) .tier-progress-top > span:nth-child(2)::before{background-image:url("./rank-badges/row2.webp");background-position:0% 0%;}
+#profileContent:has(.tier-pill.tier-elite) .tier-progress-top > span:nth-child(2)::before{background-image:url("./rank-badges/row2.webp");background-position:50% 0%;}
+#profileContent:has(.tier-pill.tier-master) .tier-progress-top > span:nth-child(2)::before{background-image:url("./rank-badges/row2.webp");background-position:100% 0%;}
+#profileContent:has(.tier-pill.tier-legend) .tier-progress-top > span:nth-child(2)::before{background-image:url("./rank-badges/row3.webp");background-position:0% 0%;}
+#profileContent:has(.tier-pill.tier-grandmaster) .tier-progress-top > span:nth-child(2)::before{background-image:url("./rank-badges/row3.webp");background-position:50% 0%;}
+#profileContent:has(.tier-pill.tier-immortal) .tier-progress-top > span:nth-child(2)::before{background-image:url("./rank-badges/row3.webp");background-position:100% 0%;}
+
+#profileContent:has(.tier-pill.tier-novice) .tier-progress-top > span:nth-child(2)::after{content:"Rookie";}
+#profileContent:has(.tier-pill.tier-rookie) .tier-progress-top > span:nth-child(2)::after{content:"Challenger";}
+#profileContent:has(.tier-pill.tier-challenger) .tier-progress-top > span:nth-child(2)::after{content:"Elite";}
+#profileContent:has(.tier-pill.tier-elite) .tier-progress-top > span:nth-child(2)::after{content:"Master";}
+#profileContent:has(.tier-pill.tier-master) .tier-progress-top > span:nth-child(2)::after{content:"Legend";}
+#profileContent:has(.tier-pill.tier-legend) .tier-progress-top > span:nth-child(2)::after{content:"Grandmaster";}
+#profileContent:has(.tier-pill.tier-grandmaster) .tier-progress-top > span:nth-child(2)::after{content:"Immortal";}
+#profileContent:has(.tier-pill.tier-immortal) .tier-progress-top > span:nth-child(2)::after{content:"MYTT Champion";}
+#profileContent:has(.tier-pill.tier-champion) .tier-progress-top > span:nth-child(2)::before{display:none !important;}
+#profileContent:has(.tier-pill.tier-champion) .tier-progress-top > span:nth-child(2)::after{content:"Top Tier";}
+
+/* champion title had a legacy trophy emoji */
+#profileContent:has(.tier-pill.tier-champion) .profile-rank-compact-head h3{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:7px !important;
+  font-size:0 !important;
+}
+#profileContent:has(.tier-pill.tier-champion) .profile-rank-compact-head h3::before{
+  content:"" !important;
+  width:28px !important;
+  height:28px !important;
+  display:inline-block !important;
+  background-image:url("./rank-badges/row3.webp") !important;
+  background-size:300% 100% !important;
+  background-position:100% 0% !important;
+  background-repeat:no-repeat !important;
+}
+#profileContent:has(.tier-pill.tier-champion) .profile-rank-compact-head h3::after{
+  content:"MYTT Champion" !important;
+  font-size:18px !important;
+  color:#fff !important;
+}
