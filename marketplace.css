@@ -1,6 +1,6 @@
 @import url("./marketplace-base-v20-3.css?v=20260818-base-v20-3");
 @import url("./home-mobile-v20-4.css?v=20260818-home-v20-11");
-@import url("./rank-badges-v21.css?v=20260819-rank-v21-4");
+@import url("./rank-badges-v21.css?v=20260819-rank-v21-5");
 
 /* MYTT MOBILE V20.3 — COMPACT PLAYER PROFILE */
 @media (max-width:860px){
@@ -101,4 +101,24 @@
 #profileContent .profile-badges .tier-pill{
   font-size:0 !important;
   color:transparent !important;
+}
+
+/* V21.4 MOBILE LEADERBOARD SAFETY FIX
+   Keep the original leaderboard geometry. The mobile tier marker is icon-only.
+   Prevent the generic tier-pill pseudo labels from leaking into leaderboard icons. */
+#singles .player-cell .leaderboard-mobile-tier,
+#doubles .player-cell .leaderboard-mobile-tier,
+#doubles .team-cell .leaderboard-mobile-tier{
+  font-size:0 !important;
+  line-height:0 !important;
+  color:transparent !important;
+  overflow:hidden !important;
+  white-space:nowrap !important;
+}
+#singles .leaderboard-mobile-tier::before,
+#singles .leaderboard-mobile-tier::after,
+#doubles .leaderboard-mobile-tier::before,
+#doubles .leaderboard-mobile-tier::after{
+  content:none !important;
+  display:none !important;
 }
