@@ -1,4 +1,4 @@
-name: Apply V21.9 home badge cache bump
+name: Apply V21.10 home badge cache bump
 
 on:
   push:
@@ -17,18 +17,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Bump marketplace CSS cache key
+      - name: Bump home badge and marketplace cache keys
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
+
+          css = Path('marketplace.css')
+          s = css.read_text(encoding='utf-8')
+          old_import = 'home-rank-badges-v219.css?v=20260820-v21-9'
+          new_import = 'home-rank-badges-v219.css?v=20260820-v21-10'
+          if old_import not in s:
+              raise SystemExit('Expected V21.9 home badge import not found; refusing unsafe patch')
+          css.write_text(s.replace(old_import, new_import, 1), encoding='utf-8')
+
           p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-          old = 'marketplace.css?v=20260819-mobile-v21-8'
-          new = 'marketplace.css?v=20260820-mobile-v21-9'
-          if old not in s:
-              raise SystemExit('Expected V21.8 marketplace cache key not found; refusing unsafe patch')
-          p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          h = p.read_text(encoding='utf-8')
+          old_outer = 'marketplace.css?v=20260820-mobile-v21-9'
+          new_outer = 'marketplace.css?v=20260820-mobile-v21-10'
+          if old_outer not in h:
+              raise SystemExit('Expected V21.9 marketplace cache key not found; refusing unsafe patch')
+          p.write_text(h.replace(old_outer, new_outer, 1), encoding='utf-8')
           PY
 
       - name: Commit patch
@@ -36,10 +45,10 @@ jobs:
         run: |
           git config user.name "MYTT-Rating"
           git config user.email "hangtbabm@gmail.com"
-          git add index.html
+          git add marketplace.css index.html
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "Load V21.9 unique home rank badges"
+          git commit -m "Load V21.10 larger home rank badges"
           git push
