@@ -1,0 +1,86 @@
+/* MYTT V21.8 — standalone mobile leaderboard badges.
+   No emoji, no sprite slicing, no generated tier text. */
+@media (max-width:768px){
+  html body #singles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
+  html body #doubles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
+  html body #doubles .team-cell > .leaderboard-mobile-tier{
+    display:inline-block !important;
+    flex:0 0 30px !important;
+    width:30px !important;
+    height:30px !important;
+    min-width:30px !important;
+    min-height:30px !important;
+    padding:0 !important;
+    margin:0 0 0 6px !important;
+    color:transparent !important;
+    font-size:0 !important;
+    line-height:0 !important;
+    border:0 !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+    background-color:transparent !important;
+    background-repeat:no-repeat !important;
+    background-position:center center !important;
+    background-size:contain !important;
+    overflow:visible !important;
+    white-space:nowrap !important;
+    vertical-align:middle !important;
+  }
+
+  html body #singles .leaderboard-mobile-tier::before,
+  html body #singles .leaderboard-mobile-tier::after,
+  html body #doubles .leaderboard-mobile-tier::before,
+  html body #doubles .leaderboard-mobile-tier::after{
+    content:none !important;
+    display:none !important;
+  }
+
+  html body #singles .leaderboard-mobile-tier.tier-novice,
+  html body #doubles .leaderboard-mobile-tier.tier-novice{
+    background-image:url("./rank-badges/novice-standalone.webp") !important;
+  }
+  html body #singles .leaderboard-mobile-tier.tier-rookie,
+  html body #doubles .leaderboard-mobile-tier.tier-rookie{
+    background-image:url("./rank-badges/rookie-standalone.webp") !important;
+  }
+  html body #singles .leaderboard-mobile-tier.tier-challenger,
+  html body #doubles .leaderboard-mobile-tier.tier-challenger{
+    background-image:url("./rank-badges/challenger-standalone.webp") !important;
+  }
+  html body #singles .leaderboard-mobile-tier.tier-elite,
+  html body #doubles .leaderboard-mobile-tier.tier-elite{
+    background-image:url("./rank-badges/elite-standalone.webp") !important;
+  }
+  html body #singles .leaderboard-mobile-tier.tier-master,
+  html body #doubles .leaderboard-mobile-tier.tier-master{
+    background-image:url("./rank-badges/master-standalone.webp") !important;
+  }
+  html body #singles .leaderboard-mobile-tier.tier-legend,
+  html body #doubles .leaderboard-mobile-tier.tier-legend{
+    background-image:url("./rank-badges/legend-standalone.webp") !important;
+  }
+  html body #singles .leaderboard-mobile-tier.tier-grandmaster,
+  html body #doubles .leaderboard-mobile-tier.tier-grandmaster{
+    background-image:url("./rank-badges/grandmaster-standalone.webp") !important;
+  }
+  html body #singles .leaderboard-mobile-tier.tier-immortal,
+  html body #doubles .leaderboard-mobile-tier.tier-immortal{
+    background-image:url("./rank-badges/immortal-standalone.webp") !important;
+  }
+  html body #singles .leaderboard-mobile-tier.tier-champion,
+  html body #doubles .leaderboard-mobile-tier.tier-champion{
+    background-image:url("./rank-badges/champion-standalone.webp") !important;
+  }
+}
+
+@media (max-width:390px){
+  html body #singles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
+  html body #doubles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
+  html body #doubles .team-cell > .leaderboard-mobile-tier{
+    flex-basis:28px !important;
+    width:28px !important;
+    height:28px !important;
+    min-width:28px !important;
+    min-height:28px !important;
+  }
+}
