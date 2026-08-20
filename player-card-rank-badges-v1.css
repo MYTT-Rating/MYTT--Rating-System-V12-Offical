@@ -55,3 +55,12 @@
     right:9px !important;
   }
 }
+
+/* HOME 2300 — optical alignment only.
+   Keep the orb itself on the same baseline as the other ranks; move only the artwork inside it. */
+@media(max-width:768px){
+  .homepage-rank-road .tier-hof-home .home-rank-orb{
+    transform:none !important;
+    background-position:center calc(50% - 5px) !important;
+  }
+}
