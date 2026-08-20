@@ -103,9 +103,9 @@ body .tier-pill.tier-champion::before{background-image:var(--v22-champion) !impo
   html body #singles .leaderboard-mobile-tier.tier-champion,
   html body #doubles .leaderboard-mobile-tier.tier-champion{background-image:var(--v22-champion) !important;}
 
-  /* Mobile-only optical alignment: the Hall of Fame artwork has slightly more lower visual weight. */
+  /* Mobile-only optical alignment: Hall of Fame artwork sits slightly low visually. */
   .homepage-rank-road .tier-hof-home .home-rank-orb{
-    transform:translateY(-2px) !important;
+    transform:translateY(-4px) !important;
   }
 }
 @media(max-width:390px){
