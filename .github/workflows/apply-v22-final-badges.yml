@@ -1,4 +1,4 @@
-name: Align Hall of Fame badge on mobile
+name: Finalize MYTT V23 badge set
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  fix:
+  finalize:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,37 +17,43 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Move only the 2300 badge artwork slightly upward on mobile
+      - name: Refresh badge CSS and remove legacy Hall of Fame offsets
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
+          import re
 
           index = Path('index.html')
           h = index.read_text(encoding='utf-8')
 
-          marker = 'id="mytt-hof-mobile-align-v1"'
-          css = '''<style id="mytt-hof-mobile-align-v1">
-@media (max-width: 768px){
-  .homepage-rank-road .tier-hof-home .home-rank-orb{
-    background-position:center calc(50% - 2px) !important;
-  }
-}
-</style>
+          # Force every browser/phone to fetch the final badge stylesheet chain.
+          h = re.sub(
+              r'marketplace\.css\?v=[^\"\']+',
+              'marketplace.css?v=20260820-final-set-v23-1',
+              h,
+              count=1
+          )
 
-'''
-          anchor = '<style id="mytt-mobile-title-left-fix">'
+          # Remove the temporary 2300-only optical enlargement.
+          h = h.replace(
+              '<div class="home-rank-orb" style="background-size:108%!important;">🌟</div>',
+              '<div class="home-rank-orb">🌟</div>'
+          )
 
-          if marker not in h:
-              if anchor not in h:
-                  raise SystemExit('Expected mobile style anchor not found; refusing unsafe edit')
-              h = h.replace(anchor, css + anchor, 1)
+          # Remove the temporary mobile -2px Hall of Fame adjustment if it was installed.
+          h = re.sub(
+              r'<style id="mytt-hof-mobile-align-v1">.*?</style>\s*',
+              '',
+              h,
+              flags=re.S
+          )
 
           index.write_text(h, encoding='utf-8')
           PY
 
-      - name: Commit mobile alignment adjustment
+      - name: Commit final badge integration
         shell: bash
         run: |
           set -euo pipefail
@@ -58,5 +64,5 @@ jobs:
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "Align Hall of Fame badge on mobile"
+          git commit -m "Activate final approved MYTT badge set"
           git push
