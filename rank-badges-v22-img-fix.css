@@ -1,0 +1,9 @@
+/* V22 compatibility for the existing leaderboard <img> renderer.
+   Hide the old image pixels outside the box and let the V22 sprite background show. */
+@media(max-width:768px){
+  html body #singles img.leaderboard-mobile-tier,
+  html body #doubles img.leaderboard-mobile-tier{
+    object-fit:none !important;
+    object-position:9999px 9999px !important;
+  }
+}
