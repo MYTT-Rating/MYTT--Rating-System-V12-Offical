@@ -1,4 +1,4 @@
-name: Finalize MYTT V23 badge set
+name: Roll back unstable V23 badge rollout
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  finalize:
+  rollback:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,52 +17,29 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Refresh badge CSS and remove legacy Hall of Fame offsets
+      - name: Restore last stable badge version
         shell: bash
         run: |
           set -euo pipefail
-          python - <<'PY'
-          from pathlib import Path
-          import re
+          STABLE=dfc81b1801981994cd0ef79274ffab4cad57584f
 
-          index = Path('index.html')
-          h = index.read_text(encoding='utf-8')
+          git show "$STABLE:index.html" > index.html
+          git show "$STABLE:marketplace.css" > marketplace.css
+          git show "$STABLE:.github/workflows/apply-v22-final-badges.yml" > .github/workflows/apply-v22-final-badges.yml
 
-          # Force every browser/phone to fetch the final badge stylesheet chain.
-          h = re.sub(
-              r'marketplace\.css\?v=[^\"\']+',
-              'marketplace.css?v=20260820-final-set-v23-1',
-              h,
-              count=1
-          )
+          rm -f rank-badges-final-v23.css
+          rm -f rank-badges/mytt-final-badges-v23.webp
 
-          # Remove the temporary 2300-only optical enlargement.
-          h = h.replace(
-              '<div class="home-rank-orb" style="background-size:108%!important;">🌟</div>',
-              '<div class="home-rank-orb">🌟</div>'
-          )
-
-          # Remove the temporary mobile -2px Hall of Fame adjustment if it was installed.
-          h = re.sub(
-              r'<style id="mytt-hof-mobile-align-v1">.*?</style>\s*',
-              '',
-              h,
-              flags=re.S
-          )
-
-          index.write_text(h, encoding='utf-8')
-          PY
-
-      - name: Commit final badge integration
+      - name: Commit exact rollback
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "MYTT-Rating"
           git config user.email "hangtbabm@gmail.com"
-          git add index.html
+          git add -A
           if git diff --cached --quiet; then
-            echo "No changes to commit"
+            echo "Nothing to roll back"
             exit 0
           fi
-          git commit -m "Activate final approved MYTT badge set"
+          git commit -m "Restore stable pre-V23 badge version"
           git push
