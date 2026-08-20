@@ -1,4 +1,4 @@
-name: Match Hall of Fame badge visual size
+name: Align Hall of Fame badge on mobile
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Enlarge only the 2300 badge artwork
+      - name: Move only the 2300 badge artwork slightly upward on mobile
         shell: bash
         run: |
           set -euo pipefail
@@ -27,18 +27,27 @@ jobs:
           index = Path('index.html')
           h = index.read_text(encoding='utf-8')
 
-          old = '<div class="home-rank-orb">🌟</div>'
-          new = '<div class="home-rank-orb" style="background-size:108%!important;">🌟</div>'
+          marker = 'id="mytt-hof-mobile-align-v1"'
+          css = '''<style id="mytt-hof-mobile-align-v1">
+@media (max-width: 768px){
+  .homepage-rank-road .tier-hof-home .home-rank-orb{
+    background-position:center calc(50% - 2px) !important;
+  }
+}
+</style>
 
-          if old in h:
-              h = h.replace(old, new, 1)
-          elif 'background-size:108%!important;' not in h:
-              raise SystemExit('Hall of Fame orb not found; refusing unsafe edit')
+'''
+          anchor = '<style id="mytt-mobile-title-left-fix">'
+
+          if marker not in h:
+              if anchor not in h:
+                  raise SystemExit('Expected mobile style anchor not found; refusing unsafe edit')
+              h = h.replace(anchor, css + anchor, 1)
 
           index.write_text(h, encoding='utf-8')
           PY
 
-      - name: Commit visual-size adjustment
+      - name: Commit mobile alignment adjustment
         shell: bash
         run: |
           set -euo pipefail
@@ -49,5 +58,5 @@ jobs:
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "Match Hall of Fame badge size to rank journey"
+          git commit -m "Align Hall of Fame badge on mobile"
           git push
