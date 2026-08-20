@@ -1,4 +1,4 @@
-name: Apply final Hall of Fame cache fix
+name: Force Hall of Fame image DOM
 
 on:
   push:
@@ -17,59 +17,50 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Force final Hall of Fame asset and cache versions
+      - name: Render Hall of Fame as a real img element
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
 
-          # 1) Force the browser to fetch a new outer stylesheet URL.
           index = Path('index.html')
           h = index.read_text(encoding='utf-8')
-          old_outer = 'marketplace.css?v=20260820-mobile-v21-11'
-          new_outer = 'marketplace.css?v=20260820-mobile-v22-8'
-          if old_outer in h:
-              h = h.replace(old_outer, new_outer, 1)
-          elif new_outer not in h:
-              raise SystemExit('Unexpected marketplace.css cache key in index.html')
+
+          # Force a fresh outer stylesheet URL, but do not rely on CSS for the 2300 badge itself.
+          h = h.replace('marketplace.css?v=20260820-mobile-v22-8',
+                        'marketplace.css?v=20260820-mobile-v22-9', 1)
+
+          old = '''        <article class="home-rank-node tier-hof-home">
+          <div class="home-rank-orb">🌟</div>
+          <span>Hall of Fame</span><small>2300</small>
+        </article>'''
+
+          new = '''        <article class="home-rank-node tier-hof-home">
+          <div class="home-rank-orb home-rank-orb-hof" style="background:none!important;padding:0!important;overflow:visible!important;">
+            <img src="rank-badges/v22-hall-of-fame-mytt-final.webp?v=20260820-hof-dom-1" alt="Hall of Fame" width="70" height="70" style="display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;object-position:center!important;opacity:1!important;visibility:visible!important;transform:none!important;filter:none!important;">
+          </div>
+          <span>Hall of Fame</span><small>2300</small>
+        </article>'''
+
+          if old in h:
+              h = h.replace(old, new, 1)
+          elif 'v22-hall-of-fame-mytt-final.webp?v=20260820-hof-dom-1' not in h:
+              raise SystemExit('Hall of Fame node was not found; refusing unsafe edit')
+
           index.write_text(h, encoding='utf-8')
-
-          # 2) Bump the inner V22 imports as well.
-          market = Path('marketplace.css')
-          m = market.read_text(encoding='utf-8')
-          m = m.replace('rank-badges-v22.css?v=20260820-final-v22-7',
-                        'rank-badges-v22.css?v=20260820-final-v22-8')
-          m = m.replace('rank-badges-v22-img-fix.css?v=20260820-final-v22-7',
-                        'rank-badges-v22-img-fix.css?v=20260820-final-v22-8')
-          market.write_text(m, encoding='utf-8')
-
-          # 3) Point Hall of Fame directly at the final MYTT gold trophy asset.
-          css = Path('rank-badges-v22.css')
-          s = css.read_text(encoding='utf-8')
-          import re
-          s = re.sub(
-              r'--v22-champion:url\("[^\"]+"\);',
-              '--v22-champion:url("./rank-badges/v22-hall-of-fame-mytt-final.webp?v=20260820-hof-final-mytt-2");',
-              s,
-              count=1
-          )
-          final_rule = '''\n\n/* V22.8 FINAL HALL OF FAME — direct asset, no legacy mapping. */\n.homepage-rank-road .tier-hof-home .home-rank-orb{\n  background-image:url("./rank-badges/v22-hall-of-fame-mytt-final.webp?v=20260820-hof-final-mytt-2") !important;\n  background-repeat:no-repeat !important;\n  background-position:center center !important;\n  background-size:contain !important;\n}\n'''
-          if 'V22.8 FINAL HALL OF FAME' not in s:
-              s += final_rule
-          css.write_text(s, encoding='utf-8')
           PY
 
-      - name: Commit cache fix
+      - name: Commit direct Hall of Fame image
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "MYTT-Rating"
           git config user.email "hangtbabm@gmail.com"
-          git add index.html marketplace.css rank-badges-v22.css
+          git add index.html
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "Force final Hall of Fame badge and cache refresh"
+          git commit -m "Render Hall of Fame badge as direct image"
           git push
