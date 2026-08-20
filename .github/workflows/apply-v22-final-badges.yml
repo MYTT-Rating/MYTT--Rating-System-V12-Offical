@@ -1,4 +1,4 @@
-name: Fine tune Hall of Fame badge on mobile
+name: Align Hall of Fame artwork on mobile
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Move only the 2300 badge slightly upward on mobile
+      - name: Align only the Hall of Fame artwork inside its orb
         shell: bash
         run: |
           set -euo pipefail
@@ -28,13 +28,15 @@ jobs:
           index = Path('index.html')
           h = index.read_text(encoding='utf-8')
 
-          # Remove any older Hall of Fame mobile-only inline alignment block.
-          h = re.sub(r'<style id="mytt-hof-mobile-align-v[12]">.*?</style>\s*', '', h, flags=re.S)
+          # Remove every previous Hall of Fame mobile alignment patch.
+          h = re.sub(r'<style id="mytt-hof-mobile-align-v[0-9]+">.*?</style>\s*', '', h, flags=re.S)
 
-          css = '''<style id="mytt-hof-mobile-align-v2">
+          # Keep the rank orb on the same baseline; move only the artwork inside it upward.
+          css = '''<style id="mytt-hof-mobile-align-v3">
 @media (max-width: 768px){
   .homepage-rank-road .tier-hof-home .home-rank-orb{
-    transform:translateY(-4px) !important;
+    transform:none !important;
+    background-position:center calc(50% - 5px) !important;
   }
 }
 </style>
@@ -48,7 +50,7 @@ jobs:
           index.write_text(h, encoding='utf-8')
           PY
 
-      - name: Commit mobile alignment adjustment
+      - name: Commit Hall of Fame artwork alignment
         shell: bash
         run: |
           set -euo pipefail
@@ -59,5 +61,5 @@ jobs:
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "Fine tune Hall of Fame mobile alignment"
+          git commit -m "Align Hall of Fame artwork on mobile"
           git push
