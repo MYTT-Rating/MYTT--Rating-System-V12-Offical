@@ -1,4 +1,4 @@
-name: Install final V22 rank badges
+name: Apply final Hall of Fame cache fix
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  install:
+  fix:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,71 +17,59 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Assemble final badge artwork
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p rank-badges
-          cat tmp-v22/badge.part00 tmp-v22/badge.part01 tmp-v22/badge.part02 tmp-v22/badge.part03 tmp-v22/badge.part04 > /tmp/mytt-v22.b64
-          base64 -d /tmp/mytt-v22.b64 > rank-badges/v22-final.webp
-          echo 'd9ba3e5de0f346aa2f40cefb98117e74b0a2914627de9dc066da9efcaf1b084e  rank-badges/v22-final.webp' | sha256sum -c -
-          file rank-badges/v22-final.webp
-
-      - name: Switch badge renderer and cache versions
+      - name: Force final Hall of Fame asset and cache versions
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
 
-          # Mobile leaderboard: use a clean empty span. V22 CSS supplies the artwork.
-          app = Path('app.js')
-          s = app.read_text(encoding='utf-8')
-          old = 'function leaderboardTierIconHTML(r){const t=getTier(r);const badge=t.cls.replace("tier-","")+"-standalone.webp";return `<img class="leaderboard-mobile-tier ${t.cls}" src="rank-badges/${badge}" alt="" aria-hidden="true" title="${t.name}" loading="lazy">`}'
-          new = 'function leaderboardTierIconHTML(r){const t=getTier(r);return `<span class="leaderboard-mobile-tier ${t.cls}" title="${t.name}" aria-label="${t.name} tier"></span>`}'
-          if old not in s:
-              raise SystemExit('Expected V21.8 leaderboard renderer not found; refusing unsafe patch')
-          app.write_text(s.replace(old, new, 1), encoding='utf-8')
-
-          # Load V22 after every legacy badge stylesheet so it wins without changing layout.
-          market = Path('marketplace.css')
-          m = market.read_text(encoding='utf-8')
-          anchor = '@import url("./home-rank-badges-v219.css?v=20260820-v21-11");'
-          v22 = '@import url("./rank-badges-v22.css?v=20260820-final-v22");'
-          if v22 not in m:
-              if anchor not in m:
-                  raise SystemExit('Expected V21.11 home rank import not found; refusing unsafe patch')
-              m = m.replace(anchor, anchor + '\n' + v22, 1)
-              market.write_text(m, encoding='utf-8')
-
-          # Force phones to fetch both the new CSS chain and the new JS renderer.
+          # 1) Force the browser to fetch a new outer stylesheet URL.
           index = Path('index.html')
           h = index.read_text(encoding='utf-8')
-          old_css = 'marketplace.css?v=20260820-mobile-v21-11'
-          new_css = 'marketplace.css?v=20260820-mobile-v22-final'
-          old_js = 'app.js?v=20260819-mobile-v21-8'
-          new_js = 'app.js?v=20260820-final-v22'
-          if old_css not in h:
-              raise SystemExit('Expected V21.11 marketplace cache key not found; refusing unsafe patch')
-          if old_js not in h:
-              raise SystemExit('Expected V21.8 app cache key not found; refusing unsafe patch')
-          h = h.replace(old_css, new_css, 1).replace(old_js, new_js, 1)
+          old_outer = 'marketplace.css?v=20260820-mobile-v21-11'
+          new_outer = 'marketplace.css?v=20260820-mobile-v22-8'
+          if old_outer in h:
+              h = h.replace(old_outer, new_outer, 1)
+          elif new_outer not in h:
+              raise SystemExit('Unexpected marketplace.css cache key in index.html')
           index.write_text(h, encoding='utf-8')
+
+          # 2) Bump the inner V22 imports as well.
+          market = Path('marketplace.css')
+          m = market.read_text(encoding='utf-8')
+          m = m.replace('rank-badges-v22.css?v=20260820-final-v22-7',
+                        'rank-badges-v22.css?v=20260820-final-v22-8')
+          m = m.replace('rank-badges-v22-img-fix.css?v=20260820-final-v22-7',
+                        'rank-badges-v22-img-fix.css?v=20260820-final-v22-8')
+          market.write_text(m, encoding='utf-8')
+
+          # 3) Point Hall of Fame directly at the final MYTT gold trophy asset.
+          css = Path('rank-badges-v22.css')
+          s = css.read_text(encoding='utf-8')
+          import re
+          s = re.sub(
+              r'--v22-champion:url\("[^\"]+"\);',
+              '--v22-champion:url("./rank-badges/v22-hall-of-fame-mytt-final.webp?v=20260820-hof-final-mytt-2");',
+              s,
+              count=1
+          )
+          final_rule = '''\n\n/* V22.8 FINAL HALL OF FAME — direct asset, no legacy mapping. */\n.homepage-rank-road .tier-hof-home .home-rank-orb{\n  background-image:url("./rank-badges/v22-hall-of-fame-mytt-final.webp?v=20260820-hof-final-mytt-2") !important;\n  background-repeat:no-repeat !important;\n  background-position:center center !important;\n  background-size:contain !important;\n}\n'''
+          if 'V22.8 FINAL HALL OF FAME' not in s:
+              s += final_rule
+          css.write_text(s, encoding='utf-8')
           PY
 
-      - name: Remove temporary chunks and commit
+      - name: Commit cache fix
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf tmp-v22
           git config user.name "MYTT-Rating"
           git config user.email "hangtbabm@gmail.com"
-          git add -A
+          git add index.html marketplace.css rank-badges-v22.css
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "Install final V22 rank badges"
+          git commit -m "Force final Hall of Fame badge and cache refresh"
           git push
-
-# rerun-final-v22-20260820
