@@ -11,7 +11,7 @@
   --v22-master:url("./rank-badges/v22-master.webp");
   --v22-grandmaster:url("./rank-badges/v22-grandmaster.webp");
   --v22-immortal:url("./rank-badges/v22-immortal.webp");
-  --v22-champion:url("./rank-badges/v22-hall-of-fame-mytt-final.webp?v=20260820-hof-final-mytt-1");
+  --v22-champion:url("./rank-badges/v22-hall-of-fame-mytt-final.webp?v=20260820-hof-final-mytt-2");
 }
 
 /* Keep every badge 1:1 and centered. */
@@ -158,4 +158,13 @@ body .tier-pill.tier-hall-of-fame::before{background-image:var(--v22-champion) !
 #profileContent:has(.tier-pill.tier-champion) .profile-rank-compact-head h3::before,
 #profileContent:has(.tier-pill.tier-hall-of-fame) .profile-rank-compact-head h3::before{
   background-image:var(--v22-champion) !important;
+}
+
+
+/* V22.8 FINAL HALL OF FAME — direct asset, no legacy mapping. */
+.homepage-rank-road .tier-hof-home .home-rank-orb{
+  background-image:url("./rank-badges/v22-hall-of-fame-mytt-final.webp?v=20260820-hof-final-mytt-2") !important;
+  background-repeat:no-repeat !important;
+  background-position:center center !important;
+  background-size:contain !important;
 }
