@@ -1,0 +1,178 @@
+/* MYTT V22 — FINAL APPROVED 9-BADGE SET
+   Artwork source: user's final selected 3x3 badge batch.
+   This file changes badge artwork only; existing layout/rating logic stays intact. */
+
+:root{
+  --mytt-v22-badges:url("./rank-badges/v22-final.webp");
+}
+
+/* 3x3 sprite helpers:
+   1 2 3
+   4 5 6
+   7 8 9
+*/
+
+/* =====================================================
+   HOME RANK JOURNEY — 9 visible stages use all 9 badges
+   ===================================================== */
+.homepage-rank-road .home-rank-orb{
+  background-image:var(--mytt-v22-badges) !important;
+  background-size:300% 300% !important;
+  background-repeat:no-repeat !important;
+  color:transparent !important;
+  font-size:0 !important;
+  line-height:0 !important;
+}
+.homepage-rank-road .tier-rookie-home .home-rank-orb{background-position:0% 0% !important;}
+.homepage-rank-road .tier-challenger-home .home-rank-orb{background-position:50% 0% !important;}
+.homepage-rank-road .tier-elite-home .home-rank-orb{background-position:100% 0% !important;}
+.homepage-rank-road .tier-master-home .home-rank-orb{background-position:0% 50% !important;}
+.homepage-rank-road .tier-legend-home .home-rank-orb{background-position:50% 50% !important;}
+.homepage-rank-road .tier-grandmaster-home .home-rank-orb{background-position:100% 50% !important;}
+.homepage-rank-road .tier-immortal-home .home-rank-orb{background-position:0% 100% !important;}
+.homepage-rank-road .tier-champion-home .home-rank-orb{background-position:50% 100% !important;}
+.homepage-rank-road .tier-hof-home .home-rank-orb{background-position:100% 100% !important;}
+
+/* =====================================================
+   PLAYER CARDS / PROFILE TIER PILLS
+   ===================================================== */
+body .tier-pill::before{
+  background-image:var(--mytt-v22-badges) !important;
+  background-size:300% 300% !important;
+  background-repeat:no-repeat !important;
+}
+body .tier-pill.tier-novice::before{background-position:0% 0% !important;}
+body .tier-pill.tier-rookie::before{background-position:50% 0% !important;}
+body .tier-pill.tier-challenger::before{background-position:100% 0% !important;}
+body .tier-pill.tier-elite::before{background-position:0% 50% !important;}
+body .tier-pill.tier-master::before{background-position:50% 50% !important;}
+body .tier-pill.tier-legend::before{background-position:100% 50% !important;}
+body .tier-pill.tier-grandmaster::before{background-position:0% 100% !important;}
+body .tier-pill.tier-immortal::before{background-position:50% 100% !important;}
+body .tier-pill.tier-champion::before{background-position:100% 100% !important;}
+
+/* =====================================================
+   MOBILE LEADERBOARD — badge only, never tier text
+   Geometry intentionally matches the stable V21.8 layout.
+   ===================================================== */
+@media(max-width:768px){
+  html body #singles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
+  html body #doubles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
+  html body #doubles .team-cell > .leaderboard-mobile-tier{
+    display:inline-block !important;
+    flex:0 0 30px !important;
+    width:30px !important;
+    height:30px !important;
+    min-width:30px !important;
+    min-height:30px !important;
+    padding:0 !important;
+    margin:0 0 0 6px !important;
+    border:0 !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+    color:transparent !important;
+    font-size:0 !important;
+    line-height:0 !important;
+    background-image:var(--mytt-v22-badges) !important;
+    background-size:300% 300% !important;
+    background-repeat:no-repeat !important;
+    background-color:transparent !important;
+    overflow:hidden !important;
+    white-space:nowrap !important;
+    vertical-align:middle !important;
+  }
+  html body #singles .leaderboard-mobile-tier::before,
+  html body #singles .leaderboard-mobile-tier::after,
+  html body #doubles .leaderboard-mobile-tier::before,
+  html body #doubles .leaderboard-mobile-tier::after{
+    content:none !important;
+    display:none !important;
+  }
+  html body #singles .leaderboard-mobile-tier.tier-novice,
+  html body #doubles .leaderboard-mobile-tier.tier-novice{background-position:0% 0% !important;}
+  html body #singles .leaderboard-mobile-tier.tier-rookie,
+  html body #doubles .leaderboard-mobile-tier.tier-rookie{background-position:50% 0% !important;}
+  html body #singles .leaderboard-mobile-tier.tier-challenger,
+  html body #doubles .leaderboard-mobile-tier.tier-challenger{background-position:100% 0% !important;}
+  html body #singles .leaderboard-mobile-tier.tier-elite,
+  html body #doubles .leaderboard-mobile-tier.tier-elite{background-position:0% 50% !important;}
+  html body #singles .leaderboard-mobile-tier.tier-master,
+  html body #doubles .leaderboard-mobile-tier.tier-master{background-position:50% 50% !important;}
+  html body #singles .leaderboard-mobile-tier.tier-legend,
+  html body #doubles .leaderboard-mobile-tier.tier-legend{background-position:100% 50% !important;}
+  html body #singles .leaderboard-mobile-tier.tier-grandmaster,
+  html body #doubles .leaderboard-mobile-tier.tier-grandmaster{background-position:0% 100% !important;}
+  html body #singles .leaderboard-mobile-tier.tier-immortal,
+  html body #doubles .leaderboard-mobile-tier.tier-immortal{background-position:50% 100% !important;}
+  html body #singles .leaderboard-mobile-tier.tier-champion,
+  html body #doubles .leaderboard-mobile-tier.tier-champion{background-position:100% 100% !important;}
+}
+@media(max-width:390px){
+  html body #singles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
+  html body #doubles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
+  html body #doubles .team-cell > .leaderboard-mobile-tier{
+    flex-basis:28px !important;
+    width:28px !important;
+    height:28px !important;
+    min-width:28px !important;
+    min-height:28px !important;
+  }
+}
+
+/* =====================================================
+   FULL RANK JOURNEY INSIDE PLAYER PROFILE
+   It starts at Rookie, therefore nodes 1–8 use badges 2–9.
+   ===================================================== */
+.profile-rank-detail-node > span{
+  background-image:var(--mytt-v22-badges) !important;
+  background-size:300% 300% !important;
+  background-repeat:no-repeat !important;
+  font-size:0 !important;
+  color:transparent !important;
+}
+.profile-rank-detail-node:nth-child(1) > span{background-position:50% 0% !important;}
+.profile-rank-detail-node:nth-child(2) > span{background-position:100% 0% !important;}
+.profile-rank-detail-node:nth-child(3) > span{background-position:0% 50% !important;}
+.profile-rank-detail-node:nth-child(4) > span{background-position:50% 50% !important;}
+.profile-rank-detail-node:nth-child(5) > span{background-position:100% 50% !important;}
+.profile-rank-detail-node:nth-child(6) > span{background-position:0% 100% !important;}
+.profile-rank-detail-node:nth-child(7) > span{background-position:50% 100% !important;}
+.profile-rank-detail-node:nth-child(8) > span{background-position:100% 100% !important;}
+
+/* =====================================================
+   PROFILE CURRENT / NEXT TIER PROGRESS
+   ===================================================== */
+#profileContent .tier-progress-top > span::before{
+  background-image:var(--mytt-v22-badges) !important;
+  background-size:300% 300% !important;
+  background-repeat:no-repeat !important;
+}
+
+/* Current */
+#profileContent:has(.tier-pill.tier-novice) .tier-progress-top > span:first-child::before{background-position:0% 0% !important;}
+#profileContent:has(.tier-pill.tier-rookie) .tier-progress-top > span:first-child::before{background-position:50% 0% !important;}
+#profileContent:has(.tier-pill.tier-challenger) .tier-progress-top > span:first-child::before{background-position:100% 0% !important;}
+#profileContent:has(.tier-pill.tier-elite) .tier-progress-top > span:first-child::before{background-position:0% 50% !important;}
+#profileContent:has(.tier-pill.tier-master) .tier-progress-top > span:first-child::before{background-position:50% 50% !important;}
+#profileContent:has(.tier-pill.tier-legend) .tier-progress-top > span:first-child::before{background-position:100% 50% !important;}
+#profileContent:has(.tier-pill.tier-grandmaster) .tier-progress-top > span:first-child::before{background-position:0% 100% !important;}
+#profileContent:has(.tier-pill.tier-immortal) .tier-progress-top > span:first-child::before{background-position:50% 100% !important;}
+#profileContent:has(.tier-pill.tier-champion) .tier-progress-top > span:first-child::before{background-position:100% 100% !important;}
+
+/* Next */
+#profileContent:has(.tier-pill.tier-novice) .tier-progress-top > span:nth-child(2)::before{background-position:50% 0% !important;}
+#profileContent:has(.tier-pill.tier-rookie) .tier-progress-top > span:nth-child(2)::before{background-position:100% 0% !important;}
+#profileContent:has(.tier-pill.tier-challenger) .tier-progress-top > span:nth-child(2)::before{background-position:0% 50% !important;}
+#profileContent:has(.tier-pill.tier-elite) .tier-progress-top > span:nth-child(2)::before{background-position:50% 50% !important;}
+#profileContent:has(.tier-pill.tier-master) .tier-progress-top > span:nth-child(2)::before{background-position:100% 50% !important;}
+#profileContent:has(.tier-pill.tier-legend) .tier-progress-top > span:nth-child(2)::before{background-position:0% 100% !important;}
+#profileContent:has(.tier-pill.tier-grandmaster) .tier-progress-top > span:nth-child(2)::before{background-position:50% 100% !important;}
+#profileContent:has(.tier-pill.tier-immortal) .tier-progress-top > span:nth-child(2)::before{background-position:100% 100% !important;}
+
+/* Champion heading used to contain the legacy trophy emoji. */
+#profileContent:has(.tier-pill.tier-champion) .profile-rank-compact-head h3::before{
+  background-image:var(--mytt-v22-badges) !important;
+  background-size:300% 300% !important;
+  background-position:100% 100% !important;
+  background-repeat:no-repeat !important;
+}
