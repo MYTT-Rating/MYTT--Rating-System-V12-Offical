@@ -8,121 +8,27 @@
 
 /* MYTT MOBILE V20.3 — COMPACT PLAYER PROFILE */
 @media (max-width:860px){
-  #profileContent .profile-hero-pro{
-    padding:18px 10px 16px !important;
-    margin-bottom:10px !important;
-    border-radius:22px !important;
-  }
+  #profileContent .profile-hero-pro{padding:18px 10px 16px !important;margin-bottom:10px !important;border-radius:22px !important;}
   #profileContent .profile-hero-main{gap:13px !important;}
-  #profileContent .profile-avatar-pro{
-    width:100px !important;
-    height:100px !important;
-    min-width:100px !important;
-    min-height:100px !important;
-    margin-top:0 !important;
-  }
-  #profileContent .profile-kicker{
-    margin:0 0 6px !important;
-    font-size:10px !important;
-    letter-spacing:2.2px !important;
-  }
-  #profileContent .profile-identity h3{
-    font-size:32px !important;
-    line-height:.96 !important;
-    letter-spacing:-1px !important;
-  }
-  #profileContent .profile-badges{
-    display:flex !important;
-    flex-wrap:nowrap !important;
-    justify-content:center !important;
-    align-items:center !important;
-    gap:6px !important;
-    width:100% !important;
-    margin-top:10px !important;
-  }
-  #profileContent .profile-badges .id-pill,
-  #profileContent .profile-badges .tier-pill,
-  #profileContent .profile-badges .rank-pill{
-    flex:0 1 auto !important;
-    min-width:0 !important;
-    max-width:100% !important;
-    padding:7px 9px !important;
-    font-size:12px !important;
-    line-height:1 !important;
-    white-space:nowrap !important;
-  }
-  #profileContent .profile-stats-core{
-    display:grid !important;
-    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
-    gap:7px !important;
-    width:100% !important;
-    margin:0 0 10px !important;
-  }
-  #profileContent .profile-stats-core .pro-stat{
-    min-width:0 !important;
-    min-height:96px !important;
-    padding:11px 8px 10px !important;
-    border-radius:16px !important;
-    text-align:center !important;
-  }
-  #profileContent .profile-stats-core .pro-stat span{
-    margin:0 0 6px !important;
-    font-size:20px !important;
-    line-height:1 !important;
-  }
-  #profileContent .profile-stats-core .pro-stat small{
-    display:block !important;
-    min-height:20px !important;
-    margin:0 0 5px !important;
-    font-size:8.5px !important;
-    line-height:1.12 !important;
-    letter-spacing:.7px !important;
-    white-space:normal !important;
-  }
-  #profileContent .profile-stats-core .pro-stat strong{
-    display:block !important;
-    font-size:23px !important;
-    line-height:1 !important;
-    white-space:nowrap !important;
-  }
+  #profileContent .profile-avatar-pro{width:100px !important;height:100px !important;min-width:100px !important;min-height:100px !important;margin-top:0 !important;}
+  #profileContent .profile-kicker{margin:0 0 6px !important;font-size:10px !important;letter-spacing:2.2px !important;}
+  #profileContent .profile-identity h3{font-size:32px !important;line-height:.96 !important;letter-spacing:-1px !important;}
+  #profileContent .profile-badges{display:flex !important;flex-wrap:nowrap !important;justify-content:center !important;align-items:center !important;gap:6px !important;width:100% !important;margin-top:10px !important;}
+  #profileContent .profile-badges .id-pill,#profileContent .profile-badges .tier-pill,#profileContent .profile-badges .rank-pill{flex:0 1 auto !important;min-width:0 !important;max-width:100% !important;padding:7px 9px !important;font-size:12px !important;line-height:1 !important;white-space:nowrap !important;}
+  #profileContent .profile-stats-core{display:grid !important;grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:7px !important;width:100% !important;margin:0 0 10px !important;}
+  #profileContent .profile-stats-core .pro-stat{min-width:0 !important;min-height:96px !important;padding:11px 8px 10px !important;border-radius:16px !important;text-align:center !important;}
+  #profileContent .profile-stats-core .pro-stat span{margin:0 0 6px !important;font-size:20px !important;line-height:1 !important;}
+  #profileContent .profile-stats-core .pro-stat small{display:block !important;min-height:20px !important;margin:0 0 5px !important;font-size:8.5px !important;line-height:1.12 !important;letter-spacing:.7px !important;white-space:normal !important;}
+  #profileContent .profile-stats-core .pro-stat strong{display:block !important;font-size:23px !important;line-height:1 !important;white-space:nowrap !important;}
   #profileContent .profile-rank-compact{margin-top:8px !important;}
 }
 @media (max-width:380px){
   #profileContent .profile-badges{gap:4px !important;}
-  #profileContent .profile-badges .id-pill,
-  #profileContent .profile-badges .tier-pill,
-  #profileContent .profile-badges .rank-pill{
-    padding:6px 7px !important;
-    font-size:11px !important;
-  }
+  #profileContent .profile-badges .id-pill,#profileContent .profile-badges .tier-pill,#profileContent .profile-badges .rank-pill{padding:6px 7px !important;font-size:11px !important;}
   #profileContent .profile-stats-core{gap:5px !important;}
   #profileContent .profile-stats-core .pro-stat{padding:10px 5px 9px !important;}
   #profileContent .profile-stats-core .pro-stat strong{font-size:21px !important;}
 }
-
-/* FINAL V21.3 PROFILE BADGE OVERRIDE
-   This comes after the compact mobile rules so legacy app.js emoji cannot reappear. */
-#profileContent .profile-badges .tier-pill{
-  font-size:0 !important;
-  color:transparent !important;
-}
-
-/* V21.4 MOBILE LEADERBOARD SAFETY FIX
-   Keep the original leaderboard geometry. The mobile tier marker is icon-only.
-   Prevent the generic tier-pill pseudo labels from leaking into leaderboard icons. */
-#singles .player-cell .leaderboard-mobile-tier,
-#doubles .player-cell .leaderboard-mobile-tier,
-#doubles .team-cell .leaderboard-mobile-tier{
-  font-size:0 !important;
-  line-height:0 !important;
-  color:transparent !important;
-  overflow:hidden !important;
-  white-space:nowrap !important;
-}
-#singles .leaderboard-mobile-tier::before,
-#singles .leaderboard-mobile-tier::after,
-#doubles .leaderboard-mobile-tier::before,
-#doubles .leaderboard-mobile-tier::after{
-  content:none !important;
-  display:none !important;
-}
+#profileContent .profile-badges .tier-pill{font-size:0 !important;color:transparent !important;}
+#singles .player-cell .leaderboard-mobile-tier,#doubles .player-cell .leaderboard-mobile-tier,#doubles .team-cell .leaderboard-mobile-tier{font-size:0 !important;line-height:0 !important;color:transparent !important;overflow:hidden !important;white-space:nowrap !important;}
+#singles .leaderboard-mobile-tier::before,#singles .leaderboard-mobile-tier::after,#doubles .leaderboard-mobile-tier::before,#doubles .leaderboard-mobile-tier::after{content:none !important;display:none !important;}
