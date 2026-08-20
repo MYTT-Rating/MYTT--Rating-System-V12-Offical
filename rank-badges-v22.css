@@ -11,7 +11,7 @@
   --v22-master:url("./rank-badges/v22-master.webp");
   --v22-grandmaster:url("./rank-badges/v22-grandmaster.webp");
   --v22-immortal:url("./rank-badges/v22-immortal.webp");
-  --v22-champion:url("./rank-badges/champion-standalone.webp?v=20260820-hof-fallback-1");
+  --v22-champion:url("./rank-badges/v22-hall-of-fame-mytt-final.webp?v=20260820-hof-final-mytt-1");
 }
 
 /* Keep every badge 1:1 and centered. */
@@ -51,6 +51,7 @@ body .tier-pill.tier-legend::before{background-image:var(--v22-master) !importan
 body .tier-pill.tier-grandmaster::before{background-image:var(--v22-grandmaster) !important;}
 body .tier-pill.tier-immortal::before{background-image:var(--v22-immortal) !important;}
 body .tier-pill.tier-champion::before{background-image:var(--v22-champion) !important;}
+body .tier-pill.tier-hall-of-fame::before{background-image:var(--v22-champion) !important;}
 
 /* MOBILE LEADERBOARD — image only; keep the stable card/name/rating geometry. */
 @media(max-width:768px){
@@ -103,7 +104,9 @@ body .tier-pill.tier-champion::before{background-image:var(--v22-champion) !impo
   html body #singles .leaderboard-mobile-tier.tier-immortal,
   html body #doubles .leaderboard-mobile-tier.tier-immortal{background-image:var(--v22-immortal) !important;}
   html body #singles .leaderboard-mobile-tier.tier-champion,
-  html body #doubles .leaderboard-mobile-tier.tier-champion{background-image:var(--v22-champion) !important;}
+  html body #doubles .leaderboard-mobile-tier.tier-champion,
+  html body #singles .leaderboard-mobile-tier.tier-hall-of-fame,
+  html body #doubles .leaderboard-mobile-tier.tier-hall-of-fame{background-image:var(--v22-champion) !important;}
 }
 @media(max-width:390px){
   html body #singles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
@@ -141,6 +144,7 @@ body .tier-pill.tier-champion::before{background-image:var(--v22-champion) !impo
 #profileContent:has(.tier-pill.tier-grandmaster) .tier-progress-top > span:first-child::before{background-image:var(--v22-grandmaster) !important;}
 #profileContent:has(.tier-pill.tier-immortal) .tier-progress-top > span:first-child::before{background-image:var(--v22-immortal) !important;}
 #profileContent:has(.tier-pill.tier-champion) .tier-progress-top > span:first-child::before{background-image:var(--v22-champion) !important;}
+#profileContent:has(.tier-pill.tier-hall-of-fame) .tier-progress-top > span:first-child::before{background-image:var(--v22-champion) !important;}
 
 #profileContent:has(.tier-pill.tier-novice) .tier-progress-top > span:nth-child(2)::before{background-image:var(--v22-rookie) !important;}
 #profileContent:has(.tier-pill.tier-rookie) .tier-progress-top > span:nth-child(2)::before{background-image:var(--v22-challenger) !important;}
@@ -151,6 +155,7 @@ body .tier-pill.tier-champion::before{background-image:var(--v22-champion) !impo
 #profileContent:has(.tier-pill.tier-grandmaster) .tier-progress-top > span:nth-child(2)::before{background-image:var(--v22-immortal) !important;}
 #profileContent:has(.tier-pill.tier-immortal) .tier-progress-top > span:nth-child(2)::before{background-image:var(--v22-champion) !important;}
 
-#profileContent:has(.tier-pill.tier-champion) .profile-rank-compact-head h3::before{
+#profileContent:has(.tier-pill.tier-champion) .profile-rank-compact-head h3::before,
+#profileContent:has(.tier-pill.tier-hall-of-fame) .profile-rank-compact-head h3::before{
   background-image:var(--v22-champion) !important;
 }
