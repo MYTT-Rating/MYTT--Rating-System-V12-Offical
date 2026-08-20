@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Align only the Hall of Fame artwork inside its orb
+      - name: Apply final badge alignment and refresh desktop patch cache
         shell: bash
         run: |
           set -euo pipefail
@@ -47,10 +47,14 @@ jobs:
               raise SystemExit('Expected mobile style anchor not found; refusing unsafe edit')
 
           h = h.replace(anchor, css + anchor, 1)
+          h = h.replace(
+              'player-card-rank-badges-v1.css?v=20260820-player-card-1',
+              'player-card-rank-badges-v1.css?v=20260820-player-card-2'
+          )
           index.write_text(h, encoding='utf-8')
           PY
 
-      - name: Commit Hall of Fame artwork alignment
+      - name: Commit badge display fixes
         shell: bash
         run: |
           set -euo pipefail
@@ -61,7 +65,7 @@ jobs:
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "Align Hall of Fame artwork on mobile"
+          git commit -m "Fix desktop leaderboard badge display"
           git push
 
-# trigger-v3
+# trigger-desktop-fix-1
