@@ -1,60 +1,58 @@
 /* MYTT V22 — FINAL APPROVED 9-BADGE SET
-   Artwork source: user's final selected 3x3 badge batch.
-   This file changes badge artwork only; existing layout/rating logic stays intact. */
+   Independent badge images: no sprite cropping, no stretched artwork.
+   Existing layout/rating logic stays intact. */
 
 :root{
-  --mytt-v22-badges:url("./rank-badges/v22-final.webp");
+  --v22-novice:url("./rank-badges/v22-novice.webp");
+  --v22-rookie:url("./rank-badges/v22-rookie.webp");
+  --v22-challenger:url("./rank-badges/v22-challenger.webp");
+  --v22-elite:url("./rank-badges/v22-elite.webp");
+  --v22-expert:url("./rank-badges/v22-expert.webp");
+  --v22-master:url("./rank-badges/v22-master.webp");
+  --v22-grandmaster:url("./rank-badges/v22-grandmaster.webp");
+  --v22-immortal:url("./rank-badges/v22-immortal.webp");
+  --v22-champion:url("./rank-badges/v22-champion.webp");
 }
 
-/* 3x3 sprite helpers:
-   1 2 3
-   4 5 6
-   7 8 9
-*/
-
-/* =====================================================
-   HOME RANK JOURNEY — 9 visible stages use all 9 badges
-   ===================================================== */
-.homepage-rank-road .home-rank-orb{
-  background-image:var(--mytt-v22-badges) !important;
-  background-size:300% 300% !important;
+/* Keep every badge 1:1 and centered. */
+.homepage-rank-road .home-rank-orb,
+body .tier-pill::before,
+.profile-rank-detail-node > span,
+#profileContent .tier-progress-top > span::before,
+#profileContent:has(.tier-pill.tier-champion) .profile-rank-compact-head h3::before{
   background-repeat:no-repeat !important;
+  background-position:center !important;
+  background-size:contain !important;
+}
+
+/* HOME RANK JOURNEY — 9 visible stages use all 9 artworks in order. */
+.homepage-rank-road .home-rank-orb{
   color:transparent !important;
   font-size:0 !important;
   line-height:0 !important;
 }
-.homepage-rank-road .tier-rookie-home .home-rank-orb{background-position:0% 0% !important;}
-.homepage-rank-road .tier-challenger-home .home-rank-orb{background-position:50% 0% !important;}
-.homepage-rank-road .tier-elite-home .home-rank-orb{background-position:100% 0% !important;}
-.homepage-rank-road .tier-master-home .home-rank-orb{background-position:0% 50% !important;}
-.homepage-rank-road .tier-legend-home .home-rank-orb{background-position:50% 50% !important;}
-.homepage-rank-road .tier-grandmaster-home .home-rank-orb{background-position:100% 50% !important;}
-.homepage-rank-road .tier-immortal-home .home-rank-orb{background-position:0% 100% !important;}
-.homepage-rank-road .tier-champion-home .home-rank-orb{background-position:50% 100% !important;}
-.homepage-rank-road .tier-hof-home .home-rank-orb{background-position:100% 100% !important;}
+.homepage-rank-road .tier-rookie-home .home-rank-orb{background-image:var(--v22-novice) !important;}
+.homepage-rank-road .tier-challenger-home .home-rank-orb{background-image:var(--v22-rookie) !important;}
+.homepage-rank-road .tier-elite-home .home-rank-orb{background-image:var(--v22-challenger) !important;}
+.homepage-rank-road .tier-master-home .home-rank-orb{background-image:var(--v22-elite) !important;}
+.homepage-rank-road .tier-legend-home .home-rank-orb{background-image:var(--v22-expert) !important;}
+.homepage-rank-road .tier-grandmaster-home .home-rank-orb{background-image:var(--v22-master) !important;}
+.homepage-rank-road .tier-immortal-home .home-rank-orb{background-image:var(--v22-grandmaster) !important;}
+.homepage-rank-road .tier-champion-home .home-rank-orb{background-image:var(--v22-immortal) !important;}
+.homepage-rank-road .tier-hof-home .home-rank-orb{background-image:var(--v22-champion) !important;}
 
-/* =====================================================
-   PLAYER CARDS / PROFILE TIER PILLS
-   ===================================================== */
-body .tier-pill::before{
-  background-image:var(--mytt-v22-badges) !important;
-  background-size:300% 300% !important;
-  background-repeat:no-repeat !important;
-}
-body .tier-pill.tier-novice::before{background-position:0% 0% !important;}
-body .tier-pill.tier-rookie::before{background-position:50% 0% !important;}
-body .tier-pill.tier-challenger::before{background-position:100% 0% !important;}
-body .tier-pill.tier-elite::before{background-position:0% 50% !important;}
-body .tier-pill.tier-master::before{background-position:50% 50% !important;}
-body .tier-pill.tier-legend::before{background-position:100% 50% !important;}
-body .tier-pill.tier-grandmaster::before{background-position:0% 100% !important;}
-body .tier-pill.tier-immortal::before{background-position:50% 100% !important;}
-body .tier-pill.tier-champion::before{background-position:100% 100% !important;}
+/* PLAYER CARDS / PROFILE TIER PILLS — preserve current site tier names. */
+body .tier-pill.tier-novice::before{background-image:var(--v22-novice) !important;}
+body .tier-pill.tier-rookie::before{background-image:var(--v22-rookie) !important;}
+body .tier-pill.tier-challenger::before{background-image:var(--v22-challenger) !important;}
+body .tier-pill.tier-elite::before{background-image:var(--v22-elite) !important;}
+body .tier-pill.tier-master::before{background-image:var(--v22-expert) !important;}
+body .tier-pill.tier-legend::before{background-image:var(--v22-master) !important;}
+body .tier-pill.tier-grandmaster::before{background-image:var(--v22-grandmaster) !important;}
+body .tier-pill.tier-immortal::before{background-image:var(--v22-immortal) !important;}
+body .tier-pill.tier-champion::before{background-image:var(--v22-champion) !important;}
 
-/* =====================================================
-   MOBILE LEADERBOARD — badge only, never tier text
-   Geometry intentionally matches the stable V21.8 layout.
-   ===================================================== */
+/* MOBILE LEADERBOARD — image only; keep the stable card/name/rating geometry. */
 @media(max-width:768px){
   html body #singles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
   html body #doubles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
@@ -73,9 +71,9 @@ body .tier-pill.tier-champion::before{background-position:100% 100% !important;}
     color:transparent !important;
     font-size:0 !important;
     line-height:0 !important;
-    background-image:var(--mytt-v22-badges) !important;
-    background-size:300% 300% !important;
     background-repeat:no-repeat !important;
+    background-position:center !important;
+    background-size:contain !important;
     background-color:transparent !important;
     overflow:hidden !important;
     white-space:nowrap !important;
@@ -89,23 +87,23 @@ body .tier-pill.tier-champion::before{background-position:100% 100% !important;}
     display:none !important;
   }
   html body #singles .leaderboard-mobile-tier.tier-novice,
-  html body #doubles .leaderboard-mobile-tier.tier-novice{background-position:0% 0% !important;}
+  html body #doubles .leaderboard-mobile-tier.tier-novice{background-image:var(--v22-novice) !important;}
   html body #singles .leaderboard-mobile-tier.tier-rookie,
-  html body #doubles .leaderboard-mobile-tier.tier-rookie{background-position:50% 0% !important;}
+  html body #doubles .leaderboard-mobile-tier.tier-rookie{background-image:var(--v22-rookie) !important;}
   html body #singles .leaderboard-mobile-tier.tier-challenger,
-  html body #doubles .leaderboard-mobile-tier.tier-challenger{background-position:100% 0% !important;}
+  html body #doubles .leaderboard-mobile-tier.tier-challenger{background-image:var(--v22-challenger) !important;}
   html body #singles .leaderboard-mobile-tier.tier-elite,
-  html body #doubles .leaderboard-mobile-tier.tier-elite{background-position:0% 50% !important;}
+  html body #doubles .leaderboard-mobile-tier.tier-elite{background-image:var(--v22-elite) !important;}
   html body #singles .leaderboard-mobile-tier.tier-master,
-  html body #doubles .leaderboard-mobile-tier.tier-master{background-position:50% 50% !important;}
+  html body #doubles .leaderboard-mobile-tier.tier-master{background-image:var(--v22-expert) !important;}
   html body #singles .leaderboard-mobile-tier.tier-legend,
-  html body #doubles .leaderboard-mobile-tier.tier-legend{background-position:100% 50% !important;}
+  html body #doubles .leaderboard-mobile-tier.tier-legend{background-image:var(--v22-master) !important;}
   html body #singles .leaderboard-mobile-tier.tier-grandmaster,
-  html body #doubles .leaderboard-mobile-tier.tier-grandmaster{background-position:0% 100% !important;}
+  html body #doubles .leaderboard-mobile-tier.tier-grandmaster{background-image:var(--v22-grandmaster) !important;}
   html body #singles .leaderboard-mobile-tier.tier-immortal,
-  html body #doubles .leaderboard-mobile-tier.tier-immortal{background-position:50% 100% !important;}
+  html body #doubles .leaderboard-mobile-tier.tier-immortal{background-image:var(--v22-immortal) !important;}
   html body #singles .leaderboard-mobile-tier.tier-champion,
-  html body #doubles .leaderboard-mobile-tier.tier-champion{background-position:100% 100% !important;}
+  html body #doubles .leaderboard-mobile-tier.tier-champion{background-image:var(--v22-champion) !important;}
 }
 @media(max-width:390px){
   html body #singles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
@@ -119,60 +117,40 @@ body .tier-pill.tier-champion::before{background-position:100% 100% !important;}
   }
 }
 
-/* =====================================================
-   FULL RANK JOURNEY INSIDE PLAYER PROFILE
-   It starts at Rookie, therefore nodes 1–8 use badges 2–9.
-   ===================================================== */
+/* FULL RANK JOURNEY INSIDE PLAYER PROFILE — starts at Rookie. */
 .profile-rank-detail-node > span{
-  background-image:var(--mytt-v22-badges) !important;
-  background-size:300% 300% !important;
-  background-repeat:no-repeat !important;
   font-size:0 !important;
   color:transparent !important;
 }
-.profile-rank-detail-node:nth-child(1) > span{background-position:50% 0% !important;}
-.profile-rank-detail-node:nth-child(2) > span{background-position:100% 0% !important;}
-.profile-rank-detail-node:nth-child(3) > span{background-position:0% 50% !important;}
-.profile-rank-detail-node:nth-child(4) > span{background-position:50% 50% !important;}
-.profile-rank-detail-node:nth-child(5) > span{background-position:100% 50% !important;}
-.profile-rank-detail-node:nth-child(6) > span{background-position:0% 100% !important;}
-.profile-rank-detail-node:nth-child(7) > span{background-position:50% 100% !important;}
-.profile-rank-detail-node:nth-child(8) > span{background-position:100% 100% !important;}
+.profile-rank-detail-node:nth-child(1) > span{background-image:var(--v22-rookie) !important;}
+.profile-rank-detail-node:nth-child(2) > span{background-image:var(--v22-challenger) !important;}
+.profile-rank-detail-node:nth-child(3) > span{background-image:var(--v22-elite) !important;}
+.profile-rank-detail-node:nth-child(4) > span{background-image:var(--v22-expert) !important;}
+.profile-rank-detail-node:nth-child(5) > span{background-image:var(--v22-master) !important;}
+.profile-rank-detail-node:nth-child(6) > span{background-image:var(--v22-grandmaster) !important;}
+.profile-rank-detail-node:nth-child(7) > span{background-image:var(--v22-immortal) !important;}
+.profile-rank-detail-node:nth-child(8) > span{background-image:var(--v22-champion) !important;}
 
-/* =====================================================
-   PROFILE CURRENT / NEXT TIER PROGRESS
-   ===================================================== */
-#profileContent .tier-progress-top > span::before{
-  background-image:var(--mytt-v22-badges) !important;
-  background-size:300% 300% !important;
-  background-repeat:no-repeat !important;
-}
+/* PROFILE CURRENT / NEXT TIER PROGRESS. */
+#profileContent:has(.tier-pill.tier-novice) .tier-progress-top > span:first-child::before{background-image:var(--v22-novice) !important;}
+#profileContent:has(.tier-pill.tier-rookie) .tier-progress-top > span:first-child::before{background-image:var(--v22-rookie) !important;}
+#profileContent:has(.tier-pill.tier-challenger) .tier-progress-top > span:first-child::before{background-image:var(--v22-challenger) !important;}
+#profileContent:has(.tier-pill.tier-elite) .tier-progress-top > span:first-child::before{background-image:var(--v22-elite) !important;}
+#profileContent:has(.tier-pill.tier-master) .tier-progress-top > span:first-child::before{background-image:var(--v22-expert) !important;}
+#profileContent:has(.tier-pill.tier-legend) .tier-progress-top > span:first-child::before{background-image:var(--v22-master) !important;}
+#profileContent:has(.tier-pill.tier-grandmaster) .tier-progress-top > span:first-child::before{background-image:var(--v22-grandmaster) !important;}
+#profileContent:has(.tier-pill.tier-immortal) .tier-progress-top > span:first-child::before{background-image:var(--v22-immortal) !important;}
+#profileContent:has(.tier-pill.tier-champion) .tier-progress-top > span:first-child::before{background-image:var(--v22-champion) !important;}
 
-/* Current */
-#profileContent:has(.tier-pill.tier-novice) .tier-progress-top > span:first-child::before{background-position:0% 0% !important;}
-#profileContent:has(.tier-pill.tier-rookie) .tier-progress-top > span:first-child::before{background-position:50% 0% !important;}
-#profileContent:has(.tier-pill.tier-challenger) .tier-progress-top > span:first-child::before{background-position:100% 0% !important;}
-#profileContent:has(.tier-pill.tier-elite) .tier-progress-top > span:first-child::before{background-position:0% 50% !important;}
-#profileContent:has(.tier-pill.tier-master) .tier-progress-top > span:first-child::before{background-position:50% 50% !important;}
-#profileContent:has(.tier-pill.tier-legend) .tier-progress-top > span:first-child::before{background-position:100% 50% !important;}
-#profileContent:has(.tier-pill.tier-grandmaster) .tier-progress-top > span:first-child::before{background-position:0% 100% !important;}
-#profileContent:has(.tier-pill.tier-immortal) .tier-progress-top > span:first-child::before{background-position:50% 100% !important;}
-#profileContent:has(.tier-pill.tier-champion) .tier-progress-top > span:first-child::before{background-position:100% 100% !important;}
+#profileContent:has(.tier-pill.tier-novice) .tier-progress-top > span:nth-child(2)::before{background-image:var(--v22-rookie) !important;}
+#profileContent:has(.tier-pill.tier-rookie) .tier-progress-top > span:nth-child(2)::before{background-image:var(--v22-challenger) !important;}
+#profileContent:has(.tier-pill.tier-challenger) .tier-progress-top > span:nth-child(2)::before{background-image:var(--v22-elite) !important;}
+#profileContent:has(.tier-pill.tier-elite) .tier-progress-top > span:nth-child(2)::before{background-image:var(--v22-expert) !important;}
+#profileContent:has(.tier-pill.tier-master) .tier-progress-top > span:nth-child(2)::before{background-image:var(--v22-master) !important;}
+#profileContent:has(.tier-pill.tier-legend) .tier-progress-top > span:nth-child(2)::before{background-image:var(--v22-grandmaster) !important;}
+#profileContent:has(.tier-pill.tier-grandmaster) .tier-progress-top > span:nth-child(2)::before{background-image:var(--v22-immortal) !important;}
+#profileContent:has(.tier-pill.tier-immortal) .tier-progress-top > span:nth-child(2)::before{background-image:var(--v22-champion) !important;}
 
-/* Next */
-#profileContent:has(.tier-pill.tier-novice) .tier-progress-top > span:nth-child(2)::before{background-position:50% 0% !important;}
-#profileContent:has(.tier-pill.tier-rookie) .tier-progress-top > span:nth-child(2)::before{background-position:100% 0% !important;}
-#profileContent:has(.tier-pill.tier-challenger) .tier-progress-top > span:nth-child(2)::before{background-position:0% 50% !important;}
-#profileContent:has(.tier-pill.tier-elite) .tier-progress-top > span:nth-child(2)::before{background-position:50% 50% !important;}
-#profileContent:has(.tier-pill.tier-master) .tier-progress-top > span:nth-child(2)::before{background-position:100% 50% !important;}
-#profileContent:has(.tier-pill.tier-legend) .tier-progress-top > span:nth-child(2)::before{background-position:0% 100% !important;}
-#profileContent:has(.tier-pill.tier-grandmaster) .tier-progress-top > span:nth-child(2)::before{background-position:50% 100% !important;}
-#profileContent:has(.tier-pill.tier-immortal) .tier-progress-top > span:nth-child(2)::before{background-position:100% 100% !important;}
-
-/* Champion heading used to contain the legacy trophy emoji. */
 #profileContent:has(.tier-pill.tier-champion) .profile-rank-compact-head h3::before{
-  background-image:var(--mytt-v22-badges) !important;
-  background-size:300% 300% !important;
-  background-position:100% 100% !important;
-  background-repeat:no-repeat !important;
+  background-image:var(--v22-champion) !important;
 }
