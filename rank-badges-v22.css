@@ -102,6 +102,11 @@ body .tier-pill.tier-champion::before{background-image:var(--v22-champion) !impo
   html body #doubles .leaderboard-mobile-tier.tier-immortal{background-image:var(--v22-immortal) !important;}
   html body #singles .leaderboard-mobile-tier.tier-champion,
   html body #doubles .leaderboard-mobile-tier.tier-champion{background-image:var(--v22-champion) !important;}
+
+  /* Mobile-only optical alignment: the Hall of Fame artwork has slightly more lower visual weight. */
+  .homepage-rank-road .tier-hof-home .home-rank-orb{
+    transform:translateY(-2px) !important;
+  }
 }
 @media(max-width:390px){
   html body #singles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
