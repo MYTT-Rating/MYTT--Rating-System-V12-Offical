@@ -1,4 +1,4 @@
-name: Force Hall of Fame image DOM
+name: Match Hall of Fame badge visual size
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Render Hall of Fame as a real img element
+      - name: Enlarge only the 2300 badge artwork
         shell: bash
         run: |
           set -euo pipefail
@@ -27,31 +27,18 @@ jobs:
           index = Path('index.html')
           h = index.read_text(encoding='utf-8')
 
-          # Force a fresh outer stylesheet URL, but do not rely on CSS for the 2300 badge itself.
-          h = h.replace('marketplace.css?v=20260820-mobile-v22-8',
-                        'marketplace.css?v=20260820-mobile-v22-9', 1)
-
-          old = '''        <article class="home-rank-node tier-hof-home">
-          <div class="home-rank-orb">🌟</div>
-          <span>Hall of Fame</span><small>2300</small>
-        </article>'''
-
-          new = '''        <article class="home-rank-node tier-hof-home">
-          <div class="home-rank-orb home-rank-orb-hof" style="background:none!important;padding:0!important;overflow:visible!important;">
-            <img src="rank-badges/v22-hall-of-fame-mytt-final.webp?v=20260820-hof-dom-1" alt="Hall of Fame" width="70" height="70" style="display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;object-position:center!important;opacity:1!important;visibility:visible!important;transform:none!important;filter:none!important;">
-          </div>
-          <span>Hall of Fame</span><small>2300</small>
-        </article>'''
+          old = '<div class="home-rank-orb">🌟</div>'
+          new = '<div class="home-rank-orb" style="background-size:108%!important;">🌟</div>'
 
           if old in h:
               h = h.replace(old, new, 1)
-          elif 'v22-hall-of-fame-mytt-final.webp?v=20260820-hof-dom-1' not in h:
-              raise SystemExit('Hall of Fame node was not found; refusing unsafe edit')
+          elif 'background-size:108%!important;' not in h:
+              raise SystemExit('Hall of Fame orb not found; refusing unsafe edit')
 
           index.write_text(h, encoding='utf-8')
           PY
 
-      - name: Commit direct Hall of Fame image
+      - name: Commit visual-size adjustment
         shell: bash
         run: |
           set -euo pipefail
@@ -62,5 +49,5 @@ jobs:
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "Render Hall of Fame badge as direct image"
+          git commit -m "Match Hall of Fame badge size to rank journey"
           git push
