@@ -1,0 +1,57 @@
+/* MYTT Player Cards — image rank badges only.
+   Scoped to Players page cards. Does not change rating logic, homepage, profile or leaderboards. */
+
+.player-card.player-card-icon-tier > .player-card-rank-icon{
+  border:0 !important;
+  border-radius:50% !important;
+  background-color:transparent !important;
+  background-repeat:no-repeat !important;
+  background-position:center !important;
+  background-size:contain !important;
+  box-shadow:none !important;
+}
+
+.player-card.player-card-icon-tier > .player-card-rank-icon > span{
+  display:none !important;
+}
+
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Novice"]{
+  background-image:url("./rank-badges/novice-standalone.webp?v=20260820-player-card-1") !important;
+}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Rookie"]{
+  background-image:url("./rank-badges/rookie-standalone.webp?v=20260820-player-card-1") !important;
+}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Challenger"]{
+  background-image:url("./rank-badges/challenger-standalone.webp?v=20260820-player-card-1") !important;
+}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Elite"]{
+  background-image:url("./rank-badges/elite-standalone.webp?v=20260820-player-card-1") !important;
+}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Master"]{
+  background-image:url("./rank-badges/master-standalone.webp?v=20260820-player-card-1") !important;
+}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Legend"]{
+  background-image:url("./rank-badges/legend-standalone.webp?v=20260820-player-card-1") !important;
+}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Grandmaster"]{
+  background-image:url("./rank-badges/grandmaster-standalone.webp?v=20260820-player-card-1") !important;
+}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Immortal"]{
+  background-image:url("./rank-badges/immortal-standalone.webp?v=20260820-player-card-1") !important;
+}
+.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="MYTT Champion"]{
+  background-image:url("./rank-badges/champion-standalone.webp?v=20260820-player-card-1") !important;
+}
+
+@media(max-width:759px){
+  .player-card.player-card-icon-tier > .player-card-rank-icon{
+    width:35px !important;
+    min-width:35px !important;
+    max-width:35px !important;
+    height:35px !important;
+    min-height:35px !important;
+    max-height:35px !important;
+    top:8px !important;
+    right:9px !important;
+  }
+}
