@@ -1,4 +1,4 @@
-name: Recent matches profile controls
+name: Align Hall of Fame artwork on mobile
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Add isolated recent matches override
+      - name: Apply final badge alignment and refresh desktop patch cache
         shell: bash
         run: |
           set -euo pipefail
@@ -26,66 +26,35 @@ jobs:
           import re
 
           index = Path('index.html')
-          html = index.read_text(encoding='utf-8')
+          h = index.read_text(encoding='utf-8')
 
-          html = re.sub(r'<style id="mytt-recent-matches-toggle-v1">.*?</style>\s*', '', html, flags=re.S)
-          html = re.sub(r'<script id="mytt-recent-matches-toggle-v1">.*?</script>\s*', '', html, flags=re.S)
+          # Remove every previous Hall of Fame mobile alignment patch.
+          h = re.sub(r'<style id="mytt-hof-mobile-align-v[0-9]+">.*?</style>\s*', '', h, flags=re.S)
 
-          css = '''<style id="mytt-recent-matches-toggle-v1">
-.recent-match-extra[hidden]{display:none !important;}
-.recent-match-toggle{
-  width:100%;min-height:44px;margin:12px 0 0;padding:0 16px;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  border:1px solid rgba(239,68,68,.42);border-radius:12px;
-  background:rgba(255,255,255,.055);color:#fff;font:inherit;
-  font-size:13px;font-weight:900;letter-spacing:.2px;cursor:pointer;
-  transition:.16s ease;
+          # Keep the rank orb on the same baseline; move only the artwork inside it upward.
+          css = '''<style id="mytt-hof-mobile-align-v3">
+@media (max-width: 768px){
+  .homepage-rank-road .tier-hof-home .home-rank-orb{
+    transform:none !important;
+    background-position:center calc(50% - 5px) !important;
+  }
 }
-.recent-match-toggle:hover{background:rgba(239,68,68,.13);border-color:rgba(239,68,68,.62);}
-.recent-match-toggle span{font-size:16px;line-height:1;color:#ff6666;}
-@media(max-width:768px){.recent-match-toggle{min-height:42px;margin-top:10px;font-size:12px;border-radius:11px;}}
 </style>
 
 '''
-          html = html.replace('</head>', css + '</head>', 1)
+          anchor = '<style id="mytt-mobile-title-left-fix">'
+          if anchor not in h:
+              raise SystemExit('Expected mobile style anchor not found; refusing unsafe edit')
 
-          js = '''<script id="mytt-recent-matches-toggle-v1">
-recentMatchesHTML = function(name){
-  const matches=playerMatches(name).slice().reverse().slice(0,20);
-  const visibleCount=5;
-  if(!matches.length)return`<div class="profile-panel recent-matches-panel"><h3>🕒 Recent Matches</h3><p class="muted">No match history yet.</p></div>`;
-  const cards=matches.map((m,index)=>{
-    const win=isWin(m,name),opp=opponentOf(m,name),ba=beforeAfter(m,name),delta=deltaOf(m,name);
-    const deltaText=delta===null?"—":(delta>0?"+"+delta:String(delta));
-    const deltaCls=delta===null?"":(delta>=0?"match-delta-up":"match-delta-down");
-    const extra=index>=visibleCount;
-    return`<div class="match-card ${win?"match-win":"match-loss"} ${extra?"recent-match-extra":""}" ${extra?"hidden":""}><div class="match-left">${opponentAvatarHTML(opp)}</div><div class="match-body"><div class="match-result">${win?"🟢 Win":"🔴 Loss"}</div><div class="match-main">vs <span data-player="${encodeURIComponent(opp)}" class="match-opponent">${opp}</span></div><div class="match-score">🏓 ${m.score||"-"}</div><div class="match-rating"><span class="${deltaCls}">${deltaText} Rating</span>${ba.before&&ba.after?` · ${ba.before} → ${ba.after}`:""}</div><div class="match-date">${displayDate(m.matchDate||m.timestamp)}</div></div></div>`;
-  }).join("");
-  const moreCount=Math.max(0,matches.length-visibleCount);
-  const toggle=moreCount?`<button type="button" class="recent-match-toggle" data-expanded="false" data-more="${moreCount}" onclick="toggleRecentMatches(this)">View ${moreCount} More <span aria-hidden="true">⌄</span></button>`:"";
-  return`<div class="profile-panel recent-matches-panel"><h3>🕒 Recent Matches</h3><div class="match-list">${cards}</div>${toggle}</div>`;
-};
-window.toggleRecentMatches = function(button){
-  const panel=button.closest('.recent-matches-panel');
-  if(!panel)return;
-  const extras=[...panel.querySelectorAll('.recent-match-extra')];
-  const expanded=button.dataset.expanded==='true';
-  extras.forEach(card=>{card.hidden=expanded;});
-  button.dataset.expanded=expanded?'false':'true';
-  const more=Number(button.dataset.more||extras.length);
-  button.innerHTML=expanded?`View ${more} More <span aria-hidden="true">⌄</span>`:`Show Less <span aria-hidden="true">⌃</span>`;
-};
-</script>
-'''
-
-          app_tag = re.search(r'<script src="app\.js\?v=[^"]+"></script>', html)
-          if not app_tag:
-              raise SystemExit('app.js script tag not found')
-          html = html.replace(app_tag.group(0), app_tag.group(0) + '\n' + js, 1)
-          index.write_text(html, encoding='utf-8')
+          h = h.replace(anchor, css + anchor, 1)
+          h = h.replace(
+              'player-card-rank-badges-v1.css?v=20260820-player-card-1',
+              'player-card-rank-badges-v1.css?v=20260820-player-card-2'
+          )
+          index.write_text(h, encoding='utf-8')
           PY
 
-      - name: Commit recent matches controls
+      - name: Commit badge display fixes
         shell: bash
         run: |
           set -euo pipefail
@@ -96,7 +65,7 @@ window.toggleRecentMatches = function(button){
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "Add recent matches 5-to-20 toggle"
+          git commit -m "Fix desktop leaderboard badge display"
           git push
 
-# trigger-recent-matches-2
+# trigger-desktop-fix-1
