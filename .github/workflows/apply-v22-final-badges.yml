@@ -63,3 +63,5 @@ jobs:
           fi
           git commit -m "Align Hall of Fame artwork on mobile"
           git push
+
+# trigger-v3
