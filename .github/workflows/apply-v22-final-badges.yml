@@ -1,4 +1,4 @@
-name: Roll back unstable V23 badge rollout
+name: Align Hall of Fame badge on mobile
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  rollback:
+  fix:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,29 +17,46 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Restore last stable badge version
+      - name: Move only the 2300 badge artwork slightly upward on mobile
         shell: bash
         run: |
           set -euo pipefail
-          STABLE=dfc81b1801981994cd0ef79274ffab4cad57584f
+          python - <<'PY'
+          from pathlib import Path
 
-          git show "$STABLE:index.html" > index.html
-          git show "$STABLE:marketplace.css" > marketplace.css
-          git show "$STABLE:.github/workflows/apply-v22-final-badges.yml" > .github/workflows/apply-v22-final-badges.yml
+          index = Path('index.html')
+          h = index.read_text(encoding='utf-8')
 
-          rm -f rank-badges-final-v23.css
-          rm -f rank-badges/mytt-final-badges-v23.webp
+          marker = 'id="mytt-hof-mobile-align-v1"'
+          css = '''<style id="mytt-hof-mobile-align-v1">
+@media (max-width: 768px){
+  .homepage-rank-road .tier-hof-home .home-rank-orb{
+    background-position:center calc(50% - 2px) !important;
+  }
+}
+</style>
 
-      - name: Commit exact rollback
+'''
+          anchor = '<style id="mytt-mobile-title-left-fix">'
+
+          if marker not in h:
+              if anchor not in h:
+                  raise SystemExit('Expected mobile style anchor not found; refusing unsafe edit')
+              h = h.replace(anchor, css + anchor, 1)
+
+          index.write_text(h, encoding='utf-8')
+          PY
+
+      - name: Commit mobile alignment adjustment
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "MYTT-Rating"
           git config user.email "hangtbabm@gmail.com"
-          git add -A
+          git add index.html
           if git diff --cached --quiet; then
-            echo "Nothing to roll back"
+            echo "No changes to commit"
             exit 0
           fi
-          git commit -m "Restore stable pre-V23 badge version"
+          git commit -m "Align Hall of Fame badge on mobile"
           git push
