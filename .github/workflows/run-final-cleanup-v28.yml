@@ -1,0 +1,56 @@
+name: Run Final Cleanup V28
+
+on:
+  push:
+    branches:
+      - final-cleanup-v28-20260821
+    paths:
+      - '.github/workflows/run-final-cleanup-v28.yml'
+      - '.github/scripts/final_cleanup_v28.py'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: final-cleanup-v28-20260821
+          fetch-depth: 0
+
+      - name: Run conservative cleanup
+        run: python .github/scripts/final_cleanup_v28.py
+
+      - name: Validate JavaScript
+        run: |
+          node --check app.js
+          node --check marketplace.js
+          node --check marketplace-core-v23.js
+          node --check mobile-polish-v23.js
+
+      - name: Validate required files and references
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f event-paddle.webp
+          test -f event-pro-art.webp
+          test -f rank-badges-v22.css
+          test -f home-rank-geometry.css
+          ! test -f leaderboard-rookie-v217.css
+          ! grep -q 'rank mapping is ready' marketplace.js
+          ! grep -q 'rank-scroll-hint' site-overrides-v24.css
+          grep -q 'site-overrides-v24.css?v=20260821-final-v28-1' index.html
+          grep -q 'marketplace.css?v=20260821-final-v28-1' index.html
+          grep -q 'marketplace.js?v=20260821-final-v28-1' index.html
+
+      - name: Commit final cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "MYTT-Rating"
+          git config user.email "hangtbabm@gmail.com"
+          git add -A
+          git commit -m "Finish conservative repository cleanup"
+          git push origin HEAD:final-cleanup-v28-20260821
