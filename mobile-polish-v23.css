@@ -272,8 +272,6 @@
     margin-top:22px!important;
   }
 
-  /* The old optical correction lifted HOF by 5px. At the final 50px
-     mobile size that clips the crown, so settle it just below true centre. */
   html body .homepage-rank-road .tier-hof-home .home-rank-orb{
     background-position:center calc(50% + 1px)!important;
   }
