@@ -1943,13 +1943,13 @@ function eventCardHTML(event){
     registerButton=`<button class="target-register-button" type="button" data-register-event="${eventId}">
       <span>REGISTER NOW</span><b>→</b>
     </button>`;
-    mobileRegisterButton=`<button class="mobile-event-pro-register" type="button" data-register-event="${eventId}">
+    mobileRegisterButton=`<button class="me5-register" type="button" data-register-event="${eventId}">
       <span>REGISTER NOW</span><b>→</b>
     </button>`;
   }else{
     const label=status.cls==="full"?"EVENT FULL":status.cls==="closed"?"REGISTRATION CLOSED":"OPENS SOON";
     registerButton=`<button class="target-register-button disabled" type="button" disabled><span>${eventEscapeHtml(label)}</span></button>`;
-    mobileRegisterButton=`<button class="mobile-event-pro-register disabled" type="button" disabled><span>${eventEscapeHtml(label)}</span></button>`;
+    mobileRegisterButton=`<button class="me5-register disabled" type="button" disabled><span>${eventEscapeHtml(label)}</span></button>`;
   }
 
   return `<article class="target-event-shell">
@@ -1965,7 +1965,7 @@ function eventCardHTML(event){
 
         <div class="me5-art" aria-hidden="true"></div>
 
-        <div class="me5-register-wrap">${mobileRegisterButton.replaceAll('mobile-event-pro-register','me5-register')}</div>
+        <div class="me5-register-wrap">${mobileRegisterButton}</div>
 
         <div class="me5-summary">
           <div class="me5-summary-item me5-date">
