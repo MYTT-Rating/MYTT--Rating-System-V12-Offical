@@ -1,3 +1,4 @@
+# retry: 2026-08-21 profile CSS consolidation
 name: Consolidate Mobile Profile CSS
 
 on:
@@ -51,18 +52,9 @@ jobs:
               raise SystemExit('Unsafe V20.1 source block boundary')
 
           old_block = site[start:end]
-          required_old = [
-              '#profileModal{',
-              '#profileModal .modal-card{',
-              '#profileModal .modal-close{',
-              '#profileContent{',
-              '#profileContent .profile-hero-pro{',
-              '#profileContent .profile-avatar-pro{',
-          ]
-          for token in required_old:
+          for token in ['#profileModal{','#profileModal .modal-card{','#profileModal .modal-close{','#profileContent{','#profileContent .profile-hero-pro{','#profileContent .profile-avatar-pro{']:
               if token not in old_block:
                   raise SystemExit(f'Expected V20.1 token missing: {token}')
-
           site = site[:start].rstrip() + '\n'
 
           anchor = '''  /* ---------------------------------------------------------\n     1. Player Profile modal: one scroll surface, no nav overlap\n     --------------------------------------------------------- */\n'''
@@ -82,9 +74,7 @@ jobs:
     overflow:hidden !important;
   }
 
-  #profileModal .modal-backdrop{
-    inset:0 !important;
-  }
+  #profileModal .modal-backdrop{inset:0 !important;}
 
   #profileModal .modal-card{
     width:100% !important;
@@ -94,48 +84,24 @@ jobs:
     border-radius:18px 18px 0 0 !important;
   }
 
-  #profileModal .modal-close{
-    right:auto !important;
-  }
-
-  #profileContent{
-    clear:both !important;
-    padding:18px 8px 30px !important;
-  }
-
-  #profileContent .profile-hero-pro{
-    margin-top:0 !important;
-  }
-
-  #profileContent .profile-avatar-pro{
-    margin-top:2px !important;
-  }
+  #profileModal .modal-close{right:auto !important;}
+  #profileContent{clear:both !important;padding:18px 8px 30px !important;}
+  #profileContent .profile-hero-pro{margin-top:0 !important;}
+  #profileContent .profile-avatar-pro{margin-top:2px !important;}
 
 '''
           if 'Profile sheet geometry migrated from V20.1' in polish:
               raise SystemExit('Migration block already exists')
           polish = polish.replace(anchor, migrated + anchor, 1)
 
-          # Cache keys: site-overrides is linked in index; mobile-polish is loaded by marketplace.js.
           index, n1 = re.subn(r'site-overrides-v24\.css\?v=[^"\']+', 'site-overrides-v24.css?v=20260821-5', index, count=1)
           loader, n2 = re.subn(r'mobile-polish-v23\.css\?v=[^"\']+', 'mobile-polish-v23.css?v=20260821-2', loader, count=1)
           if n1 != 1 or n2 != 1:
               raise SystemExit(f'Cache key update failed: site={n1}, polish={n2}')
 
-          # Safety checks: old source gone, active late rules and migrated geometry present.
           if marker in site:
               raise SystemExit('Old V20.1 profile source block still remains')
-          final_required = [
-              'Profile sheet geometry migrated from V20.1',
-              '#profileModal:not(.hidden)',
-              'z-index:5200 !important',
-              'top:var(--mytt-mobile-header) !important',
-              'height:calc(100dvh - var(--mytt-mobile-header)) !important',
-              'padding:0 12px 26px !important',
-              'padding:18px 8px 30px !important',
-              '.profile-panel-collapsible',
-          ]
-          for token in final_required:
+          for token in ['Profile sheet geometry migrated from V20.1','#profileModal:not(.hidden)','z-index:5200 !important','top:var(--mytt-mobile-header) !important','height:calc(100dvh - var(--mytt-mobile-header)) !important','padding:0 12px 26px !important','padding:18px 8px 30px !important','.profile-panel-collapsible']:
               if token not in polish:
                   raise SystemExit(f'Final profile token missing: {token}')
 
