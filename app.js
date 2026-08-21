@@ -1,67 +1,27 @@
 const config=window.MYTT;let singlesPlayers=[],doublesTeams=[],playerDb=[],matchResults=[],activePlayers=[],activeDoublesTeams=[];let activePlayersLoaded=false,activePlayersError=false,activeDoublesTeamsLoaded=false,activeDoublesTeamsError=false;
-const TIERS=[{min:-Infinity,name:"Novice",icon:"🌿",cls:"tier-novice",next:1500},{min:1500,name:"Rookie",icon:"🌱",cls:"tier-rookie",next:1600},{min:1600,name:"Challenger",icon:"⚔️",cls:"tier-challenger",next:1700},{min:1700,name:"Elite",icon:"⭐",cls:"tier-elite",next:1800},{min:1800,name:"Master",icon:"🔥",cls:"tier-master",next:1900},{min:1900,name:"Legend",icon:"👑",cls:"tier-legend",next:2000},{min:2000,name:"Grandmaster",icon:"💎",cls:"tier-grandmaster",next:2100},{min:2100,name:"Immortal",icon:"⚡",cls:"tier-immortal",next:2200},{min:2200,name:"MYTT Champion",icon:"🏆",cls:"tier-champion",next:null}];
+const TIERS=[
+  {min:-Infinity,name:"Novice",icon:"🌿",cls:"tier-novice",badge:"v22-novice.webp",next:1500},
+  {min:1500,name:"Rookie",icon:"🌱",cls:"tier-rookie",badge:"v22-novice.webp",next:1600},
+  {min:1600,name:"Challenger",icon:"⚔️",cls:"tier-challenger",badge:"v22-rookie.webp",next:1700},
+  {min:1700,name:"Elite",icon:"⭐",cls:"tier-elite",badge:"v22-challenger.webp",next:1800},
+  {min:1800,name:"Master",icon:"🔥",cls:"tier-master",badge:"v22-elite.webp",next:1900},
+  {min:1900,name:"Legend",icon:"👑",cls:"tier-legend",badge:"v22-expert.webp",next:2000},
+  {min:2000,name:"Grandmaster",icon:"💎",cls:"tier-grandmaster",badge:"v22-master.webp",next:2100},
+  {min:2100,name:"Immortal",icon:"⚡",cls:"tier-immortal",badge:"v22-grandmaster.webp",next:2200},
+  {min:2200,name:"MYTT Champion",icon:"🏆",cls:"tier-champion",badge:"v22-immortal.webp",next:2300},
+  {min:2300,name:"Hall of Fame",icon:"🌟",cls:"tier-hof",badge:"v22-hall-of-fame-mytt-final.webp",next:null}
+];
 function getTier(r){const rating=Number(r)||0;let t=TIERS[0];for(const tier of TIERS){if(rating>=tier.min)t=tier}return t}
-function tierHTML(r){const t=getTier(r);return `<span class="tier-pill ${t.cls}">${t.icon} ${t.name}</span>`}
-function leaderboardTierIconHTML(r){const t=getTier(r);const badge=t.cls.replace("tier-","")+"-standalone.webp";return `<img class="leaderboard-mobile-tier ${t.cls}" src="rank-badges/${badge}" alt="" aria-hidden="true" title="${t.name}" loading="lazy">`}
-function progressHTML(r){const rating=Number(r)||0;const t=getTier(r);if(!t.next)return `<div class="tier-progress"><div class="tier-progress-top"><span>${t.icon} ${t.name}</span><span>Top Tier</span></div><div class="progress-track"><div class="progress-fill" style="width:100%"></div></div><div class="progress-note">You have reached MYTT Champion tier.</div></div>`;const base=t.min===-Infinity?1400:t.min;const pct=Math.max(0,Math.min(100,((rating-base)/(t.next-base))*100));const next=TIERS.find(x=>x.min===t.next);return `<div class="tier-progress"><div class="tier-progress-top"><span>${t.icon} ${t.name}</span><span>${next.icon} ${next.name}</span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="progress-note">${rating} / ${t.next} · ${t.next-rating} pts to ${next.name}</div></div>`}
+function rankBadgeUrl(t){return `rank-badges/${t.badge}`}
+function tierHTML(r){const t=getTier(r);return `<span class="tier-pill ${t.cls}"><img class="tier-badge-img" src="${rankBadgeUrl(t)}" alt="" aria-hidden="true">${t.name}</span>`}
+function leaderboardTierIconHTML(r){const t=getTier(r);return `<img class="leaderboard-mobile-tier ${t.cls}" src="${rankBadgeUrl(t)}" alt="" aria-hidden="true" title="${t.name}" loading="lazy">`}
+function progressTierHTML(t,label){if(!t)return `<span>${label||"Top Tier"}</span>`;return `<span><img class="profile-progress-badge" src="${rankBadgeUrl(t)}" alt="" aria-hidden="true">${label||t.name}</span>`}
+function progressHTML(r){const rating=Number(r)||0;const t=getTier(rating);if(!t.next)return `<div class="tier-progress"><div class="tier-progress-top">${progressTierHTML(t)}<span>Top Tier</span></div><div class="progress-track"><div class="progress-fill" style="width:100%"></div></div><div class="progress-note">You have reached ${t.name} tier.</div></div>`;const base=t.min===-Infinity?1400:t.min;const pct=Math.max(0,Math.min(100,((rating-base)/(t.next-base))*100));const next=TIERS.find(x=>x.min===t.next);return `<div class="tier-progress"><div class="tier-progress-top">${progressTierHTML(t)}${progressTierHTML(next)}</div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="progress-note">${rating} / ${t.next} · ${t.next-rating} pts to ${next.name}</div></div>`}
+function rankJourneyHTML(r){const rating=Number(r)||0;const currentTier=getTier(rating);const nextTier=currentTier.next?TIERS.find(t=>t.min===currentTier.next):null;const heading=nextTier?`<h3>Progress to ${nextTier.name}</h3>`:`<h3>${currentTier.name}</h3>`;const ratingValue=nextTier?"":`<strong>${rating}</strong>`;const nodes=TIERS.filter(t=>t.min>=1500).map(t=>`<div class="profile-rank-detail-node ${rating>=t.min?"reached":""} ${currentTier.name===t.name?"current":""}"><img class="profile-rank-detail-badge" src="${rankBadgeUrl(t)}" alt="" aria-hidden="true"><strong>${t.name}</strong><small>${t.min}</small></div>`).join("");return `<div class="profile-rank-compact"><div class="profile-rank-compact-head"><div><small>MYTT RANK JOURNEY</small>${heading}</div>${ratingValue}</div>${progressHTML(rating)}<details class="profile-rank-details"><summary>View Full Rank Journey</summary><div class="profile-rank-details-road">${nodes}</div></details></div>`}
+function syncHomeRankBadges(){const tiers=TIERS.filter(t=>t.min>=1500);const nodes=document.querySelectorAll('.homepage-rank-road .home-rank-node');nodes.forEach((node,index)=>{const t=tiers[index];const orb=node.querySelector('.home-rank-orb');if(!t||!orb)return;orb.textContent='';orb.style.setProperty('background-image',`url("${rankBadgeUrl(t)}")`,'important');node.dataset.rankTier=t.name})}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',syncHomeRankBadges,{once:true})}else{syncHomeRankBadges()}
 
-function rankJourneyHTML(r){
-  const rating=Number(r)||0;
-  const currentTier=getTier(rating);
-
-  if(!currentTier.next){
-    return `<div class="profile-rank-compact">
-      <div class="profile-rank-compact-head">
-        <div>
-          <small>MYTT RANK JOURNEY</small>
-          <h3>${currentTier.icon} ${currentTier.name}</h3>
-        </div>
-        <strong>${rating}</strong>
-      </div>
-
-      ${progressHTML(rating)}
-
-      <details class="profile-rank-details">
-        <summary>View Full Rank Journey</summary>
-        <div class="profile-rank-details-road">
-          ${TIERS.filter(t=>t.min>=1500).map(t=>`
-            <div class="profile-rank-detail-node ${rating>=t.min?"reached":""} ${currentTier.name===t.name?"current":""}">
-              <span>${t.icon}</span>
-              <strong>${t.name}</strong>
-              <small>${t.min}</small>
-            </div>
-          `).join("")}
-        </div>
-      </details>
-    </div>`;
-  }
-
-  const nextTier=TIERS.find(t=>t.min===currentTier.next);
-
-  return `<div class="profile-rank-compact">
-    <div class="profile-rank-compact-head">
-      <div>
-        <small>MYTT RANK JOURNEY</small>
-        <h3>Progress to ${nextTier?.name||"Next Tier"}</h3>
-      </div>
-    </div>
-
-    ${progressHTML(rating)}
-
-    <details class="profile-rank-details">
-      <summary>View Full Rank Journey</summary>
-      <div class="profile-rank-details-road">
-        ${TIERS.filter(t=>t.min>=1500).map(t=>`
-          <div class="profile-rank-detail-node ${rating>=t.min?"reached":""} ${currentTier.name===t.name?"current":""}">
-            <span>${t.icon}</span>
-            <strong>${t.name}</strong>
-            <small>${t.min}</small>
-          </div>
-        `).join("")}
-      </div>
-    </details>
-  </div>`;
-}function parseCSV(t){const r=[];let row=[],cell="",q=false;for(let i=0;i<t.length;i++){const c=t[i],n=t[i+1];if(c=='"'&&q&&n=='"'){cell+='"';i++}else if(c=='"'){q=!q}else if(c==","&&!q){row.push(cell.trim());cell=""}else if((c=="\n"||c=="\r")&&!q){if(cell||row.length){row.push(cell.trim());r.push(row);row=[];cell=""}if(c=="\r"&&n=="\n")i++}else cell+=c}if(cell||row.length){row.push(cell.trim());r.push(row)}return r}
+function parseCSV(t){const r=[];let row=[],cell="",q=false;for(let i=0;i<t.length;i++){const c=t[i],n=t[i+1];if(c=='"'&&q&&n=='"'){cell+='"';i++}else if(c=='"'){q=!q}else if(c==","&&!q){row.push(cell.trim());cell=""}else if((c=="\n"||c=="\r")&&!q){if(cell||row.length){row.push(cell.trim());r.push(row);row=[];cell=""}if(c=="\r"&&n=="\n")i++}else cell+=c}if(cell||row.length){row.push(cell.trim());r.push(row)}return r}
 function cleanRows(rows){return rows.filter(row=>row.some(cell=>String(cell).trim()!="")).slice(1)}
 async function fetchRows(csvUrl){const url=csvUrl+(csvUrl.includes("?")?"&":"?")+"t="+Date.now();const res=await fetch(url);if(!res.ok)throw new Error("Unable to load CSV");return cleanRows(parseCSV(await res.text()))}
 function slug(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"").trim()}
@@ -560,7 +520,7 @@ function renderPlayers(){
       <div class="player-card-neon-glow" aria-hidden="true"></div>
 
       <div class="player-card-rank-icon" data-tier-icon="${tier.name}" title="${tier.name}" aria-label="${tier.name} tier">
-        <span>${tier.icon}</span>
+        <img class="player-card-rank-img" src="${rankBadgeUrl(tier)}" alt="" aria-hidden="true">
       </div>
 
       <div class="player-card-top player-card-top-neon">
