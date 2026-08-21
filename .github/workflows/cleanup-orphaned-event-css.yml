@@ -1,0 +1,131 @@
+name: Cleanup Orphaned Event CSS
+
+on:
+  push:
+    branches:
+      - cleanup-orphaned-event-css-20260821
+    paths:
+      - '.github/workflows/cleanup-orphaned-event-css.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: cleanup-orphaned-event-css-20260821
+          fetch-depth: 0
+
+      - name: Remove orphaned Event V3/V4 code
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          css_path = Path('site-overrides-v24.css')
+          app_path = Path('app.js')
+          index_path = Path('index.html')
+
+          css = css_path.read_text(encoding='utf-8')
+          app = app_path.read_text(encoding='utf-8')
+          index = index_path.read_text(encoding='utf-8')
+
+          legacy_marker = '/* =========================================================\n   MOBILE EVENT HERO ONLY V3'
+          v5_marker = '/* =========================================================\n   SOURCE: index.html <style id="mytt-event-hero-exact-v5">'
+
+          start = css.find(legacy_marker)
+          end = css.find(v5_marker)
+          if start < 0 or end < 0 or end <= start:
+              raise SystemExit(f'Legacy Event CSS boundaries not found safely: start={start}, end={end}')
+
+          legacy = css[start:end]
+          if '.mobile-event-pro' not in legacy or '.me4-' not in legacy:
+              raise SystemExit('Expected legacy V3/V4 selectors are not both inside removal block')
+          if '.mytt-event-v5' in legacy or '.me5-' in legacy:
+              raise SystemExit('Active V5 selector unexpectedly inside legacy removal block')
+
+          css = css[:start].rstrip() + '\n\n' + css[end:].lstrip()
+
+          # V5 still listed two now-nonexistent legacy DOM selectors in its hide list.
+          for stale in (
+              '  #events .target-event-shell > .mytt-event-v4,\n',
+              '  #events .target-event-shell > .mobile-event-pro,\n',
+          ):
+              if stale not in css:
+                  raise SystemExit(f'Missing expected stale V5 selector line: {stale!r}')
+              css = css.replace(stale, '', 1)
+
+          # Stop generating an old class name only to replace it immediately for V5.
+          replacements = [
+              ('mobileRegisterButton=`<button class="mobile-event-pro-register" type="button" data-register-event="${eventId}">',
+               'mobileRegisterButton=`<button class="me5-register" type="button" data-register-event="${eventId}">'),
+              ('mobileRegisterButton=`<button class="mobile-event-pro-register disabled" type="button" disabled><span>${eventEscapeHtml(label)}</span></button>`;',
+               'mobileRegisterButton=`<button class="me5-register disabled" type="button" disabled><span>${eventEscapeHtml(label)}</span></button>`;'),
+              ("${mobileRegisterButton.replaceAll('mobile-event-pro-register','me5-register')}",
+               '${mobileRegisterButton}'),
+          ]
+          for old, new in replacements:
+              count = app.count(old)
+              if count != 1:
+                  raise SystemExit(f'Expected one app.js legacy register snippet, found {count}: {old[:70]}')
+              app = app.replace(old, new, 1)
+
+          combined = css + '\n' + app
+          for stale in ('mobile-event-pro', 'mytt-event-v4', 'me4-'):
+              if stale in combined:
+                  raise SystemExit(f'Stale Event token remains after cleanup: {stale}')
+
+          for required in (
+              'mytt-event-hero-exact-v5',
+              '.mytt-event-v5',
+              '.me5-card',
+              'mytt-event-v12-clean-metal-compact',
+              '<section class="mytt-event-v5"',
+              '<section class="target-event-hero"',
+              '<section class="target-event-details"',
+          ):
+              if required not in combined:
+                  raise SystemExit(f'Active Event token disappeared: {required}')
+
+          css_path.write_text(css.rstrip() + '\n', encoding='utf-8')
+          app_path.write_text(app, encoding='utf-8')
+
+          index, n1 = re.subn(r'site-overrides-v24\.css\?v=[^"]+', 'site-overrides-v24.css?v=20260821-3', index, count=1)
+          index, n2 = re.subn(r'app\.js\?v=[^"]+', 'app.js?v=20260821-event-cleanup-2', index, count=1)
+          if n1 != 1 or n2 != 1:
+              raise SystemExit(f'Cache key update failed: site={n1}, app={n2}')
+          index_path.write_text(index, encoding='utf-8')
+          PY
+
+      - name: Validate JavaScript
+        run: node --check app.js
+
+      - name: Validate active Event boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'mytt-event-v5' app.js
+          grep -q 'target-event-hero' app.js
+          grep -q 'mytt-event-v12-clean-metal-compact' site-overrides-v24.css
+          ! grep -q 'mobile-event-pro' app.js
+          ! grep -q 'mobile-event-pro' site-overrides-v24.css
+          ! grep -q 'mytt-event-v4' app.js
+          ! grep -q 'mytt-event-v4' site-overrides-v24.css
+          ! grep -q 'me4-' app.js
+          ! grep -q 'me4-' site-overrides-v24.css
+
+      - name: Commit cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "MYTT-Rating"
+          git config user.email "hangtbabm@gmail.com"
+          git add -- app.js index.html site-overrides-v24.css
+          git commit -m "Remove orphaned mobile Event CSS"
+          git push origin HEAD:cleanup-orphaned-event-css-20260821
