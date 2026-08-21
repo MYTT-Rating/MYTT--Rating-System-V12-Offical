@@ -1,18 +1,17 @@
 MYTT REMAINING CLEANUP AUDIT V28
 ========================================================================
-site-overrides-v24.css lines: 1923
+site-overrides-v24.css lines: 1807
 source-labelled blocks: 11
 
 SOURCE BLOCKS
 ------------------------------------------------------------------------
-mytt-mobile-stable-polish-v1: 492 lines, 99 selectors
-  unreferenced classes outside overrides: rank-scroll-hint
-mytt-event-photo-bg-v2: 55 lines, 6 selectors
-mytt-event-photo-layout-v3: 180 lines, 25 selectors
+mytt-mobile-stable-polish-v1: 477 lines, 97 selectors
+mytt-event-photo-bg-v2: 39 lines, 6 selectors
+mytt-event-photo-layout-v3: 157 lines, 25 selectors
 mytt-event-final-integrated-v1: 275 lines, 75 selectors
   unreferenced ids outside overrides: ef2c2c, ff2d2d, ff4e4e, ff4f4f
-mytt-event-hero-exact-v5: 313 lines, 42 selectors
-  unreferenced ids outside overrides: c60d13, d6d6d6, ff4343
+mytt-event-hero-exact-v5: 250 lines, 42 selectors
+  unreferenced ids outside overrides: c60d13, ff4343
 mytt-event-v6-clean-title-small-button: 19 lines, 9 selectors
 mytt-event-v10-metal-flat-details: 15 lines, 6 selectors
 mytt-event-v11-clean-status: 11 lines, 3 selectors
@@ -20,8 +19,7 @@ mytt-event-v12-clean-metal-compact: 172 lines, 35 selectors
   unreferenced ids outside overrides: c7c7c4, f2f2f0
 mytt-market-mobile-clean-v18: 197 lines, 26 selectors
   unreferenced ids outside overrides: ef5350
-mytt-mobile-v20-usability: 199 lines, 43 selectors
-  unreferenced classes outside overrides: rank-scroll-hint
+mytt-mobile-v20-usability: 199 lines, 42 selectors
 
 DUPLICATE SELECTORS WITHIN site-overrides-v24.css
 ------------------------------------------------------------------------
@@ -85,7 +83,6 @@ DUPLICATE SELECTORS WITHIN site-overrides-v24.css
 2x  .homepage-rank-road .home-rank-node > span
 2x  .homepage-rank-road .home-rank-node > small
 2x  .homepage-rank-road .you-marker
-2x  .rank-scroll-hint
 2x  .hero-progress-card p
 2x  .cta-grid-home-final .cta small
 2x  #market .mytt-market-hero
@@ -116,55 +113,51 @@ DUPLICATE SELECTORS WITHIN site-overrides-v24.css
 
 CSS FILES / IMPORT GRAPH
 ------------------------------------------------------------------------
-home-mobile-v20-4.css: 113 lines, 3281 bytes
+home-mobile-v20-4.css: 109 lines, 3210 bytes
 home-rank-geometry.css: 78 lines, 2167 bytes
-leaderboard-rookie-v217.css: 44 lines, 10579 bytes
 marketplace-base-v20-3.css: 1590 lines, 31912 bytes
-marketplace.css: 31 lines, 3545 bytes
+marketplace.css: 31 lines, 3544 bytes
   imports -> ./marketplace-base-v20-3.css?v=20260818-base-v20-3
-  imports -> ./home-mobile-v20-4.css?v=20260818-home-v20-11
+  imports -> ./home-mobile-v20-4.css?v=20260821-final-v28-1
   imports -> ./home-rank-geometry.css?v=20260821-rank-geometry-1
   imports -> ./rank-badges-v22.css?v=20260821-rank-v23-1
 mobile-polish-v23.css: 250 lines, 7286 bytes
 player-card-rank-badges-v1.css: 50 lines, 1403 bytes
 rank-badges-v22.css: 158 lines, 5020 bytes
-site-overrides-v24.css: 1923 lines, 60374 bytes
+site-overrides-v24.css: 1807 lines, 55510 bytes
 style.css: 6978 lines, 182872 bytes
 
 INDEX LOAD ORDER
 ------------------------------------------------------------------------
 <link rel="stylesheet" href="style.css?v=20260818-mobile-v20-1">
-<link rel="stylesheet" href="marketplace.css?v=20260821-rank-v23-1">
+<link rel="stylesheet" href="marketplace.css?v=20260821-final-v28-1">
 <link rel="stylesheet" href="player-card-rank-badges-v1.css?v=20260821-rank-v23-1">
-<link rel="stylesheet" href="site-overrides-v24.css?v=20260821-6">
+<link rel="stylesheet" href="site-overrides-v24.css?v=20260821-final-v28-1">
 <script src="app.js?v=20260821-event-cleanup-2">
-<script src="marketplace.js?v=20260821-profile-v26-1">
+<script src="marketplace.js?v=20260821-final-v28-1">
 
 ROOT TEXT / DOC FILES
 ------------------------------------------------------------------------
-MARKET_SETUP.txt: 325 bytes :: MYTT Gear Market is connected and LIVE. |  | Web App URL: | https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec |  | Seller workflow: Submit -> Pending -> Admin review -> Approved -> Public listing. | Set Status to Sold or Rejected to remove it from
-MULTI_PHOTO_UPDATE_STEPS.txt: 669 bytes :: MYTT MARKET — MULTI PHOTO UPDATE | ================================ |  | This version supports 1–5 photos per listing. | Photo 1 is the public card cover. Listing Details shows all photos. |  | IMPORTANT BACKEND UPDATE | 1. Open the EXISTING MYTT Gear Market Apps Script project. | 2. Replace the old script code wit
-README.md: 235 bytes :: # MYTT V4.0.1 Profile Pro Sprint 1 |  | Added: | - Profile Header Pro | - Dashboard-style stat cards | - Career Summary | - Rank Progress Pro | - Achievement v1 |  | Kept compatible with Google Sheets, Apps Script, GitHub Actions, and existing avatars. | 
-README.txt: 2792 bytes :: MYTT V20 - Mobile Usability & Performance | Based on V19 Event Auto-Confirm + stable V18 Market Clean. |  | MOBILE UI CHANGES | - Compact app-style header on phones; the redundant hamburger navigation is hidden. | - Existing bottom navigation remains unchanged: Home / Singles / Events / Doubles / More. | - Key 
-README_FIRST.txt: 1372 bytes :: MYTT FINAL INTEGRATED — 16 AUG 2026 |  | UPLOAD_TO_GITHUB | ---------------- | These are the website files to publish to the existing MYTT GitHub Pages repository. | Replace the matching files in the repository with the files from this folder. |  | Included website state: | - Mobile app-style page navigation | - Home
-cleanup-audit-v28.txt: 7547 bytes :: MYTT REMAINING CLEANUP AUDIT V28 | ======================================================================== | site-overrides-v24.css lines: 1923 | source-labelled blocks: 11 |  | SOURCE BLOCKS | ------------------------------------------------------------------------ | mytt-mobile-stable-polish-v1: 492 lines, 99 
+README.md: 2464 bytes :: # MYTT — Malaysia Table Tennis Rating System |  | Official source for **mytt.my**. |  | ## Current architecture |  | - `index.html` — page structure, navigation, forms and MYTT endpoint configuration. | - `app.js` — player data, Singles/Doubles leaderboards, Events, profiles, match history and the canonical MYTT 
+cleanup-audit-v28.txt: 8039 bytes :: MYTT REMAINING CLEANUP AUDIT V28 | ======================================================================== | site-overrides-v24.css lines: 1923 | source-labelled blocks: 11 |  | SOURCE BLOCKS | ------------------------------------------------------------------------ | mytt-mobile-stable-polish-v1: 492 lines, 99 
+final-cleanup-v28-report.txt: 399 bytes :: MYTT FINAL CLEANUP V28 | ================================================================ | Exact superseded CSS declarations removed: 0 | Dead rank-scroll-hint rules removed: 0 | Obsolete Home declaration removed: 0 | Stale docs consolidated into README.md: README.txt, README_FIRST.txt, MARKET_SETUP.txt, MUL
 
 UNREFERENCED ROOT FILE CANDIDATES
 ------------------------------------------------------------------------
-mytt-icon-512.png: 181086 bytes
+final-cleanup-v28-report.txt: 399 bytes
 
 STALE / LEGACY TOKEN COUNTS
 ------------------------------------------------------------------------
 V18: site-overrides-v24.css:1
 V19: index.html:1, site-overrides-v24.css:1
-V20: marketplace.css:1, home-mobile-v20-4.css:1, mobile-polish-v23.css:1, site-overrides-v24.css:1
-V20.1: home-mobile-v20-4.css:1, mobile-polish-v23.css:1
+V20: mobile-polish-v23.css:1, site-overrides-v24.css:1
+V20.1: mobile-polish-v23.css:1
 V21: index.html:2, rank-badges-v22.css:1
 V22: rank-badges-v22.css:1
 V23: rank-badges-v22.css:2, mobile-polish-v23.css:1
-V24: site-overrides-v24.css:1
+V24: 0
 mytt-mobile-stable-polish-v1: site-overrides-v24.css:1
-rank mapping is ready: marketplace.js:1
+rank mapping is ready: 0
 mobile-event-pro: 0
 mytt-event-v4: 0
 me4-: 0
