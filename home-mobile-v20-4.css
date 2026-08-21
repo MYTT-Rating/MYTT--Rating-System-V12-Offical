@@ -1,9 +1,5 @@
-/* MYTT MOBILE V20.11 — larger + slightly taller safe single-line home title */
+/* MYTT MOBILE HOME TITLE — compact single-line phone treatment */
 @media (max-width:860px){
-  .hero-home-final{
-    padding-top:12px !important;
-  }
-
   .hero-home-final .hero-top-banner{
     margin:0 0 5px !important;
     width:100% !important;

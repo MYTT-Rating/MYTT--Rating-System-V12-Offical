@@ -1,6 +1,7 @@
-/* MYTT SITE OVERRIDES V24
-   Extracted verbatim from index.html on 2026-08-21.
-   Source order is preserved. No CSS rules were intentionally changed.
+/* MYTT SITE OVERRIDES — CONSOLIDATED
+   Historical inline patches were extracted from index.html, then
+   conservatively compacted by removing only exact-selector/property
+   declarations superseded later in the same at-rule context.
 */
 
 /* =========================================================
@@ -334,21 +335,9 @@
     font-size:7px !important;
   }
 
-  .rank-scroll-hint{
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    gap:9px !important;
-    margin:0 0 7px !important;
-    color:rgba(255,255,255,.55) !important;
-    font-size:9px !important;
-    letter-spacing:.4px !important;
-  }
+  
 
-  .rank-scroll-hint span{
-    color:#ff5b5b !important;
-    font-size:12px !important;
-  }
+  
 
   .hero-progress-card{
     margin-top:5px !important;
@@ -500,9 +489,7 @@
    ========================================================= */
 /* Rating Day hero — dark arena photo background */
 .target-event-hero{
-  position:relative !important;
   isolation:isolate !important;
-  overflow:hidden !important;
   background:
     linear-gradient(90deg,rgba(2,3,5,.97) 0%,rgba(2,3,5,.84) 37%,rgba(2,3,5,.34) 68%,rgba(2,3,5,.12) 100%),
     url('event-rating-day-bg.jpg') right center / cover no-repeat !important;
@@ -510,7 +497,6 @@
 
 /* Remove the old separate tech-art paddle so the new photo is the hero art */
 .target-event-hero .target-paddle-art{
-  display:none !important;
 }
 
 .target-event-hero .target-hero-content,
@@ -521,23 +507,10 @@
 
 /* subtle premium edge light, keeps the current neon language */
 .target-event-hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  z-index:1;
-  background:
-    linear-gradient(180deg,rgba(255,255,255,.025),transparent 30%),
-    radial-gradient(circle at 80% 45%,rgba(239,68,68,.10),transparent 34%);
 }
 
 @media (max-width:768px){
   .target-event-hero{
-    background:
-      linear-gradient(180deg,rgba(3,4,7,.20) 0%,rgba(3,4,7,.34) 34%,rgba(3,4,7,.92) 72%,rgba(3,4,7,.99) 100%),
-      linear-gradient(90deg,rgba(3,4,7,.80) 0%,rgba(3,4,7,.15) 68%,rgba(3,4,7,.08) 100%),
-      url('event-rating-day-bg.jpg') 72% 18% / auto 54% no-repeat,
-      #050608 !important;
   }
 
   .target-event-title,
@@ -560,18 +533,7 @@
   .target-event-hero{
     position:relative !important;
     display:block !important;
-    min-height:340px !important;
     overflow:hidden !important;
-    background:
-      linear-gradient(90deg,
-        rgba(5,6,9,.995) 0%,
-        rgba(5,6,9,.985) 31%,
-        rgba(5,6,9,.90) 43%,
-        rgba(5,6,9,.48) 56%,
-        rgba(5,6,9,.08) 73%,
-        rgba(5,6,9,.02) 100%),
-      url('event-rating-day-bg.jpg') right center / auto 118% no-repeat,
-      #050609 !important;
   }
 
   .target-event-hero::before{
@@ -589,12 +551,6 @@
   .target-hero-content{
     position:relative !important;
     z-index:3 !important;
-    width:61% !important;
-    min-height:340px !important;
-    padding:30px 28px 24px 34px !important;
-    display:flex !important;
-    flex-direction:column !important;
-    justify-content:space-between !important;
   }
 
   .target-event-title{
@@ -690,19 +646,13 @@
   }
 
   .target-hero-action{
-    position:absolute !important;
     z-index:4 !important;
-    top:28px !important;
-    right:30px !important;
-    width:270px !important;
     padding:0 !important;
     display:block !important;
   }
 
   .target-register-button{
     width:100% !important;
-    min-height:70px !important;
-    height:70px !important;
     padding:0 22px !important;
     border-radius:17px !important;
     gap:16px !important;
@@ -1036,9 +986,7 @@
 
   #events .mytt-event-v5{
     display:block !important;
-    width:100% !important;
     margin:0 !important;
-    padding:0 0 16px !important;
   }
 
   #events .me5-kicker{
@@ -1053,14 +1001,9 @@
 
   #events .me5-card{
     position:relative !important;
-    width:100% !important;
-    height:min(108vw,420px) !important;
-    min-height:385px !important;
-    max-height:420px !important;
     overflow:hidden !important;
     isolation:isolate !important;
     border:1px solid rgba(255,66,66,.96) !important;
-    border-radius:22px !important;
     background:
       radial-gradient(circle at 78% 44%,rgba(255,35,35,.22),transparent 32%),
       linear-gradient(122deg,transparent 0 58%,rgba(255,48,48,.14) 59% 60%,transparent 61% 100%),
@@ -1098,8 +1041,6 @@
   #events .me5-title{
     position:absolute !important;
     z-index:8 !important;
-    top:24px !important;
-    left:28px !important;
     right:10px !important;
     pointer-events:none !important;
     text-transform:uppercase !important;
@@ -1110,33 +1051,20 @@
     width:max-content !important;
     max-width:none !important;
     margin:0 !important;
-    color:transparent !important;
     font-family:Impact,"Arial Black","Arial Narrow",sans-serif !important;
     font-style:italic !important;
     font-weight:1000 !important;
     text-transform:uppercase !important;
-    background:linear-gradient(180deg,#ffffff 0%,#ffffff 27%,#d6d6d6 46%,#9b9b9b 64%,#f4f4f4 82%,#ffffff 100%) !important;
-    -webkit-background-clip:text !important;
-    background-clip:text !important;
-    -webkit-text-stroke:1px rgba(255,255,255,.88) !important;
     transform-origin:left center !important;
-    filter:
-      drop-shadow(0 3px 0 #6b070a)
-      drop-shadow(0 5px 0 #240204)
-      drop-shadow(0 0 7px rgba(255,38,38,.78)) !important;
   }
   #events .me5-title span{
     margin-left:6px !important;
-    font-size:clamp(35px,11.2vw,50px) !important;
-    line-height:.86 !important;
     letter-spacing:.08em !important;
     transform:scaleX(.90) skewX(-2deg) !important;
   }
   #events .me5-title strong{
     margin-top:2px !important;
     white-space:nowrap !important;
-    font-size:clamp(52px,15.8vw,72px) !important;
-    line-height:.82 !important;
     letter-spacing:-.025em !important;
     transform:scaleX(.90) skewX(-2deg) !important;
   }
@@ -1145,10 +1073,6 @@
   #events .me5-art{
     position:absolute !important;
     z-index:3 !important;
-    left:-4px !important;
-    bottom:76px !important;
-    width:66% !important;
-    height:55% !important;
     background:url('event-paddle.webp') left bottom / contain no-repeat !important;
     mix-blend-mode:screen !important;
     opacity:.97 !important;
@@ -1167,52 +1091,34 @@
   #events .me5-register-wrap{
     position:absolute !important;
     z-index:10 !important;
-    right:18px !important;
-    top:50% !important;
-    width:46% !important;
-    transform:translateY(-18%) !important;
   }
   #events .me5-register{
     position:relative !important;
     width:100% !important;
-    min-height:84px !important;
-    padding:0 12px !important;
     display:flex !important;
     align-items:center !important;
     justify-content:center !important;
-    gap:10px !important;
     border:1px solid rgba(255,255,255,.75) !important;
-    border-radius:13px !important;
     color:#fff !important;
     background:linear-gradient(180deg,#ff3e3e 0%,#c60d13 100%) !important;
-    box-shadow:
-      0 0 0 4px rgba(255,40,40,.14),
-      0 0 24px rgba(255,25,25,.60),
-      inset 0 0 0 1px rgba(255,255,255,.16) !important;
     clip-path:polygon(6% 0,100% 0,100% 82%,94% 100%,0 100%,0 18%) !important;
   }
   #events .me5-register::after{
     content:"" !important;
     position:absolute !important;
-    inset:6px !important;
     border:1px solid rgba(255,255,255,.24) !important;
-    border-radius:9px !important;
     clip-path:inherit !important;
     pointer-events:none !important;
   }
   #events .me5-register span{
     position:relative !important;
     z-index:1 !important;
-    font-size:15px !important;
     font-weight:950 !important;
     line-height:1 !important;
-    letter-spacing:.015em !important;
-    white-space:nowrap !important;
   }
   #events .me5-register b{
     position:relative !important;
     z-index:1 !important;
-    font-size:22px !important;
     line-height:1 !important;
   }
   #events .me5-register.disabled{opacity:.55 !important;box-shadow:none !important;}
@@ -1224,26 +1130,18 @@
     left:0 !important;
     right:0 !important;
     bottom:0 !important;
-    height:82px !important;
     display:grid !important;
-    grid-template-columns:1fr 1.10fr 1.12fr !important;
     background:rgba(3,4,7,.965) !important;
     border-top:1px solid rgba(255,63,63,.30) !important;
   }
   #events .me5-summary-item{
-    min-width:0 !important;
     display:flex !important;
     align-items:center !important;
-    gap:7px !important;
-    padding:9px 7px !important;
     border-right:1px solid rgba(255,255,255,.10) !important;
   }
   #events .me5-summary-item:last-child{border-right:0 !important;}
   #events .me5-icon,
   #events .me5-users{
-    width:29px !important;
-    height:29px !important;
-    min-width:29px !important;
     color:#ff4343 !important;
   }
   #events .me5-icon svg,
@@ -1258,9 +1156,6 @@
     stroke-linejoin:round !important;
   }
   #events .me5-live-dot{
-    width:14px !important;
-    height:14px !important;
-    min-width:14px !important;
     border-radius:50% !important;
     background:#2ce445 !important;
     box-shadow:0 0 13px rgba(44,228,69,.86) !important;
@@ -1269,27 +1164,21 @@
     display:block !important;
     margin:0 !important;
     color:#fff !important;
-    font-size:9px !important;
     font-weight:950 !important;
-    line-height:1.05 !important;
   }
   #events .me5-summary-item small{
     display:block !important;
     margin-top:3px !important;
     color:rgba(255,255,255,.60) !important;
-    font-size:6.8px !important;
     font-weight:650 !important;
-    line-height:1.08 !important;
     letter-spacing:.035em !important;
   }
   #events .me5-spots{
-    gap:5px !important;
   }
   #events .me5-spots b{
     flex:0 0 auto !important;
     margin-right:1px !important;
     color:#ff4444 !important;
-    font-size:30px !important;
     font-weight:1000 !important;
     line-height:.88 !important;
   }
@@ -1297,15 +1186,13 @@
 
 @media (max-width:390px){
   #events .me5-card{
-    height:min(109vw,405px) !important;
-    min-height:380px !important;
   }
-  #events .me5-title{left:22px !important;top:22px !important;}
-  #events .me5-title span{font-size:36px !important;}
-  #events .me5-title strong{font-size:54px !important;transform:scaleX(.88) skewX(-2deg) !important;}
-  #events .me5-register-wrap{right:15px !important;width:46% !important;}
-  #events .me5-register{min-height:78px !important;}
-  #events .me5-register span{font-size:13.5px !important;}
+  #events .me5-title{}
+  #events .me5-title span{}
+  #events .me5-title strong{transform:scaleX(.88) skewX(-2deg) !important;}
+  #events .me5-register-wrap{}
+  #events .me5-register{}
+  #events .me5-register span{}
   #events .me5-summary-item{padding-left:5px !important;padding-right:5px !important;gap:5px !important;}
   #events .me5-icon,#events .me5-users{width:27px !important;height:27px !important;min-width:27px !important;}
   #events .me5-summary-item strong{font-size:8.3px !important;}
@@ -1318,16 +1205,16 @@
    COMPACTED: title experiment removed because V7 restored V5 exactly.
    ========================================================= */
 @media (max-width:768px){
-  #events .me5-register-wrap{right:20px !important;top:52% !important;width:37% !important;transform:translateY(-12%) !important;}
-  #events .me5-register{min-height:62px !important;height:62px !important;padding:0 10px !important;gap:7px !important;border-radius:11px !important;box-shadow:0 0 0 2px rgba(255,40,40,.12),0 0 13px rgba(255,25,25,.36),inset 0 0 0 1px rgba(255,255,255,.12) !important;}
+  #events .me5-register-wrap{}
+  #events .me5-register{gap:7px !important;box-shadow:0 0 0 2px rgba(255,40,40,.12),0 0 13px rgba(255,25,25,.36),inset 0 0 0 1px rgba(255,255,255,.12) !important;}
   #events .me5-register::after{inset:5px !important;border-radius:7px !important;border-color:rgba(255,255,255,.17) !important;}
-  #events .me5-register span{font-size:12px !important;letter-spacing:.01em !important;}
-  #events .me5-register b{font-size:18px !important;}
+  #events .me5-register span{letter-spacing:.01em !important;}
+  #events .me5-register b{}
 }
 @media (max-width:390px){
-  #events .me5-register-wrap{width:36% !important;right:17px !important;}
-  #events .me5-register{min-height:58px !important;height:58px !important;}
-  #events .me5-register span{font-size:11px !important;}
+  #events .me5-register-wrap{}
+  #events .me5-register{}
+  #events .me5-register span{}
   #events .me5-register b{font-size:17px !important;}
 }
 
@@ -1337,12 +1224,12 @@
    ========================================================= */
 .me10-facts{display:none;}
 @media (max-width:768px){
-  #events .me10-facts{display:grid !important;grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:7px !important;margin:10px 0 0 !important;padding:0 !important;}
-  #events .me10-fact{min-width:0 !important;min-height:82px !important;padding:9px 6px 8px !important;display:flex !important;flex-direction:column !important;align-items:center !important;justify-content:flex-start !important;text-align:center !important;border:1px solid rgba(255,63,63,.28) !important;border-radius:13px !important;background:linear-gradient(180deg,rgba(14,12,15,.94),rgba(7,8,11,.98)) !important;box-shadow:inset 0 0 18px rgba(255,35,35,.025) !important;}
-  #events .me10-fact-icon{width:28px !important;height:28px !important;display:flex !important;align-items:center !important;justify-content:center !important;margin-bottom:5px !important;border:1px solid rgba(255,60,60,.46) !important;border-radius:50% !important;color:#ff4a4a !important;font-size:15px !important;line-height:1 !important;box-shadow:0 0 10px rgba(255,38,38,.12) !important;}
+  #events .me10-facts{display:grid !important;grid-template-columns:repeat(4,minmax(0,1fr)) !important;padding:0 !important;}
+  #events .me10-fact{min-width:0 !important;display:flex !important;flex-direction:column !important;align-items:center !important;justify-content:flex-start !important;text-align:center !important;border:1px solid rgba(255,63,63,.28) !important;background:linear-gradient(180deg,rgba(14,12,15,.94),rgba(7,8,11,.98)) !important;box-shadow:inset 0 0 18px rgba(255,35,35,.025) !important;}
+  #events .me10-fact-icon{display:flex !important;align-items:center !important;justify-content:center !important;border:1px solid rgba(255,60,60,.46) !important;border-radius:50% !important;color:#ff4a4a !important;line-height:1 !important;box-shadow:0 0 10px rgba(255,38,38,.12) !important;}
   #events .me10-paddle{font-size:14px !important;}
-  #events .me10-fact small{display:block !important;margin:0 0 4px !important;color:#ff5656 !important;font-size:7.5px !important;line-height:1 !important;font-weight:900 !important;letter-spacing:.08em !important;white-space:nowrap !important;}
-  #events .me10-fact strong{max-width:100% !important;color:#fff !important;font-size:9.2px !important;line-height:1.12 !important;font-weight:850 !important;overflow:hidden !important;display:-webkit-box !important;-webkit-box-orient:vertical !important;-webkit-line-clamp:2 !important;}
+  #events .me10-fact small{display:block !important;margin:0 0 4px !important;color:#ff5656 !important;line-height:1 !important;font-weight:900 !important;letter-spacing:.08em !important;white-space:nowrap !important;}
+  #events .me10-fact strong{max-width:100% !important;color:#fff !important;font-weight:850 !important;overflow:hidden !important;display:-webkit-box !important;-webkit-box-orient:vertical !important;-webkit-line-clamp:2 !important;}
 }
 
 /* =========================================================
@@ -1521,9 +1408,9 @@
   #events .me5-register{height:52px !important;min-height:52px !important;}
   #events .me5-register span{font-size:10.5px !important;}
   #events .me5-summary{height:59px !important;}
-  #events .me10-facts{width:calc(100% - 24px) !important;gap:5px !important;}
+  #events .me10-facts{}
   #events .me10-fact{min-height:70px !important;}
-  #events .me10-fact strong{font-size:8px !important;}
+  #events .me10-fact strong{}
 }
 
 /* =========================================================
@@ -1775,7 +1662,7 @@
   .homepage-rank-road .home-rank-node > span{font-size:10px !important;}
   .homepage-rank-road .home-rank-node > small{font-size:9px !important;}
   .homepage-rank-road .you-marker{font-size:9px !important;}
-  .rank-scroll-hint{font-size:9.5px !important;}
+  
   .hero-home-final .hero-rank-card-final::after{
     content:"SWIPE TO EXPLORE →" !important;
     font-size:8.5px !important;
