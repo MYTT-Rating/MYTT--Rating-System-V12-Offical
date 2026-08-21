@@ -1,46 +1,23 @@
-/* MYTT Player Cards — image rank badges only.
-   Scoped to Players page cards. Does not change rating logic, homepage, profile or leaderboards. */
+/* MYTT Player Cards — rank badge layout only.
+   The badge image itself comes from the single TIERS mapping in app.js. */
 
 .player-card.player-card-icon-tier > .player-card-rank-icon{
   border:0 !important;
   border-radius:50% !important;
-  background-color:transparent !important;
-  background-repeat:no-repeat !important;
-  background-position:center !important;
-  background-size:contain !important;
+  background:none !important;
   box-shadow:none !important;
+  overflow:visible !important;
 }
 
 .player-card.player-card-icon-tier > .player-card-rank-icon > span{
   display:none !important;
 }
 
-.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Novice"]{
-  background-image:url("./rank-badges/novice-standalone.webp?v=20260820-player-card-1") !important;
-}
-.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Rookie"]{
-  background-image:url("./rank-badges/rookie-standalone.webp?v=20260820-player-card-1") !important;
-}
-.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Challenger"]{
-  background-image:url("./rank-badges/challenger-standalone.webp?v=20260820-player-card-1") !important;
-}
-.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Elite"]{
-  background-image:url("./rank-badges/elite-standalone.webp?v=20260820-player-card-1") !important;
-}
-.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Master"]{
-  background-image:url("./rank-badges/master-standalone.webp?v=20260820-player-card-1") !important;
-}
-.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Legend"]{
-  background-image:url("./rank-badges/legend-standalone.webp?v=20260820-player-card-1") !important;
-}
-.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Grandmaster"]{
-  background-image:url("./rank-badges/grandmaster-standalone.webp?v=20260820-player-card-1") !important;
-}
-.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="Immortal"]{
-  background-image:url("./rank-badges/immortal-standalone.webp?v=20260820-player-card-1") !important;
-}
-.player-card.player-card-icon-tier > .player-card-rank-icon[data-tier-icon="MYTT Champion"]{
-  background-image:url("./rank-badges/champion-standalone.webp?v=20260820-player-card-1") !important;
+.player-card.player-card-icon-tier > .player-card-rank-icon > .player-card-rank-img{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
 }
 
 @media(max-width:759px){
@@ -68,14 +45,5 @@
     min-height:0 !important;
     margin:0 !important;
     padding:0 !important;
-  }
-}
-
-/* HOME 2300 — optical alignment only.
-   Keep the orb itself on the same baseline as the other ranks; move only the artwork inside it. */
-@media(max-width:768px){
-  .homepage-rank-road .tier-hof-home .home-rank-orb{
-    transform:none !important;
-    background-position:center calc(50% - 5px) !important;
   }
 }

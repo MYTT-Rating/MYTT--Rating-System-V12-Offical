@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const coreSrc = "marketplace-core-v23.js?v=20260821-1";
+  const coreSrc = "marketplace-core-v23.js?v=20260821-2";
   const polishSrc = "mobile-polish-v23.js?v=20260821-1";
   const polishCss = "mobile-polish-v23.css?v=20260821-1";
   const polishCssId = "mytt-mobile-polish-v23-style";
