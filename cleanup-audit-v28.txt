@@ -1,0 +1,165 @@
+MYTT REMAINING CLEANUP AUDIT V28
+========================================================================
+site-overrides-v24.css lines: 1923
+source-labelled blocks: 11
+
+SOURCE BLOCKS
+------------------------------------------------------------------------
+mytt-mobile-stable-polish-v1: 492 lines, 99 selectors
+  unreferenced classes outside overrides: rank-scroll-hint
+mytt-event-photo-bg-v2: 55 lines, 6 selectors
+mytt-event-photo-layout-v3: 180 lines, 25 selectors
+mytt-event-final-integrated-v1: 275 lines, 75 selectors
+  unreferenced ids outside overrides: ef2c2c, ff2d2d, ff4e4e, ff4f4f
+mytt-event-hero-exact-v5: 313 lines, 42 selectors
+  unreferenced ids outside overrides: c60d13, d6d6d6, ff4343
+mytt-event-v6-clean-title-small-button: 19 lines, 9 selectors
+mytt-event-v10-metal-flat-details: 15 lines, 6 selectors
+mytt-event-v11-clean-status: 11 lines, 3 selectors
+mytt-event-v12-clean-metal-compact: 172 lines, 35 selectors
+  unreferenced ids outside overrides: c7c7c4, f2f2f0
+mytt-market-mobile-clean-v18: 197 lines, 26 selectors
+  unreferenced ids outside overrides: ef5350
+mytt-mobile-v20-usability: 199 lines, 43 selectors
+  unreferenced classes outside overrides: rank-scroll-hint
+
+DUPLICATE SELECTORS WITHIN site-overrides-v24.css
+------------------------------------------------------------------------
+6x  .target-event-hero
+6x  #events .me5-register
+6x  #events .me5-register span
+5x  .target-hero-action
+5x  .target-hero-content
+5x  #events .me5-title span
+5x  #events .me5-title strong
+5x  #events .me5-register-wrap
+5x  #events .me10-fact strong
+4x  .premium-brand-sub
+4x  .target-event-title
+4x  .target-event-summary
+4x  .target-summary-icon
+4x  .target-live-dot
+4x  .target-register-button
+4x  .target-register-button span
+4x  .target-register-button b
+4x  #events .me5-register b
+4x  #events .me5-summary-item strong
+4x  #events .me5-summary-item small
+4x  #events .me10-fact
+4x  #events .me5-spots strong
+3x  .premium-brand-mark
+3x  .premium-brand-name
+3x  #events .section-head h2
+3x  #players .section-head h2
+3x  #market .mytt-market-hero h2
+3x  #market .mytt-market-subtitle
+3x  .target-summary-item
+3x  .target-summary-item strong
+3x  .target-summary-item small
+3x  .target-people-icon
+3x  .target-event-title > strong
+3x  .target-event-details
+3x  .target-tech-grid
+3x  #events .me5-card
+3x  #events .me5-summary-item
+3x  #events .me5-icon
+3x  #events .me5-users
+3x  #events .me5-spots b
+3x  #events .me5-title
+3x  #events .me10-facts
+3x  #events .me10-fact-icon
+3x  #events .me10-fact small
+3x  #events .me5-status strong
+2x  :root
+2x  .premium-header-inner
+2x  .premium-brand
+2x  .premium-mobile-toggle
+2x  #events
+2x  #players .section-head > div:first-child
+2x  #singles .section-head h2
+2x  #doubles .section-head h2
+2x  #submitPage .section-head h2
+2x  #submitPageTitle
+2x  #players #playersFilter
+2x  #players #playersSort
+2x  .homepage-rank-road .home-rank-node > span
+2x  .homepage-rank-road .home-rank-node > small
+2x  .homepage-rank-road .you-marker
+2x  .rank-scroll-hint
+2x  .hero-progress-card p
+2x  .cta-grid-home-final .cta small
+2x  #market .mytt-market-hero
+2x  #market .mytt-market-toolbar
+2x  .target-event-hero::before
+2x  .target-event-hero::after
+2x  .target-event-hero .target-paddle-art
+2x  .target-summary-item:first-child
+2x  .target-summary-item:last-child
+2x  .target-register-button::before
+2x  .target-event-shell
+2x  .target-event-title > span
+2x  .target-spots-summary b
+2x  .target-details-title strong
+2x  .target-tech-card
+2x  .target-tech-card small
+2x  .target-tech-card strong
+2x  .target-tech-icon
+2x  #events .mytt-event-v5
+2x  #events .me5-kicker
+2x  #events .me5-register::after
+2x  #events .me5-live-dot
+2x  #events .me5-spots
+2x  #market .mytt-market-sell-button
+2x  #market .mytt-market-hero-action .mytt-market-sell-button
+2x  #market .mytt-market-status
+2x  #market .mytt-market-disclaimer
+
+CSS FILES / IMPORT GRAPH
+------------------------------------------------------------------------
+home-mobile-v20-4.css: 113 lines, 3281 bytes
+home-rank-geometry.css: 78 lines, 2167 bytes
+leaderboard-rookie-v217.css: 44 lines, 10579 bytes
+marketplace-base-v20-3.css: 1590 lines, 31912 bytes
+marketplace.css: 31 lines, 3545 bytes
+  imports -> ./marketplace-base-v20-3.css?v=20260818-base-v20-3
+  imports -> ./home-mobile-v20-4.css?v=20260818-home-v20-11
+  imports -> ./home-rank-geometry.css?v=20260821-rank-geometry-1
+  imports -> ./rank-badges-v22.css?v=20260821-rank-v23-1
+mobile-polish-v23.css: 250 lines, 7286 bytes
+player-card-rank-badges-v1.css: 50 lines, 1403 bytes
+rank-badges-v22.css: 158 lines, 5020 bytes
+site-overrides-v24.css: 1923 lines, 60374 bytes
+style.css: 6978 lines, 182872 bytes
+
+INDEX LOAD ORDER
+------------------------------------------------------------------------
+<link rel="stylesheet" href="style.css?v=20260818-mobile-v20-1">
+<link rel="stylesheet" href="marketplace.css?v=20260821-rank-v23-1">
+<link rel="stylesheet" href="player-card-rank-badges-v1.css?v=20260821-rank-v23-1">
+<link rel="stylesheet" href="site-overrides-v24.css?v=20260821-6">
+<script src="app.js?v=20260821-event-cleanup-2">
+<script src="marketplace.js?v=20260821-profile-v26-1">
+
+ROOT TEXT / DOC FILES
+------------------------------------------------------------------------
+MARKET_SETUP.txt: 325 bytes :: MYTT Gear Market is connected and LIVE. |  | Web App URL: | https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec |  | Seller workflow: Submit -> Pending -> Admin review -> Approved -> Public listing. | Set Status to Sold or Rejected to remove it from
+MULTI_PHOTO_UPDATE_STEPS.txt: 669 bytes :: MYTT MARKET — MULTI PHOTO UPDATE | ================================ |  | This version supports 1–5 photos per listing. | Photo 1 is the public card cover. Listing Details shows all photos. |  | IMPORTANT BACKEND UPDATE | 1. Open the EXISTING MYTT Gear Market Apps Script project. | 2. Replace the old script code wit
+README.md: 235 bytes :: # MYTT V4.0.1 Profile Pro Sprint 1 |  | Added: | - Profile Header Pro | - Dashboard-style stat cards | - Career Summary | - Rank Progress Pro | - Achievement v1 |  | Kept compatible with Google Sheets, Apps Script, GitHub Actions, and existing avatars. | 
+README.txt: 2792 bytes :: MYTT V20 - Mobile Usability & Performance | Based on V19 Event Auto-Confirm + stable V18 Market Clean. |  | MOBILE UI CHANGES | - Compact app-style header on phones; the redundant hamburger navigation is hidden. | - Existing bottom navigation remains unchanged: Home / Singles / Events / Doubles / More. | - Key 
+README_FIRST.txt: 1372 bytes :: MYTT FINAL INTEGRATED — 16 AUG 2026 |  | UPLOAD_TO_GITHUB | ---------------- | These are the website files to publish to the existing MYTT GitHub Pages repository. | Replace the matching files in the repository with the files from this folder. |  | Included website state: | - Mobile app-style page navigation | - Home
+
+STALE / LEGACY TOKEN COUNTS
+------------------------------------------------------------------------
+V18: site-overrides-v24.css:1
+V19: index.html:1, site-overrides-v24.css:1
+V20: marketplace.css:1, home-mobile-v20-4.css:1, mobile-polish-v23.css:1, site-overrides-v24.css:1
+V20.1: home-mobile-v20-4.css:1, mobile-polish-v23.css:1
+V21: index.html:2, rank-badges-v22.css:1
+V22: rank-badges-v22.css:1
+V23: rank-badges-v22.css:2, mobile-polish-v23.css:1
+V24: site-overrides-v24.css:1
+mytt-mobile-stable-polish-v1: site-overrides-v24.css:1
+rank mapping is ready: marketplace.js:1
+mobile-event-pro: 0
+mytt-event-v4: 0
+me4-: 0
