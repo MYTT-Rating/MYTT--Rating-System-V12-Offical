@@ -1390,379 +1390,44 @@
 
 /* =========================================================
    SOURCE: index.html <style id="mytt-event-v6-clean-title-small-button">
-   SHA256: 979539d259c3
+   COMPACTED: title experiment removed because V7 restored V5 exactly.
    ========================================================= */
-/* V6 — only refine the mobile event title and Register Now button. */
 @media (max-width:768px){
-  /* Cleaner metallic title: remove the busy multi-layer effects. */
-  #events .me5-title span,
-  #events .me5-title strong{
-    color:transparent !important;
-    background:linear-gradient(
-      180deg,
-      #ffffff 0%,
-      #f7f7f7 33%,
-      #cfcfcf 58%,
-      #ffffff 100%
-    ) !important;
-    -webkit-background-clip:text !important;
-    background-clip:text !important;
-    -webkit-text-stroke:.65px rgba(255,78,78,.92) !important;
-    filter:none !important;
-    text-shadow:
-      0 2px 0 rgba(96,5,8,.90),
-      0 0 5px rgba(255,45,45,.24) !important;
-  }
-
-  #events .me5-title span{
-    letter-spacing:.075em !important;
-    transform:scaleX(.92) skewX(-1deg) !important;
-  }
-  #events .me5-title strong{
-    letter-spacing:-.02em !important;
-    transform:scaleX(.92) skewX(-1deg) !important;
-  }
-
-  /* Register button: intentionally smaller and quieter. */
-  #events .me5-register-wrap{
-    right:20px !important;
-    top:52% !important;
-    width:37% !important;
-    transform:translateY(-12%) !important;
-  }
-  #events .me5-register{
-    min-height:62px !important;
-    height:62px !important;
-    padding:0 10px !important;
-    gap:7px !important;
-    border-radius:11px !important;
-    box-shadow:
-      0 0 0 2px rgba(255,40,40,.12),
-      0 0 13px rgba(255,25,25,.36),
-      inset 0 0 0 1px rgba(255,255,255,.12) !important;
-  }
-  #events .me5-register::after{
-    inset:5px !important;
-    border-radius:7px !important;
-    border-color:rgba(255,255,255,.17) !important;
-  }
-  #events .me5-register span{
-    font-size:12px !important;
-    letter-spacing:.01em !important;
-  }
-  #events .me5-register b{
-    font-size:18px !important;
-  }
+  #events .me5-register-wrap{right:20px !important;top:52% !important;width:37% !important;transform:translateY(-12%) !important;}
+  #events .me5-register{min-height:62px !important;height:62px !important;padding:0 10px !important;gap:7px !important;border-radius:11px !important;box-shadow:0 0 0 2px rgba(255,40,40,.12),0 0 13px rgba(255,25,25,.36),inset 0 0 0 1px rgba(255,255,255,.12) !important;}
+  #events .me5-register::after{inset:5px !important;border-radius:7px !important;border-color:rgba(255,255,255,.17) !important;}
+  #events .me5-register span{font-size:12px !important;letter-spacing:.01em !important;}
+  #events .me5-register b{font-size:18px !important;}
 }
-
 @media (max-width:390px){
-  #events .me5-register-wrap{
-    width:36% !important;
-    right:17px !important;
-  }
-  #events .me5-register{
-    min-height:58px !important;
-    height:58px !important;
-  }
+  #events .me5-register-wrap{width:36% !important;right:17px !important;}
+  #events .me5-register{min-height:58px !important;height:58px !important;}
   #events .me5-register span{font-size:11px !important;}
   #events .me5-register b{font-size:17px !important;}
 }
 
 /* =========================================================
-   SOURCE: index.html <style id="mytt-event-v7-restore-v5-title">
-   SHA256: e8ad3d6f9f78
-   ========================================================= */
-/* V7: restore the approved V5 tournament title exactly; keep V6 compact register CTA. */
-@media (max-width:768px){
-  #events .me5-title span,
-  #events .me5-title strong{
-    display:block !important;
-    width:max-content !important;
-    max-width:none !important;
-    margin:0 !important;
-    color:transparent !important;
-    font-family:Impact,"Arial Black","Arial Narrow",sans-serif !important;
-    font-style:italic !important;
-    font-weight:1000 !important;
-    text-transform:uppercase !important;
-    background:linear-gradient(180deg,#ffffff 0%,#ffffff 27%,#d6d6d6 46%,#9b9b9b 64%,#f4f4f4 82%,#ffffff 100%) !important;
-    -webkit-background-clip:text !important;
-    background-clip:text !important;
-    -webkit-text-stroke:1px rgba(255,255,255,.88) !important;
-    transform-origin:left center !important;
-    text-shadow:none !important;
-    filter:
-      drop-shadow(0 3px 0 #6b070a)
-      drop-shadow(0 5px 0 #240204)
-      drop-shadow(0 0 7px rgba(255,38,38,.78)) !important;
-  }
-  #events .me5-title span{
-    margin-left:6px !important;
-    font-size:clamp(35px,11.2vw,50px) !important;
-    line-height:.86 !important;
-    letter-spacing:.08em !important;
-    transform:scaleX(.90) skewX(-2deg) !important;
-  }
-  #events .me5-title strong{
-    margin-top:2px !important;
-    white-space:nowrap !important;
-    font-size:clamp(52px,15.8vw,72px) !important;
-    line-height:.82 !important;
-    letter-spacing:-.025em !important;
-    transform:scaleX(.90) skewX(-2deg) !important;
-  }
-}
-@media (max-width:390px){
-  #events .me5-title span{font-size:36px !important;}
-  #events .me5-title strong{font-size:54px !important;transform:scaleX(.88) skewX(-2deg) !important;}
-}
-
-/* =========================================================
-   SOURCE: index.html <style id="mytt-event-v9-solid-metal-title">
-   SHA256: 4786d25809d5
-   ========================================================= */
-/* V9 — keep V7 typography/size/3D edge exactly; remove only internal split/banding. */
-@media (max-width:768px){
-  #events .me5-title span,
-  #events .me5-title strong{
-    background:none !important;
-    -webkit-background-clip:border-box !important;
-    background-clip:border-box !important;
-    color:#f7f7f7 !important;
-    -webkit-text-fill-color:#f7f7f7 !important;
-    -webkit-text-stroke:1px rgba(255,255,255,.88) !important;
-    text-shadow:none !important;
-    filter:
-      drop-shadow(0 3px 0 #6b070a)
-      drop-shadow(0 5px 0 #240204)
-      drop-shadow(0 0 7px rgba(255,38,38,.78)) !important;
-  }
-}
-
-/* =========================================================
    SOURCE: index.html <style id="mytt-event-v10-metal-flat-details">
-   SHA256: 118c8aeeb0a0
+   COMPACTED: final V12 overrides removed; facts component retained.
    ========================================================= */
-/* V10 — preserve V9 clean letters, restore smooth metal, flatten hero, add compact facts row. */
 .me10-facts{display:none;}
-
 @media (max-width:768px){
-  /* Smooth metallic fill: continuous gradient only, no hard band / split stops. */
-  #events .me5-title span,
-  #events .me5-title strong{
-    color:transparent !important;
-    -webkit-text-fill-color:transparent !important;
-    background:linear-gradient(180deg,#ffffff 0%,#f7f7f7 26%,#e7e7e7 54%,#c7c7c7 78%,#f3f3f3 100%) !important;
-    background-size:100% 100% !important;
-    background-repeat:no-repeat !important;
-    -webkit-background-clip:text !important;
-    background-clip:text !important;
-    -webkit-text-stroke:.8px rgba(255,255,255,.86) !important;
-    text-shadow:none !important;
-    filter:
-      drop-shadow(0 2px 0 #821015)
-      drop-shadow(0 4px 0 #310407)
-      drop-shadow(0 0 5px rgba(255,42,42,.48)) !important;
-  }
-
-  /* Make the hero much flatter. */
-  #events .me5-card{
-    height:350px !important;
-    min-height:350px !important;
-    max-height:350px !important;
-    border-radius:20px !important;
-  }
-
-  #events .me5-title{
-    top:17px !important;
-    left:24px !important;
-  }
-  #events .me5-title span{
-    font-size:clamp(31px,9.8vw,43px) !important;
-    line-height:.86 !important;
-  }
-  #events .me5-title strong{
-    font-size:clamp(46px,13.6vw,62px) !important;
-    line-height:.82 !important;
-  }
-
-  /* Lift paddle and button together. */
-  #events .me5-art{
-    left:2px !important;
-    bottom:69px !important;
-    width:52% !important;
-    height:48% !important;
-  }
-  #events .me5-register-wrap{
-    right:17px !important;
-    top:155px !important;
-    width:38% !important;
-    transform:none !important;
-  }
-  #events .me5-register{
-    min-height:60px !important;
-    height:60px !important;
-    padding:0 9px !important;
-    border-radius:12px !important;
-  }
-  #events .me5-register span{
-    font-size:12px !important;
-  }
-  #events .me5-register b{
-    font-size:18px !important;
-  }
-
-  /* Bottom status strip stays one row but is slightly shorter. */
-  #events .me5-summary{
-    height:68px !important;
-  }
-  #events .me5-summary-item{
-    padding:7px 6px !important;
-    gap:6px !important;
-  }
-  #events .me5-icon,
-  #events .me5-users{
-    width:25px !important;
-    height:25px !important;
-    min-width:25px !important;
-  }
-  #events .me5-live-dot{
-    width:12px !important;
-    height:12px !important;
-    min-width:12px !important;
-  }
-  #events .me5-summary-item strong{
-    font-size:8.8px !important;
-    line-height:1.05 !important;
-  }
-  #events .me5-summary-item small{
-    font-size:6.2px !important;
-    line-height:1.08 !important;
-  }
-  #events .me5-spots b{
-    font-size:27px !important;
-  }
-
-  /* Four compact facts directly under the hero, exactly one row. */
-  #events .me10-facts{
-    display:grid !important;
-    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
-    gap:7px !important;
-    margin:10px 0 0 !important;
-    padding:0 !important;
-  }
-  #events .me10-fact{
-    min-width:0 !important;
-    min-height:82px !important;
-    padding:9px 6px 8px !important;
-    display:flex !important;
-    flex-direction:column !important;
-    align-items:center !important;
-    justify-content:flex-start !important;
-    text-align:center !important;
-    border:1px solid rgba(255,63,63,.28) !important;
-    border-radius:13px !important;
-    background:linear-gradient(180deg,rgba(14,12,15,.94),rgba(7,8,11,.98)) !important;
-    box-shadow:inset 0 0 18px rgba(255,35,35,.025) !important;
-  }
-  #events .me10-fact-icon{
-    width:28px !important;
-    height:28px !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    margin-bottom:5px !important;
-    border:1px solid rgba(255,60,60,.46) !important;
-    border-radius:50% !important;
-    color:#ff4a4a !important;
-    font-size:15px !important;
-    line-height:1 !important;
-    box-shadow:0 0 10px rgba(255,38,38,.12) !important;
-  }
+  #events .me10-facts{display:grid !important;grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:7px !important;margin:10px 0 0 !important;padding:0 !important;}
+  #events .me10-fact{min-width:0 !important;min-height:82px !important;padding:9px 6px 8px !important;display:flex !important;flex-direction:column !important;align-items:center !important;justify-content:flex-start !important;text-align:center !important;border:1px solid rgba(255,63,63,.28) !important;border-radius:13px !important;background:linear-gradient(180deg,rgba(14,12,15,.94),rgba(7,8,11,.98)) !important;box-shadow:inset 0 0 18px rgba(255,35,35,.025) !important;}
+  #events .me10-fact-icon{width:28px !important;height:28px !important;display:flex !important;align-items:center !important;justify-content:center !important;margin-bottom:5px !important;border:1px solid rgba(255,60,60,.46) !important;border-radius:50% !important;color:#ff4a4a !important;font-size:15px !important;line-height:1 !important;box-shadow:0 0 10px rgba(255,38,38,.12) !important;}
   #events .me10-paddle{font-size:14px !important;}
-  #events .me10-fact small{
-    display:block !important;
-    margin:0 0 4px !important;
-    color:#ff5656 !important;
-    font-size:7.5px !important;
-    line-height:1 !important;
-    font-weight:900 !important;
-    letter-spacing:.08em !important;
-    white-space:nowrap !important;
-  }
-  #events .me10-fact strong{
-    display:block !important;
-    max-width:100% !important;
-    color:#fff !important;
-    font-size:9.2px !important;
-    line-height:1.12 !important;
-    font-weight:850 !important;
-    overflow:hidden !important;
-    display:-webkit-box !important;
-    -webkit-box-orient:vertical !important;
-    -webkit-line-clamp:2 !important;
-  }
-
-  /* Keep old mobile/desktop detail block hidden on mobile; V10 facts replace it. */
-  #events .target-event-details{display:none !important;}
-}
-
-@media (max-width:390px){
-  #events .me5-card{
-    height:330px !important;
-    min-height:330px !important;
-    max-height:330px !important;
-  }
-  #events .me5-title{top:15px !important;left:20px !important;}
-  #events .me5-title span{font-size:30px !important;}
-  #events .me5-title strong{font-size:45px !important;}
-  #events .me5-art{bottom:64px !important;width:50% !important;height:45% !important;}
-  #events .me5-register-wrap{top:145px !important;right:14px !important;width:39% !important;}
-  #events .me5-register{height:56px !important;min-height:56px !important;}
-  #events .me5-summary{height:64px !important;}
-  #events .me10-facts{gap:5px !important;}
-  #events .me10-fact{min-height:78px !important;padding-left:4px !important;padding-right:4px !important;}
-  #events .me10-fact strong{font-size:8.5px !important;}
+  #events .me10-fact small{display:block !important;margin:0 0 4px !important;color:#ff5656 !important;font-size:7.5px !important;line-height:1 !important;font-weight:900 !important;letter-spacing:.08em !important;white-space:nowrap !important;}
+  #events .me10-fact strong{max-width:100% !important;color:#fff !important;font-size:9.2px !important;line-height:1.12 !important;font-weight:850 !important;overflow:hidden !important;display:-webkit-box !important;-webkit-box-orient:vertical !important;-webkit-line-clamp:2 !important;}
 }
 
 /* =========================================================
    SOURCE: index.html <style id="mytt-event-v11-clean-status">
-   SHA256: a3195b56412a
+   COMPACTED: declarations overridden by V12 removed.
    ========================================================= */
 @media (max-width:768px){
-  /* V11: remove duplicated second-line copy and keep the three summary cells readable. */
-  #events .me5-status small,
-  #events .me5-spots small{display:none !important;}
-
-  #events .me5-summary{
-    grid-template-columns:1.02fr 1.12fr .86fr !important;
-  }
-  #events .me5-status strong{
-    font-size:8.7px !important;
-    line-height:1.08 !important;
-    white-space:normal !important;
-  }
-  #events .me5-spots{
-    gap:4px !important;
-    padding-left:5px !important;
-    padding-right:4px !important;
-  }
-  #events .me5-spots b{
-    font-size:26px !important;
-    line-height:.9 !important;
-  }
-  #events .me5-spots strong{
-    font-size:8.4px !important;
-    line-height:1.02 !important;
-    white-space:normal !important;
-    overflow:visible !important;
-  }
-}
-@media (max-width:390px){
-  #events .me5-summary{grid-template-columns:1.02fr 1.1fr .88fr !important;}
-  #events .me5-summary-item strong{font-size:8px !important;}
-  #events .me5-spots b{font-size:24px !important;}
-  #events .me5-spots strong{font-size:7.8px !important;}
+  #events .me5-status strong{white-space:normal !important;}
+  #events .me5-spots{gap:4px !important;padding-left:5px !important;padding-right:4px !important;}
+  #events .me5-spots strong{white-space:normal !important;overflow:visible !important;}
 }
 
 /* =========================================================
