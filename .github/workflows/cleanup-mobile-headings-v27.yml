@@ -1,0 +1,50 @@
+name: Cleanup Mobile Headings V27
+
+on:
+  push:
+    branches:
+      - cleanup-mobile-headings-v27-20260821
+    paths:
+      - '.github/workflows/cleanup-mobile-headings-v27.yml'
+      - '.github/scripts/cleanup_mobile_headings_v27.py'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: cleanup-mobile-headings-v27-20260821
+          fetch-depth: 0
+
+      - name: Consolidate mobile heading CSS
+        run: python .github/scripts/cleanup_mobile_headings_v27.py
+
+      - name: Validate JavaScript
+        run: |
+          node --check app.js
+          node --check marketplace.js
+          node --check mobile-polish-v23.js
+
+      - name: Validate cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -q 'mytt-mobile-title-left-fix' site-overrides-v24.css
+          ! grep -q 'mytt-submit-title-left-final' site-overrides-v24.css
+          grep -q 'MYTT MOBILE HEADING ALIGNMENT — CONSOLIDATED V27' site-overrides-v24.css
+          grep -q 'site-overrides-v24.css?v=20260821-6' index.html
+
+      - name: Commit cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "MYTT-Rating"
+          git config user.email "hangtbabm@gmail.com"
+          git add -- site-overrides-v24.css index.html
+          git commit -m "Consolidate mobile heading CSS"
+          git push origin HEAD:cleanup-mobile-headings-v27-20260821
