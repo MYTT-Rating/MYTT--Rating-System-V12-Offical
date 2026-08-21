@@ -1,0 +1,131 @@
+name: Extract Inline Styles V24
+
+on:
+  push:
+    branches:
+      - extract-inline-styles-v24-20260821
+    paths:
+      - '.github/workflows/extract-inline-styles-v24.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: extract-inline-styles-v24-20260821
+          fetch-depth: 0
+
+      - name: Move inline styles into one external stylesheet
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          import hashlib
+
+          index = Path('index.html')
+          html = index.read_text(encoding='utf-8')
+
+          # Mask script bodies while discovering real HTML <style> blocks, so
+          # strings inside JavaScript can never be mistaken for stylesheet tags.
+          script_ranges = [m.span() for m in re.finditer(r'(?is)<script\b[^>]*>.*?</script\s*>', html)]
+          def inside_script(pos):
+              return any(a <= pos < b for a, b in script_ranges)
+
+          matches = [
+              m for m in re.finditer(r'(?is)<style\b(?P<attrs>[^>]*)>(?P<css>.*?)</style\s*>', html)
+              if not inside_script(m.start())
+          ]
+          if len(matches) < 5:
+              raise SystemExit(f'Expected many inline styles, found only {len(matches)}; refusing unsafe rewrite')
+
+          first_start = matches[0].start()
+          last_end = matches[-1].end()
+
+          # Keep CSS cascade order unchanged: no external stylesheet may appear
+          # between the first and last inline style blocks we are consolidating.
+          middle = html[first_start:last_end]
+          if re.search(r'(?is)<link\b[^>]*rel=["\']stylesheet["\'][^>]*>', middle):
+              raise SystemExit('A stylesheet link exists between inline style blocks; refusing to reorder cascade')
+
+          sections = []
+          for i, m in enumerate(matches, 1):
+              attrs = m.group('attrs') or ''
+              css = m.group('css')
+              id_match = re.search(r'\bid\s*=\s*["\']([^"\']+)["\']', attrs, flags=re.I)
+              label = id_match.group(1) if id_match else f'inline-style-{i}'
+              digest = hashlib.sha256(css.encode('utf-8')).hexdigest()[:12]
+              sections.append(
+                  f'\n/* =========================================================\n'
+                  f'   SOURCE: index.html <style id="{label}">\n'
+                  f'   SHA256: {digest}\n'
+                  f'   ========================================================= */\n'
+                  f'{css.strip()}\n'
+              )
+
+          out = (
+              '/* MYTT SITE OVERRIDES V24\n'
+              '   Extracted verbatim from index.html on 2026-08-21.\n'
+              '   Source order is preserved. No CSS rules were intentionally changed.\n'
+              '*/\n' + ''.join(sections)
+          )
+          Path('site-overrides-v24.css').write_text(out, encoding='utf-8')
+
+          link = '<link rel="stylesheet" href="site-overrides-v24.css?v=20260821-1">'
+          pieces = []
+          cursor = 0
+          for idx, m in enumerate(matches):
+              pieces.append(html[cursor:m.start()])
+              if idx == 0:
+                  pieces.append(link)
+              cursor = m.end()
+          pieces.append(html[cursor:])
+          new_html = ''.join(pieces)
+
+          # Validation: all actual inline styles are gone; stylesheet link exists once.
+          masked_new = re.sub(r'(?is)<script\b[^>]*>.*?</script\s*>', '', new_html)
+          if re.search(r'(?is)<style\b', masked_new):
+              raise SystemExit('Inline style tag remains after extraction')
+          if new_html.count('site-overrides-v24.css?v=20260821-1') != 1:
+              raise SystemExit('Expected exactly one new stylesheet link')
+
+          # Keep relative URL behavior safe: external CSS lives beside index.html.
+          # Record extraction stats for CI logs.
+          original_css_bytes = sum(len(m.group('css').encode('utf-8')) for m in matches)
+          index.write_text(new_html, encoding='utf-8')
+          print(f'Extracted {len(matches)} inline style blocks')
+          print(f'CSS payload moved: {original_css_bytes} bytes')
+          print(f'index.html: {len(html.encode("utf-8"))} -> {len(new_html.encode("utf-8"))} bytes')
+          print(f'site-overrides-v24.css: {len(out.encode("utf-8"))} bytes')
+          PY
+
+      - name: Sanity checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s site-overrides-v24.css
+          grep -q 'site-overrides-v24.css?v=20260821-1' index.html
+          ! grep -qi '<style' index.html
+          node --check app.js
+          node --check marketplace.js
+          node --check marketplace-core-v23.js
+
+      - name: Commit extraction
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "MYTT-Rating"
+          git config user.email "hangtbabm@gmail.com"
+          git add -- index.html site-overrides-v24.css
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Extract inline site styles"
+          git push origin HEAD:extract-inline-styles-v24-20260821
