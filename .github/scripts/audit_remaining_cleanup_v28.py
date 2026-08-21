@@ -99,6 +99,29 @@ for p in sorted(ROOT.iterdir()):
         lines.append(f'{p.name}: {p.stat().st_size} bytes :: {preview}')
 lines.append('')
 
+# Exact basename reference check for root assets/source files. This is a candidate list only.
+text_suffixes = {'.html','.css','.js','.gs','.md','.txt','.yml','.yaml'}
+text_paths = [p for p in ROOT.rglob('*') if p.is_file() and p.suffix.lower() in text_suffixes and '.git' not in p.parts]
+text_cache = {p: p.read_text(encoding='utf-8', errors='ignore') for p in text_paths}
+lines.append('UNREFERENCED ROOT FILE CANDIDATES')
+lines.append('-'*72)
+for p in sorted(ROOT.iterdir()):
+    if not p.is_file():
+        continue
+    if p.name in {'CNAME','cleanup-audit-v28.txt'}:
+        continue
+    if p.suffix.lower() not in {'.css','.js','.png','.jpg','.jpeg','.webp','.svg','.ico','.txt'}:
+        continue
+    refs = []
+    for tp, text in text_cache.items():
+        if tp == p:
+            continue
+        if p.name in text:
+            refs.append(str(tp))
+    if not refs:
+        lines.append(f'{p.name}: {p.stat().st_size} bytes')
+lines.append('')
+
 lines.append('STALE / LEGACY TOKEN COUNTS')
 lines.append('-'*72)
 for token in ['V18','V19','V20','V20.1','V21','V22','V23','V24','mytt-mobile-stable-polish-v1','rank mapping is ready','mobile-event-pro','mytt-event-v4','me4-']:
