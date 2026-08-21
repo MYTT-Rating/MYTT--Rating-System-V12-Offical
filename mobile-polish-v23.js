@@ -82,10 +82,61 @@
     window.addEventListener("resize", () => requestAnimationFrame(enhanceProfile), { passive: true });
   }
 
+  function isHomeTarget() {
+    const target = String(location.hash || "#home").replace(/^#/, "");
+    return !target || target === "home";
+  }
+
+  function resetHomeRankJourneyScroll() {
+    if (!isMobile()) return;
+    const road = document.querySelector(".homepage-rank-road");
+    if (!road) return;
+
+    const reset = () => {
+      if (road.isConnected) road.scrollLeft = 0;
+    };
+
+    // Mobile browsers can restore nested horizontal scroll after initial paint.
+    // Reset across two frames plus one short delayed pass, then leave the road
+    // fully user-scrollable until Home is entered again.
+    requestAnimationFrame(() => {
+      reset();
+      requestAnimationFrame(reset);
+    });
+    setTimeout(reset, 120);
+  }
+
+  function initHomeRankJourneyScrollFix() {
+    const syncIfHome = () => {
+      if (isHomeTarget()) resetHomeRankJourneyScroll();
+    };
+
+    // MYTT mobile navigation uses history.pushState(), which does not fire
+    // hashchange. Catch Home link taps directly and reset after page switching.
+    document.addEventListener("click", (event) => {
+      if (!isMobile()) return;
+      const link = event.target.closest('a[href^="#"]');
+      if (!link) return;
+      const target = String(link.dataset.target || link.getAttribute("href") || "")
+        .replace(/^#/, "");
+      if (target === "home") setTimeout(resetHomeRankJourneyScroll, 0);
+    });
+
+    window.addEventListener("hashchange", syncIfHome);
+    window.addEventListener("popstate", syncIfHome);
+    window.addEventListener("pageshow", syncIfHome);
+    syncIfHome();
+  }
+
+  function init() {
+    watchProfile();
+    initHomeRankJourneyScrollFix();
+  }
+
   ensureLateStyles();
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", watchProfile, { once: true });
+    document.addEventListener("DOMContentLoaded", init, { once: true });
   } else {
-    watchProfile();
+    init();
   }
 })();
