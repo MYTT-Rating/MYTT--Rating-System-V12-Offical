@@ -3,11 +3,22 @@
 
   const coreSrc = "marketplace-core-v23.js?v=20260821-1";
   const polishSrc = "mobile-polish-v23.js?v=20260821-1";
+  const polishCss = "mobile-polish-v23.css?v=20260821-1";
+  const polishCssId = "mytt-mobile-polish-v23-style";
 
-  /* marketplace.js is parser-loaded by index.html. During normal page load,
-     write the two real modules synchronously so the existing rank-sync timing
-     stays identical to the previous single-file implementation. */
+  function ensurePolishCss() {
+    if (document.getElementById(polishCssId)) return;
+    const link = document.createElement("link");
+    link.id = polishCssId;
+    link.rel = "stylesheet";
+    link.href = polishCss;
+    document.head.appendChild(link);
+  }
+
+  /* marketplace.js is parser-loaded by index.html. Keep the existing core
+     synchronous so rank mapping is ready before async Sheet data returns. */
   if (document.readyState === "loading") {
+    ensurePolishCss();
     document.write(`<script src="${coreSrc}"><\/script>`);
     document.write(`<script src="${polishSrc}"><\/script>`);
     return;
@@ -27,6 +38,7 @@
     });
   }
 
+  ensurePolishCss();
   loadScript("mytt-marketplace-core-v23", coreSrc)
     .then(() => loadScript("mytt-mobile-polish-v23", polishSrc))
     .catch((err) => console.error("MYTT UI module load failed", err));
