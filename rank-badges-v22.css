@@ -88,10 +88,10 @@ body .tier-pill .tier-badge-img{
     vertical-align:middle !important;
   }
 
-  /* Hall of Fame artwork sits slightly low optically on the Home road. */
+  /* At the final 50px mobile size, centre HOF slightly lower so its crown is not clipped. */
   .homepage-rank-road .tier-hof-home .home-rank-orb{
     transform:none !important;
-    background-position:center calc(50% - 5px) !important;
+    background-position:center calc(50% + 1px) !important;
   }
 }
 
