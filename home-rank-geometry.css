@@ -1,0 +1,77 @@
+/* =========================================================
+   MYTT HOME RANK JOURNEY — GEOMETRY ONLY
+   ---------------------------------------------------------
+   Badge-to-tier artwork is assigned by app.js from the TIERS table.
+   This file owns only the approved Home Rank Journey sizing/spacing.
+   ========================================================= */
+
+.homepage-rank-road .home-rank-orb{
+  aspect-ratio:1 / 1 !important;
+  image-rendering:auto !important;
+  transform:none;
+}
+
+@media (max-width:860px){
+  .homepage-rank-road .home-rank-node{
+    position:relative !important;
+    z-index:3 !important;
+    flex:0 0 74px !important;
+    width:74px !important;
+    min-width:74px !important;
+  }
+
+  .homepage-rank-road .home-rank-orb{
+    box-sizing:border-box !important;
+    width:70px !important;
+    height:70px !important;
+    min-width:70px !important;
+    min-height:70px !important;
+    max-width:70px !important;
+    max-height:70px !important;
+    margin:0 auto 7px !important;
+  }
+
+  .homepage-rank-road .home-rank-line{
+    position:relative !important;
+    z-index:1 !important;
+    flex:0 0 18px !important;
+    width:18px !important;
+    min-width:18px !important;
+    max-width:18px !important;
+    height:6px !important;
+    margin-top:32px !important;
+  }
+
+  .homepage-rank-road .home-rank-line::before,
+  .homepage-rank-road .home-rank-line::after{
+    width:16px !important;
+    height:6px !important;
+  }
+  .homepage-rank-road .home-rank-line::before{left:-13px !important;}
+  .homepage-rank-road .home-rank-line::after{right:-13px !important;}
+}
+
+@media (max-width:390px){
+  .homepage-rank-road .home-rank-node{
+    flex-basis:72px !important;
+    width:72px !important;
+    min-width:72px !important;
+  }
+
+  .homepage-rank-road .home-rank-orb{
+    width:68px !important;
+    height:68px !important;
+    min-width:68px !important;
+    min-height:68px !important;
+    max-width:68px !important;
+    max-height:68px !important;
+  }
+
+  .homepage-rank-road .home-rank-line{
+    flex-basis:17px !important;
+    width:17px !important;
+    min-width:17px !important;
+    max-width:17px !important;
+    margin-top:31px !important;
+  }
+}
