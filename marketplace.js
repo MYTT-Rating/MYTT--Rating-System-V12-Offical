@@ -15,8 +15,8 @@
     document.head.appendChild(link);
   }
 
-  /* marketplace.js is parser-loaded by index.html. Keep the existing core
-     synchronous so rank mapping is ready before async Sheet data returns. */
+  /* marketplace.js is parser-loaded by index.html. Keep the core
+     synchronous so marketplace helpers initialise in deterministic order. */
   if (document.readyState === "loading") {
     ensurePolishCss();
     document.write(`<script id="mytt-marketplace-core-v23" src="${coreSrc}"><\/script>`);

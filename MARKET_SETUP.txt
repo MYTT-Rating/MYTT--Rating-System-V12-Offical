@@ -1,7 +1,0 @@
-MYTT Gear Market is connected and LIVE.
-
-Web App URL:
-https://script.google.com/macros/s/AKfycbzsbA7txcX5n7i-my-hVKbX79BQvF--DeU58E-638P6U-HaUaaGRi2P-igQK3UwfNdtaw/exec
-
-Seller workflow: Submit -> Pending -> Admin review -> Approved -> Public listing.
-Set Status to Sold or Rejected to remove it from the public marketplace.
