@@ -17,6 +17,39 @@
     document.head.appendChild(link);
   }
 
+  function tuneAvatarImage(img) {
+    if (!(img instanceof HTMLImageElement)) return;
+    const src = String(img.getAttribute("src") || "").trim();
+    if (!/^\.?\/?avatars\//i.test(src)) return;
+
+    if (!img.hasAttribute("loading")) img.loading = "lazy";
+    if (!img.hasAttribute("decoding")) img.decoding = "async";
+  }
+
+  function tuneAvatarImages(root) {
+    if (!root) return;
+    if (root instanceof HTMLImageElement) tuneAvatarImage(root);
+    if (!root.querySelectorAll) return;
+
+    root
+      .querySelectorAll('img[src^="avatars/"],img[src^="./avatars/"],img[src^="/avatars/"]')
+      .forEach(tuneAvatarImage);
+  }
+
+  function initAvatarLazyLoading() {
+    tuneAvatarImages(document);
+
+    const observer = new MutationObserver((records) => {
+      records.forEach((record) => {
+        record.addedNodes.forEach((node) => {
+          if (node.nodeType === Node.ELEMENT_NODE) tuneAvatarImages(node);
+        });
+      });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
   function panelTitle(panel) {
     return String(panel.querySelector(":scope > h3")?.textContent || "").trim();
   }
@@ -170,6 +203,7 @@
   }
 
   function init() {
+    initAvatarLazyLoading();
     watchProfile();
     initHomeRankJourneyScrollFix();
   }
