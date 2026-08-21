@@ -177,7 +177,6 @@
 
   /* ---------------------------------------------------------
      4. Profile secondary sections: compact on phone, content preserved
-     Recent Matches and Rating History remain fully visible.
      --------------------------------------------------------- */
   #profileContent .profile-panel-collapsible{
     padding:0 !important;
@@ -234,6 +233,56 @@
   #profileContent .profile-mobile-panel-body .equipment-row:first-child{
     margin-top:2px !important;
   }
+
+  /* Recent Matches stays visible, but starts with the latest 3 matches. */
+  #profileContent .profile-recent-matches{
+    position:relative !important;
+  }
+
+  #profileContent .profile-recent-matches > h3{
+    padding-right:48px !important;
+  }
+
+  #profileContent .profile-recent-matches-toggle{
+    appearance:none;
+    -webkit-appearance:none;
+    position:absolute;
+    top:10px;
+    right:10px;
+    width:38px;
+    height:38px;
+    display:grid;
+    place-items:center;
+    margin:0;
+    padding:0;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:50%;
+    background:rgba(255,255,255,.055);
+    color:rgba(255,255,255,.66);
+    cursor:pointer;
+    touch-action:manipulation;
+  }
+
+  #profileContent .profile-recent-matches-toggle:active{
+    transform:scale(.95);
+  }
+
+  #profileContent .profile-recent-matches-chevron{
+    display:block;
+    font-size:22px;
+    line-height:1;
+    transform:translateY(-1px) rotate(0deg);
+    transition:transform .18s ease,color .18s ease;
+  }
+
+  #profileContent .profile-recent-matches.recent-matches-expanded .profile-recent-matches-chevron{
+    color:#ff6666;
+    transform:translateY(1px) rotate(180deg);
+  }
+
+  #profileContent .match-list > .match-card.mytt-recent-hidden{
+    display:none !important;
+  }
 }
 
 /* If a phone profile was opened and the viewport later becomes desktop-sized,
@@ -245,6 +294,18 @@
 
   #profileContent .profile-panel-collapsible .profile-mobile-panel-body{
     display:block !important;
+  }
+
+  #profileContent .profile-recent-matches-toggle{
+    display:none !important;
+  }
+
+  #profileContent .profile-recent-matches > h3{
+    padding-right:0 !important;
+  }
+
+  #profileContent .match-list > .match-card.mytt-recent-hidden{
+    display:grid !important;
   }
 }
 
