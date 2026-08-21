@@ -1,0 +1,23 @@
+name: Run Event Cascade Compaction
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/run-event-cascade-compaction.yml']
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: compact-event-cascade-20260821
+          fetch-depth: 0
+      - run: python .github/scripts/compact_event_cascade.py
+      - run: node --check app.js
+      - run: |
+          git config user.name "MYTT-Rating"
+          git config user.email "hangtbabm@gmail.com"
+          git add site-overrides-v24.css index.html
+          git commit -m "Compact superseded Event CSS cascade"
+          git push origin HEAD:compact-event-cascade-20260821
