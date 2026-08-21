@@ -16,13 +16,33 @@ jobs:
         with:
           ref: final-cleanup-v28-20260821
           fetch-depth: 0
-      - run: python .github/scripts/final_cleanup_v28.py
-      - run: |
+
+      - name: Run cleanup and capture diagnostics
+        shell: bash
+        run: |
+          set +e
+          python .github/scripts/final_cleanup_v28.py > final-cleanup-v28-debug.log 2>&1
+          status=$?
+          echo "script_exit=$status" >> final-cleanup-v28-debug.log
+          git config user.name "MYTT-Rating"
+          git config user.email "hangtbabm@gmail.com"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "Run final cleanup with diagnostics"
+            git push origin HEAD:final-cleanup-v28-20260821
+          fi
+          exit $status
+
+      - name: Validate JavaScript
+        run: |
           node --check app.js
           node --check marketplace.js
           node --check marketplace-core-v23.js
           node --check mobile-polish-v23.js
-      - run: |
+
+      - name: Validate required files and references
+        shell: bash
+        run: |
           set -euo pipefail
           test -f event-paddle.webp
           test -f event-pro-art.webp
@@ -32,10 +52,3 @@ jobs:
           grep -q 'site-overrides-v24.css?v=20260821-final-v28-1' index.html
           grep -q 'marketplace.css?v=20260821-final-v28-1' index.html
           grep -q 'marketplace.js?v=20260821-final-v28-1' index.html
-      - run: |
-          set -euo pipefail
-          git config user.name "MYTT-Rating"
-          git config user.email "hangtbabm@gmail.com"
-          git add -A
-          git commit -m "Finish conservative repository cleanup"
-          git push origin HEAD:final-cleanup-v28-20260821
