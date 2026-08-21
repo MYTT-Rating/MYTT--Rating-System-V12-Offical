@@ -1,10 +1,21 @@
 (function () {
   "use strict";
 
-  function loadScript(id, src) {
-    const existing = document.getElementById(id);
-    if (existing) return Promise.resolve();
+  const coreSrc = "marketplace-core-v23.js?v=20260821-1";
+  const polishSrc = "mobile-polish-v23.js?v=20260821-1";
 
+  /* marketplace.js is parser-loaded by index.html. During normal page load,
+     write the two real modules synchronously so the existing rank-sync timing
+     stays identical to the previous single-file implementation. */
+  if (document.readyState === "loading") {
+    document.write(`<script src="${coreSrc}"><\/script>`);
+    document.write(`<script src="${polishSrc}"><\/script>`);
+    return;
+  }
+
+  /* Safe fallback if this loader is ever injected after parsing. */
+  function loadScript(id, src) {
+    if (document.getElementById(id)) return Promise.resolve();
     return new Promise((resolve, reject) => {
       const script = document.createElement("script");
       script.id = id;
@@ -16,7 +27,7 @@
     });
   }
 
-  loadScript("mytt-marketplace-core-v23", "marketplace-core-v23.js?v=20260821-1")
-    .then(() => loadScript("mytt-mobile-polish-v23", "mobile-polish-v23.js?v=20260821-1"))
+  loadScript("mytt-marketplace-core-v23", coreSrc)
+    .then(() => loadScript("mytt-mobile-polish-v23", polishSrc))
     .catch((err) => console.error("MYTT UI module load failed", err));
 })();
