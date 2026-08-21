@@ -335,9 +335,6 @@
     font-size:7px !important;
   }
 
-  
-
-  
 
   .hero-progress-card{
     margin-top:5px !important;
@@ -1662,7 +1659,7 @@
   .homepage-rank-road .home-rank-node > span{font-size:10px !important;}
   .homepage-rank-road .home-rank-node > small{font-size:9px !important;}
   .homepage-rank-road .you-marker{font-size:9px !important;}
-  
+
   .hero-home-final .hero-rank-card-final::after{
     content:"SWIPE TO EXPLORE →" !important;
     font-size:8.5px !important;

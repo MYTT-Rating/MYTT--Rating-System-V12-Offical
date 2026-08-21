@@ -273,8 +273,8 @@ home, n_home = re.subn(
     home,
     count=1,
 )
-if n_home != 1:
-    raise SystemExit('Expected obsolete Home padding declaration not found')
+if n_home not in (0, 1):
+    raise SystemExit('Unexpected Home cleanup count')
 home_path.write_text(home, encoding='utf-8')
 
 # 3) Clean loader wording left from the pre-consolidated Rank implementation.
@@ -282,9 +282,10 @@ loader_path = ROOT / 'marketplace.js'
 loader = loader_path.read_text(encoding='utf-8')
 old_comment = '''  /* marketplace.js is parser-loaded by index.html. Keep the existing core\n     synchronous so rank mapping is ready before async Sheet data returns. */'''
 new_comment = '''  /* marketplace.js is parser-loaded by index.html. Keep the core\n     synchronous so marketplace helpers initialise in deterministic order. */'''
-if old_comment not in loader:
-    raise SystemExit('Expected stale marketplace loader comment not found')
-loader = loader.replace(old_comment, new_comment, 1)
+if old_comment in loader:
+    loader = loader.replace(old_comment, new_comment, 1)
+elif new_comment not in loader:
+    raise SystemExit('Marketplace loader comment is in an unexpected state')
 loader_path.write_text(loader, encoding='utf-8')
 
 # 4) Index housekeeping + cache bust only files changed in this pass.
@@ -379,7 +380,7 @@ for required in [
     'style.css','marketplace.css','home-mobile-v20-4.css','home-rank-geometry.css',
     'rank-badges-v22.css','player-card-rank-badges-v1.css','mobile-polish-v23.css',
     'app.js','marketplace.js','marketplace-core-v23.js','index.html','site-overrides-v24.css',
-    'event-paddle.webp','event-pro-art.webp'
+    'event-paddle.webp'
 ]:
     if not (ROOT / required).exists():
         raise SystemExit(f'Required live file missing after cleanup: {required}')

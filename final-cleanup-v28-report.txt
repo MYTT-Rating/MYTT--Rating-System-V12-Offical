@@ -1,0 +1,8 @@
+MYTT FINAL CLEANUP V28
+================================================================
+Exact superseded CSS declarations removed: 0
+Dead rank-scroll-hint rules removed: 0
+Obsolete Home declaration removed: 0
+Stale docs consolidated into README.md: README.txt, README_FIRST.txt, MARKET_SETUP.txt, MULTI_PHOTO_UPDATE_STEPS.txt
+Unused root files removed: none
+Final site-overrides-v24.css lines: 1807
