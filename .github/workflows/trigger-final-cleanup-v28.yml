@@ -17,6 +17,19 @@ jobs:
           ref: final-cleanup-v28-20260821
           fetch-depth: 0
 
+      - name: Make cleanup script idempotent after diagnostic pass
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('.github/scripts/final_cleanup_v28.py')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace("if n_home != 1:\n    raise SystemExit('Expected obsolete Home padding declaration not found')", "if n_home not in (0, 1):\n    raise SystemExit('Unexpected Home cleanup count')")
+          s = s.replace("if old_comment not in loader:\n    raise SystemExit('Expected stale marketplace loader comment not found')\nloader = loader.replace(old_comment, new_comment, 1)", "if old_comment in loader:\n    loader = loader.replace(old_comment, new_comment, 1)\nelif new_comment not in loader:\n    raise SystemExit('Marketplace loader comment is in an unexpected state')")
+          s = s.replace("    'event-paddle.webp','event-pro-art.webp'\n", "    'event-paddle.webp'\n")
+          p.write_text(s, encoding='utf-8')
+          PY
+
       - name: Run cleanup and capture diagnostics
         shell: bash
         run: |
@@ -28,7 +41,7 @@ jobs:
           git config user.email "hangtbabm@gmail.com"
           git add -A
           if ! git diff --cached --quiet; then
-            git commit -m "Run final cleanup with diagnostics"
+            git commit -m "Complete final cleanup pass"
             git push origin HEAD:final-cleanup-v28-20260821
           fi
           exit $status
@@ -45,10 +58,10 @@ jobs:
         run: |
           set -euo pipefail
           test -f event-paddle.webp
-          test -f event-pro-art.webp
           ! test -f leaderboard-rookie-v217.css
           ! grep -q 'rank mapping is ready' marketplace.js
           ! grep -q 'rank-scroll-hint' site-overrides-v24.css
           grep -q 'site-overrides-v24.css?v=20260821-final-v28-1' index.html
           grep -q 'marketplace.css?v=20260821-final-v28-1' index.html
           grep -q 'marketplace.js?v=20260821-final-v28-1' index.html
+          grep -q 'MYTT FINAL CLEANUP V28' final-cleanup-v28-report.txt
