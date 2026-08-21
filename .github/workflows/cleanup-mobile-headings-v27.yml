@@ -48,3 +48,5 @@ jobs:
           git add -- site-overrides-v24.css index.html
           git commit -m "Consolidate mobile heading CSS"
           git push origin HEAD:cleanup-mobile-headings-v27-20260821
+
+# trigger after workflow registration
