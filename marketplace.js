@@ -19,8 +19,8 @@
      synchronous so rank mapping is ready before async Sheet data returns. */
   if (document.readyState === "loading") {
     ensurePolishCss();
-    document.write(`<script src="${coreSrc}"><\/script>`);
-    document.write(`<script src="${polishSrc}"><\/script>`);
+    document.write(`<script id="mytt-marketplace-core-v23" src="${coreSrc}"><\/script>`);
+    document.write(`<script id="mytt-mobile-polish-v23" src="${polishSrc}"><\/script>`);
     return;
   }
 
