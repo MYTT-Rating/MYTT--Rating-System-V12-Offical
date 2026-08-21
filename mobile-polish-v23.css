@@ -1,0 +1,207 @@
+/* =========================================================
+   MYTT MOBILE POLISH V23
+   Consolidated late-loaded phone overrides.
+   Scope: profile modal, iOS form zoom, safe areas, profile accordions.
+   ========================================================= */
+
+@media (max-width:860px){
+  :root{
+    --mytt-safe-top:env(safe-area-inset-top,0px);
+    --mytt-mobile-header-base:60px;
+    --mytt-mobile-header:calc(var(--mytt-mobile-header-base) + var(--mytt-safe-top)) !important;
+  }
+
+  html{
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+  }
+
+  /* ---------------------------------------------------------
+     1. Player Profile modal: one scroll surface, no nav overlap
+     --------------------------------------------------------- */
+  body:has(#profileModal:not(.hidden)){
+    overflow:hidden !important;
+  }
+
+  body:has(#profileModal:not(.hidden)) .v14-bottom-nav,
+  body:has(#profileModal:not(.hidden)) .v15-bottom-nav,
+  body:has(#profileModal:not(.hidden)) .mytt-bottom-nav,
+  body:has(#profileModal:not(.hidden)) .v14-more-sheet,
+  body:has(#profileModal:not(.hidden)) .v14-more-backdrop{
+    display:none !important;
+  }
+
+  #profileModal:not(.hidden){
+    z-index:5200 !important;
+    overscroll-behavior:contain !important;
+  }
+
+  #profileModal .modal-backdrop{
+    touch-action:none !important;
+  }
+
+  #profileModal .modal-card{
+    position:relative !important;
+    z-index:1 !important;
+    overflow-y:auto !important;
+    overscroll-behavior:contain !important;
+    -webkit-overflow-scrolling:touch !important;
+    scrollbar-gutter:stable !important;
+  }
+
+  #profileModal .modal-close{
+    position:sticky !important;
+    top:8px !important;
+    float:right !important;
+    width:46px !important;
+    height:46px !important;
+    min-width:46px !important;
+    min-height:46px !important;
+    margin:8px 6px -46px 0 !important;
+    border:1px solid rgba(255,255,255,.15) !important;
+    border-radius:50% !important;
+    background:rgba(18,20,24,.86) !important;
+    color:#fff !important;
+    font-size:29px !important;
+    line-height:1 !important;
+    box-shadow:0 8px 24px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.10) !important;
+    backdrop-filter:blur(12px) !important;
+    -webkit-backdrop-filter:blur(12px) !important;
+    z-index:80 !important;
+    touch-action:manipulation !important;
+  }
+
+  #profileModal .modal-close:active{
+    transform:scale(.94) !important;
+  }
+
+  /* ---------------------------------------------------------
+     2. iOS input zoom prevention
+     Safari zooms focused controls when their computed font is <16px.
+     Labels/helper copy remain unchanged.
+     --------------------------------------------------------- */
+  input[type="text"],
+  input[type="search"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="number"],
+  input[type="password"],
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="week"],
+  select,
+  textarea,
+  .result-player-search{
+    font-size:16px !important;
+  }
+
+  /* ---------------------------------------------------------
+     3. Top safe area for notches / Dynamic Island / standalone use
+     Keep the existing 60px visual header; safe area is added above it.
+     --------------------------------------------------------- */
+  .premium-header,
+  .site-header{
+    min-height:var(--mytt-mobile-header) !important;
+    height:var(--mytt-mobile-header) !important;
+    padding-top:var(--mytt-safe-top) !important;
+  }
+
+  .premium-header-inner{
+    min-height:var(--mytt-mobile-header-base) !important;
+    height:var(--mytt-mobile-header-base) !important;
+  }
+
+  .premium-nav{
+    top:var(--mytt-mobile-header) !important;
+  }
+
+  /* Preserve the current 16px breathing room below the compact header. */
+  body{
+    padding-top:calc(var(--mytt-mobile-header) + 16px) !important;
+  }
+
+  main#home > .mobile-nav-page{
+    min-height:calc(100dvh - var(--mytt-mobile-header)) !important;
+    scroll-margin-top:var(--mytt-mobile-header) !important;
+  }
+
+  #profileModal{
+    top:var(--mytt-mobile-header) !important;
+    height:calc(100dvh - var(--mytt-mobile-header)) !important;
+  }
+
+  /* ---------------------------------------------------------
+     4. Profile secondary sections: compact on phone, content preserved
+     Recent Matches and Rating History remain fully visible.
+     --------------------------------------------------------- */
+  #profileContent .profile-panel-collapsible{
+    padding:0 !important;
+    overflow:hidden !important;
+  }
+
+  #profileContent .profile-mobile-panel-toggle{
+    appearance:none;
+    -webkit-appearance:none;
+    width:100%;
+    min-height:54px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin:0;
+    padding:14px 16px;
+    border:0;
+    background:transparent;
+    color:#fff;
+    font:900 17px/1.2 Arial,Helvetica,sans-serif;
+    text-align:left;
+    cursor:pointer;
+    touch-action:manipulation;
+  }
+
+  #profileContent .profile-mobile-panel-chevron{
+    flex:0 0 auto;
+    color:rgba(255,255,255,.62);
+    font-size:22px;
+    line-height:1;
+    transform:translateY(-1px) rotate(0deg);
+    transition:transform .18s ease,color .18s ease;
+  }
+
+  #profileContent .profile-panel-collapsible.is-open .profile-mobile-panel-chevron{
+    color:#ff6666;
+    transform:translateY(1px) rotate(180deg);
+  }
+
+  #profileContent .profile-mobile-panel-body{
+    padding:0 16px 16px;
+    border-top:1px solid rgba(255,255,255,.075);
+  }
+
+  #profileContent .profile-mobile-panel-body[hidden]{
+    display:none !important;
+  }
+
+  #profileContent .profile-mobile-panel-body > :first-child{
+    margin-top:12px !important;
+  }
+
+  #profileContent .profile-mobile-panel-body .equipment-row:first-child{
+    margin-top:2px !important;
+  }
+}
+
+/* If a phone profile was opened and the viewport later becomes desktop-sized,
+   keep all transformed content visible rather than leaving it collapsed. */
+@media (min-width:861px){
+  #profileContent .profile-panel-collapsible .profile-mobile-panel-toggle{
+    display:none !important;
+  }
+
+  #profileContent .profile-panel-collapsible .profile-mobile-panel-body{
+    display:block !important;
+  }
+}
