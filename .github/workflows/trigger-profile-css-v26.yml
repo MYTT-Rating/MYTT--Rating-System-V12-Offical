@@ -1,0 +1,27 @@
+name: Trigger Profile CSS V26
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/trigger-profile-css-v26.yml']
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: cleanup-profile-css-v26-20260821
+          fetch-depth: 0
+      - run: python .github/scripts/consolidate_profile_css_v26.py
+      - run: |
+          node --check app.js
+          node --check marketplace.js
+          node --check mobile-polish-v23.js
+      - run: |
+          set -euo pipefail
+          git config user.name "MYTT-Rating"
+          git config user.email "hangtbabm@gmail.com"
+          git add -- site-overrides-v24.css mobile-polish-v23.css marketplace.js index.html
+          git commit -m "Consolidate mobile profile CSS"
+          git push origin HEAD:cleanup-profile-css-v26-20260821
