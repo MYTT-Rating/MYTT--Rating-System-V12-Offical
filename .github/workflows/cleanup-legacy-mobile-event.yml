@@ -65,18 +65,17 @@ jobs:
                   block_end = len(css)
               css = css[:block_start].rstrip() + '\n\n' + css[block_end:].lstrip()
 
-          patterns = [
-              (r'\n\s*<!-- New mobile-only Event DOM\..*?-->\s*<section class="mobile-event-pro"[\s\S]*?</section>\s*', 'mobile-event-pro'),
-              (r'\n\s*<!-- MYTT mobile Event V4:.*?-->\s*<section class="mytt-event-v4"[\s\S]*?</section>\s*', 'mytt-event-v4'),
-          ]
+          # V4 is still rendered as hidden legacy DOM; remove it entirely.
+          v4_pattern = r'\n\s*<!-- MYTT mobile Event V4:.*?-->\s*<section class="mytt-event-v4"[\s\S]*?</section>\s*'
+          app, v4_count = re.subn(v4_pattern, '\n', app, count=1)
+          if v4_count != 1:
+              app, v4_count = re.subn(r'\n\s*<section class="mytt-event-v4"[\s\S]*?</section>\s*', '\n', app, count=1)
+          if v4_count != 1:
+              raise SystemExit('Unable to remove legacy DOM section: mytt-event-v4')
 
-          for pattern, label in patterns:
-              app, count = re.subn(pattern, '\n', app, count=1)
-              if count != 1:
-                  fallback = rf'\n\s*<section class="{re.escape(label)}"[\s\S]*?</section>\s*'
-                  app, count = re.subn(fallback, '\n', app, count=1)
-              if count != 1:
-                  raise SystemExit(f'Unable to remove legacy DOM section: {label}')
+          # mobile-event-pro CSS is obsolete; its full DOM generation is already absent.
+          if '<section class="mobile-event-pro"' in app or '<div class="mobile-event-pro"' in app:
+              raise SystemExit('Unexpected mobile-event-pro DOM still present')
 
           required = [
               '<section class="mytt-event-v5"',
@@ -90,8 +89,6 @@ jobs:
               if token not in combined:
                   raise SystemExit(f'Active Event token disappeared: {token}')
 
-          if '<section class="mobile-event-pro"' in app:
-              raise SystemExit('mobile-event-pro DOM still present')
           if '<section class="mytt-event-v4"' in app:
               raise SystemExit('mytt-event-v4 DOM still present')
           for style_id in remove_ids:
@@ -117,9 +114,10 @@ jobs:
           set -euo pipefail
           grep -q 'mytt-event-v5' app.js
           grep -q 'target-event-hero' app.js
-          ! grep -q '<section class="mobile-event-pro"' app.js
           ! grep -q '<section class="mytt-event-v4"' app.js
+          ! grep -q 'SOURCE: index.html <style id="mytt-mobile-event-final-compact-v1">' site-overrides-v24.css
           ! grep -q 'SOURCE: index.html <style id="mytt-mobile-event-pro-dom-v2">' site-overrides-v24.css
+          ! grep -q 'SOURCE: index.html <style id="mytt-mobile-event-hero-only-v3">' site-overrides-v24.css
           ! grep -q 'SOURCE: index.html <style id="mytt-event-exact-code-v4">' site-overrides-v24.css
 
       - name: Commit cleanup
