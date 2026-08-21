@@ -493,8 +493,6 @@
 }
 
 /* Remove the old separate tech-art paddle so the new photo is the hero art */
-.target-event-hero .target-paddle-art{
-}
 
 .target-event-hero .target-hero-content,
 .target-event-hero .target-hero-action{
@@ -503,12 +501,8 @@
 }
 
 /* subtle premium edge light, keeps the current neon language */
-.target-event-hero::after{
-}
 
 @media (max-width:768px){
-  .target-event-hero{
-  }
 
   .target-event-title,
   .target-event-summary,
@@ -1170,8 +1164,6 @@
     font-weight:650 !important;
     letter-spacing:.035em !important;
   }
-  #events .me5-spots{
-  }
   #events .me5-spots b{
     flex:0 0 auto !important;
     margin-right:1px !important;
@@ -1182,14 +1174,7 @@
 }
 
 @media (max-width:390px){
-  #events .me5-card{
-  }
-  #events .me5-title{}
-  #events .me5-title span{}
   #events .me5-title strong{transform:scaleX(.88) skewX(-2deg) !important;}
-  #events .me5-register-wrap{}
-  #events .me5-register{}
-  #events .me5-register span{}
   #events .me5-summary-item{padding-left:5px !important;padding-right:5px !important;gap:5px !important;}
   #events .me5-icon,#events .me5-users{width:27px !important;height:27px !important;min-width:27px !important;}
   #events .me5-summary-item strong{font-size:8.3px !important;}
@@ -1202,16 +1187,11 @@
    COMPACTED: title experiment removed because V7 restored V5 exactly.
    ========================================================= */
 @media (max-width:768px){
-  #events .me5-register-wrap{}
   #events .me5-register{gap:7px !important;box-shadow:0 0 0 2px rgba(255,40,40,.12),0 0 13px rgba(255,25,25,.36),inset 0 0 0 1px rgba(255,255,255,.12) !important;}
   #events .me5-register::after{inset:5px !important;border-radius:7px !important;border-color:rgba(255,255,255,.17) !important;}
   #events .me5-register span{letter-spacing:.01em !important;}
-  #events .me5-register b{}
 }
 @media (max-width:390px){
-  #events .me5-register-wrap{}
-  #events .me5-register{}
-  #events .me5-register span{}
   #events .me5-register b{font-size:17px !important;}
 }
 
@@ -1405,9 +1385,7 @@
   #events .me5-register{height:52px !important;min-height:52px !important;}
   #events .me5-register span{font-size:10.5px !important;}
   #events .me5-summary{height:59px !important;}
-  #events .me10-facts{}
   #events .me10-fact{min-height:70px !important;}
-  #events .me10-fact strong{}
 }
 
 /* =========================================================
