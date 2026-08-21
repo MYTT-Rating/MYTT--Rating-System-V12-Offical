@@ -4,122 +4,6 @@
 */
 
 /* =========================================================
-   SOURCE: index.html <style id="mytt-mobile-title-left-fix">
-   SHA256: 471b08ba928a
-   ========================================================= */
-@media (max-width: 768px){
-  /* Players + Join/Submit page headings: align left like the rest of the app */
-  #players .section-head,
-  #players .players-section-head,
-  #submit .section-head,
-  #submit .submit-section-head,
-  .mobile-actions-page .section-head,
-  .mobile-page-actions .section-head{
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) auto !important;
-    align-items:end !important;
-    justify-content:stretch !important;
-    gap:12px !important;
-    text-align:left !important;
-  }
-
-  #players .section-head > div:first-child,
-  #players .players-section-head > div:first-child,
-  #submit .section-head > div:first-child,
-  #submit .submit-section-head > div:first-child,
-  .mobile-actions-page .section-head > div:first-child,
-  .mobile-page-actions .section-head > div:first-child{
-    min-width:0 !important;
-    width:auto !important;
-    margin:0 !important;
-    text-align:left !important;
-    justify-self:start !important;
-  }
-
-  #players .section-head .kicker,
-  #players .players-section-head .kicker,
-  #submit .section-head .kicker,
-  #submit .submit-section-head .kicker,
-  .mobile-actions-page .section-head .kicker,
-  .mobile-page-actions .section-head .kicker{
-    margin:0 0 8px !important;
-    text-align:left !important;
-  }
-
-  #players .section-head h2,
-  #players .players-section-head h2,
-  #submit .section-head h2,
-  #submit .submit-section-head h2,
-  .mobile-actions-page .section-head h2,
-  .mobile-page-actions .section-head h2{
-    margin:0 !important;
-    text-align:left !important;
-    justify-self:start !important;
-  }
-
-  #players .section-head .status,
-  #players .players-section-head .status,
-  #submit .section-head .status,
-  #submit .submit-section-head .status,
-  .mobile-actions-page .section-head .status,
-  .mobile-page-actions .section-head .status{
-    justify-self:end !important;
-    align-self:end !important;
-    margin:0 0 2px !important;
-  }
-}
-
-/* =========================================================
-   SOURCE: index.html <style id="mytt-submit-title-left-final">
-   SHA256: 69e73b6b6176
-   ========================================================= */
-@media (max-width: 768px){
-  #submitPage .submit-hub-head{
-    display:grid !important;
-    grid-template-columns:minmax(0,1fr) auto !important;
-    align-items:end !important;
-    justify-content:stretch !important;
-    gap:12px !important;
-    width:100% !important;
-    text-align:left !important;
-  }
-
-  #submitPage .submit-hub-head > div:first-child{
-    min-width:0 !important;
-    width:100% !important;
-    margin:0 !important;
-    padding:0 !important;
-    justify-self:start !important;
-    text-align:left !important;
-  }
-
-  #submitPage .submit-hub-head .kicker{
-    display:block !important;
-    width:100% !important;
-    margin:0 0 8px !important;
-    padding:0 !important;
-    text-align:left !important;
-  }
-
-  #submitPage .submit-hub-head h2,
-  #submitPage #submitPageTitle{
-    display:block !important;
-    width:100% !important;
-    margin:0 !important;
-    padding:0 !important;
-    text-align:left !important;
-    justify-self:start !important;
-    transform:none !important;
-  }
-
-  #submitPage .submit-hub-head .status{
-    justify-self:end !important;
-    align-self:end !important;
-    margin:0 0 2px !important;
-  }
-}
-
-/* =========================================================
    SOURCE: index.html <style id="mytt-mobile-stable-polish-v1">
    SHA256: 912041658665
    ========================================================= */
@@ -258,6 +142,47 @@
     font-size:10px !important;
     line-height:1 !important;
     border-radius:999px !important;
+  }
+
+  /* =====================================================
+     MYTT MOBILE HEADING ALIGNMENT — CONSOLIDATED V27
+     Retains only the live declarations from the retired
+     Players / Join-Submit heading patches.
+     ===================================================== */
+  #players .section-head{
+    justify-content:stretch !important;
+  }
+
+  #players .section-head > div:first-child{
+    width:auto !important;
+  }
+
+  #players .section-head h2{
+    justify-self:start !important;
+  }
+
+  #submitPage .submit-hub-head{
+    justify-content:stretch !important;
+    width:100% !important;
+  }
+
+  #submitPage .submit-hub-head > div:first-child{
+    width:100% !important;
+    padding:0 !important;
+  }
+
+  #submitPage .submit-hub-head .kicker{
+    display:block !important;
+    width:100% !important;
+    padding:0 !important;
+  }
+
+  #submitPage .submit-hub-head h2,
+  #submitPage #submitPageTitle{
+    display:block !important;
+    width:100% !important;
+    padding:0 !important;
+    justify-self:start !important;
   }
 
   /* =====================================================
