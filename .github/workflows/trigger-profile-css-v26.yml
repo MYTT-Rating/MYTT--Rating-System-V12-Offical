@@ -25,3 +25,4 @@ jobs:
           git add -- site-overrides-v24.css mobile-polish-v23.css marketplace.js index.html
           git commit -m "Consolidate mobile profile CSS"
           git push origin HEAD:cleanup-profile-css-v26-20260821
+# rerun after feature branch initialization
