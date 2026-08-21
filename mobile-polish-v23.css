@@ -17,6 +17,48 @@
   }
 
   /* ---------------------------------------------------------
+     1a. Profile sheet geometry migrated from V20.1
+     These are the layout primitives still used by the current phone profile.
+     --------------------------------------------------------- */
+  #profileModal{
+    right:0 !important;
+    bottom:0 !important;
+    left:0 !important;
+    padding:8px 0 0 !important;
+    place-items:start center !important;
+    overflow:hidden !important;
+  }
+
+  #profileModal .modal-backdrop{
+    inset:0 !important;
+  }
+
+  #profileModal .modal-card{
+    width:100% !important;
+    max-height:calc(100dvh - var(--mytt-mobile-header,60px) - 8px) !important;
+    margin:0 !important;
+    padding:0 12px 26px !important;
+    border-radius:18px 18px 0 0 !important;
+  }
+
+  #profileModal .modal-close{
+    right:auto !important;
+  }
+
+  #profileContent{
+    clear:both !important;
+    padding:18px 8px 30px !important;
+  }
+
+  #profileContent .profile-hero-pro{
+    margin-top:0 !important;
+  }
+
+  #profileContent .profile-avatar-pro{
+    margin-top:2px !important;
+  }
+
+  /* ---------------------------------------------------------
      1. Player Profile modal: one scroll surface, no nav overlap
      --------------------------------------------------------- */
   body:has(#profileModal:not(.hidden)){
