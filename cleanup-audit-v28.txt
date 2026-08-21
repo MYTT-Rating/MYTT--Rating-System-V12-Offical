@@ -147,6 +147,11 @@ MULTI_PHOTO_UPDATE_STEPS.txt: 669 bytes :: MYTT MARKET — MULTI PHOTO UPDATE | 
 README.md: 235 bytes :: # MYTT V4.0.1 Profile Pro Sprint 1 |  | Added: | - Profile Header Pro | - Dashboard-style stat cards | - Career Summary | - Rank Progress Pro | - Achievement v1 |  | Kept compatible with Google Sheets, Apps Script, GitHub Actions, and existing avatars. | 
 README.txt: 2792 bytes :: MYTT V20 - Mobile Usability & Performance | Based on V19 Event Auto-Confirm + stable V18 Market Clean. |  | MOBILE UI CHANGES | - Compact app-style header on phones; the redundant hamburger navigation is hidden. | - Existing bottom navigation remains unchanged: Home / Singles / Events / Doubles / More. | - Key 
 README_FIRST.txt: 1372 bytes :: MYTT FINAL INTEGRATED — 16 AUG 2026 |  | UPLOAD_TO_GITHUB | ---------------- | These are the website files to publish to the existing MYTT GitHub Pages repository. | Replace the matching files in the repository with the files from this folder. |  | Included website state: | - Mobile app-style page navigation | - Home
+cleanup-audit-v28.txt: 7547 bytes :: MYTT REMAINING CLEANUP AUDIT V28 | ======================================================================== | site-overrides-v24.css lines: 1923 | source-labelled blocks: 11 |  | SOURCE BLOCKS | ------------------------------------------------------------------------ | mytt-mobile-stable-polish-v1: 492 lines, 99 
+
+UNREFERENCED ROOT FILE CANDIDATES
+------------------------------------------------------------------------
+mytt-icon-512.png: 181086 bytes
 
 STALE / LEGACY TOKEN COUNTS
 ------------------------------------------------------------------------
