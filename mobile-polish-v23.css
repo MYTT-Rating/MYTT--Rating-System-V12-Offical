@@ -70,51 +70,51 @@
   body:has(#profileModal:not(.hidden)) .mytt-bottom-nav,
   body:has(#profileModal:not(.hidden)) .v14-more-sheet,
   body:has(#profileModal:not(.hidden)) .v14-more-backdrop{
-    display:none!important;
+    display:none !important;
   }
 
   #profileModal:not(.hidden){
-    z-index:5200!important;
-    overscroll-behavior:contain!important;
+    z-index:5200 !important;
+    overscroll-behavior:contain !important;
   }
 
   #profileModal .modal-backdrop{
-    touch-action:none!important;
+    touch-action:none !important;
   }
 
   #profileModal .modal-card{
-    position:relative!important;
-    z-index:1!important;
-    overflow-y:auto!important;
-    overscroll-behavior:contain!important;
-    -webkit-overflow-scrolling:touch!important;
-    scrollbar-gutter:stable!important;
+    position:relative !important;
+    z-index:1 !important;
+    overflow-y:auto !important;
+    overscroll-behavior:contain !important;
+    -webkit-overflow-scrolling:touch !important;
+    scrollbar-gutter:stable !important;
   }
 
   #profileModal .modal-close{
-    position:sticky!important;
-    top:8px!important;
-    float:right!important;
-    width:46px!important;
-    height:46px!important;
-    min-width:46px!important;
-    min-height:46px!important;
-    margin:8px 6px -46px 0!important;
-    border:1px solid rgba(255,255,255,.15)!important;
-    border-radius:50%!important;
-    background:rgba(18,20,24,.86)!important;
-    color:#fff!important;
-    font-size:29px!important;
-    line-height:1!important;
-    box-shadow:0 8px 24px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.10)!important;
-    backdrop-filter:blur(12px)!important;
-    -webkit-backdrop-filter:blur(12px)!important;
-    z-index:80!important;
-    touch-action:manipulation!important;
+    position:sticky !important;
+    top:8px !important;
+    float:right !important;
+    width:46px !important;
+    height:46px !important;
+    min-width:46px !important;
+    min-height:46px !important;
+    margin:8px 6px -46px 0 !important;
+    border:1px solid rgba(255,255,255,.15) !important;
+    border-radius:50% !important;
+    background:rgba(18,20,24,.86) !important;
+    color:#fff !important;
+    font-size:29px !important;
+    line-height:1 !important;
+    box-shadow:0 8px 24px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.10) !important;
+    backdrop-filter:blur(12px) !important;
+    -webkit-backdrop-filter:blur(12px) !important;
+    z-index:80 !important;
+    touch-action:manipulation !important;
   }
 
   #profileModal .modal-close:active{
-    transform:scale(.94)!important;
+    transform:scale(.94) !important;
   }
 
   /* ---------------------------------------------------------
@@ -137,7 +137,7 @@
   select,
   textarea,
   .result-player-search{
-    font-size:16px!important;
+    font-size:16px !important;
   }
 
   /* ---------------------------------------------------------
@@ -146,33 +146,33 @@
      --------------------------------------------------------- */
   .premium-header,
   .site-header{
-    min-height:var(--mytt-mobile-header)!important;
-    height:var(--mytt-mobile-header)!important;
-    padding-top:var(--mytt-safe-top)!important;
+    min-height:var(--mytt-mobile-header) !important;
+    height:var(--mytt-mobile-header) !important;
+    padding-top:var(--mytt-safe-top) !important;
   }
 
   .premium-header-inner{
-    min-height:var(--mytt-mobile-header-base)!important;
-    height:var(--mytt-mobile-header-base)!important;
+    min-height:var(--mytt-mobile-header-base) !important;
+    height:var(--mytt-mobile-header-base) !important;
   }
 
   .premium-nav{
-    top:var(--mytt-mobile-header)!important;
+    top:var(--mytt-mobile-header) !important;
   }
 
   /* Preserve the current 16px breathing room below the compact header. */
   body{
-    padding-top:calc(var(--mytt-mobile-header) + 16px)!important;
+    padding-top:calc(var(--mytt-mobile-header) + 16px) !important;
   }
 
   main#home > .mobile-nav-page{
-    min-height:calc(100dvh - var(--mytt-mobile-header))!important;
-    scroll-margin-top:var(--mytt-mobile-header)!important;
+    min-height:calc(100dvh - var(--mytt-mobile-header)) !important;
+    scroll-margin-top:var(--mytt-mobile-header) !important;
   }
 
   #profileModal{
-    top:var(--mytt-mobile-header)!important;
-    height:calc(100dvh - var(--mytt-mobile-header))!important;
+    top:var(--mytt-mobile-header) !important;
+    height:calc(100dvh - var(--mytt-mobile-header)) !important;
   }
 
   /* ---------------------------------------------------------
@@ -180,8 +180,8 @@
      Recent Matches and Rating History remain fully visible.
      --------------------------------------------------------- */
   #profileContent .profile-panel-collapsible{
-    padding:0!important;
-    overflow:hidden!important;
+    padding:0 !important;
+    overflow:hidden !important;
   }
 
   #profileContent .profile-mobile-panel-toggle{
@@ -224,15 +224,15 @@
   }
 
   #profileContent .profile-mobile-panel-body[hidden]{
-    display:none!important;
+    display:none !important;
   }
 
   #profileContent .profile-mobile-panel-body > :first-child{
-    margin-top:12px!important;
+    margin-top:12px !important;
   }
 
   #profileContent .profile-mobile-panel-body .equipment-row:first-child{
-    margin-top:2px!important;
+    margin-top:2px !important;
   }
 }
 
@@ -240,11 +240,11 @@
    keep all transformed content visible rather than leaving it collapsed. */
 @media (min-width:861px){
   #profileContent .profile-panel-collapsible .profile-mobile-panel-toggle{
-    display:none!important;
+    display:none !important;
   }
 
   #profileContent .profile-panel-collapsible .profile-mobile-panel-body{
-    display:block!important;
+    display:block !important;
   }
 }
 
@@ -256,23 +256,19 @@
    --------------------------------------------------------- */
 @media (max-width:768px){
   html body .homepage-rank-road .home-rank-orb{
-    box-sizing:border-box!important;
-    width:50px!important;
-    height:50px!important;
-    min-width:50px!important;
-    min-height:50px!important;
-    max-width:50px!important;
-    max-height:50px!important;
-    aspect-ratio:1 / 1!important;
-    border-radius:50%!important;
+    box-sizing:border-box !important;
+    width:50px !important;
+    height:50px !important;
+    min-width:50px !important;
+    min-height:50px !important;
+    max-width:50px !important;
+    max-height:50px !important;
+    aspect-ratio:1 / 1 !important;
+    border-radius:50% !important;
   }
 
   html body .homepage-rank-road .home-rank-line{
-    height:6px!important;
-    margin-top:22px!important;
-  }
-
-  html body .homepage-rank-road .tier-hof-home .home-rank-orb{
-    background-position:center calc(50% + 1px)!important;
+    height:6px !important;
+    margin-top:22px !important;
   }
 }
