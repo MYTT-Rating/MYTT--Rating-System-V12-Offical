@@ -247,3 +247,28 @@
     display:block !important;
   }
 }
+
+/* ---------------------------------------------------------
+   5. Home Rank Journey geometry: keep badge glow circular and
+      place the coloured connector exactly through the badge centre.
+   The earlier geometry module still carries 68/70px min/max sizes;
+   this late phone rule intentionally normalises the final 50px design.
+   --------------------------------------------------------- */
+@media (max-width:768px){
+  html body .homepage-rank-road .home-rank-orb{
+    box-sizing:border-box !important;
+    width:50px !important;
+    height:50px !important;
+    min-width:50px !important;
+    min-height:50px !important;
+    max-width:50px !important;
+    max-height:50px !important;
+    aspect-ratio:1 / 1 !important;
+    border-radius:50% !important;
+  }
+
+  html body .homepage-rank-road .home-rank-line{
+    height:6px !important;
+    margin-top:22px !important;
+  }
+}
