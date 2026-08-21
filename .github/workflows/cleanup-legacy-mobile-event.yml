@@ -6,6 +6,9 @@ on:
       - cleanup-legacy-mobile-event-20260821
     paths:
       - '.github/workflows/cleanup-legacy-mobile-event.yml'
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -62,7 +65,6 @@ jobs:
                   block_end = len(css)
               css = css[:block_start].rstrip() + '\n\n' + css[block_end:].lstrip()
 
-          # Remove the two superseded mobile-only DOM generations from eventCardHTML.
           patterns = [
               (r'\n\s*<!-- New mobile-only Event DOM\..*?-->\s*<section class="mobile-event-pro"[\s\S]*?</section>\s*', 'mobile-event-pro'),
               (r'\n\s*<!-- MYTT mobile Event V4:.*?-->\s*<section class="mytt-event-v4"[\s\S]*?</section>\s*', 'mytt-event-v4'),
@@ -71,13 +73,11 @@ jobs:
           for pattern, label in patterns:
               app, count = re.subn(pattern, '\n', app, count=1)
               if count != 1:
-                  # Fallback: remove by section class if the comment wording changed.
                   fallback = rf'\n\s*<section class="{re.escape(label)}"[\s\S]*?</section>\s*'
                   app, count = re.subn(fallback, '\n', app, count=1)
               if count != 1:
                   raise SystemExit(f'Unable to remove legacy DOM section: {label}')
 
-          # Guardrails: active mobile V5 and desktop Event DOM must remain.
           required = [
               '<section class="mytt-event-v5"',
               '<section class="target-event-hero"',
@@ -101,7 +101,6 @@ jobs:
           css_path.write_text(css.rstrip() + '\n', encoding='utf-8')
           app_path.write_text(app, encoding='utf-8')
 
-          # Cache-bust only files changed in this pass.
           index, n1 = re.subn(r'site-overrides-v24\.css\?v=[^"]+', 'site-overrides-v24.css?v=20260821-2', index, count=1)
           index, n2 = re.subn(r'app\.js\?v=[^"]+', 'app.js?v=20260821-event-cleanup-1', index, count=1)
           if n1 != 1 or n2 != 1:
