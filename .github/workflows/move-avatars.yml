@@ -1,4 +1,4 @@
-name: Move avatars into avatars folder
+name: Move and optimize avatars
 
 on:
   push:
@@ -16,29 +16,93 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Move avatar files
+      - name: Install image optimizer
         run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+
+      - name: Move and optimize avatar files
+        shell: bash
+        run: |
+          set -euo pipefail
+
           mkdir -p avatars
-          shopt -s nullglob
+          shopt -s nullglob nocaseglob
 
-          moved=false
+          changed=false
 
-          for file in MYTT*.jpg MYTT*.JPG MYTT*.jpeg MYTT*.JPEG MYTT*.png MYTT*.PNG; do
-            if [ -f "$file" ]; then
-              filename=$(basename "$file")
-              base="${filename%.*}"
-              mv "$file" "avatars/${base}.jpg"
-              moved=true
+          optimize_to_jpeg() {
+            local source_file="$1"
+            local output_file="$2"
+            local temp_file="${output_file}.tmp.jpg"
+
+            convert "$source_file" \
+              -auto-orient \
+              -resize '600x600>' \
+              -strip \
+              -background white \
+              -alpha remove \
+              -alpha off \
+              -colorspace sRGB \
+              -sampling-factor 4:2:0 \
+              -quality 82 \
+              "$temp_file"
+
+            mv "$temp_file" "$output_file"
+          }
+
+          # New approved avatars can arrive in the repository root as JPG/JPEG/PNG.
+          # Convert them properly instead of only renaming the extension.
+          for file in MYTT*.jpg MYTT*.jpeg MYTT*.png; do
+            [ -f "$file" ] || continue
+
+            filename=$(basename "$file")
+            base="${filename%.*}"
+            destination="avatars/${base}.jpg"
+
+            echo "Optimizing new avatar: $file -> $destination"
+            optimize_to_jpeg "$file" "$destination"
+            rm -f "$file"
+            changed=true
+          done
+
+          # One-time cleanup for existing avatars that are still larger than
+          # the web display needs. Once resized to <=600px this stays idempotent
+          # and the same file will not be recompressed on every future push.
+          for file in avatars/MYTT*.jpg; do
+            [ -f "$file" ] || continue
+
+            metadata=$(identify -format '%m %w %h' "$file" 2>/dev/null || true)
+            read -r format width height <<< "$metadata"
+
+            if [ -z "${format:-}" ] || [ -z "${width:-}" ] || [ -z "${height:-}" ]; then
+              echo "Skipping unreadable avatar: $file"
+              continue
+            fi
+
+            if [ "$format" != "JPEG" ] || [ "$width" -gt 600 ] || [ "$height" -gt 600 ]; then
+              before=$(stat -c%s "$file")
+              echo "Optimizing existing avatar: $file (${width}x${height}, ${before} bytes)"
+              optimize_to_jpeg "$file" "$file"
+              after=$(stat -c%s "$file")
+              echo "Optimized $file -> ${after} bytes"
+              changed=true
             fi
           done
 
-          if [ "$moved" = true ]; then
+          if [ "$changed" = true ]; then
             git config user.name "github-actions"
             git config user.email "github-actions@github.com"
             git add avatars
             git add -u
-            git commit -m "Auto move avatar files into avatars folder"
+
+            if git diff --cached --quiet; then
+              echo "No avatar changes to commit."
+              exit 0
+            fi
+
+            git commit -m "Auto optimize avatar images"
             git push
           else
-            echo "No avatar files to move."
+            echo "No avatar files need moving or optimization."
           fi
