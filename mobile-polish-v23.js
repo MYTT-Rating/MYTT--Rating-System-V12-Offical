@@ -13,7 +13,7 @@
     const link = document.createElement("link");
     link.id = STYLE_ID;
     link.rel = "stylesheet";
-    link.href = "mobile-polish-v23.css?v=20260821-1";
+    link.href = "mobile-polish-v23.css?v=20260821-recent-matches-1";
     document.head.appendChild(link);
   }
 
@@ -58,6 +58,45 @@
     });
   }
 
+  function enhanceRecentMatches(panel) {
+    if (!panel || panel.dataset.myttRecentMatchesToggle === "1") return;
+
+    const heading = panel.querySelector(":scope > h3");
+    const list = panel.querySelector(":scope > .match-list");
+    if (!heading || !list) return;
+
+    const cards = [...list.querySelectorAll(":scope > .match-card")];
+    panel.dataset.myttRecentMatchesToggle = "1";
+    if (cards.length <= 3) return;
+
+    panel.classList.add("profile-recent-matches");
+
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "profile-recent-matches-toggle";
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", `Show all ${cards.length} recent matches`);
+    toggle.innerHTML = `<span class="profile-recent-matches-chevron" aria-hidden="true">⌄</span>`;
+    panel.appendChild(toggle);
+
+    const applyState = (expanded) => {
+      cards.forEach((card, index) => {
+        card.classList.toggle("mytt-recent-hidden", !expanded && index >= 3);
+      });
+      toggle.setAttribute("aria-expanded", String(expanded));
+      toggle.setAttribute(
+        "aria-label",
+        expanded ? "Show only the latest 3 matches" : `Show all ${cards.length} recent matches`
+      );
+      panel.classList.toggle("recent-matches-expanded", expanded);
+    };
+
+    applyState(false);
+    toggle.addEventListener("click", () => {
+      applyState(toggle.getAttribute("aria-expanded") !== "true");
+    });
+  }
+
   function enhanceProfile() {
     if (!isMobile()) return;
     const root = document.getElementById("profileContent");
@@ -65,7 +104,9 @@
 
     root.querySelectorAll(".profile-panel").forEach((panel) => {
       const title = normalizedPanelTitle(panel);
-      if (title === "player info" || title === "head to head" || title === "achievements") {
+      if (title === "recent matches") {
+        enhanceRecentMatches(panel);
+      } else if (title === "player info" || title === "head to head" || title === "achievements") {
         makeCollapsible(panel);
       }
     });
