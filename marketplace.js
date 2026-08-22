@@ -1,30 +1,35 @@
 (function () {
   "use strict";
 
+  const rankSrc = "rank-system-v27.js?v=20260822-1";
+  const rankCss = "rank-system-v27.css?v=20260822-1";
+  const rankCssId = "mytt-rank-system-v27-style";
+
   const coreSrc = "marketplace-core-v23.js?v=20260821-2";
   const polishSrc = "mobile-polish-v23.js?v=20260821-avatar-lazy-1";
   const polishCss = "mobile-polish-v23.css?v=20260821-recent-matches-1";
   const polishCssId = "mytt-mobile-polish-v23-style";
 
-  function ensurePolishCss() {
-    if (document.getElementById(polishCssId)) return;
+  function ensureCss(id, href) {
+    if (document.getElementById(id)) return;
     const link = document.createElement("link");
-    link.id = polishCssId;
+    link.id = id;
     link.rel = "stylesheet";
-    link.href = polishCss;
+    link.href = href;
     document.head.appendChild(link);
   }
 
-  /* marketplace.js is parser-loaded by index.html. Keep the core
-     synchronous so marketplace helpers initialise in deterministic order. */
+  /* marketplace.js is parser-loaded by index.html. Keep the rank patch and
+     marketplace modules synchronous so TIERS is corrected before DOMContentLoaded. */
   if (document.readyState === "loading") {
-    ensurePolishCss();
+    ensureCss(polishCssId, polishCss);
+    ensureCss(rankCssId, rankCss);
+    document.write(`<script id="mytt-rank-system-v27" src="${rankSrc}"><\/script>`);
     document.write(`<script id="mytt-marketplace-core-v23" src="${coreSrc}"><\/script>`);
     document.write(`<script id="mytt-mobile-polish-v23" src="${polishSrc}"><\/script>`);
     return;
   }
 
-  /* Safe fallback if this loader is ever injected after parsing. */
   function loadScript(id, src) {
     if (document.getElementById(id)) return Promise.resolve();
     return new Promise((resolve, reject) => {
@@ -38,8 +43,10 @@
     });
   }
 
-  ensurePolishCss();
-  loadScript("mytt-marketplace-core-v23", coreSrc)
+  ensureCss(polishCssId, polishCss);
+  ensureCss(rankCssId, rankCss);
+  loadScript("mytt-rank-system-v27", rankSrc)
+    .then(() => loadScript("mytt-marketplace-core-v23", coreSrc))
     .then(() => loadScript("mytt-mobile-polish-v23", polishSrc))
     .catch((err) => console.error("MYTT UI module load failed", err));
 })();
