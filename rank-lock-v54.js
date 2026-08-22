@@ -1,10 +1,12 @@
 (function(){
   "use strict";
 
+  /* FINAL LOCK — exactly follows the approved reference image.
+     Do not swap names, scores or badge artwork. */
   const LOCKED_RANKS = [
     {name:"Rookie",score:1500,badge:"novice-standalone.webp",color:"#d8dde4"},
-    {name:"Elite",score:1600,badge:"challenger-standalone.webp",color:"#19f53a"},
-    {name:"Challenger",score:1700,badge:"rookie-standalone.webp",color:"#21c9ff"},
+    {name:"Challenger",score:1600,badge:"challenger-standalone.webp",color:"#19f53a"},
+    {name:"Elite",score:1700,badge:"rookie-standalone.webp",color:"#21c9ff"},
     {name:"Master",score:1800,badge:"elite-standalone.webp",color:"#b55cff"},
     {name:"Grandmaster",score:1900,badge:"master-standalone.webp",color:"#ff3131"},
     {name:"MYTT Champion",score:2000,badge:"immortal-standalone.webp",color:"#ff2e8d"},
@@ -13,7 +15,7 @@
     {name:"Hall of Fame",score:2300,badge:"2300-hall-of-fame-v50-clean.webp",color:"#ffd51c"}
   ];
 
-  function badgeUrl(file){ return `rank-badges/${file}?v=20260822-lock54`; }
+  function badgeUrl(file){ return `rank-badges/${file}?v=20260822-final-lock`; }
 
   function lockTierData(){
     if(typeof TIERS!=="undefined" && Array.isArray(TIERS)){
@@ -42,7 +44,7 @@
       const img=node.querySelector(".home-rank-native-badge");
       if(img){
         const wanted=badgeUrl(rank.badge);
-        if(!img.src.endsWith(wanted)) img.src=wanted;
+        if(img.getAttribute("src")!==wanted) img.setAttribute("src",wanted);
         img.alt=`${rank.name} badge`;
       }
       const name=node.querySelector(".home-rank-native-name");
@@ -51,8 +53,8 @@
       if(score)score.textContent=String(rank.score);
     });
 
-    road.setAttribute("aria-label","MYTT Rank Journey: Rookie 1500, Elite 1600, Challenger 1700, Master 1800, Grandmaster 1900, MYTT Champion 2000, Legend 2100, Immortal 2200, Hall of Fame 2300");
-    road.dataset.rankDesignLocked="v54";
+    road.setAttribute("aria-label","MYTT Rank Journey: Rookie 1500, Challenger 1600, Elite 1700, Master 1800, Grandmaster 1900, MYTT Champion 2000, Legend 2100, Immortal 2200, Hall of Fame 2300");
+    road.dataset.rankDesignLocked="final-reference";
   }
 
   function lockProgressCopy(){
@@ -65,10 +67,10 @@
     if(head){
       const labels=head.querySelectorAll("strong");
       if(labels[0])labels[0].textContent="Rookie";
-      if(labels[1])labels[1].textContent="Elite";
+      if(labels[1])labels[1].textContent="Challenger";
     }
     const note=document.querySelector(".hero-progress-card p");
-    if(note)note.innerHTML="<b>1500</b> / 1600 · 100 pts to Elite";
+    if(note)note.innerHTML="<b>1500</b> / 1600 · 100 pts to Challenger";
   }
 
   function applyLock(){
