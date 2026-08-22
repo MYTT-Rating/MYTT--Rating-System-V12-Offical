@@ -1,13 +1,13 @@
 (function () {
   "use strict";
 
-  const rankSrc = "rank-system-v27.js?v=20260822-14";
+  const rankSrc = "rank-system-v27.js?v=20260822-15";
   const rankCss = "rank-system-v27.css?v=20260822-5";
   const rankCssId = "mytt-rank-system-v27-style";
   const rankEffectsCss = "rank-effects-v31.css?v=20260822-7";
   const rankEffectsCssId = "mytt-rank-effects-v31-style";
-  const rankPolishCss = "rank-mobile-polish-v41.css?v=20260822-1";
-  const rankPolishCssId = "mytt-rank-mobile-polish-v41-style";
+  const rankPolishCss = "rank-mobile-polish-v42.css?v=20260822-1";
+  const rankPolishCssId = "mytt-rank-mobile-polish-v42-style";
 
   const coreSrc = "marketplace-core-v23.js?v=20260821-2";
   const polishSrc = "mobile-polish-v23.js?v=20260821-avatar-lazy-1";
