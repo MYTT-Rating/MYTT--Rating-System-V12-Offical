@@ -2,36 +2,36 @@
   "use strict";
 
   if (typeof TIERS !== "undefined" && Array.isArray(TIERS)) {
-    const novice = TIERS.find(t => t.min === -Infinity) || {min:-Infinity,name:"Novice",icon:"🌿",cls:"tier-novice",badge:"novice-standalone.webp",next:1500};
+    const novice = TIERS.find(t => t.min === -Infinity) || {min:-Infinity,name:"Novice",icon:"🌿",cls:"tier-novice",badge:"v46-1500-rookie.webp",next:1500};
     const FINAL_TIERS = [
       novice,
-      {min:1500,name:"Rookie",icon:"🌱",cls:"tier-rookie",badge:"novice-standalone.webp",next:1600},
-      {min:1600,name:"Challenger",icon:"⚔️",cls:"tier-challenger",badge:"rookie-standalone.webp",next:1700},
-      {min:1700,name:"Elite",icon:"⭐",cls:"tier-elite",badge:"challenger-standalone.webp",next:1800},
-      {min:1800,name:"Master",icon:"🔥",cls:"tier-master",badge:"elite-standalone.webp",next:1900},
-      {min:1900,name:"Grandmaster",icon:"🔥",cls:"tier-grandmaster",badge:"master-standalone.webp",next:2000},
-      {min:2000,name:"MYTT Champion",icon:"🏆",cls:"tier-champion",badge:"immortal-standalone.webp",next:2100},
-      {min:2100,name:"Legend",icon:"👑",cls:"tier-legend",badge:"legend-standalone.webp",next:2200},
-      {min:2200,name:"Immortal",icon:"🏆",cls:"tier-immortal",badge:"2200-immortal-final.webp",next:2300},
-      {min:2300,name:"Hall of Fame",icon:"🌟",cls:"tier-hof",badge:"v22-hall-of-fame-mytt-final.webp",next:null}
+      {min:1500,name:"Rookie",icon:"🌱",cls:"tier-rookie",badge:"v46-1500-rookie.webp",next:1600},
+      {min:1600,name:"Challenger",icon:"⚔️",cls:"tier-challenger",badge:"v46-1600-challenger.webp",next:1700},
+      {min:1700,name:"Elite",icon:"⭐",cls:"tier-elite",badge:"v46-1700-elite.webp",next:1800},
+      {min:1800,name:"Master",icon:"🔥",cls:"tier-master",badge:"v46-1800-master.webp",next:1900},
+      {min:1900,name:"Grandmaster",icon:"🔥",cls:"tier-grandmaster",badge:"v46-1900-grandmaster.webp",next:2000},
+      {min:2000,name:"MYTT Champion",icon:"🏆",cls:"tier-champion",badge:"v46-2000-mytt-champion.webp",next:2100},
+      {min:2100,name:"Legend",icon:"👑",cls:"tier-legend",badge:"v46-2100-legend.webp",next:2200},
+      {min:2200,name:"Immortal",icon:"🏆",cls:"tier-immortal",badge:"v46-2200-immortal.webp",next:2300},
+      {min:2300,name:"Hall of Fame",icon:"🌟",cls:"tier-hof",badge:"v46-2300-hall-of-fame.webp",next:null}
     ];
     TIERS.splice(0, TIERS.length, ...FINAL_TIERS);
     window.MYTT_FINAL_TIERS = FINAL_TIERS;
   }
 
   const RANKS = [
-    {name:"Rookie",score:1500,badge:"novice-standalone.webp",color:"#d8dde4",line:"line-red"},
-    {name:"Challenger",score:1600,badge:"rookie-standalone.webp",color:"#19f53a",line:"line-orange"},
-    {name:"Elite",score:1700,badge:"challenger-standalone.webp",color:"#21c9ff",line:"line-gold"},
-    {name:"Master",score:1800,badge:"elite-standalone.webp",color:"#b55cff",line:"line-yellow"},
-    {name:"Grandmaster",score:1900,badge:"master-standalone.webp",color:"#ff3131",line:"line-green"},
-    {name:"MYTT Champion",score:2000,badge:"immortal-standalone.webp",color:"#ff2e8d",line:"line-cyan"},
-    {name:"Legend",score:2100,badge:"legend-standalone.webp",color:"#f0a81c",line:"line-purple"},
-    {name:"Immortal",score:2200,badge:"2200-immortal-final.webp",color:"#ffd51c",line:"line-pink"},
-    {name:"Hall of Fame",score:2300,badge:"v22-hall-of-fame-mytt-final.webp",color:"#ffd51c",line:null}
+    {name:"Rookie",score:1500,badge:"v46-1500-rookie.webp",color:"#d8dde4",line:"line-red"},
+    {name:"Challenger",score:1600,badge:"v46-1600-challenger.webp",color:"#19f53a",line:"line-orange"},
+    {name:"Elite",score:1700,badge:"v46-1700-elite.webp",color:"#21c9ff",line:"line-gold"},
+    {name:"Master",score:1800,badge:"v46-1800-master.webp",color:"#b55cff",line:"line-yellow"},
+    {name:"Grandmaster",score:1900,badge:"v46-1900-grandmaster.webp",color:"#ff3131",line:"line-green"},
+    {name:"MYTT Champion",score:2000,badge:"v46-2000-mytt-champion.webp",color:"#ff2e8d",line:"line-cyan"},
+    {name:"Legend",score:2100,badge:"v46-2100-legend.webp",color:"#f0a81c",line:"line-purple"},
+    {name:"Immortal",score:2200,badge:"v46-2200-immortal.webp",color:"#ffd51c",line:"line-pink"},
+    {name:"Hall of Fame",score:2300,badge:"v46-2300-hall-of-fame.webp",color:"#ffd51c",line:null}
   ];
 
-  function badgeUrl(file){return `rank-badges/${file}?v=20260822-2`;}
+  function badgeUrl(file){return `rank-badges/${file}`;}
 
   function getHomepageRating(){
     const node=document.querySelector(".current-rating-v5 strong");
