@@ -1,0 +1,31 @@
+/* V50 — clean transparent 2200/2300 assets, no clipping or forced crop. */
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"],
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"],
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell{
+  overflow:visible!important;
+}
+
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  clip-path:none!important;
+  -webkit-clip-path:none!important;
+  transform:none!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.34)) drop-shadow(0 0 7px rgba(255,215,40,.16))!important;
+}
+
+@media (max-width:768px){
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"],
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"]{
+    flex-basis:80px!important;
+    width:80px!important;
+    min-width:80px!important;
+  }
+}
