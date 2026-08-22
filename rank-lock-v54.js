@@ -2,7 +2,7 @@
   "use strict";
 
   /* FINAL LOCK — exactly follows the approved reference image.
-     Do not swap names, scores or badge artwork. */
+     Important: this file must stay finite/idempotent. No MutationObserver loop. */
   const LOCKED_RANKS = [
     {name:"Rookie",score:1500,badge:"novice-standalone.webp",color:"#d8dde4"},
     {name:"Challenger",score:1600,badge:"challenger-standalone.webp",color:"#19f53a"},
@@ -15,15 +15,25 @@
     {name:"Hall of Fame",score:2300,badge:"2300-hall-of-fame-v50-clean.webp",color:"#ffd51c"}
   ];
 
-  function badgeUrl(file){ return `rank-badges/${file}?v=20260822-final-lock`; }
+  function badgeUrl(file){
+    return `rank-badges/${file}?v=20260822-final-lock-v55`;
+  }
+
+  function setText(node,value){
+    if(node && node.textContent!==value) node.textContent=value;
+  }
+
+  function setAttr(node,name,value){
+    if(node && node.getAttribute(name)!==value) node.setAttribute(name,value);
+  }
 
   function lockTierData(){
     if(typeof TIERS!=="undefined" && Array.isArray(TIERS)){
       LOCKED_RANKS.forEach(rank=>{
         const tier=TIERS.find(t=>Number(t.min)===rank.score);
         if(!tier)return;
-        tier.name=rank.name;
-        tier.badge=rank.badge;
+        if(tier.name!==rank.name) tier.name=rank.name;
+        if(tier.badge!==rank.badge) tier.badge=rank.badge;
       });
       window.MYTT_FINAL_TIERS=TIERS;
     }
@@ -31,46 +41,50 @@
 
   function lockRoad(){
     const road=document.querySelector(".homepage-rank-road");
-    if(!road)return;
+    if(!road)return false;
+
     const nodes=[...road.querySelectorAll(".home-rank-native-node")];
-    if(nodes.length<9)return;
+    if(nodes.length<9)return false;
 
     LOCKED_RANKS.forEach((rank,index)=>{
       const node=nodes[index];
-      node.dataset.rankIndex=String(index);
-      node.style.setProperty("--rank-color",rank.color);
-      node.setAttribute("aria-label",`${rank.name} ${rank.score}`);
+      setAttr(node,"data-rank-index",String(index));
+      if(node.style.getPropertyValue("--rank-color")!==rank.color){
+        node.style.setProperty("--rank-color",rank.color);
+      }
+      setAttr(node,"aria-label",`${rank.name} ${rank.score}`);
 
       const img=node.querySelector(".home-rank-native-badge");
       if(img){
         const wanted=badgeUrl(rank.badge);
-        if(img.getAttribute("src")!==wanted) img.setAttribute("src",wanted);
-        img.alt=`${rank.name} badge`;
+        setAttr(img,"src",wanted);
+        setAttr(img,"alt",`${rank.name} badge`);
       }
-      const name=node.querySelector(".home-rank-native-name");
-      if(name)name.textContent=rank.name;
-      const score=node.querySelector(".home-rank-native-score");
-      if(score)score.textContent=String(rank.score);
+      setText(node.querySelector(".home-rank-native-name"),rank.name);
+      setText(node.querySelector(".home-rank-native-score"),String(rank.score));
     });
 
-    road.setAttribute("aria-label","MYTT Rank Journey: Rookie 1500, Challenger 1600, Elite 1700, Master 1800, Grandmaster 1900, MYTT Champion 2000, Legend 2100, Immortal 2200, Hall of Fame 2300");
-    road.dataset.rankDesignLocked="final-reference";
+    setAttr(road,"aria-label","MYTT Rank Journey: Rookie 1500, Challenger 1600, Elite 1700, Master 1800, Grandmaster 1900, MYTT Champion 2000, Legend 2100, Immortal 2200, Hall of Fame 2300");
+    setAttr(road,"data-rank-design-locked","final-reference-v55");
+    return true;
   }
 
   function lockProgressCopy(){
     const current=document.querySelector(".current-rating-v5");
-    if(current){
-      const label=current.querySelector("span");
-      if(label)label.textContent="Rookie";
-    }
+    if(current) setText(current.querySelector("span"),"Rookie");
+
     const head=document.querySelector(".hero-progress-head");
     if(head){
       const labels=head.querySelectorAll("strong");
-      if(labels[0])labels[0].textContent="Rookie";
-      if(labels[1])labels[1].textContent="Challenger";
+      setText(labels[0],"Rookie");
+      setText(labels[1],"Challenger");
     }
+
     const note=document.querySelector(".hero-progress-card p");
-    if(note)note.innerHTML="<b>1500</b> / 1600 · 100 pts to Challenger";
+    if(note){
+      const wanted="<b>1500</b> / 1600 · 100 pts to Challenger";
+      if(note.innerHTML!==wanted) note.innerHTML=wanted;
+    }
   }
 
   function applyLock(){
@@ -82,14 +96,15 @@
   function scheduleLock(){
     applyLock();
     requestAnimationFrame(applyLock);
-    setTimeout(applyLock,120);
-    setTimeout(applyLock,500);
+    setTimeout(applyLock,80);
+    setTimeout(applyLock,250);
   }
 
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",scheduleLock,{once:true});
-  else scheduleLock();
-  window.addEventListener("pageshow",scheduleLock);
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",scheduleLock,{once:true});
+  }else{
+    scheduleLock();
+  }
 
-  const observer=new MutationObserver(()=>applyLock());
-  observer.observe(document.documentElement,{childList:true,subtree:true});
+  window.addEventListener("pageshow",scheduleLock,{passive:true});
 })();
