@@ -1,0 +1,69 @@
+/* V54 — FINAL LOCKED rank design. Keep this layer last. */
+html body .hero-rank-card-v5 .home-rank-native-node,
+html body .hero-rank-card-v5 .home-rank-native-shell{
+  overflow:visible!important;
+}
+
+html body .hero-rank-card-v5 .home-rank-native-badge{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  clip-path:none!important;
+  -webkit-clip-path:none!important;
+  mask:none!important;
+  -webkit-mask:none!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  transform:none!important;
+  transform-origin:center center!important;
+  filter:drop-shadow(0 3px 5px rgba(0,0,0,.36)) drop-shadow(0 0 7px rgba(255,255,255,.10))!important;
+}
+
+/* Remove every experimental gold-badge overlay/ring/crop from earlier versions. */
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell::after,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell::after{
+  content:none!important;
+  display:none!important;
+}
+
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  transform:none!important;
+  clip-path:none!important;
+  -webkit-clip-path:none!important;
+}
+
+/* Preserve the approved active breathing effect without changing badge artwork. */
+html body .hero-rank-card-v5 .home-rank-native-node.active .home-rank-native-shell{
+  animation:myttV47BadgePulse 1.7s ease-in-out infinite!important;
+}
+
+html body .hero-rank-card-v5 .home-rank-native-line{
+  box-shadow:0 0 7px currentColor!important;
+}
+
+@media(max-width:768px){
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell,
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell{
+    width:72px!important;
+    height:72px!important;
+    flex-basis:72px!important;
+  }
+}
+
+@media(max-width:430px){
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell,
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell{
+    width:70px!important;
+    height:70px!important;
+    flex-basis:70px!important;
+  }
+}
