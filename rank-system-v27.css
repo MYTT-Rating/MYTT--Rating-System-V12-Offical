@@ -1,180 +1,88 @@
-/* MYTT Rank System V28 — final 1500–2300 visual system + center-line fix */
+/* MYTT Rank System V29 — locked approved artwork
+   ---------------------------------------------------------
+   The homepage rank journey is rendered as ONE approved image.
+   Do not reconstruct, recolour, crop, scale individual badges, or redraw the
+   connector line. This keeps the badge shapes and centre alignment exact.
+   --------------------------------------------------------- */
 
-/* =========================================================
-   HOME RANK JOURNEY — one geometry source of truth
-   ========================================================= */
-html body .hero-rank-card-v5 .homepage-rank-road{
+html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29{
   position:relative !important;
-  display:flex !important;
-  align-items:flex-start !important;
-  flex-wrap:nowrap !important;
-  gap:0 !important;
-}
-
-html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node{
-  position:relative !important;
-  display:flex !important;
-  flex-direction:column !important;
-  align-items:center !important;
-  justify-content:flex-start !important;
+  display:block !important;
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  height:auto !important;
   padding:0 !important;
-  z-index:2 !important;
-}
-
-html body .hero-rank-card-v5 .homepage-rank-road .home-rank-orb{
-  color:transparent !important;
-  font-size:0 !important;
-  line-height:0 !important;
-  flex:none !important;
-  padding:0 !important;
+  margin:0 !important;
+  overflow-x:hidden !important;
+  overflow-y:hidden !important;
   border:0 !important;
-  border-radius:50% !important;
-  outline:0 !important;
-  background-repeat:no-repeat !important;
-  background-position:center !important;
-  background-size:contain !important;
-  background-color:transparent !important;
+  background:transparent !important;
   box-shadow:none !important;
-  animation:none !important;
   transform:none !important;
 }
 
-/* Remove the legacy active Rookie halo that was producing the empty black ring. */
-html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node.active .home-rank-orb{
+html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::before,
+html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::after{
+  content:none !important;
+  display:none !important;
+}
+
+html body .hero-rank-card-v5 .mytt-approved-rank-strip-v29{
+  display:block !important;
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
   border:0 !important;
+  border-radius:0 !important;
   outline:0 !important;
+  object-fit:contain !important;
+  object-position:center !important;
   box-shadow:none !important;
-  animation:none !important;
-  background-color:transparent !important;
+  filter:none !important;
+  transform:none !important;
+  opacity:1 !important;
+  image-rendering:auto !important;
+  user-select:none !important;
+  -webkit-user-drag:none !important;
 }
 
-html body .hero-rank-card-v5 .homepage-rank-road .home-rank-line{
-  position:relative !important;
-  align-self:flex-start !important;
-  z-index:1 !important;
-  border:0 !important;
-  border-radius:999px !important;
-  opacity:.98 !important;
-  margin-left:0 !important;
-  margin-right:0 !important;
+html body .hero-rank-card-v5 .mytt-approved-rank-strip-loading{
+  display:block !important;
+  width:100% !important;
+  aspect-ratio:1200 / 287 !important;
+  background:transparent !important;
 }
 
-/* Desktop: 92px badge => exact centre is 46px.
-   5px line sits with its centre at 46.5px. */
-@media (min-width:769px){
-  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node{
-    flex:0 0 96px !important;
-    width:96px !important;
-    min-width:96px !important;
-  }
-
-  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-orb{
-    width:92px !important;
-    height:92px !important;
-    min-width:92px !important;
-    min-height:92px !important;
-    margin:0 auto 10px !important;
-  }
-
-  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-line{
-    flex:1 1 42px !important;
-    width:auto !important;
-    min-width:28px !important;
-    height:5px !important;
-    min-height:5px !important;
-    margin-top:44px !important;
-  }
-
-  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node > span{
-    display:block !important;
-    width:max-content !important;
-    max-width:none !important;
-    min-height:22px !important;
-    height:22px !important;
-    margin-top:0 !important;
-    line-height:22px !important;
-    white-space:nowrap !important;
-    text-align:center !important;
-  }
-
-  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node > small{
-    display:block !important;
-    min-height:22px !important;
-    height:22px !important;
-    margin-top:4px !important;
-    line-height:22px !important;
-    text-align:center !important;
-  }
-}
-
-/* Mobile: 58px badge + 4px line => both centres are exactly 29px. */
+/* Mobile keeps the same untouched artwork and simply scrolls it horizontally.
+   No responsive re-layout is applied to the badges themselves. */
 @media (max-width:768px){
-  html body .hero-rank-card-v5 .homepage-rank-road{
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29{
     overflow-x:auto !important;
     overflow-y:hidden !important;
     -webkit-overflow-scrolling:touch !important;
     overscroll-behavior-x:contain !important;
-    scroll-snap-type:x proximity !important;
     scrollbar-width:none !important;
-    padding-bottom:10px !important;
-  }
-  html body .hero-rank-card-v5 .homepage-rank-road::-webkit-scrollbar{display:none !important;}
-
-  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node{
-    flex:0 0 74px !important;
-    width:74px !important;
-    min-width:74px !important;
-    scroll-snap-align:center !important;
   }
 
-  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-orb{
-    width:58px !important;
-    height:58px !important;
-    min-width:58px !important;
-    min-height:58px !important;
-    margin:0 auto 7px !important;
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::-webkit-scrollbar{
+    display:none !important;
   }
 
-  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-line{
-    flex:0 0 22px !important;
-    width:22px !important;
-    min-width:22px !important;
-    height:4px !important;
-    min-height:4px !important;
-    margin-top:27px !important;
-  }
-
-  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node > span{
-    display:block !important;
-    width:74px !important;
-    max-width:74px !important;
-    min-height:28px !important;
-    height:28px !important;
-    margin-top:0 !important;
-    font-size:9.5px !important;
-    line-height:1.05 !important;
-    white-space:normal !important;
-    text-align:center !important;
-  }
-
-  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node > small{
-    display:block !important;
-    min-height:14px !important;
-    height:14px !important;
-    margin-top:3px !important;
-    font-size:8.5px !important;
-    line-height:14px !important;
-    text-align:center !important;
-  }
-
-  html body .hero-rank-card-v5 .homepage-rank-road .you-marker{
-    margin-top:4px !important;
-    font-size:7px !important;
+  html body .hero-rank-card-v5 .mytt-approved-rank-strip-v29,
+  html body .hero-rank-card-v5 .mytt-approved-rank-strip-loading{
+    width:1100px !important;
+    min-width:1100px !important;
+    max-width:none !important;
   }
 }
 
 /* =========================================================
    TIER PILLS / LEADERBOARD / PROFILE
+   Site-wide labels keep the approved rating order.
    ========================================================= */
 body .tier-pill{
   display:inline-flex !important;
@@ -185,7 +93,10 @@ body .tier-pill{
   line-height:1 !important;
 }
 body .tier-pill::before,
-body .tier-pill::after{content:none !important;display:none !important;}
+body .tier-pill::after{
+  content:none !important;
+  display:none !important;
+}
 body .tier-pill .tier-badge-img{
   display:block !important;
   width:27px !important;
@@ -220,6 +131,7 @@ body .tier-pill.tier-hof{background:linear-gradient(135deg,rgba(250,204,21,.28),
   margin:0 auto 5px !important;
   object-fit:contain !important;
 }
+
 #profileContent .profile-progress-badge{
   display:block !important;
   width:24px !important;
