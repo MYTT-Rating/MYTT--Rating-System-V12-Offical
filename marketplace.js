@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const rankSrc = "rank-system-v27.js?v=20260822-24";
+  const rankSrc = "rank-system-v27.js?v=20260822-25";
   const rankCss = "rank-system-v27.css?v=20260822-5";
   const rankCssId = "mytt-rank-system-v27-style";
   const rankEffectsCss = "rank-effects-v31.css?v=20260822-7";
@@ -10,9 +10,9 @@
   const rankPolishCssId = "mytt-rank-mobile-polish-v47-style";
   const rankFinalCss = "rank-final-fix-v48.css?v=20260822-1";
   const rankFinalCssId = "mytt-rank-final-fix-v48-style";
-  const rankGoldCss = "rank-gold-fix-v52.css?v=20260822-1";
+  const rankGoldCss = "rank-gold-fix-v52.css?v=20260822-v53";
   const rankGoldCssId = "mytt-rank-gold-fix-v52-style";
-  const rankGoldJs = "rank-gold-fix-v52.js?v=20260822-1";
+  const rankGoldJs = "rank-gold-fix-v52.js?v=20260822-v53";
 
   const coreSrc = "marketplace-core-v23.js?v=20260821-2";
   const polishSrc = "mobile-polish-v23.js?v=20260821-avatar-lazy-1";
