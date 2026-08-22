@@ -1,0 +1,295 @@
+/* MYTT Rank Journey V47 — restore stable artwork, remove artificial shadows */
+html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v47{
+  position:relative!important;
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  width:100%!important;
+  max-width:1240px!important;
+  margin:0 auto!important;
+  padding:16px 10px 10px!important;
+  overflow:visible!important;
+  background:transparent!important;
+  isolation:isolate!important;
+  scrollbar-width:none!important;
+}
+html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v47::-webkit-scrollbar{display:none!important;}
+
+html body .hero-rank-card-v5 .home-rank-native-node{
+  --rank-color:#fff;
+  position:relative!important;
+  z-index:2!important;
+  flex:0 0 104px!important;
+  width:104px!important;
+  min-width:104px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  text-align:center!important;
+  overflow:visible!important;
+}
+
+html body .hero-rank-card-v5 .home-rank-native-shell{
+  position:relative!important;
+  width:92px!important;
+  height:92px!important;
+  flex:0 0 92px!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  filter:none!important;
+  transform-origin:center center!important;
+}
+html body .hero-rank-card-v5 .home-rank-native-shell::after{
+  content:none!important;
+  display:none!important;
+}
+html body .hero-rank-card-v5 .home-rank-native-badge{
+  position:relative!important;
+  z-index:2!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  clip-path:none!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  filter:none!important;
+  transform:none!important;
+  image-rendering:auto!important;
+  pointer-events:none!important;
+}
+
+/* No halo, no drop shadow, no dark fringe for non-active badges. */
+html body .hero-rank-card-v5 .home-rank-native-node:not(.active) .home-rank-native-shell,
+html body .hero-rank-card-v5 .home-rank-native-node:not(.active) .home-rank-native-badge{
+  box-shadow:none!important;
+  filter:none!important;
+  transform:none!important;
+}
+html body .hero-rank-card-v5 .home-rank-native-node:not(.active) .home-rank-native-shell::before{
+  content:none!important;
+  display:none!important;
+}
+
+/* Active badge breathes by scale only; glow lives behind it. */
+html body .hero-rank-card-v5 .home-rank-native-node.active .home-rank-native-shell{
+  filter:none!important;
+  box-shadow:none!important;
+  animation:myttV47BadgePulse 1.7s ease-in-out infinite!important;
+}
+html body .hero-rank-card-v5 .home-rank-native-node.active .home-rank-native-shell::before{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  z-index:0!important;
+  left:50%!important;
+  top:50%!important;
+  width:94%!important;
+  height:94%!important;
+  transform:translate(-50%,-50%)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,transparent 48%,var(--rank-color) 68%,transparent 84%)!important;
+  filter:blur(10px)!important;
+  opacity:.48!important;
+  pointer-events:none!important;
+  animation:myttV47GlowPulse 1.7s ease-in-out infinite!important;
+}
+
+html body .hero-rank-card-v5 .home-rank-native-name{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  min-height:31px!important;
+  margin-top:4px!important;
+  color:#fff!important;
+  font-size:12px!important;
+  line-height:1.08!important;
+  font-weight:900!important;
+  white-space:normal!important;
+  overflow:visible!important;
+}
+html body .hero-rank-card-v5 .home-rank-native-score{
+  display:block!important;
+  margin-top:1px!important;
+  color:#ff353f!important;
+  font-size:14px!important;
+  line-height:1!important;
+  font-weight:950!important;
+}
+
+html body .hero-rank-card-v5 .home-rank-native-marker{
+  height:31px!important;
+  margin-top:7px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  color:#ff4545!important;
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+html body .hero-rank-card-v5 .home-rank-native-node.active .home-rank-native-marker{
+  opacity:1!important;
+  visibility:visible!important;
+}
+html body .hero-rank-card-v5 .home-rank-native-marker b{
+  display:block!important;
+  font-size:15px!important;
+  line-height:11px!important;
+  font-weight:950!important;
+  text-shadow:0 0 7px rgba(255,69,69,.58)!important;
+}
+html body .hero-rank-card-v5 .home-rank-native-marker em{
+  display:block!important;
+  margin-top:6px!important;
+  font-size:8px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  font-style:normal!important;
+  letter-spacing:.6px!important;
+  white-space:nowrap!important;
+  text-transform:uppercase!important;
+}
+
+html body .hero-rank-card-v5 .home-rank-native-line{
+  position:relative!important;
+  z-index:1!important;
+  flex:1 1 28px!important;
+  min-width:18px!important;
+  height:5px!important;
+  margin:43.5px -6px 0!important;
+  border-radius:999px!important;
+  box-shadow:none!important;
+  opacity:.95!important;
+}
+html body .hero-rank-card-v5 .home-rank-native-line::before,
+html body .hero-rank-card-v5 .home-rank-native-line::after{
+  content:""!important;
+  position:absolute!important;
+  top:0!important;
+  width:10px!important;
+  height:5px!important;
+  background:inherit!important;
+}
+html body .hero-rank-card-v5 .home-rank-native-line::before{left:-7px!important;}
+html body .hero-rank-card-v5 .home-rank-native-line::after{right:-7px!important;}
+html body .hero-rank-card-v5 .home-rank-native-line.line-red{background:linear-gradient(90deg,#ff555d,#ff3a43)!important;}
+html body .hero-rank-card-v5 .home-rank-native-line.line-orange{background:linear-gradient(90deg,#ff8d1f,#ffc115)!important;}
+html body .hero-rank-card-v5 .home-rank-native-line.line-gold{background:linear-gradient(90deg,#ffc115,#dff227)!important;}
+html body .hero-rank-card-v5 .home-rank-native-line.line-yellow{background:linear-gradient(90deg,#dff227,#40dc6a)!important;}
+html body .hero-rank-card-v5 .home-rank-native-line.line-green{background:linear-gradient(90deg,#40dc6a,#24d8df)!important;}
+html body .hero-rank-card-v5 .home-rank-native-line.line-cyan{background:linear-gradient(90deg,#24d8df,#7c55ef)!important;}
+html body .hero-rank-card-v5 .home-rank-native-line.line-purple{background:linear-gradient(90deg,#7c55ef,#ef42c5)!important;}
+html body .hero-rank-card-v5 .home-rank-native-line.line-pink{background:linear-gradient(90deg,#ef42c5,#ff5a8f)!important;}
+
+@keyframes myttV47BadgePulse{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.07);}
+}
+@keyframes myttV47GlowPulse{
+  0%,100%{opacity:.28;transform:translate(-50%,-50%) scale(.96);}
+  50%{opacity:.62;transform:translate(-50%,-50%) scale(1.06);}
+}
+
+@media (max-width:768px){
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v47{
+    justify-content:flex-start!important;
+    overflow-x:auto!important;
+    overflow-y:visible!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior-x:contain!important;
+    scroll-snap-type:x proximity!important;
+    scroll-padding-left:8px!important;
+    padding:12px 8px 8px!important;
+  }
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v47::before{
+    display:none!important;
+    content:none!important;
+  }
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v47::after{
+    content:""!important;
+    flex:0 0 calc(100% - 94px)!important;
+    min-width:calc(100% - 94px)!important;
+    height:1px!important;
+  }
+
+  html body .hero-rank-card-v5 .home-rank-native-node{
+    flex:0 0 80px!important;
+    width:80px!important;
+    min-width:80px!important;
+  }
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"]{
+    flex-basis:94px!important;
+    width:94px!important;
+    min-width:94px!important;
+  }
+  html body .hero-rank-card-v5 .home-rank-native-shell{
+    width:72px!important;
+    height:72px!important;
+    flex:0 0 72px!important;
+  }
+  html body .hero-rank-card-v5 .home-rank-native-line{
+    flex:0 0 22px!important;
+    min-width:22px!important;
+    max-width:22px!important;
+    height:4px!important;
+    margin:34px -6px 0!important;
+  }
+  html body .hero-rank-card-v5 .home-rank-native-line::before,
+  html body .hero-rank-card-v5 .home-rank-native-line::after{height:4px!important;}
+  html body .hero-rank-card-v5 .home-rank-native-name{
+    min-height:28px!important;
+    margin-top:4px!important;
+    font-size:9.7px!important;
+  }
+  html body .hero-rank-card-v5 .home-rank-native-score{
+    margin-top:0!important;
+    font-size:11.3px!important;
+  }
+  html body .hero-rank-card-v5 .home-rank-native-marker{
+    height:29px!important;
+    margin-top:5px!important;
+  }
+  html body .hero-rank-card-v5 .home-rank-native-marker b{font-size:12px!important;line-height:9px!important;}
+  html body .hero-rank-card-v5 .home-rank-native-marker em{margin-top:5px!important;font-size:6.8px!important;letter-spacing:.42px!important;}
+}
+
+@media (max-width:430px){
+  html body .hero-rank-card-v5 .home-rank-native-node{
+    flex-basis:78px!important;
+    width:78px!important;
+    min-width:78px!important;
+  }
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"]{
+    flex-basis:92px!important;
+    width:92px!important;
+    min-width:92px!important;
+  }
+  html body .hero-rank-card-v5 .home-rank-native-shell{
+    width:70px!important;
+    height:70px!important;
+    flex-basis:70px!important;
+  }
+  html body .hero-rank-card-v5 .home-rank-native-line{margin-top:33px!important;}
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v47::after{
+    flex-basis:calc(100% - 92px)!important;
+    min-width:calc(100% - 92px)!important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  html body .hero-rank-card-v5 .home-rank-native-node.active .home-rank-native-shell,
+  html body .hero-rank-card-v5 .home-rank-native-node.active .home-rank-native-shell::before{
+    animation:none!important;
+  }
+}
