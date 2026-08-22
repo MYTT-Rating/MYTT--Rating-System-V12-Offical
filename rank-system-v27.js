@@ -8,20 +8,21 @@
     name: "Novice",
     icon: "🌿",
     cls: "tier-novice",
-    badge: "v22-novice.webp",
+    badge: "novice-standalone.webp",
     next: 1500
   };
 
+  /* Final MYTT order + final approved visual badge mapping. */
   const FINAL_TIERS = [
     novice,
-    {min:1500,name:"Rookie",icon:"🌱",cls:"tier-rookie",badge:"v22-novice.webp",next:1600},
-    {min:1600,name:"Challenger",icon:"⚔️",cls:"tier-challenger",badge:"v22-rookie.webp",next:1700},
-    {min:1700,name:"Elite",icon:"⭐",cls:"tier-elite",badge:"v22-challenger.webp",next:1800},
-    {min:1800,name:"Master",icon:"🔥",cls:"tier-master",badge:"v22-elite.webp",next:1900},
-    {min:1900,name:"Grandmaster",icon:"🔥",cls:"tier-grandmaster",badge:"v22-master.webp",next:2000},
-    {min:2000,name:"MYTT Champion",icon:"🏆",cls:"tier-champion",badge:"v22-immortal.webp",next:2100},
-    {min:2100,name:"Legend",icon:"👑",cls:"tier-legend",badge:"v22-expert.webp",next:2200},
-    {min:2200,name:"Immortal",icon:"🏆",cls:"tier-immortal",badge:"v22-champion.webp",next:2300},
+    {min:1500,name:"Rookie",icon:"🌱",cls:"tier-rookie",badge:"novice-standalone.webp",next:1600},
+    {min:1600,name:"Challenger",icon:"⚔️",cls:"tier-challenger",badge:"rookie-standalone.webp",next:1700},
+    {min:1700,name:"Elite",icon:"⭐",cls:"tier-elite",badge:"challenger-standalone.webp",next:1800},
+    {min:1800,name:"Master",icon:"🔥",cls:"tier-master",badge:"elite-standalone.webp",next:1900},
+    {min:1900,name:"Grandmaster",icon:"🔥",cls:"tier-grandmaster",badge:"master-standalone.webp",next:2000},
+    {min:2000,name:"MYTT Champion",icon:"🏆",cls:"tier-champion",badge:"immortal-standalone.webp",next:2100},
+    {min:2100,name:"Legend",icon:"👑",cls:"tier-legend",badge:"legend-standalone.webp",next:2200},
+    {min:2200,name:"Immortal",icon:"🏆",cls:"tier-immortal",badge:"champion-standalone.webp",next:2300},
     {min:2300,name:"Hall of Fame",icon:"🌟",cls:"tier-hof",badge:"v22-hall-of-fame-mytt-final.webp",next:null}
   ];
 
