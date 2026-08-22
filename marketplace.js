@@ -1,10 +1,10 @@
 (function () {
   "use strict";
 
-  const rankSrc = "rank-system-v27.js?v=20260822-7";
+  const rankSrc = "rank-system-v27.js?v=20260822-8";
   const rankCss = "rank-system-v27.css?v=20260822-5";
   const rankCssId = "mytt-rank-system-v27-style";
-  const rankEffectsCss = "rank-effects-v31.css?v=20260822-3";
+  const rankEffectsCss = "rank-effects-v31.css?v=20260822-4";
   const rankEffectsCssId = "mytt-rank-effects-v31-style";
 
   const coreSrc = "marketplace-core-v23.js?v=20260821-2";
@@ -21,8 +21,6 @@
     document.head.appendChild(link);
   }
 
-  /* marketplace.js is parser-loaded by index.html. Keep the rank patch and
-     marketplace modules synchronous so TIERS is corrected before DOMContentLoaded. */
   if (document.readyState === "loading") {
     ensureCss(polishCssId, polishCss);
     ensureCss(rankCssId, rankCss);
