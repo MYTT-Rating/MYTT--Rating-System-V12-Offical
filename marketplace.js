@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const rankSrc = "rank-system-v27.js?v=20260822-13";
+  const rankSrc = "rank-system-v27.js?v=20260822-14";
   const rankCss = "rank-system-v27.css?v=20260822-5";
   const rankCssId = "mytt-rank-system-v27-style";
   const rankEffectsCss = "rank-effects-v31.css?v=20260822-7";
