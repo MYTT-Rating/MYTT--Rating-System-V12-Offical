@@ -1,0 +1,35 @@
+name: Refresh rank cache V52
+
+on:
+  push:
+    paths:
+      - '.github/workflows/refresh-rank-cache-v52.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-index-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refresh marketplace cache key
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace('marketplace.js?v=20260821-final-v28-1', 'marketplace.js?v=20260822-rank-v52-1')
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit cache refresh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No index cache change needed"
+          else
+            git commit -m "Force V52 rank badge cache refresh"
+            git push
+          fi
