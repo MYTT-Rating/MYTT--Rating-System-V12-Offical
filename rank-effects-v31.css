@@ -1,165 +1,65 @@
-/* MYTT Rank Journey V33 — original current-rank pulse
-   ---------------------------------------------------------
-   Restore the old homepage behaviour:
-   - one red ▲ marker under the current rank
-   - only the current badge glows / breathes
-   - no whole-row breathing
-   - no cursor-hover zoom system
-
-   The approved 1200 x 287 strip remains the only artwork source, so badge
-   graphics and connector alignment are never redrawn or substituted.
-   --------------------------------------------------------- */
-
-html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29{
-  isolation:isolate !important;
+/* MYTT Rank Journey V34 — current rank marker + mobile follower */
+html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29{isolation:isolate!important;}
+html body .hero-rank-card-v5 .mytt-rank-stage-v34{
+  position:relative!important;display:block!important;flex:none!important;width:1200px!important;
+  max-width:calc(100vw - 80px)!important;aspect-ratio:1200/287!important;margin:0 auto!important;padding:0!important;overflow:visible!important;
 }
-
-html body .hero-rank-card-v5 .mytt-rank-stage-v33{
-  position:relative !important;
-  display:block !important;
-  flex:none !important;
-  width:1200px !important;
-  max-width:calc(100vw - 80px) !important;
-  aspect-ratio:1200 / 287 !important;
-  margin:0 auto !important;
-  padding:0 !important;
-  overflow:visible !important;
+html body .hero-rank-card-v5 .mytt-rank-stage-v34>.mytt-approved-rank-strip-v29{
+  position:relative!important;z-index:1!important;display:block!important;width:100%!important;min-width:100%!important;max-width:100%!important;
+  height:auto!important;margin:0!important;padding:0!important;transform:none!important;animation:none!important;filter:none!important;pointer-events:none!important;
 }
-
-html body .hero-rank-card-v5 .mytt-rank-stage-v33 > .mytt-approved-rank-strip-v29{
-  position:relative !important;
-  z-index:1 !important;
-  display:block !important;
-  width:100% !important;
-  min-width:100% !important;
-  max-width:100% !important;
-  height:auto !important;
-  margin:0 !important;
-  padding:0 !important;
-  transform:none !important;
-  animation:none !important;
-  filter:none !important;
-  pointer-events:none !important;
+/* Hide only the old baked YOU ARE HERE text under Rookie. */
+html body .hero-rank-card-v5 .mytt-rank-old-label-mask{
+  position:absolute!important;z-index:2!important;left:2.1%!important;top:77.2%!important;width:9.1%!important;height:8.2%!important;
+  background:repeating-linear-gradient(135deg,rgba(255,255,255,.028) 0 1px,transparent 1px 16px),rgba(3,3,4,.97)!important;
+  pointer-events:none!important;
 }
-
-/* The active badge is an exact clipped copy of the approved strip. */
 html body .hero-rank-card-v5 .mytt-rank-active-clone{
-  position:absolute !important;
-  z-index:4 !important;
-  inset:0 !important;
-  display:block !important;
-  width:100% !important;
-  height:100% !important;
-  object-fit:contain !important;
-  object-position:center !important;
-  margin:0 !important;
-  padding:0 !important;
-  border:0 !important;
-  pointer-events:none !important;
-  user-select:none !important;
-  -webkit-user-drag:none !important;
-  clip-path:circle(4.8% at var(--active-x) var(--active-y)) !important;
-  transform-origin:var(--active-x) var(--active-y) !important;
-  filter:
-    brightness(1.08)
-    saturate(1.04)
-    drop-shadow(0 0 4px rgba(255,255,255,.95))
-    drop-shadow(0 0 14px rgba(255,69,69,.72))
-    drop-shadow(0 0 26px rgba(255,69,69,.52)) !important;
-  animation:myttCurrentTierPulse 1.7s ease-in-out infinite !important;
-  will-change:transform,filter !important;
+  position:absolute!important;z-index:4!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;
+  object-position:center!important;margin:0!important;padding:0!important;border:0!important;pointer-events:none!important;user-select:none!important;-webkit-user-drag:none!important;
+  clip-path:circle(4.8% at var(--active-x) var(--active-y))!important;transform-origin:var(--active-x) var(--active-y)!important;
+  animation:myttCurrentTierPulse 1.7s ease-in-out infinite!important;will-change:transform,filter!important;
 }
-
-/* This is the small red arrow that existed under the old active node.
-   The approved strip already contains the words YOU ARE HERE, so we restore
-   only the missing ▲ marker and keep the original artwork untouched. */
+html body .hero-rank-card-v5 .mytt-rank-you-arrow,
+html body .hero-rank-card-v5 .mytt-rank-you-label{
+  position:absolute!important;z-index:6!important;left:var(--active-x)!important;transform:translateX(-50%)!important;color:#ff4545!important;
+  font-family:Arial,Helvetica,sans-serif!important;font-style:normal!important;font-weight:950!important;white-space:nowrap!important;text-align:center!important;
+  text-shadow:0 0 7px rgba(255,69,69,.65)!important;pointer-events:none!important;
+}
 html body .hero-rank-card-v5 .mytt-rank-you-arrow{
-  position:absolute !important;
-  z-index:6 !important;
-  left:var(--active-x) !important;
-  top:77.2% !important;
-  transform:translateX(-50%) !important;
-  color:#ff4545 !important;
-  font-family:Arial,Helvetica,sans-serif !important;
-  font-size:14px !important;
-  line-height:1 !important;
-  font-style:normal !important;
-  font-weight:950 !important;
-  text-shadow:0 0 7px rgba(255,69,69,.72) !important;
-  pointer-events:none !important;
-  animation:myttCurrentArrowPulse 1.7s ease-in-out infinite !important;
+  top:78.4%!important;font-size:15px!important;line-height:1!important;animation:myttCurrentArrowPulse 1.7s ease-in-out infinite!important;
 }
-
-/* This follows the old homeTierPulse timing/scale: 1.7s and ~1.08x. */
+html body .hero-rank-card-v5 .mytt-rank-you-label{
+  top:85.4%!important;font-size:9px!important;line-height:1!important;letter-spacing:.65px!important;
+}
 @keyframes myttCurrentTierPulse{
-  0%,100%{
-    transform:scale(1);
-    filter:
-      brightness(1.04)
-      saturate(1.02)
-      drop-shadow(0 0 3px rgba(255,255,255,.82))
-      drop-shadow(0 0 10px rgba(255,69,69,.58))
-      drop-shadow(0 0 18px rgba(255,69,69,.38));
-  }
-  50%{
-    transform:scale(1.08);
-    filter:
-      brightness(1.14)
-      saturate(1.08)
-      drop-shadow(0 0 7px rgba(255,255,255,1))
-      drop-shadow(0 0 20px rgba(255,69,69,.90))
-      drop-shadow(0 0 34px rgba(255,69,69,.70));
-  }
+  0%,100%{transform:scale(1);filter:brightness(1.04) saturate(1.02) drop-shadow(0 0 3px rgba(255,255,255,.82)) drop-shadow(0 0 10px rgba(255,69,69,.58)) drop-shadow(0 0 18px rgba(255,69,69,.38));}
+  50%{transform:scale(1.08);filter:brightness(1.14) saturate(1.08) drop-shadow(0 0 7px rgba(255,255,255,1)) drop-shadow(0 0 20px rgba(255,69,69,.90)) drop-shadow(0 0 34px rgba(255,69,69,.70));}
 }
-
 @keyframes myttCurrentArrowPulse{
   0%,100%{opacity:.78;transform:translateX(-50%) translateY(0) scale(.94);}
   50%{opacity:1;transform:translateX(-50%) translateY(-1px) scale(1.08);}
 }
-
-/* Mirror the exact widths used by the locked strip. */
 @media (min-width:769px) and (max-width:1180px){
-  html body .hero-rank-card-v5 .mytt-rank-stage-v33{
-    width:1020px !important;
-    min-width:1020px !important;
-    max-width:none !important;
-    margin-left:0 !important;
-    margin-right:0 !important;
-  }
-
-  html body .hero-rank-card-v5 .mytt-rank-you-arrow{
-    font-size:12px !important;
-  }
+  html body .hero-rank-card-v5 .mytt-rank-stage-v34{width:1020px!important;min-width:1020px!important;max-width:none!important;margin-left:0!important;margin-right:0!important;}
+  html body .hero-rank-card-v5 .mytt-rank-you-arrow{font-size:12px!important;}
+  html body .hero-rank-card-v5 .mytt-rank-you-label{font-size:8px!important;}
 }
-
 @media (max-width:768px){
-  html body .hero-rank-card-v5 .mytt-rank-stage-v33{
-    width:900px !important;
-    min-width:900px !important;
-    max-width:none !important;
-    margin-left:0 !important;
-    margin-right:0 !important;
+  /* Give the first/last badge enough runway to reach the viewport centre. */
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29{
+    padding-left:calc(50% - 59.4px)!important;padding-right:calc(50% - 59.4px)!important;scroll-behavior:auto!important;
   }
-
-  html body .hero-rank-card-v5 .mytt-rank-you-arrow{
-    font-size:11px !important;
-  }
+  html body .hero-rank-card-v5 .mytt-rank-stage-v34{width:900px!important;min-width:900px!important;max-width:none!important;margin:0!important;}
+  html body .hero-rank-card-v5 .mytt-rank-you-arrow{top:78.2%!important;font-size:11px!important;}
+  html body .hero-rank-card-v5 .mytt-rank-you-label{top:85.5%!important;font-size:7.5px!important;letter-spacing:.45px!important;}
 }
-
 @media (max-width:430px){
-  html body .hero-rank-card-v5 .mytt-rank-stage-v33{
-    width:840px !important;
-    min-width:840px !important;
-  }
-
-  html body .hero-rank-card-v5 .mytt-rank-you-arrow{
-    font-size:10px !important;
-  }
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29{padding-left:calc(50% - 55.4px)!important;padding-right:calc(50% - 55.4px)!important;}
+  html body .hero-rank-card-v5 .mytt-rank-stage-v34{width:840px!important;min-width:840px!important;}
+  html body .hero-rank-card-v5 .mytt-rank-you-arrow{font-size:10px!important;}
+  html body .hero-rank-card-v5 .mytt-rank-you-label{font-size:7px!important;}
 }
-
-@media (prefers-reduced-motion: reduce){
-  html body .hero-rank-card-v5 .mytt-rank-active-clone,
-  html body .hero-rank-card-v5 .mytt-rank-you-arrow{
-    animation:none !important;
-  }
+@media (prefers-reduced-motion:reduce){
+  html body .hero-rank-card-v5 .mytt-rank-active-clone,html body .hero-rank-card-v5 .mytt-rank-you-arrow{animation:none!important;}
 }
