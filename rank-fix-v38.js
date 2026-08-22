@@ -1,13 +1,13 @@
 (function () {
   "use strict";
 
-  const IMMORTAL_SRC = "rank-badges/v22-immortal.webp?v=20260822-1";
+  const IMMORTAL_SRC = "rank-badges/2200-immortal-clean.png?v=20260822-2";
   const HOF_SRC = "rank-badges/v22-hall-of-fame-mytt-final.webp?v=20260822-1";
 
   function applyRankFix(){
     if (typeof TIERS !== "undefined" && Array.isArray(TIERS)) {
       const immortal = TIERS.find(t => t && t.min === 2200);
-      if (immortal) immortal.badge = "v22-immortal.webp";
+      if (immortal) immortal.badge = "2200-immortal-clean.png";
       const hof = TIERS.find(t => t && t.min === 2300);
       if (hof) hof.badge = "v22-hall-of-fame-mytt-final.webp";
     }
