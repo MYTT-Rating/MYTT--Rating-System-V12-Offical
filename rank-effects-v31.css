@@ -1,126 +1,222 @@
-/* MYTT Rank Journey V31 — glow + motion layer
+/* MYTT Rank Journey V32 — breathing + cursor-reactive motion
    ---------------------------------------------------------
-   This file adds animation ABOVE the locked approved strip only.
-   It does not redraw, recolour, crop, resize or replace any badge artwork.
+   The approved rank strip remains the ONLY artwork source.
+   Hover motion is produced with clipped clones of that exact same image,
+   so no badge shape, icon, colour or connector geometry is redrawn.
    --------------------------------------------------------- */
 
 html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29{
   isolation:isolate !important;
 }
 
-/* Animated coloured breathing glow around the nine badge centres. */
-html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::before{
+/* One stage keeps the base artwork and every effect perfectly registered. */
+html body .hero-rank-card-v5 .mytt-rank-stage-v32{
+  position:relative !important;
+  display:block !important;
+  flex:none !important;
+  width:1200px !important;
+  max-width:calc(100vw - 80px) !important;
+  aspect-ratio:1200 / 287 !important;
+  margin:0 auto !important;
+  padding:0 !important;
+  transform-origin:center 33.5% !important;
+  animation:myttWholeRoadBreath 3.8s ease-in-out infinite !important;
+  will-change:transform,filter !important;
+}
+
+html body .hero-rank-card-v5 .mytt-rank-stage-v32 > .mytt-approved-rank-strip-v29{
+  position:relative !important;
+  z-index:1 !important;
+  display:block !important;
+  width:100% !important;
+  min-width:100% !important;
+  max-width:100% !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  transform:none !important;
+  animation:none !important;
+  filter:none !important;
+  pointer-events:none !important;
+}
+
+/* Soft overall glow breath. */
+html body .hero-rank-card-v5 .mytt-rank-stage-v32::before{
   content:"" !important;
   display:block !important;
   position:absolute !important;
   z-index:2 !important;
-  left:50% !important;
-  top:0 !important;
-  width:1200px !important;
-  max-width:calc(100vw - 80px) !important;
-  aspect-ratio:1200 / 287 !important;
+  inset:0 !important;
   pointer-events:none !important;
   background:
-    radial-gradient(circle at 6.5% 33%, rgba(255,255,255,.34) 0 3.5%, rgba(255,78,88,.20) 7%, transparent 13%),
-    radial-gradient(circle at 17.6% 33%, rgba(46,255,84,.28) 0 4%, transparent 13%),
-    radial-gradient(circle at 28.5% 33%, rgba(38,196,255,.30) 0 4%, transparent 13%),
-    radial-gradient(circle at 39.5% 33%, rgba(183,83,255,.30) 0 4%, transparent 13%),
-    radial-gradient(circle at 50.2% 33%, rgba(255,51,51,.30) 0 4%, transparent 13%),
-    radial-gradient(circle at 60.9% 33%, rgba(255,55,150,.30) 0 4%, transparent 13%),
-    radial-gradient(circle at 71.8% 33%, rgba(255,177,34,.30) 0 4%, transparent 13%),
-    radial-gradient(circle at 82.7% 33%, rgba(255,218,28,.32) 0 4%, transparent 13%),
-    radial-gradient(circle at 93.5% 33%, rgba(255,210,21,.36) 0 4.5%, transparent 14%) !important;
+    radial-gradient(circle at 6.6% 33.5%, rgba(255,255,255,.32) 0 3.4%, rgba(255,77,86,.18) 7%, transparent 12.5%),
+    radial-gradient(circle at 17.5% 33.5%, rgba(42,255,78,.27) 0 3.8%, transparent 12.5%),
+    radial-gradient(circle at 28.4% 33.5%, rgba(35,198,255,.28) 0 3.8%, transparent 12.5%),
+    radial-gradient(circle at 39.3% 33.5%, rgba(186,83,255,.28) 0 3.8%, transparent 12.5%),
+    radial-gradient(circle at 50.1% 33.5%, rgba(255,49,49,.29) 0 3.8%, transparent 12.5%),
+    radial-gradient(circle at 60.9% 33.5%, rgba(255,54,150,.29) 0 3.8%, transparent 12.5%),
+    radial-gradient(circle at 71.8% 33.5%, rgba(255,176,34,.28) 0 3.8%, transparent 12.5%),
+    radial-gradient(circle at 82.6% 33.5%, rgba(255,219,26,.30) 0 3.8%, transparent 12.5%),
+    radial-gradient(circle at 93.4% 33.5%, rgba(255,211,20,.34) 0 4.1%, transparent 13%) !important;
   mix-blend-mode:screen !important;
-  transform:translateX(-50%) !important;
-  transform-origin:center !important;
-  opacity:.52 !important;
-  filter:blur(.5px) !important;
-  animation:myttRankGlowBreath 2.8s ease-in-out infinite !important;
+  opacity:.44 !important;
+  filter:blur(.8px) !important;
+  animation:myttRankGlowBreath 2.7s ease-in-out infinite !important;
 }
 
-/* A small light pulse travels across the connector line, restoring the old
-   "alive" feeling without touching the artwork underneath. */
-html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::after{
+/* Light travelling across the connector line. */
+html body .hero-rank-card-v5 .mytt-rank-stage-v32::after{
   content:"" !important;
   display:block !important;
   position:absolute !important;
   z-index:3 !important;
-  left:50% !important;
-  top:0 !important;
-  width:1200px !important;
-  max-width:calc(100vw - 80px) !important;
-  aspect-ratio:1200 / 287 !important;
+  inset:0 !important;
   pointer-events:none !important;
   background:
     linear-gradient(90deg,
       transparent 0%,
       rgba(255,255,255,0) 35%,
-      rgba(255,255,255,.18) 43%,
-      rgba(255,255,255,.92) 50%,
-      rgba(255,255,255,.18) 57%,
+      rgba(255,255,255,.14) 43%,
+      rgba(255,255,255,.88) 50%,
+      rgba(255,255,255,.14) 57%,
       rgba(255,255,255,0) 65%,
       transparent 100%)
-    -220px 33% / 170px 8px no-repeat !important;
+    -210px 33.5% / 155px 7px no-repeat !important;
   mix-blend-mode:screen !important;
-  transform:translateX(-50%) !important;
-  filter:blur(1.2px) !important;
-  animation:myttRankLineSweep 4.2s linear infinite !important;
+  filter:blur(1px) !important;
+  animation:myttRankLineSweep 4.1s linear infinite !important;
 }
 
-/* Slight brightness pulse on the locked image itself. No geometry changes. */
-html body .hero-rank-card-v5 .mytt-approved-rank-strip-v29{
-  will-change:filter !important;
-  animation:myttRankArtworkBreath 3.6s ease-in-out infinite !important;
+/* =========================================================
+   PER-BADGE BREATH + CURSOR HOVER
+   Each clone is the exact approved strip, clipped around one badge.
+   ========================================================= */
+html body .hero-rank-card-v5 .mytt-rank-hover-layer{
+  position:absolute !important;
+  z-index:4 !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  pointer-events:none !important;
+  overflow:visible !important;
+}
+
+html body .hero-rank-card-v5 .mytt-rank-hover-clone{
+  position:absolute !important;
+  z-index:1 !important;
+  inset:0 !important;
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  pointer-events:none !important;
+  user-select:none !important;
+  -webkit-user-drag:none !important;
+  clip-path:circle(4.9% at var(--hx) var(--hy)) !important;
+  transform-origin:var(--hx) var(--hy) !important;
+  opacity:.18 !important;
+  filter:brightness(1.05) saturate(1.05) !important;
+  animation:myttBadgeIdleBreath 3.1s ease-in-out infinite !important;
+  animation-delay:calc(var(--i) * -0.17s) !important;
+  will-change:transform,opacity,filter !important;
+}
+
+/* Wherever the mouse arrow is, that badge gets the stronger zoom/pulse. */
+html body .hero-rank-card-v5 .mytt-rank-hover-clone.is-active{
+  z-index:5 !important;
+  opacity:.98 !important;
+  filter:brightness(1.18) saturate(1.12) drop-shadow(0 0 9px rgba(255,255,255,.32)) !important;
+  animation:myttBadgeHoverPulse .78s ease-in-out infinite !important;
+}
+
+html body .hero-rank-card-v5 .mytt-rank-hover-hit{
+  position:absolute !important;
+  z-index:9 !important;
+  left:var(--hx) !important;
+  top:var(--hy) !important;
+  width:9.8% !important;
+  aspect-ratio:1 / 1 !important;
+  transform:translate(-50%,-50%) !important;
+  border-radius:50% !important;
+  background:transparent !important;
+  pointer-events:none !important;
+  touch-action:pan-x !important;
+}
+
+@media (hover:hover) and (pointer:fine){
+  html body .hero-rank-card-v5 .mytt-rank-hover-hit{
+    pointer-events:auto !important;
+    cursor:pointer !important;
+  }
+}
+
+@keyframes myttWholeRoadBreath{
+  0%,100%{transform:scale(1);filter:brightness(1);}
+  50%{transform:scale(1.006);filter:brightness(1.025);}
 }
 
 @keyframes myttRankGlowBreath{
-  0%,100%{opacity:.34;}
-  50%{opacity:.72;}
+  0%,100%{opacity:.30;}
+  50%{opacity:.62;}
 }
 
-@keyframes myttRankArtworkBreath{
-  0%,100%{filter:brightness(1) saturate(1) !important;}
-  50%{filter:brightness(1.055) saturate(1.06) !important;}
+@keyframes myttBadgeIdleBreath{
+  0%,100%{transform:scale(1.003);opacity:.10;}
+  50%{transform:scale(1.025);opacity:.25;}
+}
+
+@keyframes myttBadgeHoverPulse{
+  0%,100%{transform:scale(1.035);}
+  50%{transform:scale(1.095);}
 }
 
 @keyframes myttRankLineSweep{
-  0%{background-position:-220px 33% !important;}
-  100%{background-position:calc(100% + 220px) 33% !important;}
+  0%{background-position:-210px 33.5% !important;}
+  100%{background-position:calc(100% + 210px) 33.5% !important;}
 }
 
-/* Keep the overlay geometry locked to the exact same width as the image. */
+/* Mirror the exact responsive widths used by the locked strip. */
 @media (min-width:769px) and (max-width:1180px){
-  html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::before,
-  html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::after{
-    left:0 !important;
+  html body .hero-rank-card-v5 .mytt-rank-stage-v32{
     width:1020px !important;
+    min-width:1020px !important;
     max-width:none !important;
-    transform:none !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
   }
 }
 
 @media (max-width:768px){
-  html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::before,
-  html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::after{
-    left:4px !important;
+  html body .hero-rank-card-v5 .mytt-rank-stage-v32{
     width:900px !important;
+    min-width:900px !important;
     max-width:none !important;
-    transform:none !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+  }
+
+  /* Touch has the overall breathing effect, but no accidental hover capture. */
+  html body .hero-rank-card-v5 .mytt-rank-hover-hit{
+    pointer-events:none !important;
   }
 }
 
 @media (max-width:430px){
-  html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::before,
-  html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::after{
+  html body .hero-rank-card-v5 .mytt-rank-stage-v32{
     width:840px !important;
+    min-width:840px !important;
   }
 }
 
-/* Respect reduced-motion preferences. */
 @media (prefers-reduced-motion: reduce){
-  html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::before,
-  html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::after,
-  html body .hero-rank-card-v5 .mytt-approved-rank-strip-v29{
+  html body .hero-rank-card-v5 .mytt-rank-stage-v32,
+  html body .hero-rank-card-v5 .mytt-rank-stage-v32::before,
+  html body .hero-rank-card-v5 .mytt-rank-stage-v32::after,
+  html body .hero-rank-card-v5 .mytt-rank-hover-clone{
     animation:none !important;
   }
 }
