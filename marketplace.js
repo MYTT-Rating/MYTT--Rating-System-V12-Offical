@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const rankSrc = "rank-system-v27.js?v=20260822-25";
+  const rankSrc = "rank-system-v27.js?v=20260822-26";
   const rankCss = "rank-system-v27.css?v=20260822-5";
   const rankCssId = "mytt-rank-system-v27-style";
   const rankEffectsCss = "rank-effects-v31.css?v=20260822-7";
@@ -10,9 +10,9 @@
   const rankPolishCssId = "mytt-rank-mobile-polish-v47-style";
   const rankFinalCss = "rank-final-fix-v48.css?v=20260822-1";
   const rankFinalCssId = "mytt-rank-final-fix-v48-style";
-  const rankGoldCss = "rank-gold-fix-v52.css?v=20260822-v53";
-  const rankGoldCssId = "mytt-rank-gold-fix-v52-style";
-  const rankGoldJs = "rank-gold-fix-v52.js?v=20260822-v53";
+  const rankLockCss = "rank-lock-v54.css?v=20260822-1";
+  const rankLockCssId = "mytt-rank-lock-v54-style";
+  const rankLockJs = "rank-lock-v54.js?v=20260822-1";
 
   const coreSrc = "marketplace-core-v23.js?v=20260821-2";
   const polishSrc = "mobile-polish-v23.js?v=20260821-avatar-lazy-1";
@@ -34,9 +34,9 @@
     ensureCss(rankEffectsCssId, rankEffectsCss);
     ensureCss(rankPolishCssId, rankPolishCss);
     ensureCss(rankFinalCssId, rankFinalCss);
-    ensureCss(rankGoldCssId, rankGoldCss);
+    ensureCss(rankLockCssId, rankLockCss);
     document.write(`<script id="mytt-rank-system-v27" src="${rankSrc}"><\/script>`);
-    document.write(`<script id="mytt-rank-gold-fix-v52" src="${rankGoldJs}"><\/script>`);
+    document.write(`<script id="mytt-rank-lock-v54" src="${rankLockJs}"><\/script>`);
     document.write(`<script id="mytt-marketplace-core-v23" src="${coreSrc}"><\/script>`);
     document.write(`<script id="mytt-mobile-polish-v23" src="${polishSrc}"><\/script>`);
     return;
@@ -60,9 +60,9 @@
   ensureCss(rankEffectsCssId, rankEffectsCss);
   ensureCss(rankPolishCssId, rankPolishCss);
   ensureCss(rankFinalCssId, rankFinalCss);
-  ensureCss(rankGoldCssId, rankGoldCss);
+  ensureCss(rankLockCssId, rankLockCss);
   loadScript("mytt-rank-system-v27", rankSrc)
-    .then(() => loadScript("mytt-rank-gold-fix-v52", rankGoldJs))
+    .then(() => loadScript("mytt-rank-lock-v54", rankLockJs))
     .then(() => loadScript("mytt-marketplace-core-v23", coreSrc))
     .then(() => loadScript("mytt-mobile-polish-v23", polishSrc))
     .catch((err) => console.error("MYTT UI module load failed", err));
