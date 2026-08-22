@@ -1,0 +1,26 @@
+/* MYTT Rank Journey V38 — trim the stray lower rim without re-drawing badges.
+   The standalone badge files stay intact; a very soft asymmetric alpha mask
+   removes only the extra lower outer edge and lets the badge blend into the card. */
+
+html body .hero-rank-card-v5 .home-rank-native-badge{
+  clip-path:none!important;
+  border-radius:0!important;
+  -webkit-mask-image:radial-gradient(ellipse 48% 47% at 50% 48%,#000 0 94%,rgba(0,0,0,.98) 96%,rgba(0,0,0,.72) 98%,transparent 100%)!important;
+  mask-image:radial-gradient(ellipse 48% 47% at 50% 48%,#000 0 94%,rgba(0,0,0,.98) 96%,rgba(0,0,0,.72) 98%,transparent 100%)!important;
+  -webkit-mask-repeat:no-repeat!important;
+  mask-repeat:no-repeat!important;
+  transform:translateZ(0) scale(1.045)!important;
+  filter:contrast(1.045) saturate(1.035) brightness(1.02) drop-shadow(0 0 2px rgba(255,255,255,.14))!important;
+}
+
+/* Hall of Fame has a wider laurel silhouette, so preserve more of its sides. */
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{
+  -webkit-mask-image:radial-gradient(ellipse 49.5% 48.5% at 50% 49%,#000 0 95%,rgba(0,0,0,.98) 97%,transparent 100%)!important;
+  mask-image:radial-gradient(ellipse 49.5% 48.5% at 50% 49%,#000 0 95%,rgba(0,0,0,.98) 97%,transparent 100%)!important;
+  transform:translateZ(0) scale(1.015)!important;
+}
+
+/* The corrected 2200 badge should remain clearly distinct from Hall of Fame. */
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge{
+  transform:translateZ(0) scale(1.035)!important;
+}
