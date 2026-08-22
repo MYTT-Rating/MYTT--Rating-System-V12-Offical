@@ -25,11 +25,20 @@
     "rank-badges/mytt-rank-road-v29.b64.02",
     "rank-badges/mytt-rank-road-v29.b64.03"
   ];
-  const BADGE_POINTS = [
-    {x:6.6,y:33.5},{x:17.5,y:33.5},{x:28.4,y:33.5},
-    {x:39.3,y:33.5},{x:50.1,y:33.5},{x:60.9,y:33.5},
-    {x:71.8,y:33.5},{x:82.6,y:33.5},{x:93.4,y:33.5}
+
+  /* Each badge is cropped from the exact approved artwork. No badge is redrawn. */
+  const RANKS = [
+    {name:"Rookie",score:1500,left:-23.148,color:"#d8dde4",line:"line-red"},
+    {name:"Challenger",score:1600,left:-144.444,color:"#19f53a",line:"line-orange"},
+    {name:"Elite",score:1700,left:-265.741,color:"#21c9ff",line:"line-gold"},
+    {name:"Master",score:1800,left:-387.037,color:"#b55cff",line:"line-yellow"},
+    {name:"Grandmaster",score:1900,left:-506.481,color:"#ff3131",line:"line-green"},
+    {name:"MYTT Champion",score:2000,left:-626.852,color:"#ff2e8d",line:"line-cyan"},
+    {name:"Legend",score:2100,left:-748.148,color:"#f0a81c",line:"line-purple"},
+    {name:"Immortal",score:2200,left:-867.593,color:"#ffd51c",line:"line-pink"},
+    {name:"Hall of Fame",score:2300,left:-987.963,color:"#ffd51c",line:null}
   ];
+  const CROP_TOP = -38.889;
   let approvedStripPromise = null;
 
   function loadApprovedStrip(){
@@ -47,9 +56,10 @@
     const rating=Number(String(node?.textContent||"1500").replace(/[^0-9.-]/g,""));
     return Number.isFinite(rating)?rating:1500;
   }
+
   function getActiveRankIndex(){
     const rating=getHomepageRating();
-    if(rating>=2300) return 8;
+    if(rating>=2300)return 8;
     return Math.max(0,Math.min(8,Math.floor((rating-1500)/100)));
   }
 
@@ -62,10 +72,113 @@
     if(note)note.innerHTML="<b>1500</b> / 1600 · 100 pts to Challenger";
   }
 
-  function enableRankRoadDrag(road){
-    if(!road||road.dataset.rankDragReady==="1")return;
-    road.dataset.rankDragReady="1";
-    let dragging=false,startX=0,startScrollLeft=0;
+  function buildRankNode(rank,index,src){
+    const node=document.createElement("article");
+    node.className="home-rank-native-node";
+    node.dataset.rankIndex=String(index);
+    node.style.setProperty("--rank-color",rank.color);
+    node.setAttribute("aria-label",`${rank.name} ${rank.score}`);
+
+    const shell=document.createElement("div");
+    shell.className="home-rank-native-shell";
+
+    const crop=document.createElement("div");
+    crop.className="home-rank-native-crop";
+
+    const img=document.createElement("img");
+    img.className="home-rank-native-source";
+    img.src=src;
+    img.alt="";
+    img.draggable=false;
+    img.decoding="async";
+    img.style.setProperty("--crop-left",`${rank.left}%`);
+    img.style.setProperty("--crop-top",`${CROP_TOP}%`);
+
+    crop.appendChild(img);
+    shell.appendChild(crop);
+
+    const name=document.createElement("span");
+    name.className="home-rank-native-name";
+    name.textContent=rank.name;
+
+    const score=document.createElement("small");
+    score.className="home-rank-native-score";
+    score.textContent=String(rank.score);
+
+    const marker=document.createElement("div");
+    marker.className="home-rank-native-marker";
+    marker.setAttribute("aria-hidden","true");
+    marker.innerHTML='<b>▲</b><em>YOU ARE HERE</em>';
+
+    node.append(shell,name,score,marker);
+    return node;
+  }
+
+  function buildNativeRoad(road,src){
+    road.className="homepage-rank-road mytt-native-rank-road-v35";
+    road.setAttribute("aria-label","MYTT Rank Journey: Rookie 1500, Challenger 1600, Elite 1700, Master 1800, Grandmaster 1900, MYTT Champion 2000, Legend 2100, Immortal 2200, Hall of Fame 2300");
+    road.replaceChildren();
+
+    RANKS.forEach((rank,index)=>{
+      road.appendChild(buildRankNode(rank,index,src));
+      if(index<RANKS.length-1){
+        const line=document.createElement("i");
+        line.className=`home-rank-native-line ${rank.line}`;
+        line.setAttribute("aria-hidden","true");
+        road.appendChild(line);
+      }
+    });
+
+    road.dataset.nativeRankRoad="v35";
+  }
+
+  function setActiveRank(road,index){
+    const safe=Math.max(0,Math.min(RANKS.length-1,index));
+    road.querySelectorAll(".home-rank-native-node").forEach((node,i)=>{
+      const active=i===safe;
+      node.classList.toggle("active",active);
+      if(active)node.setAttribute("aria-current","true");else node.removeAttribute("aria-current");
+    });
+    road.dataset.activeRank=String(safe);
+  }
+
+  function nearestVisibleRank(road){
+    const rr=road.getBoundingClientRect();
+    const target=rr.left+rr.width/2;
+    let best=0,bestDist=Infinity;
+    road.querySelectorAll(".home-rank-native-node").forEach((node,i)=>{
+      const nr=node.getBoundingClientRect();
+      const d=Math.abs((nr.left+nr.width/2)-target);
+      if(d<bestDist){bestDist=d;best=i;}
+    });
+    return best;
+  }
+
+  function centerRank(road,index,behavior="auto"){
+    const node=road.querySelector(`.home-rank-native-node[data-rank-index="${index}"]`);
+    if(!node)return;
+    const target=node.offsetLeft-(road.clientWidth-node.offsetWidth)/2;
+    road.scrollTo({left:Math.max(0,target),behavior});
+  }
+
+  function enableRankInteraction(road){
+    if(!road||road.dataset.rankInteractionReady==="1")return;
+    road.dataset.rankInteractionReady="1";
+
+    let dragging=false,startX=0,startScrollLeft=0,raf=0;
+    const sync=()=>{
+      raf=0;
+      if(window.matchMedia("(max-width: 768px)").matches){
+        setActiveRank(road,nearestVisibleRank(road));
+      }else{
+        setActiveRank(road,getActiveRankIndex());
+      }
+    };
+    const schedule=()=>{if(!raf)raf=requestAnimationFrame(sync);};
+
+    road.addEventListener("scroll",schedule,{passive:true});
+    window.addEventListener("resize",schedule,{passive:true});
+
     road.addEventListener("pointerdown",event=>{
       if(event.pointerType!=="mouse"||road.scrollWidth<=road.clientWidth)return;
       dragging=true;startX=event.clientX;startScrollLeft=road.scrollLeft;
@@ -75,80 +188,41 @@
       if(!dragging||event.pointerType!=="mouse")return;
       road.scrollLeft=startScrollLeft-(event.clientX-startX);event.preventDefault();
     });
-    const stop=event=>{if(!dragging)return;dragging=false;road.classList.remove("is-dragging");if(event&&road.hasPointerCapture?.(event.pointerId))road.releasePointerCapture(event.pointerId);};
-    road.addEventListener("pointerup",stop);road.addEventListener("pointercancel",stop);road.addEventListener("lostpointercapture",stop);
-  }
-
-  function setActiveRank(stage,index){
-    const point=BADGE_POINTS[Math.max(0,Math.min(8,index))]||BADGE_POINTS[0];
-    stage.dataset.activeRank=String(index);
-    stage.querySelectorAll(".mytt-rank-active-clone,.mytt-rank-you-arrow,.mytt-rank-you-label").forEach(el=>{
-      el.style.setProperty("--active-x",`${point.x}%`);
-      el.style.setProperty("--active-y",`${point.y}%`);
-    });
-  }
-
-  function nearestVisibleRank(road,stage){
-    const rr=road.getBoundingClientRect(),sr=stage.getBoundingClientRect();
-    const target=rr.left+rr.width/2;
-    let best=0,bestDist=Infinity;
-    BADGE_POINTS.forEach((p,i)=>{
-      const x=sr.left+sr.width*(p.x/100),d=Math.abs(x-target);
-      if(d<bestDist){bestDist=d;best=i;}
-    });
-    return best;
-  }
-
-  function enableMobileRankFollower(road,stage){
-    let raf=0;
-    const sync=()=>{
-      raf=0;
-      if(window.matchMedia("(max-width: 768px)").matches){
-        setActiveRank(stage,nearestVisibleRank(road,stage));
-      }else{
-        setActiveRank(stage,getActiveRankIndex());
-      }
+    const stop=event=>{
+      if(!dragging)return;
+      dragging=false;road.classList.remove("is-dragging");
+      if(event&&road.hasPointerCapture?.(event.pointerId))road.releasePointerCapture(event.pointerId);
+      schedule();
     };
-    const schedule=()=>{if(!raf)raf=requestAnimationFrame(sync);};
-    road.addEventListener("scroll",schedule,{passive:true});
-    window.addEventListener("resize",schedule,{passive:true});
-    requestAnimationFrame(sync);
+    road.addEventListener("pointerup",stop);road.addEventListener("pointercancel",stop);road.addEventListener("lostpointercapture",stop);
+
+    setActiveRank(road,getActiveRankIndex());
+    if(window.matchMedia("(max-width: 768px)").matches){
+      requestAnimationFrame(()=>centerRank(road,getActiveRankIndex()));
+    }
   }
 
-  function buildActiveRankEffect(stage,src){
-    const clone=document.createElement("img");
-    clone.className="mytt-rank-active-clone";clone.src=src;clone.alt="";clone.draggable=false;clone.decoding="async";
-
-    /* Cover only the old baked YOU ARE HERE words; badge artwork is untouched. */
-    const mask=document.createElement("span");
-    mask.className="mytt-rank-old-label-mask";mask.setAttribute("aria-hidden","true");
-
-    const arrow=document.createElement("b");
-    arrow.className="mytt-rank-you-arrow";arrow.textContent="▲";arrow.setAttribute("aria-hidden","true");
-
-    const label=document.createElement("span");
-    label.className="mytt-rank-you-label";label.textContent="YOU ARE HERE";label.setAttribute("aria-hidden","true");
-
-    stage.append(mask,clone,arrow,label);
-    setActiveRank(stage,getActiveRankIndex());
-  }
-
-  function lockHomeRankJourney(){
-    const road=document.querySelector(".homepage-rank-road");if(!road)return;
-    road.classList.add("mytt-approved-rank-road-v29");
-    road.setAttribute("aria-label","MYTT Rank Journey: Rookie 1500, Challenger 1600, Elite 1700, Master 1800, Grandmaster 1900, MYTT Champion 2000, Legend 2100, Immortal 2200, Hall of Fame 2300");
-    road.replaceChildren();
-    const placeholder=document.createElement("div");placeholder.className="mytt-approved-rank-strip-loading";placeholder.setAttribute("aria-hidden","true");road.appendChild(placeholder);
+  function installNativeRankJourney(){
+    const road=document.querySelector(".homepage-rank-road");
+    if(!road)return;
+    road.classList.add("mytt-native-rank-loading");
     loadApprovedStrip().then(src=>{
       if(!road.isConnected)return;
-      const stage=document.createElement("div");stage.className="mytt-rank-stage-v34";
-      const img=document.createElement("img");img.className="mytt-approved-rank-strip-v29";img.src=src;img.alt="MYTT Rank Journey — Rookie 1500, Challenger 1600, Elite 1700, Master 1800, Grandmaster 1900, MYTT Champion 2000, Legend 2100, Immortal 2200, Hall of Fame 2300";img.draggable=false;img.decoding="async";
-      stage.appendChild(img);buildActiveRankEffect(stage,src);road.replaceChildren(stage);
-      road.dataset.approvedRankStrip="v34";road.scrollLeft=0;enableRankRoadDrag(road);enableMobileRankFollower(road,stage);
-    }).catch(err=>{console.error("Unable to load approved MYTT rank strip",err);placeholder.textContent="MYTT Rank Journey";});
-    enableRankRoadDrag(road);fixProgressCopy();
+      buildNativeRoad(road,src);
+      road.classList.remove("mytt-native-rank-loading");
+      enableRankInteraction(road);
+    }).catch(err=>{
+      console.error("Unable to load approved MYTT rank artwork",err);
+      road.classList.remove("mytt-native-rank-loading");
+    });
+    fixProgressCopy();
   }
 
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",lockHomeRankJourney,{once:true});else lockHomeRankJourney();
-  window.addEventListener("pageshow",()=>{const road=document.querySelector(".homepage-rank-road");if(road&&road.dataset.approvedRankStrip!=="v34")lockHomeRankJourney();else if(road)enableRankRoadDrag(road);fixProgressCopy();});
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",installNativeRankJourney,{once:true});else installNativeRankJourney();
+  window.addEventListener("pageshow",()=>{
+    const road=document.querySelector(".homepage-rank-road");
+    if(road&&road.dataset.nativeRankRoad!=="v35")installNativeRankJourney();
+    else if(road)setActiveRank(road,window.matchMedia("(max-width: 768px)").matches?nearestVisibleRank(road):getActiveRankIndex());
+    fixProgressCopy();
+  });
 })();
