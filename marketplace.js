@@ -1,12 +1,12 @@
 (function () {
   "use strict";
 
-  const rankSrc = "rank-system-v27.js?v=20260822-16";
+  const rankSrc = "rank-system-v27.js?v=20260822-17";
   const rankCss = "rank-system-v27.css?v=20260822-5";
   const rankCssId = "mytt-rank-system-v27-style";
   const rankEffectsCss = "rank-effects-v31.css?v=20260822-7";
   const rankEffectsCssId = "mytt-rank-effects-v31-style";
-  const rankPolishCss = "rank-mobile-polish-v46.css?v=20260822-1";
+  const rankPolishCss = "rank-mobile-polish-v46.css?v=20260822-2";
   const rankPolishCssId = "mytt-rank-mobile-polish-v46-style";
 
   const coreSrc = "marketplace-core-v23.js?v=20260821-2";
