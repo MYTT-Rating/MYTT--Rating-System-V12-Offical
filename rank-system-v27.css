@@ -1,0 +1,130 @@
+/* MYTT Rank System V27 — final 1500–2300 visual system */
+.homepage-rank-road .home-rank-orb{
+  color:transparent !important;
+  font-size:0 !important;
+  line-height:0 !important;
+  background-repeat:no-repeat !important;
+  background-position:center !important;
+  background-size:contain !important;
+  background-color:transparent !important;
+}
+
+body .tier-pill{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:6px !important;
+  color:#fff !important;
+  font-size:12px !important;
+  line-height:1 !important;
+}
+body .tier-pill::before,
+body .tier-pill::after{content:none !important;display:none !important;}
+body .tier-pill .tier-badge-img{
+  display:block !important;
+  width:27px !important;
+  height:27px !important;
+  min-width:27px !important;
+  flex:0 0 27px !important;
+  object-fit:contain !important;
+}
+
+body .tier-pill.tier-rookie{background:rgba(180,190,200,.13) !important;color:#f2f4f7 !important;}
+body .tier-pill.tier-challenger{background:rgba(34,197,94,.16) !important;color:#bbf7d0 !important;}
+body .tier-pill.tier-elite{background:rgba(14,165,233,.17) !important;color:#bae6fd !important;}
+body .tier-pill.tier-master{background:rgba(168,85,247,.17) !important;color:#e9d5ff !important;}
+body .tier-pill.tier-grandmaster{background:rgba(239,68,68,.18) !important;color:#fecaca !important;}
+body .tier-pill.tier-champion{background:rgba(236,72,153,.18) !important;color:#fbcfe8 !important;}
+body .tier-pill.tier-legend{background:rgba(245,158,11,.18) !important;color:#fde68a !important;}
+body .tier-pill.tier-immortal{background:rgba(250,204,21,.18) !important;color:#fef08a !important;}
+body .tier-pill.tier-hof{background:linear-gradient(135deg,rgba(250,204,21,.28),rgba(245,158,11,.16)) !important;color:#fff3a3 !important;}
+
+#singles img.leaderboard-mobile-tier,
+#doubles img.leaderboard-mobile-tier{
+  background-image:none !important;
+  background-color:transparent !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+
+.profile-rank-detail-badge{
+  display:block !important;
+  width:36px !important;
+  height:36px !important;
+  margin:0 auto 5px !important;
+  object-fit:contain !important;
+}
+#profileContent .profile-progress-badge{
+  display:block !important;
+  width:24px !important;
+  height:24px !important;
+  min-width:24px !important;
+  object-fit:contain !important;
+}
+
+@media (min-width:769px){
+  .homepage-rank-road .home-rank-orb{
+    width:74px !important;
+    height:74px !important;
+  }
+}
+
+@media (max-width:768px){
+  .homepage-rank-road{
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    -webkit-overflow-scrolling:touch !important;
+    scroll-snap-type:x proximity !important;
+    scrollbar-width:none !important;
+    padding-bottom:10px !important;
+  }
+  .homepage-rank-road::-webkit-scrollbar{display:none !important;}
+  .homepage-rank-road .home-rank-node{
+    flex:0 0 74px !important;
+    width:74px !important;
+    min-width:74px !important;
+    scroll-snap-align:center !important;
+  }
+  .homepage-rank-road .home-rank-orb{
+    width:56px !important;
+    height:56px !important;
+    min-width:56px !important;
+    margin-bottom:7px !important;
+  }
+  .homepage-rank-road .home-rank-node > span{
+    margin-top:5px !important;
+    font-size:9.2px !important;
+    line-height:1.05 !important;
+    white-space:normal !important;
+  }
+  .homepage-rank-road .home-rank-node > small{
+    margin-top:4px !important;
+    font-size:8.5px !important;
+  }
+  .homepage-rank-road .home-rank-line{
+    flex:0 0 22px !important;
+    width:22px !important;
+    min-width:22px !important;
+    margin-top:27px !important;
+  }
+  .homepage-rank-road .you-marker{
+    margin-top:4px !important;
+    font-size:7px !important;
+  }
+
+  html body #singles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
+  html body #doubles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
+  html body #doubles .team-cell > .leaderboard-mobile-tier{
+    display:inline-block !important;
+    flex:0 0 30px !important;
+    width:30px !important;
+    height:30px !important;
+    min-width:30px !important;
+    min-height:30px !important;
+    padding:0 !important;
+    margin:0 0 0 6px !important;
+    border:0 !important;
+    box-shadow:none !important;
+    overflow:visible !important;
+    vertical-align:middle !important;
+  }
+}
