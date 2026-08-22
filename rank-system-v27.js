@@ -38,6 +38,19 @@
     "rank-badges/mytt-rank-road-v29.b64.03"
   ];
 
+  /* Exact badge centres in the approved 1200 x 287 strip. */
+  const BADGE_POINTS = [
+    {x:6.6, y:33.5},
+    {x:17.5, y:33.5},
+    {x:28.4, y:33.5},
+    {x:39.3, y:33.5},
+    {x:50.1, y:33.5},
+    {x:60.9, y:33.5},
+    {x:71.8, y:33.5},
+    {x:82.6, y:33.5},
+    {x:93.4, y:33.5}
+  ];
+
   let approvedStripPromise = null;
 
   function loadApprovedStrip() {
@@ -109,6 +122,40 @@
     road.addEventListener("lostpointercapture", stop);
   }
 
+  function buildRankHoverLayer(stage, src) {
+    const layer = document.createElement("div");
+    layer.className = "mytt-rank-hover-layer";
+    layer.setAttribute("aria-hidden", "true");
+
+    BADGE_POINTS.forEach((point, index) => {
+      const clone = document.createElement("img");
+      clone.className = "mytt-rank-hover-clone";
+      clone.src = src;
+      clone.alt = "";
+      clone.draggable = false;
+      clone.decoding = "async";
+      clone.style.setProperty("--hx", `${point.x}%`);
+      clone.style.setProperty("--hy", `${point.y}%`);
+      clone.style.setProperty("--i", index);
+
+      const hit = document.createElement("span");
+      hit.className = "mytt-rank-hover-hit";
+      hit.style.setProperty("--hx", `${point.x}%`);
+      hit.style.setProperty("--hy", `${point.y}%`);
+
+      hit.addEventListener("pointerenter", event => {
+        if (event.pointerType === "touch") return;
+        clone.classList.add("is-active");
+      });
+      hit.addEventListener("pointerleave", () => clone.classList.remove("is-active"));
+      hit.addEventListener("pointercancel", () => clone.classList.remove("is-active"));
+
+      layer.append(clone, hit);
+    });
+
+    stage.appendChild(layer);
+  }
+
   function lockHomeRankJourney() {
     const road = document.querySelector(".homepage-rank-road");
     if (!road) return;
@@ -125,14 +172,21 @@
 
     loadApprovedStrip().then(src => {
       if (!road.isConnected) return;
+
+      const stage = document.createElement("div");
+      stage.className = "mytt-rank-stage-v32";
+
       const img = document.createElement("img");
       img.className = "mytt-approved-rank-strip-v29";
       img.src = src;
       img.alt = "MYTT Rank Journey — Rookie 1500, Challenger 1600, Elite 1700, Master 1800, Grandmaster 1900, MYTT Champion 2000, Legend 2100, Immortal 2200, Hall of Fame 2300";
       img.draggable = false;
       img.decoding = "async";
-      road.replaceChildren(img);
-      road.dataset.approvedRankStrip = "v29";
+
+      stage.appendChild(img);
+      buildRankHoverLayer(stage, src);
+      road.replaceChildren(stage);
+      road.dataset.approvedRankStrip = "v32";
       road.scrollLeft = 0;
       enableRankRoadDrag(road);
     }).catch(err => {
@@ -152,7 +206,7 @@
 
   window.addEventListener("pageshow", () => {
     const road = document.querySelector(".homepage-rank-road");
-    if (road && road.dataset.approvedRankStrip !== "v29") lockHomeRankJourney();
+    if (road && road.dataset.approvedRankStrip !== "v32") lockHomeRankJourney();
     else if (road) enableRankRoadDrag(road);
     fixProgressCopy();
   });
