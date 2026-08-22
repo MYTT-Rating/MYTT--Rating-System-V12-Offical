@@ -1,0 +1,42 @@
+/* V52 — complete final two gold badges with their own full outer ring. */
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"],
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"],
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell{
+  overflow:visible!important;
+}
+
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell::after,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell::after{
+  display:none!important;
+  content:none!important;
+}
+
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  clip-path:none!important;
+  -webkit-clip-path:none!important;
+  transform:none!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.38)) drop-shadow(0 0 7px rgba(255,201,36,.18))!important;
+}
+
+@media (max-width:768px){
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"]{
+    flex-basis:84px!important;
+    width:84px!important;
+    min-width:84px!important;
+  }
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"]{
+    flex-basis:92px!important;
+    width:92px!important;
+    min-width:92px!important;
+  }
+}
