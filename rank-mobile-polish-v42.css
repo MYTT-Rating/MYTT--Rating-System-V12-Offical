@@ -1,0 +1,22 @@
+/* V42 rank edge cleanup */
+html body .hero-rank-card-v5 .home-rank-native-shell::after{content:none!important;display:none!important;}
+html body .hero-rank-card-v5 .home-rank-native-node:not(.active) .home-rank-native-shell::before{opacity:0!important;animation:none!important;}
+html body .hero-rank-card-v5 .home-rank-native-badge{transform:none!important;filter:none!important;object-fit:contain!important;object-position:center!important;}
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="0"] .home-rank-native-badge,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="1"] .home-rank-native-badge,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="2"] .home-rank-native-badge,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="3"] .home-rank-native-badge,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="4"] .home-rank-native-badge,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="5"] .home-rank-native-badge,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="6"] .home-rank-native-badge,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{transform:none!important;}
+html body .hero-rank-card-v5 .home-rank-native-node.active .home-rank-native-shell::before{opacity:.58!important;filter:blur(10px)!important;}
+@media (min-width:769px){
+  html body .hero-rank-card-v5 .home-rank-native-shell{width:94px!important;height:94px!important;flex-basis:94px!important;}
+  html body .hero-rank-card-v5 .home-rank-native-line{margin-top:44.5px!important;}
+}
+@media (max-width:768px){
+  html body .hero-rank-card-v5 .home-rank-native-shell{width:70px!important;height:70px!important;flex-basis:70px!important;}
+  html body .hero-rank-card-v5 .home-rank-native-line{margin-top:33px!important;}
+}
