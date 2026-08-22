@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const rankSrc = "rank-system-v27.js?v=20260822-26";
+  const rankSrc = "rank-system-v27.js?v=20260822-27";
   const rankCss = "rank-system-v27.css?v=20260822-5";
   const rankCssId = "mytt-rank-system-v27-style";
   const rankEffectsCss = "rank-effects-v31.css?v=20260822-7";
@@ -10,9 +10,9 @@
   const rankPolishCssId = "mytt-rank-mobile-polish-v47-style";
   const rankFinalCss = "rank-final-fix-v48.css?v=20260822-1";
   const rankFinalCssId = "mytt-rank-final-fix-v48-style";
-  const rankLockCss = "rank-lock-v54.css?v=20260822-1";
+  const rankLockCss = "rank-lock-v54.css?v=20260822-final-approved";
   const rankLockCssId = "mytt-rank-lock-v54-style";
-  const rankLockJs = "rank-lock-v54.js?v=20260822-final-lock";
+  const rankLockJs = "rank-lock-v54.js?v=20260822-final-approved";
 
   const coreSrc = "marketplace-core-v23.js?v=20260821-2";
   const polishSrc = "mobile-polish-v23.js?v=20260821-avatar-lazy-1";
@@ -61,6 +61,7 @@
   ensureCss(rankPolishCssId, rankPolishCss);
   ensureCss(rankFinalCssId, rankFinalCss);
   ensureCss(rankLockCssId, rankLockCss);
+
   loadScript("mytt-rank-system-v27", rankSrc)
     .then(() => loadScript("mytt-rank-lock-v54", rankLockJs))
     .then(() => loadScript("mytt-marketplace-core-v23", coreSrc))
