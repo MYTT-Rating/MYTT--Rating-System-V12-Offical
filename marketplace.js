@@ -1,8 +1,8 @@
 (function () {
   "use strict";
 
-  const rankSrc = "rank-system-v27.js?v=20260822-2";
-  const rankCss = "rank-system-v27.css?v=20260822-2";
+  const rankSrc = "rank-system-v27.js?v=20260822-3";
+  const rankCss = "rank-system-v27.css?v=20260822-3";
   const rankCssId = "mytt-rank-system-v27-style";
 
   const coreSrc = "marketplace-core-v23.js?v=20260821-2";
