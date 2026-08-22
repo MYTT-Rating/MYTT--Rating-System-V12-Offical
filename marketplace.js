@@ -12,7 +12,7 @@
   const rankFinalCssId = "mytt-rank-final-fix-v48-style";
   const rankLockCss = "rank-lock-v54.css?v=20260822-1";
   const rankLockCssId = "mytt-rank-lock-v54-style";
-  const rankLockJs = "rank-lock-v54.js?v=20260822-1";
+  const rankLockJs = "rank-lock-v54.js?v=20260822-final-lock";
 
   const coreSrc = "marketplace-core-v23.js?v=20260821-2";
   const polishSrc = "mobile-polish-v23.js?v=20260821-avatar-lazy-1";
