@@ -19,37 +19,19 @@
     window.MYTT_FINAL_TIERS = FINAL_TIERS;
   }
 
-  const STRIP_PARTS = [
-    "rank-badges/mytt-rank-road-v29.b64.00",
-    "rank-badges/mytt-rank-road-v29.b64.01",
-    "rank-badges/mytt-rank-road-v29.b64.02",
-    "rank-badges/mytt-rank-road-v29.b64.03"
-  ];
-
-  /* Each badge is cropped from the exact approved artwork. No badge is redrawn. */
   const RANKS = [
-    {name:"Rookie",score:1500,left:-23.148,color:"#d8dde4",line:"line-red"},
-    {name:"Challenger",score:1600,left:-144.444,color:"#19f53a",line:"line-orange"},
-    {name:"Elite",score:1700,left:-265.741,color:"#21c9ff",line:"line-gold"},
-    {name:"Master",score:1800,left:-387.037,color:"#b55cff",line:"line-yellow"},
-    {name:"Grandmaster",score:1900,left:-506.481,color:"#ff3131",line:"line-green"},
-    {name:"MYTT Champion",score:2000,left:-626.852,color:"#ff2e8d",line:"line-cyan"},
-    {name:"Legend",score:2100,left:-748.148,color:"#f0a81c",line:"line-purple"},
-    {name:"Immortal",score:2200,left:-867.593,color:"#ffd51c",line:"line-pink"},
-    {name:"Hall of Fame",score:2300,left:-987.963,color:"#ffd51c",line:null}
+    {name:"Rookie",score:1500,badge:"novice-standalone.webp",color:"#d8dde4",line:"line-red"},
+    {name:"Challenger",score:1600,badge:"rookie-standalone.webp",color:"#19f53a",line:"line-orange"},
+    {name:"Elite",score:1700,badge:"challenger-standalone.webp",color:"#21c9ff",line:"line-gold"},
+    {name:"Master",score:1800,badge:"elite-standalone.webp",color:"#b55cff",line:"line-yellow"},
+    {name:"Grandmaster",score:1900,badge:"master-standalone.webp",color:"#ff3131",line:"line-green"},
+    {name:"MYTT Champion",score:2000,badge:"immortal-standalone.webp",color:"#ff2e8d",line:"line-cyan"},
+    {name:"Legend",score:2100,badge:"legend-standalone.webp",color:"#f0a81c",line:"line-purple"},
+    {name:"Immortal",score:2200,badge:"champion-standalone.webp",color:"#ffd51c",line:"line-pink"},
+    {name:"Hall of Fame",score:2300,badge:"v22-hall-of-fame-mytt-final.webp",color:"#ffd51c",line:null}
   ];
-  const CROP_TOP = -38.889;
-  let approvedStripPromise = null;
 
-  function loadApprovedStrip(){
-    if(!approvedStripPromise){
-      approvedStripPromise=Promise.all(STRIP_PARTS.map(path=>fetch(path,{cache:"force-cache"}).then(res=>{
-        if(!res.ok) throw new Error(`Unable to load ${path}`);
-        return res.text();
-      }))).then(parts=>`data:image/webp;base64,${parts.map(p=>p.trim()).join("")}`);
-    }
-    return approvedStripPromise;
-  }
+  function badgeUrl(file){return `rank-badges/${file}`;}
 
   function getHomepageRating(){
     const node=document.querySelector(".current-rating-v5 strong");
@@ -72,7 +54,7 @@
     if(note)note.innerHTML="<b>1500</b> / 1600 · 100 pts to Challenger";
   }
 
-  function buildRankNode(rank,index,src){
+  function buildRankNode(rank,index){
     const node=document.createElement("article");
     node.className="home-rank-native-node";
     node.dataset.rankIndex=String(index);
@@ -82,20 +64,13 @@
     const shell=document.createElement("div");
     shell.className="home-rank-native-shell";
 
-    const crop=document.createElement("div");
-    crop.className="home-rank-native-crop";
-
     const img=document.createElement("img");
-    img.className="home-rank-native-source";
-    img.src=src;
-    img.alt="";
+    img.className="home-rank-native-badge";
+    img.src=badgeUrl(rank.badge);
+    img.alt=`${rank.name} badge`;
     img.draggable=false;
     img.decoding="async";
-    img.style.setProperty("--crop-left",`${rank.left}%`);
-    img.style.setProperty("--crop-top",`${CROP_TOP}%`);
-
-    crop.appendChild(img);
-    shell.appendChild(crop);
+    shell.appendChild(img);
 
     const name=document.createElement("span");
     name.className="home-rank-native-name";
@@ -114,13 +89,13 @@
     return node;
   }
 
-  function buildNativeRoad(road,src){
-    road.className="homepage-rank-road mytt-native-rank-road-v35";
+  function buildNativeRoad(road){
+    road.className="homepage-rank-road mytt-native-rank-road-v37";
     road.setAttribute("aria-label","MYTT Rank Journey: Rookie 1500, Challenger 1600, Elite 1700, Master 1800, Grandmaster 1900, MYTT Champion 2000, Legend 2100, Immortal 2200, Hall of Fame 2300");
     road.replaceChildren();
 
     RANKS.forEach((rank,index)=>{
-      road.appendChild(buildRankNode(rank,index,src));
+      road.appendChild(buildRankNode(rank,index));
       if(index<RANKS.length-1){
         const line=document.createElement("i");
         line.className=`home-rank-native-line ${rank.line}`;
@@ -129,7 +104,8 @@
       }
     });
 
-    road.dataset.nativeRankRoad="v35";
+    road.dataset.nativeRankRoad="v37";
+    road.scrollLeft=0;
   }
 
   function setActiveRank(road,index){
@@ -142,9 +118,12 @@
     road.dataset.activeRank=String(safe);
   }
 
+  /* On phones the marker follows the badge nearest the LEFT reading position,
+     not the centre of the card. This keeps 1500 + ▲ + YOU ARE HERE at the
+     left edge on first load and keeps the marker visible as the row is swiped. */
   function nearestVisibleRank(road){
     const rr=road.getBoundingClientRect();
-    const target=rr.left+rr.width/2;
+    const target=rr.left+Math.min(58,rr.width*.16);
     let best=0,bestDist=Infinity;
     road.querySelectorAll(".home-rank-native-node").forEach((node,i)=>{
       const nr=node.getBoundingClientRect();
@@ -152,13 +131,6 @@
       if(d<bestDist){bestDist=d;best=i;}
     });
     return best;
-  }
-
-  function centerRank(road,index,behavior="auto"){
-    const node=road.querySelector(`.home-rank-native-node[data-rank-index="${index}"]`);
-    if(!node)return;
-    const target=node.offsetLeft-(road.clientWidth-node.offsetWidth)/2;
-    road.scrollTo({left:Math.max(0,target),behavior});
   }
 
   function enableRankInteraction(road){
@@ -197,31 +169,21 @@
     road.addEventListener("pointerup",stop);road.addEventListener("pointercancel",stop);road.addEventListener("lostpointercapture",stop);
 
     setActiveRank(road,getActiveRankIndex());
-    if(window.matchMedia("(max-width: 768px)").matches){
-      requestAnimationFrame(()=>centerRank(road,getActiveRankIndex()));
-    }
+    requestAnimationFrame(()=>{road.scrollLeft=0;sync();});
   }
 
   function installNativeRankJourney(){
     const road=document.querySelector(".homepage-rank-road");
     if(!road)return;
-    road.classList.add("mytt-native-rank-loading");
-    loadApprovedStrip().then(src=>{
-      if(!road.isConnected)return;
-      buildNativeRoad(road,src);
-      road.classList.remove("mytt-native-rank-loading");
-      enableRankInteraction(road);
-    }).catch(err=>{
-      console.error("Unable to load approved MYTT rank artwork",err);
-      road.classList.remove("mytt-native-rank-loading");
-    });
+    buildNativeRoad(road);
+    enableRankInteraction(road);
     fixProgressCopy();
   }
 
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",installNativeRankJourney,{once:true});else installNativeRankJourney();
   window.addEventListener("pageshow",()=>{
     const road=document.querySelector(".homepage-rank-road");
-    if(road&&road.dataset.nativeRankRoad!=="v35")installNativeRankJourney();
+    if(road&&road.dataset.nativeRankRoad!=="v37")installNativeRankJourney();
     else if(road)setActiveRank(road,window.matchMedia("(max-width: 768px)").matches?nearestVisibleRank(road):getActiveRankIndex());
     fixProgressCopy();
   });
