@@ -2,9 +2,10 @@
   "use strict";
 
   /* Stable non-blocking loader.
-     Rank order and final badge artwork live directly in rank-system-v27.js. */
+     Rank order stays in rank-system-v27.js. The final two gold badges are
+     replaced once, after the rank road is built, with the corrected V59 art. */
 
-  const rankSrc = "rank-system-v27.js?v=20260823-29";
+  const rankSrc = "rank-system-v27.js?v=20260823-30";
   const rankCss = "rank-system-v27.css?v=20260822-5";
   const rankCssId = "mytt-rank-system-v27-style";
   const rankEffectsCss = "rank-effects-v31.css?v=20260822-7";
@@ -39,6 +40,23 @@
     });
   }
 
+  function applyBalancedGoldBadgesV59() {
+    const road = document.querySelector(".homepage-rank-road");
+    if (!road) return;
+
+    const immortal = road.querySelector('.home-rank-native-node[data-rank-index="7"] .home-rank-native-badge');
+    const hallOfFame = road.querySelector('.home-rank-native-node[data-rank-index="8"] .home-rank-native-badge');
+
+    if (immortal) {
+      immortal.src = "rank-badges/2200-immortal-balanced-v59.webp?v=20260823-v59";
+      immortal.alt = "Immortal badge";
+    }
+    if (hallOfFame) {
+      hallOfFame.src = "rank-badges/2300-hall-of-fame-balanced-v59.webp?v=20260823-v59";
+      hallOfFame.alt = "Hall of Fame badge";
+    }
+  }
+
   function boot() {
     ensureCss(polishCssId, polishCss);
     ensureCss(rankCssId, rankCss);
@@ -46,7 +64,11 @@
     ensureCss(rankPolishCssId, rankPolishCss);
 
     loadScript("mytt-rank-system-v27", rankSrc)
-      .then(() => loadScript("mytt-marketplace-core-v23", coreSrc))
+      .then(() => {
+        applyBalancedGoldBadgesV59();
+        requestAnimationFrame(applyBalancedGoldBadgesV59);
+        return loadScript("mytt-marketplace-core-v23", coreSrc);
+      })
       .then(() => loadScript("mytt-mobile-polish-v23", polishSrc))
       .catch((err) => console.error("MYTT UI module load failed", err));
   }
@@ -56,4 +78,6 @@
   } else {
     boot();
   }
+
+  window.addEventListener("pageshow", applyBalancedGoldBadgesV59, { passive: true });
 })();
