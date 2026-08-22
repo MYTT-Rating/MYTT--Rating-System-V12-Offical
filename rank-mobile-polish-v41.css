@@ -1,0 +1,139 @@
+/* MYTT Rank Journey V41 — cleaner badge edges and tighter mobile integration */
+
+/* Keep the badge artwork untouched; only refine how it sits on the card. */
+html body .hero-rank-card-v5 .home-rank-native-shell,
+html body .hero-rank-card-v5 .home-rank-native-badge{
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  clip-path:none!important;
+  background:transparent!important;
+}
+
+html body .hero-rank-card-v5 .home-rank-native-badge{
+  object-fit:contain!important;
+  object-position:center!important;
+  image-rendering:auto!important;
+  filter:contrast(1.015) saturate(1.02) brightness(1.01) drop-shadow(0 0 2px rgba(255,255,255,.10))!important;
+}
+
+/* Soft ambient halo removes the sticker/cut-out feeling without masking the artwork. */
+html body .hero-rank-card-v5 .home-rank-native-shell::after{
+  content:""!important;
+  position:absolute!important;
+  z-index:-1!important;
+  left:50%!important;
+  top:50%!important;
+  width:104%!important;
+  height:104%!important;
+  transform:translate(-50%,-50%)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,rgba(0,0,0,.24) 0%,rgba(0,0,0,.12) 50%,transparent 74%)!important;
+  filter:blur(7px)!important;
+  opacity:.72!important;
+  pointer-events:none!important;
+}
+
+/* Normalize perceived ring size across all nine badges. */
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="0"] .home-rank-native-badge{transform:scale(.97)!important;}
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="1"] .home-rank-native-badge{transform:scale(.97)!important;}
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="2"] .home-rank-native-badge{transform:scale(.97)!important;}
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="3"] .home-rank-native-badge{transform:scale(.97)!important;}
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="4"] .home-rank-native-badge{transform:scale(.97)!important;}
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="5"] .home-rank-native-badge{transform:scale(.97)!important;}
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="6"] .home-rank-native-badge{transform:scale(.965)!important;}
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge{transform:scale(.965)!important;}
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{transform:scale(.94)!important;}
+
+/* Keep current-tier breathing effect but make the glow softer and less detached. */
+html body .hero-rank-card-v5 .home-rank-native-node.active .home-rank-native-shell::before{
+  filter:blur(10px)!important;
+  opacity:.68!important;
+}
+
+@media (min-width:769px){
+  html body .hero-rank-card-v5 .home-rank-native-shell{
+    width:96px!important;
+    height:96px!important;
+    flex-basis:96px!important;
+  }
+  html body .hero-rank-card-v5 .home-rank-native-line{
+    margin-top:45.5px!important;
+  }
+}
+
+@media (max-width:768px){
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v37{
+    padding-top:12px!important;
+    padding-bottom:7px!important;
+  }
+
+  html body .hero-rank-card-v5 .home-rank-native-node{
+    flex:0 0 80px!important;
+    width:80px!important;
+    min-width:80px!important;
+  }
+
+  html body .hero-rank-card-v5 .home-rank-native-shell{
+    width:72px!important;
+    height:72px!important;
+    flex-basis:72px!important;
+  }
+
+  html body .hero-rank-card-v5 .home-rank-native-line{
+    flex:0 0 22px!important;
+    min-width:22px!important;
+    max-width:22px!important;
+    margin-top:34px!important;
+  }
+
+  html body .hero-rank-card-v5 .home-rank-native-name{
+    min-height:27px!important;
+    margin-top:3px!important;
+    font-size:9.7px!important;
+  }
+
+  html body .hero-rank-card-v5 .home-rank-native-score{
+    margin-top:0!important;
+    font-size:11.3px!important;
+  }
+
+  html body .hero-rank-card-v5 .home-rank-native-marker{
+    height:28px!important;
+    margin-top:5px!important;
+  }
+
+  html body .hero-rank-card-v5 .home-rank-native-marker b{
+    font-size:12px!important;
+  }
+
+  html body .hero-rank-card-v5 .home-rank-native-marker em{
+    margin-top:5px!important;
+    font-size:6.8px!important;
+    letter-spacing:.42px!important;
+  }
+}
+
+@media (max-width:430px){
+  html body .hero-rank-card-v5 .home-rank-native-node{
+    flex-basis:76px!important;
+    width:76px!important;
+    min-width:76px!important;
+  }
+
+  html body .hero-rank-card-v5 .home-rank-native-shell{
+    width:68px!important;
+    height:68px!important;
+    flex-basis:68px!important;
+  }
+
+  html body .hero-rank-card-v5 .home-rank-native-line{
+    flex-basis:20px!important;
+    min-width:20px!important;
+    max-width:20px!important;
+    margin-top:32px!important;
+  }
+
+  html body .hero-rank-card-v5 .home-rank-native-name{font-size:9.2px!important;}
+  html body .hero-rank-card-v5 .home-rank-native-score{font-size:10.8px!important;}
+}
