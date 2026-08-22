@@ -47,3 +47,100 @@
     padding:0 !important;
   }
 }
+
+/* =========================================================
+   HOME RANK JOURNEY — alignment fix
+   Keep every tier title and rating on the same horizontal rows.
+   ========================================================= */
+body .hero-rank-card-v5 .homepage-rank-road .home-rank-node{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+}
+
+@media(min-width:769px){
+  body .hero-rank-card-v5 .homepage-rank-road .home-rank-node > span{
+    display:block !important;
+    width:max-content !important;
+    max-width:none !important;
+    min-height:22px !important;
+    height:22px !important;
+    margin-top:10px !important;
+    line-height:22px !important;
+    white-space:nowrap !important;
+    text-align:center !important;
+  }
+
+  body .hero-rank-card-v5 .homepage-rank-road .home-rank-node > small{
+    display:block !important;
+    min-height:22px !important;
+    height:22px !important;
+    margin-top:4px !important;
+    line-height:22px !important;
+    text-align:center !important;
+  }
+}
+
+body .hero-rank-card-v5 .homepage-rank-road .home-rank-node .you-marker{
+  position:static !important;
+  inset:auto !important;
+  top:auto !important;
+  right:auto !important;
+  bottom:auto !important;
+  left:auto !important;
+  transform:none !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  width:100% !important;
+  min-height:26px !important;
+  margin:5px 0 0 !important;
+  padding:0 !important;
+  line-height:1 !important;
+  text-align:center !important;
+}
+
+body .hero-rank-card-v5 .homepage-rank-road .home-rank-node .you-marker em{
+  position:static !important;
+  inset:auto !important;
+  transform:none !important;
+  display:block !important;
+  margin:3px 0 0 !important;
+  padding:0 !important;
+  line-height:1 !important;
+  white-space:nowrap !important;
+}
+
+@media(max-width:768px){
+  body .hero-rank-card-v5 .homepage-rank-road .home-rank-node > span{
+    display:block !important;
+    width:68px !important;
+    max-width:68px !important;
+    min-height:28px !important;
+    height:28px !important;
+    margin-top:6px !important;
+    line-height:1.05 !important;
+    white-space:normal !important;
+    text-align:center !important;
+  }
+
+  body .hero-rank-card-v5 .homepage-rank-road .home-rank-node > small{
+    display:block !important;
+    min-height:14px !important;
+    height:14px !important;
+    margin-top:3px !important;
+    line-height:14px !important;
+    text-align:center !important;
+  }
+
+  body .hero-rank-card-v5 .homepage-rank-road .home-rank-node .you-marker{
+    min-height:22px !important;
+    margin-top:4px !important;
+  }
+
+  body .hero-rank-card-v5 .homepage-rank-road .home-rank-node .you-marker em{
+    margin-top:2px !important;
+  }
+}
