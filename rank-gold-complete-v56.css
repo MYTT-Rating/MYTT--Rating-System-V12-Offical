@@ -9,8 +9,9 @@ html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-r
   overflow:visible!important;
 }
 
-/* The WebP files already contain transparent padding. Slightly oversizing the
-   image box makes the visible artwork fill the ring without clipping pixels. */
+/* The WebP files already contain transparent padding. Oversize the image box,
+   then correct each asset independently so the visible inner artwork is
+   concentric with the CSS gold ring. */
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge,
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{
   position:relative!important;
@@ -29,19 +30,21 @@ html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-r
   transform-origin:center center!important;
 }
 
+/* 2200 source artwork sits a little low/right in its transparent canvas. */
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge{
   width:113%!important;
   height:113%!important;
-  transform:translateY(1px)!important;
+  transform:translate(-3px,-3px)!important;
 }
 
+/* 2300 has wider laurels and sits slightly lower in its source canvas. */
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{
   width:113%!important;
   height:113%!important;
-  transform:translateY(1px)!important;
+  transform:translate(-2px,-4px)!important;
 }
 
-/* Complete circumference stays behind the artwork. */
+/* Complete circumference stays centered behind the artwork. */
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell::after,
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell::after{
   content:""!important;
@@ -72,11 +75,16 @@ html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-r
     min-width:92px!important;
   }
 
-  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge,
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge{
+    width:111%!important;
+    height:111%!important;
+    transform:translate(-2px,-2px)!important;
+  }
+
   html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{
     width:111%!important;
     height:111%!important;
-    transform:translateY(1px)!important;
+    transform:translate(-1px,-3px)!important;
   }
 
   html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell::after,
@@ -88,9 +96,15 @@ html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-r
 }
 
 @media (max-width:430px){
-  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge,
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge{
+    width:110%!important;
+    height:110%!important;
+    transform:translate(-2px,-2px)!important;
+  }
+
   html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{
     width:110%!important;
     height:110%!important;
+    transform:translate(-1px,-3px)!important;
   }
 }
