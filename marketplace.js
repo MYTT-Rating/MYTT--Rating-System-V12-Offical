@@ -3,8 +3,7 @@
 
   /* Stable non-blocking loader.
      Rank order/artwork lives directly in rank-system-v27.js.
-     2200/2300 completeness is handled by a final CSS layer so the real badge
-     artwork stays visible and no SVG external-image dependency is needed. */
+     2200/2300 final cleanup is handled by the last CSS layer. */
 
   const rankSrc = "rank-system-v27.js?v=20260822-28";
   const rankCss = "rank-system-v27.css?v=20260822-5";
@@ -13,7 +12,7 @@
   const rankEffectsCssId = "mytt-rank-effects-v31-style";
   const rankPolishCss = "rank-mobile-polish-v47.css?v=20260822-2";
   const rankPolishCssId = "mytt-rank-mobile-polish-v47-style";
-  const rankGoldCompleteCss = "rank-gold-complete-v56.css?v=20260823-3";
+  const rankGoldCompleteCss = "rank-gold-complete-v56.css?v=20260823-4";
   const rankGoldCompleteCssId = "mytt-rank-gold-complete-v56-style";
 
   const coreSrc = "marketplace-core-v23.js?v=20260821-2";
