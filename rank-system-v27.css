@@ -1,14 +1,181 @@
-/* MYTT Rank System V27 — final 1500–2300 visual system */
-.homepage-rank-road .home-rank-orb{
+/* MYTT Rank System V28 — final 1500–2300 visual system + center-line fix */
+
+/* =========================================================
+   HOME RANK JOURNEY — one geometry source of truth
+   ========================================================= */
+html body .hero-rank-card-v5 .homepage-rank-road{
+  position:relative !important;
+  display:flex !important;
+  align-items:flex-start !important;
+  flex-wrap:nowrap !important;
+  gap:0 !important;
+}
+
+html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node{
+  position:relative !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  padding:0 !important;
+  z-index:2 !important;
+}
+
+html body .hero-rank-card-v5 .homepage-rank-road .home-rank-orb{
   color:transparent !important;
   font-size:0 !important;
   line-height:0 !important;
+  flex:none !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:50% !important;
+  outline:0 !important;
   background-repeat:no-repeat !important;
   background-position:center !important;
   background-size:contain !important;
   background-color:transparent !important;
+  box-shadow:none !important;
+  animation:none !important;
+  transform:none !important;
 }
 
+/* Remove the legacy active Rookie halo that was producing the empty black ring. */
+html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node.active .home-rank-orb{
+  border:0 !important;
+  outline:0 !important;
+  box-shadow:none !important;
+  animation:none !important;
+  background-color:transparent !important;
+}
+
+html body .hero-rank-card-v5 .homepage-rank-road .home-rank-line{
+  position:relative !important;
+  align-self:flex-start !important;
+  z-index:1 !important;
+  border:0 !important;
+  border-radius:999px !important;
+  opacity:.98 !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+
+/* Desktop: 92px badge => exact centre is 46px.
+   5px line sits with its centre at 46.5px. */
+@media (min-width:769px){
+  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node{
+    flex:0 0 96px !important;
+    width:96px !important;
+    min-width:96px !important;
+  }
+
+  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-orb{
+    width:92px !important;
+    height:92px !important;
+    min-width:92px !important;
+    min-height:92px !important;
+    margin:0 auto 10px !important;
+  }
+
+  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-line{
+    flex:1 1 42px !important;
+    width:auto !important;
+    min-width:28px !important;
+    height:5px !important;
+    min-height:5px !important;
+    margin-top:44px !important;
+  }
+
+  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node > span{
+    display:block !important;
+    width:max-content !important;
+    max-width:none !important;
+    min-height:22px !important;
+    height:22px !important;
+    margin-top:0 !important;
+    line-height:22px !important;
+    white-space:nowrap !important;
+    text-align:center !important;
+  }
+
+  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node > small{
+    display:block !important;
+    min-height:22px !important;
+    height:22px !important;
+    margin-top:4px !important;
+    line-height:22px !important;
+    text-align:center !important;
+  }
+}
+
+/* Mobile: 58px badge + 4px line => both centres are exactly 29px. */
+@media (max-width:768px){
+  html body .hero-rank-card-v5 .homepage-rank-road{
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    -webkit-overflow-scrolling:touch !important;
+    overscroll-behavior-x:contain !important;
+    scroll-snap-type:x proximity !important;
+    scrollbar-width:none !important;
+    padding-bottom:10px !important;
+  }
+  html body .hero-rank-card-v5 .homepage-rank-road::-webkit-scrollbar{display:none !important;}
+
+  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node{
+    flex:0 0 74px !important;
+    width:74px !important;
+    min-width:74px !important;
+    scroll-snap-align:center !important;
+  }
+
+  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-orb{
+    width:58px !important;
+    height:58px !important;
+    min-width:58px !important;
+    min-height:58px !important;
+    margin:0 auto 7px !important;
+  }
+
+  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-line{
+    flex:0 0 22px !important;
+    width:22px !important;
+    min-width:22px !important;
+    height:4px !important;
+    min-height:4px !important;
+    margin-top:27px !important;
+  }
+
+  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node > span{
+    display:block !important;
+    width:74px !important;
+    max-width:74px !important;
+    min-height:28px !important;
+    height:28px !important;
+    margin-top:0 !important;
+    font-size:9.5px !important;
+    line-height:1.05 !important;
+    white-space:normal !important;
+    text-align:center !important;
+  }
+
+  html body .hero-rank-card-v5 .homepage-rank-road .home-rank-node > small{
+    display:block !important;
+    min-height:14px !important;
+    height:14px !important;
+    margin-top:3px !important;
+    font-size:8.5px !important;
+    line-height:14px !important;
+    text-align:center !important;
+  }
+
+  html body .hero-rank-card-v5 .homepage-rank-road .you-marker{
+    margin-top:4px !important;
+    font-size:7px !important;
+  }
+}
+
+/* =========================================================
+   TIER PILLS / LEADERBOARD / PROFILE
+   ========================================================= */
 body .tier-pill{
   display:inline-flex !important;
   align-items:center !important;
@@ -61,56 +228,7 @@ body .tier-pill.tier-hof{background:linear-gradient(135deg,rgba(250,204,21,.28),
   object-fit:contain !important;
 }
 
-@media (min-width:769px){
-  .homepage-rank-road .home-rank-orb{
-    width:74px !important;
-    height:74px !important;
-  }
-}
-
 @media (max-width:768px){
-  .homepage-rank-road{
-    overflow-x:auto !important;
-    overflow-y:hidden !important;
-    -webkit-overflow-scrolling:touch !important;
-    scroll-snap-type:x proximity !important;
-    scrollbar-width:none !important;
-    padding-bottom:10px !important;
-  }
-  .homepage-rank-road::-webkit-scrollbar{display:none !important;}
-  .homepage-rank-road .home-rank-node{
-    flex:0 0 74px !important;
-    width:74px !important;
-    min-width:74px !important;
-    scroll-snap-align:center !important;
-  }
-  .homepage-rank-road .home-rank-orb{
-    width:56px !important;
-    height:56px !important;
-    min-width:56px !important;
-    margin-bottom:7px !important;
-  }
-  .homepage-rank-road .home-rank-node > span{
-    margin-top:5px !important;
-    font-size:9.2px !important;
-    line-height:1.05 !important;
-    white-space:normal !important;
-  }
-  .homepage-rank-road .home-rank-node > small{
-    margin-top:4px !important;
-    font-size:8.5px !important;
-  }
-  .homepage-rank-road .home-rank-line{
-    flex:0 0 22px !important;
-    width:22px !important;
-    min-width:22px !important;
-    margin-top:27px !important;
-  }
-  .homepage-rank-road .you-marker{
-    margin-top:4px !important;
-    font-size:7px !important;
-  }
-
   html body #singles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
   html body #doubles .player-cell .leaderboard-name-wrap > .leaderboard-mobile-tier,
   html body #doubles .team-cell > .leaderboard-mobile-tier{
