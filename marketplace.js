@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const rankSrc = "rank-system-v27.js?v=20260822-21";
+  const rankSrc = "rank-system-v27.js?v=20260822-22";
   const rankCss = "rank-system-v27.css?v=20260822-5";
   const rankCssId = "mytt-rank-system-v27-style";
   const rankEffectsCss = "rank-effects-v31.css?v=20260822-7";
@@ -10,9 +10,9 @@
   const rankPolishCssId = "mytt-rank-mobile-polish-v47-style";
   const rankFinalCss = "rank-final-fix-v48.css?v=20260822-1";
   const rankFinalCssId = "mytt-rank-final-fix-v48-style";
-  const rankGoldCss = "rank-gold-fix-v49.css?v=20260822-1";
-  const rankGoldCssId = "mytt-rank-gold-fix-v49-style";
-  const rankGoldJs = "rank-gold-fix-v49.js?v=20260822-1";
+  const rankGoldCss = "rank-gold-fix-v50.css?v=20260822-1";
+  const rankGoldCssId = "mytt-rank-gold-fix-v50-style";
+  const rankGoldJs = "rank-gold-fix-v50.js?v=20260822-1";
 
   const coreSrc = "marketplace-core-v23.js?v=20260821-2";
   const polishSrc = "mobile-polish-v23.js?v=20260821-avatar-lazy-1";
@@ -36,7 +36,7 @@
     ensureCss(rankFinalCssId, rankFinalCss);
     ensureCss(rankGoldCssId, rankGoldCss);
     document.write(`<script id="mytt-rank-system-v27" src="${rankSrc}"><\/script>`);
-    document.write(`<script id="mytt-rank-gold-fix-v49" src="${rankGoldJs}"><\/script>`);
+    document.write(`<script id="mytt-rank-gold-fix-v50" src="${rankGoldJs}"><\/script>`);
     document.write(`<script id="mytt-marketplace-core-v23" src="${coreSrc}"><\/script>`);
     document.write(`<script id="mytt-mobile-polish-v23" src="${polishSrc}"><\/script>`);
     return;
@@ -62,7 +62,7 @@
   ensureCss(rankFinalCssId, rankFinalCss);
   ensureCss(rankGoldCssId, rankGoldCss);
   loadScript("mytt-rank-system-v27", rankSrc)
-    .then(() => loadScript("mytt-rank-gold-fix-v49", rankGoldJs))
+    .then(() => loadScript("mytt-rank-gold-fix-v50", rankGoldJs))
     .then(() => loadScript("mytt-marketplace-core-v23", coreSrc))
     .then(() => loadScript("mytt-mobile-polish-v23", polishSrc))
     .catch((err) => console.error("MYTT UI module load failed", err));
