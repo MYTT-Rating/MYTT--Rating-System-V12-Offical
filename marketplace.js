@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const rankSrc = "rank-system-v27.js?v=20260822-22";
+  const rankSrc = "rank-system-v27.js?v=20260822-23";
   const rankCss = "rank-system-v27.css?v=20260822-5";
   const rankCssId = "mytt-rank-system-v27-style";
   const rankEffectsCss = "rank-effects-v31.css?v=20260822-7";
@@ -13,6 +13,8 @@
   const rankGoldCss = "rank-gold-fix-v50.css?v=20260822-1";
   const rankGoldCssId = "mytt-rank-gold-fix-v50-style";
   const rankGoldJs = "rank-gold-fix-v50.js?v=20260822-1";
+  const rankGoldRepairCss = "rank-gold-repair-v51.css?v=20260822-1";
+  const rankGoldRepairCssId = "mytt-rank-gold-repair-v51-style";
 
   const coreSrc = "marketplace-core-v23.js?v=20260821-2";
   const polishSrc = "mobile-polish-v23.js?v=20260821-avatar-lazy-1";
@@ -35,6 +37,7 @@
     ensureCss(rankPolishCssId, rankPolishCss);
     ensureCss(rankFinalCssId, rankFinalCss);
     ensureCss(rankGoldCssId, rankGoldCss);
+    ensureCss(rankGoldRepairCssId, rankGoldRepairCss);
     document.write(`<script id="mytt-rank-system-v27" src="${rankSrc}"><\/script>`);
     document.write(`<script id="mytt-rank-gold-fix-v50" src="${rankGoldJs}"><\/script>`);
     document.write(`<script id="mytt-marketplace-core-v23" src="${coreSrc}"><\/script>`);
@@ -61,6 +64,7 @@
   ensureCss(rankPolishCssId, rankPolishCss);
   ensureCss(rankFinalCssId, rankFinalCss);
   ensureCss(rankGoldCssId, rankGoldCss);
+  ensureCss(rankGoldRepairCssId, rankGoldRepairCss);
   loadScript("mytt-rank-system-v27", rankSrc)
     .then(() => loadScript("mytt-rank-gold-fix-v50", rankGoldJs))
     .then(() => loadScript("mytt-marketplace-core-v23", coreSrc))
