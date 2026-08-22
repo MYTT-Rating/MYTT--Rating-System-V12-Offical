@@ -1,0 +1,50 @@
+/* V48 final override: unified shadow + more breathing room for 2200/2300 */
+html body .hero-rank-card-v5 .home-rank-native-shell,
+html body .hero-rank-card-v5 .home-rank-native-node{
+  overflow:visible!important;
+}
+
+/* User preference: all badges keep a consistent soft shadow. */
+html body .hero-rank-card-v5 .home-rank-native-badge{
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.34)) drop-shadow(0 0 7px rgba(255,255,255,.12))!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform-origin:center center!important;
+}
+
+/* Give the two gold end badges extra transparent breathing room visually.
+   No crop, no clip-path, no mask. */
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge{
+  transform:scale(.90)!important;
+}
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{
+  transform:scale(.82)!important;
+}
+
+/* Keep 2300 comfortably inside its mobile slot. */
+@media (max-width:768px){
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"]{
+    flex-basis:98px!important;
+    width:98px!important;
+    min-width:98px!important;
+  }
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v47::after{
+    flex-basis:calc(100% - 98px)!important;
+    min-width:calc(100% - 98px)!important;
+  }
+}
+@media (max-width:430px){
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"]{
+    flex-basis:96px!important;
+    width:96px!important;
+    min-width:96px!important;
+  }
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v47::after{
+    flex-basis:calc(100% - 96px)!important;
+    min-width:calc(100% - 96px)!important;
+  }
+}
+
+html body .hero-rank-card-v5 .home-rank-native-line{
+  box-shadow:0 0 7px currentColor!important;
+}
