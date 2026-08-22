@@ -1,0 +1,50 @@
+/* V49 — precise visual cleanup for 2200 Immortal and 2300 Hall of Fame.
+   Uses the stable source artwork, removes the baked square background/text area,
+   and recenters each badge without touching the other seven badges. */
+
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"],
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"]{
+  overflow:visible!important;
+}
+
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell{
+  overflow:visible!important;
+}
+
+/* 2200 source geometry: medal centre ~51.6% x / 39.5% y, radius ~40%. */
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge{
+  clip-path:circle(40% at 51.6% 39.5%)!important;
+  -webkit-clip-path:circle(40% at 51.6% 39.5%)!important;
+  transform:translate(-1.5%,10.5%) scale(1.16)!important;
+  transform-origin:center center!important;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.34)) drop-shadow(0 0 7px rgba(255,215,40,.16))!important;
+}
+
+/* 2300 source geometry: medal centre ~52.6% x / 39.5% y, radius ~41%. */
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{
+  clip-path:circle(41% at 52.6% 39.5%)!important;
+  -webkit-clip-path:circle(41% at 52.6% 39.5%)!important;
+  transform:translate(-2.6%,10.5%) scale(1.14)!important;
+  transform-origin:center center!important;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.34)) drop-shadow(0 0 7px rgba(255,215,40,.16))!important;
+}
+
+/* Keep both gold end badges in slots comparable to the rest. */
+@media (max-width:768px){
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"],
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"]{
+    flex-basis:82px!important;
+    width:82px!important;
+    min-width:82px!important;
+  }
+}
+
+@media (max-width:430px){
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"],
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"]{
+    flex-basis:80px!important;
+    width:80px!important;
+    min-width:80px!important;
+  }
+}
