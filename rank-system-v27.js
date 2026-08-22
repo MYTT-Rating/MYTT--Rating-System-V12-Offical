@@ -2,8 +2,8 @@
   "use strict";
 
   /* Keep the site-wide tier names/order correct, but do not rebuild the
-     homepage artwork from individual badge files. The homepage now uses the
-     single approved strip so its badge shapes and centre line cannot drift. */
+     homepage artwork from individual badge files. The homepage uses one
+     approved strip so badge shapes and connector alignment stay unchanged. */
   if (typeof TIERS !== "undefined" && Array.isArray(TIERS)) {
     const novice = TIERS.find(t => t.min === -Infinity) || {
       min: -Infinity,
@@ -70,6 +70,45 @@
     if (progressNote) progressNote.innerHTML = "<b>1500</b> / 1600 · 100 pts to Challenger";
   }
 
+  function enableRankRoadDrag(road) {
+    if (!road || road.dataset.rankDragReady === "1") return;
+    road.dataset.rankDragReady = "1";
+
+    let dragging = false;
+    let startX = 0;
+    let startScrollLeft = 0;
+
+    road.addEventListener("pointerdown", event => {
+      if (event.pointerType !== "mouse") return;
+      if (road.scrollWidth <= road.clientWidth) return;
+      dragging = true;
+      startX = event.clientX;
+      startScrollLeft = road.scrollLeft;
+      road.classList.add("is-dragging");
+      road.setPointerCapture?.(event.pointerId);
+      event.preventDefault();
+    });
+
+    road.addEventListener("pointermove", event => {
+      if (!dragging || event.pointerType !== "mouse") return;
+      road.scrollLeft = startScrollLeft - (event.clientX - startX);
+      event.preventDefault();
+    });
+
+    const stop = event => {
+      if (!dragging) return;
+      dragging = false;
+      road.classList.remove("is-dragging");
+      if (event && road.hasPointerCapture?.(event.pointerId)) {
+        road.releasePointerCapture(event.pointerId);
+      }
+    };
+
+    road.addEventListener("pointerup", stop);
+    road.addEventListener("pointercancel", stop);
+    road.addEventListener("lostpointercapture", stop);
+  }
+
   function lockHomeRankJourney() {
     const road = document.querySelector(".homepage-rank-road");
     if (!road) return;
@@ -77,8 +116,6 @@
     road.classList.add("mytt-approved-rank-road-v29");
     road.setAttribute("aria-label", "MYTT Rank Journey: Rookie 1500, Challenger 1600, Elite 1700, Master 1800, Grandmaster 1900, MYTT Champion 2000, Legend 2100, Immortal 2200, Hall of Fame 2300");
 
-    /* Remove the old per-badge DOM immediately. It is the source of both the
-       visual-shape substitutions and the connector-line alignment problem. */
     road.replaceChildren();
 
     const placeholder = document.createElement("div");
@@ -96,11 +133,14 @@
       img.decoding = "async";
       road.replaceChildren(img);
       road.dataset.approvedRankStrip = "v29";
+      road.scrollLeft = 0;
+      enableRankRoadDrag(road);
     }).catch(err => {
       console.error("Unable to load approved MYTT rank strip", err);
       placeholder.textContent = "MYTT Rank Journey";
     });
 
+    enableRankRoadDrag(road);
     fixProgressCopy();
   }
 
@@ -113,6 +153,7 @@
   window.addEventListener("pageshow", () => {
     const road = document.querySelector(".homepage-rank-road");
     if (road && road.dataset.approvedRankStrip !== "v29") lockHomeRankJourney();
+    else if (road) enableRankRoadDrag(road);
     fixProgressCopy();
   });
 })();
