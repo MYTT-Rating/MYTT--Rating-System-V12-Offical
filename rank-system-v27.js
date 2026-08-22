@@ -38,7 +38,7 @@
     "rank-badges/mytt-rank-road-v29.b64.03"
   ];
 
-  /* Exact badge centres in the approved 1200 x 287 strip. */
+  /* Centres of the nine approved badges inside the 1200 x 287 strip. */
   const BADGE_POINTS = [
     {x:6.6, y:33.5},
     {x:17.5, y:33.5},
@@ -63,6 +63,18 @@
       ).then(parts => `data:image/webp;base64,${parts.map(part => part.trim()).join("")}`);
     }
     return approvedStripPromise;
+  }
+
+  function getHomepageRating() {
+    const node = document.querySelector(".current-rating-v5 strong");
+    const rating = Number(String(node?.textContent || "1500").replace(/[^0-9.-]/g, ""));
+    return Number.isFinite(rating) ? rating : 1500;
+  }
+
+  function getActiveRankIndex() {
+    const rating = getHomepageRating();
+    if (rating >= 2300) return 8;
+    return Math.max(0, Math.min(8, Math.floor((rating - 1500) / 100)));
   }
 
   function fixProgressCopy() {
@@ -122,38 +134,28 @@
     road.addEventListener("lostpointercapture", stop);
   }
 
-  function buildRankHoverLayer(stage, src) {
-    const layer = document.createElement("div");
-    layer.className = "mytt-rank-hover-layer";
-    layer.setAttribute("aria-hidden", "true");
+  /* Recreate the original homepage behaviour: one red arrow marks the current
+     rank and ONLY that badge has the continuous glow / breathing pulse. */
+  function buildActiveRankEffect(stage, src) {
+    const activeIndex = getActiveRankIndex();
+    const point = BADGE_POINTS[activeIndex] || BADGE_POINTS[0];
 
-    BADGE_POINTS.forEach((point, index) => {
-      const clone = document.createElement("img");
-      clone.className = "mytt-rank-hover-clone";
-      clone.src = src;
-      clone.alt = "";
-      clone.draggable = false;
-      clone.decoding = "async";
-      clone.style.setProperty("--hx", `${point.x}%`);
-      clone.style.setProperty("--hy", `${point.y}%`);
-      clone.style.setProperty("--i", index);
+    const clone = document.createElement("img");
+    clone.className = "mytt-rank-active-clone";
+    clone.src = src;
+    clone.alt = "";
+    clone.draggable = false;
+    clone.decoding = "async";
+    clone.style.setProperty("--active-x", `${point.x}%`);
+    clone.style.setProperty("--active-y", `${point.y}%`);
 
-      const hit = document.createElement("span");
-      hit.className = "mytt-rank-hover-hit";
-      hit.style.setProperty("--hx", `${point.x}%`);
-      hit.style.setProperty("--hy", `${point.y}%`);
+    const arrow = document.createElement("b");
+    arrow.className = "mytt-rank-you-arrow";
+    arrow.textContent = "▲";
+    arrow.setAttribute("aria-hidden", "true");
+    arrow.style.setProperty("--active-x", `${point.x}%`);
 
-      hit.addEventListener("pointerenter", event => {
-        if (event.pointerType === "touch") return;
-        clone.classList.add("is-active");
-      });
-      hit.addEventListener("pointerleave", () => clone.classList.remove("is-active"));
-      hit.addEventListener("pointercancel", () => clone.classList.remove("is-active"));
-
-      layer.append(clone, hit);
-    });
-
-    stage.appendChild(layer);
+    stage.append(clone, arrow);
   }
 
   function lockHomeRankJourney() {
@@ -174,7 +176,7 @@
       if (!road.isConnected) return;
 
       const stage = document.createElement("div");
-      stage.className = "mytt-rank-stage-v32";
+      stage.className = "mytt-rank-stage-v33";
 
       const img = document.createElement("img");
       img.className = "mytt-approved-rank-strip-v29";
@@ -184,9 +186,9 @@
       img.decoding = "async";
 
       stage.appendChild(img);
-      buildRankHoverLayer(stage, src);
+      buildActiveRankEffect(stage, src);
       road.replaceChildren(stage);
-      road.dataset.approvedRankStrip = "v32";
+      road.dataset.approvedRankStrip = "v33";
       road.scrollLeft = 0;
       enableRankRoadDrag(road);
     }).catch(err => {
@@ -206,7 +208,7 @@
 
   window.addEventListener("pageshow", () => {
     const road = document.querySelector(".homepage-rank-road");
-    if (road && road.dataset.approvedRankStrip !== "v32") lockHomeRankJourney();
+    if (road && road.dataset.approvedRankStrip !== "v33") lockHomeRankJourney();
     else if (road) enableRankRoadDrag(road);
     fixProgressCopy();
   });
