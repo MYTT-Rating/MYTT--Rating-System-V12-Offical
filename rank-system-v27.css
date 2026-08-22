@@ -1,8 +1,7 @@
-/* MYTT Rank System V29 — locked approved artwork
+/* MYTT Rank System V30 — locked approved artwork
    ---------------------------------------------------------
-   The homepage rank journey is rendered as ONE approved image.
-   Do not reconstruct, recolour, crop, scale individual badges, or redraw the
-   connector line. This keeps the badge shapes and centre alignment exact.
+   Homepage rank journey uses ONE approved image.
+   The artwork itself is never reconstructed, recoloured or transformed.
    --------------------------------------------------------- */
 
 html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29{
@@ -14,12 +13,26 @@ html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29{
   height:auto !important;
   padding:0 !important;
   margin:0 !important;
-  overflow-x:hidden !important;
+  overflow-x:auto !important;
   overflow-y:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+  overscroll-behavior-x:contain !important;
+  touch-action:pan-x !important;
+  scrollbar-width:none !important;
   border:0 !important;
   background:transparent !important;
   box-shadow:none !important;
   transform:none !important;
+  cursor:grab !important;
+}
+
+html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29.is-dragging{
+  cursor:grabbing !important;
+  user-select:none !important;
+}
+
+html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::-webkit-scrollbar{
+  display:none !important;
 }
 
 html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::before,
@@ -28,13 +41,15 @@ html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::af
   display:none !important;
 }
 
+/* Keep the approved artwork at or below its natural 1200px width.
+   This prevents the browser from enlarging the badges on wide desktop screens. */
 html body .hero-rank-card-v5 .mytt-approved-rank-strip-v29{
   display:block !important;
-  width:100% !important;
-  max-width:none !important;
+  width:1200px !important;
+  max-width:calc(100vw - 80px) !important;
   min-width:0 !important;
   height:auto !important;
-  margin:0 !important;
+  margin:0 auto !important;
   padding:0 !important;
   border:0 !important;
   border-radius:0 !important;
@@ -48,35 +63,51 @@ html body .hero-rank-card-v5 .mytt-approved-rank-strip-v29{
   image-rendering:auto !important;
   user-select:none !important;
   -webkit-user-drag:none !important;
+  pointer-events:none !important;
 }
 
 html body .hero-rank-card-v5 .mytt-approved-rank-strip-loading{
   display:block !important;
-  width:100% !important;
+  width:1200px !important;
+  max-width:calc(100vw - 80px) !important;
   aspect-ratio:1200 / 287 !important;
+  margin:0 auto !important;
   background:transparent !important;
 }
 
-/* Mobile keeps the same untouched artwork and simply scrolls it horizontally.
-   No responsive re-layout is applied to the badges themselves. */
+/* Tablet: keep it slightly wider than the viewport so the row can still move. */
+@media (min-width:769px) and (max-width:1180px){
+  html body .hero-rank-card-v5 .mytt-approved-rank-strip-v29,
+  html body .hero-rank-card-v5 .mytt-approved-rank-strip-loading{
+    width:1020px !important;
+    min-width:1020px !important;
+    max-width:none !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+  }
+}
+
+/* Mobile: same untouched artwork, simply scaled down and horizontally scrollable. */
 @media (max-width:768px){
   html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29{
-    overflow-x:auto !important;
-    overflow-y:hidden !important;
-    -webkit-overflow-scrolling:touch !important;
-    overscroll-behavior-x:contain !important;
-    scrollbar-width:none !important;
-  }
-
-  html body .hero-rank-card-v5 .homepage-rank-road.mytt-approved-rank-road-v29::-webkit-scrollbar{
-    display:none !important;
+    padding:0 4px 8px !important;
   }
 
   html body .hero-rank-card-v5 .mytt-approved-rank-strip-v29,
   html body .hero-rank-card-v5 .mytt-approved-rank-strip-loading{
-    width:1100px !important;
-    min-width:1100px !important;
+    width:900px !important;
+    min-width:900px !important;
     max-width:none !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+  }
+}
+
+@media (max-width:430px){
+  html body .hero-rank-card-v5 .mytt-approved-rank-strip-v29,
+  html body .hero-rank-card-v5 .mytt-approved-rank-strip-loading{
+    width:840px !important;
+    min-width:840px !important;
   }
 }
 
