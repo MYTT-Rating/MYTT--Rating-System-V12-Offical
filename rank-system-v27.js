@@ -31,7 +31,7 @@
     {name:"Hall of Fame",score:2300,badge:"v22-hall-of-fame-mytt-final.webp",color:"#ffd51c",line:null}
   ];
 
-  function badgeUrl(file){return `rank-badges/${file}`;}
+  function badgeUrl(file){return `rank-badges/${file}?v=20260822-2`;}
 
   function getHomepageRating(){
     const node=document.querySelector(".current-rating-v5 strong");
