@@ -1,10 +1,5 @@
-/* MYTT Rank Journey V36 — cleaner native badge presentation
-   ----------------------------------------------------------
-   Keep the exact approved badge artwork, but give every badge a larger
-   circular crop so the outer ring is not chopped. The badge itself stays
-   untouched; glow, connector, labels and current-rank motion remain CSS. */
-
-html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v35{
+/* MYTT Rank Journey V37 — transparent standalone badges + left-start mobile */
+html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v37{
   position:relative!important;
   display:flex!important;
   align-items:flex-start!important;
@@ -12,13 +7,13 @@ html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v35{
   width:100%!important;
   max-width:1240px!important;
   margin:0 auto!important;
-  padding:22px 10px 12px!important;
+  padding:20px 10px 12px!important;
   overflow:visible!important;
   background:transparent!important;
   isolation:isolate!important;
   scrollbar-width:none!important;
 }
-html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v35::-webkit-scrollbar{display:none!important;}
+html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v37::-webkit-scrollbar{display:none!important;}
 
 html body .hero-rank-card-v5 .home-rank-native-node{
   --rank-color:#fff;
@@ -32,67 +27,59 @@ html body .hero-rank-card-v5 .home-rank-native-node{
   align-items:center!important;
   text-align:center!important;
   color:var(--rank-color)!important;
-  scroll-snap-align:center!important;
+  scroll-snap-align:start!important;
 }
 
-/* Slightly smaller display than the native source crop = visibly sharper.
-   The crop radius is almost the full box (49.4%), instead of the old 43.2%
-   which was visibly chopping the outer metal/neon ring. */
+/* Standalone WebP assets have transparency. There is NO circular crop,
+   clip-path or black backing layer, so the metallic/neon outer edge can blend
+   directly into the MYTT card background. */
 html body .hero-rank-card-v5 .home-rank-native-shell{
   position:relative!important;
   width:102px!important;
   height:102px!important;
   flex:0 0 102px!important;
   overflow:visible!important;
+  display:grid!important;
+  place-items:center!important;
   transform-origin:center!important;
   transition:filter .2s ease,transform .2s ease!important;
   will-change:transform,filter!important;
 }
-html body .hero-rank-card-v5 .home-rank-native-crop{
-  position:absolute!important;
-  inset:0!important;
-  overflow:hidden!important;
-  border-radius:50%!important;
-  clip-path:circle(49.4% at 50% 50%)!important;
-  background:transparent!important;
-  filter:drop-shadow(0 0 3px rgba(255,255,255,.14)) drop-shadow(0 0 5px var(--rank-color))!important;
-  transform:translateZ(0)!important;
-  backface-visibility:hidden!important;
-}
-html body .hero-rank-card-v5 .home-rank-native-source{
-  position:absolute!important;
-  z-index:1!important;
+html body .hero-rank-card-v5 .home-rank-native-badge{
+  position:relative!important;
+  z-index:2!important;
   display:block!important;
-  width:1111.111%!important;
-  max-width:none!important;
-  height:auto!important;
-  left:var(--crop-left)!important;
-  top:var(--crop-top)!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
   margin:0!important;
   padding:0!important;
   border:0!important;
+  border-radius:0!important;
+  clip-path:none!important;
+  background:transparent!important;
   transform:translateZ(0)!important;
-  filter:contrast(1.07) saturate(1.04) brightness(1.015)!important;
+  filter:contrast(1.04) saturate(1.035) brightness(1.015) drop-shadow(0 0 3px rgba(255,255,255,.16))!important;
   image-rendering:auto!important;
   pointer-events:none!important;
   user-select:none!important;
   -webkit-user-drag:none!important;
 }
 
-/* Recreate the outer glow outside the crop rather than baking/cutting it. */
 html body .hero-rank-card-v5 .home-rank-native-shell::before{
   content:""!important;
   position:absolute!important;
   z-index:0!important;
   left:50%!important;
   top:50%!important;
-  width:94%!important;
-  height:94%!important;
+  width:88%!important;
+  height:88%!important;
   border-radius:50%!important;
   transform:translate(-50%,-50%)!important;
-  background:radial-gradient(circle,transparent 52%,var(--rank-color) 69%,transparent 82%)!important;
+  background:radial-gradient(circle,transparent 54%,var(--rank-color) 72%,transparent 84%)!important;
   filter:blur(8px)!important;
-  opacity:.27!important;
+  opacity:.20!important;
   pointer-events:none!important;
 }
 
@@ -156,7 +143,7 @@ html body .hero-rank-card-v5 .home-rank-native-node.active .home-rank-native-she
   animation:myttNativeCurrentTierPulse 1.7s ease-in-out infinite!important;
 }
 html body .hero-rank-card-v5 .home-rank-native-node.active .home-rank-native-shell::before{
-  opacity:.92!important;
+  opacity:.88!important;
   animation:myttNativeGlowPulse 1.7s ease-in-out infinite!important;
 }
 html body .hero-rank-card-v5 .home-rank-native-node.active .home-rank-native-marker{
@@ -167,7 +154,6 @@ html body .hero-rank-card-v5 .home-rank-native-node.active .home-rank-native-mar
   animation:myttNativeArrowPulse 1.7s ease-in-out infinite!important;
 }
 
-/* Connector centre = badge centre. */
 html body .hero-rank-card-v5 .home-rank-native-line{
   position:relative!important;
   z-index:1!important;
@@ -200,10 +186,10 @@ html body .hero-rank-card-v5 .home-rank-native-line.line-purple{color:#8655ef!im
 html body .hero-rank-card-v5 .home-rank-native-line.line-pink{color:#ef42c5!important;background:linear-gradient(90deg,#ef42c5,#ff5a8f)!important;}
 
 @keyframes myttNativeCurrentTierPulse{
-  0%,100%{transform:scale(1);filter:brightness(1) drop-shadow(0 0 4px var(--rank-color));}
-  50%{transform:scale(1.075);filter:brightness(1.11) drop-shadow(0 0 8px var(--rank-color)) drop-shadow(0 0 18px var(--rank-color));}
+  0%,100%{transform:scale(1);filter:brightness(1) drop-shadow(0 0 3px var(--rank-color));}
+  50%{transform:scale(1.075);filter:brightness(1.10) drop-shadow(0 0 7px var(--rank-color)) drop-shadow(0 0 17px var(--rank-color));}
 }
-@keyframes myttNativeGlowPulse{0%,100%{opacity:.42;transform:translate(-50%,-50%) scale(.95);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}}
+@keyframes myttNativeGlowPulse{0%,100%{opacity:.36;transform:translate(-50%,-50%) scale(.95);}50%{opacity:.94;transform:translate(-50%,-50%) scale(1.08);}}
 @keyframes myttNativeArrowPulse{0%,100%{opacity:.78;transform:translateY(0) scale(.94);}50%{opacity:1;transform:translateY(-1px) scale(1.08);}}
 
 @media (min-width:769px) and (max-width:1180px){
@@ -215,24 +201,29 @@ html body .hero-rank-card-v5 .home-rank-native-line.line-pink{color:#ef42c5!impo
 }
 
 @media (max-width:768px){
-  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v35{
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v37{
     justify-content:flex-start!important;
     overflow-x:auto!important;
     overflow-y:visible!important;
     -webkit-overflow-scrolling:touch!important;
     overscroll-behavior-x:contain!important;
     scroll-snap-type:x proximity!important;
-    padding:18px 0 8px!important;
+    scroll-padding-left:10px!important;
+    padding:18px 10px 8px!important;
     cursor:grab!important;
   }
-  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v35.is-dragging{cursor:grabbing!important;scroll-snap-type:none!important;}
-  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v35::before,
-  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v35::after{
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v37.is-dragging{cursor:grabbing!important;scroll-snap-type:none!important;}
+
+  /* Do NOT add a left spacer: Rookie starts at the left edge on first load.
+     Only add runway on the right so later ranks can still reach the left marker zone. */
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v37::before{display:none!important;content:none!important;}
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v37::after{
     content:""!important;
-    flex:0 0 calc(50% - 42px)!important;
-    min-width:calc(50% - 42px)!important;
+    flex:0 0 calc(100% - 86px)!important;
+    min-width:calc(100% - 86px)!important;
     height:1px!important;
   }
+
   html body .hero-rank-card-v5 .home-rank-native-node{flex:0 0 84px!important;width:84px!important;min-width:84px!important;}
   html body .hero-rank-card-v5 .home-rank-native-shell{width:80px!important;height:80px!important;flex-basis:80px!important;}
   html body .hero-rank-card-v5 .home-rank-native-line{flex:0 0 24px!important;min-width:24px!important;max-width:24px!important;height:4px!important;margin:38px -7px 0!important;}
@@ -246,8 +237,8 @@ html body .hero-rank-card-v5 .home-rank-native-line.line-pink{color:#ef42c5!impo
 }
 
 @media (max-width:430px){
-  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v35::before,
-  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v35::after{flex-basis:calc(50% - 39px)!important;min-width:calc(50% - 39px)!important;}
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v37{padding-left:8px!important;scroll-padding-left:8px!important;}
+  html body .hero-rank-card-v5 .homepage-rank-road.mytt-native-rank-road-v37::after{flex-basis:calc(100% - 80px)!important;min-width:calc(100% - 80px)!important;}
   html body .hero-rank-card-v5 .home-rank-native-node{flex-basis:78px!important;width:78px!important;min-width:78px!important;}
   html body .hero-rank-card-v5 .home-rank-native-shell{width:74px!important;height:74px!important;flex-basis:74px!important;}
   html body .hero-rank-card-v5 .home-rank-native-line{flex-basis:21px!important;min-width:21px!important;max-width:21px!important;margin-top:35px!important;}
