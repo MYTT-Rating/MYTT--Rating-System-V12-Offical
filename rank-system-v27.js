@@ -32,8 +32,8 @@
       {min:1900,name:"Grandmaster",icon:"🔥",cls:"tier-grandmaster",badge:"master-standalone.webp",next:2000},
       {min:2000,name:"MYTT Champion",icon:"🏆",cls:"tier-champion",badge:"immortal-standalone.webp",next:2100},
       {min:2100,name:"Legend",icon:"👑",cls:"tier-legend",badge:"legend-standalone.webp",next:2200},
-      {min:2200,name:"Immortal",icon:"🏆",cls:"tier-immortal",badge:"2200-immortal-balanced-v59.webp",next:2300},
-      {min:2300,name:"Hall of Fame",icon:"🌟",cls:"tier-hof",badge:"2300-hall-of-fame-balanced-v59.webp",next:null}
+      {min:2200,name:"Immortal",icon:"🏆",cls:"tier-immortal",badge:"2200-immortal-v63.webp",next:2300},
+      {min:2300,name:"Hall of Fame",icon:"🌟",cls:"tier-hof",badge:"2300-hall-of-fame-v63.webp",next:null}
     ];
 
     TIERS.splice(0, TIERS.length, ...FINAL_TIERS);
@@ -48,12 +48,12 @@
     {name:"Grandmaster",score:1900,badge:"master-standalone.webp",color:"#ff3131",line:"line-green"},
     {name:"MYTT Champion",score:2000,badge:"immortal-standalone.webp",color:"#ff2e8d",line:"line-cyan"},
     {name:"Legend",score:2100,badge:"legend-standalone.webp",color:"#f0a81c",line:"line-purple"},
-    {name:"Immortal",score:2200,badge:"2200-immortal-balanced-v59.webp",color:"#ffd51c",line:"line-pink"},
-    {name:"Hall of Fame",score:2300,badge:"2300-hall-of-fame-balanced-v59.webp",color:"#ffd51c",line:null}
+    {name:"Immortal",score:2200,badge:"2200-immortal-v63.webp",color:"#ffd51c",line:"line-pink"},
+    {name:"Hall of Fame",score:2300,badge:"2300-hall-of-fame-v63.webp",color:"#ffd51c",line:null}
   ];
 
   function badgeUrl(file) {
-    return `rank-badges/${file}?v=20260823-balanced-v59`;
+    return `rank-badges/${file}?v=20260823-v63`;
   }
 
   function getHomepageRating() {
@@ -81,185 +81,141 @@
       if (labels[0]) labels[0].textContent = "Rookie";
       if (labels[1]) labels[1].textContent = "Challenger";
     }
-
-    const note = document.querySelector(".hero-progress-card p");
-    if (note) note.innerHTML = "<b>1500</b> / 1600 · 100 pts to Challenger";
   }
 
-  function buildRankNode(rank, index) {
-    const node = document.createElement("article");
-    node.className = "home-rank-native-node";
-    node.dataset.rankIndex = String(index);
-    node.style.setProperty("--rank-color", rank.color);
-    node.setAttribute("aria-label", `${rank.name} ${rank.score}`);
+  function buildRoad() {
+    const road = document.querySelector(".homepage-rank-road");
+    if (!road) return;
 
-    const shell = document.createElement("div");
-    shell.className = "home-rank-native-shell";
-
-    const img = document.createElement("img");
-    img.className = "home-rank-native-badge";
-    img.src = badgeUrl(rank.badge);
-    img.alt = `${rank.name} badge`;
-    img.draggable = false;
-    img.decoding = "async";
-    shell.appendChild(img);
-
-    const name = document.createElement("span");
-    name.className = "home-rank-native-name";
-    name.textContent = rank.name;
-
-    const score = document.createElement("small");
-    score.className = "home-rank-native-score";
-    score.textContent = String(rank.score);
-
-    const marker = document.createElement("div");
-    marker.className = "home-rank-native-marker";
-    marker.setAttribute("aria-hidden", "true");
-    marker.innerHTML = '<b>▲</b><em>YOU ARE HERE</em>';
-
-    node.append(shell, name, score, marker);
-    return node;
-  }
-
-  function buildNativeRoad(road) {
     road.className = "homepage-rank-road mytt-native-rank-road-v47";
-    road.setAttribute(
-      "aria-label",
-      "MYTT Rank Journey: Rookie 1500, Challenger 1600, Elite 1700, Master 1800, Grandmaster 1900, MYTT Champion 2000, Legend 2100, Immortal 2200, Hall of Fame 2300"
-    );
-    road.replaceChildren();
+    road.innerHTML = "";
 
     RANKS.forEach((rank, index) => {
-      road.appendChild(buildRankNode(rank, index));
-      if (index < RANKS.length - 1) {
+      const node = document.createElement("article");
+      node.className = "home-rank-native-node";
+      node.dataset.rankIndex = String(index);
+      node.style.setProperty("--rank-color", rank.color);
+
+      const shell = document.createElement("div");
+      shell.className = "home-rank-native-shell";
+
+      const img = document.createElement("img");
+      img.className = "home-rank-native-badge";
+      img.src = badgeUrl(rank.badge);
+      img.alt = `${rank.name} badge`;
+      img.decoding = "async";
+      img.loading = "eager";
+      shell.appendChild(img);
+
+      const name = document.createElement("span");
+      name.className = "home-rank-native-name";
+      name.textContent = rank.name;
+
+      const score = document.createElement("small");
+      score.className = "home-rank-native-score";
+      score.textContent = String(rank.score);
+
+      const marker = document.createElement("span");
+      marker.className = "home-rank-native-marker";
+      marker.innerHTML = '<b>▲</b><em>YOU ARE HERE</em>';
+
+      node.append(shell, name, score, marker);
+      road.appendChild(node);
+
+      if (rank.line) {
         const line = document.createElement("i");
         line.className = `home-rank-native-line ${rank.line}`;
-        line.setAttribute("aria-hidden", "true");
         road.appendChild(line);
       }
     });
 
-    road.dataset.nativeRankRoad = "v47";
-    road.dataset.rankDesignLocked = "approved-final";
-    road.scrollLeft = 0;
+    const active = getActiveRankIndex();
+    setActive(active);
+    fixProgressCopy();
+    bindRoad(road);
   }
 
-  function setActiveRank(road, index) {
-    const safe = Math.max(0, Math.min(RANKS.length - 1, index));
-    road.querySelectorAll(".home-rank-native-node").forEach((node, i) => {
-      const active = i === safe;
-      node.classList.toggle("active", active);
-      if (active) node.setAttribute("aria-current", "true");
-      else node.removeAttribute("aria-current");
+  function setActive(index) {
+    document.querySelectorAll(".home-rank-native-node").forEach((node, i) => {
+      node.classList.toggle("active", i === index);
     });
-    road.dataset.activeRank = String(safe);
   }
 
   function nearestVisibleRank(road) {
-    const rr = road.getBoundingClientRect();
-    const target = rr.left + Math.min(58, rr.width * 0.16);
-    let best = 0;
-    let bestDist = Infinity;
+    const nodes = [...road.querySelectorAll(".home-rank-native-node")];
+    if (!nodes.length) return 0;
 
-    road.querySelectorAll(".home-rank-native-node").forEach((node, i) => {
+    const r = road.getBoundingClientRect();
+    const target = r.left + Math.min(58, r.width * 0.16);
+    let best = 0;
+    let dist = Infinity;
+
+    nodes.forEach((node, i) => {
       const nr = node.getBoundingClientRect();
-      const d = Math.abs((nr.left + nr.width / 2) - target);
-      if (d < bestDist) {
-        bestDist = d;
+      const center = nr.left + nr.width / 2;
+      const d = Math.abs(center - target);
+      if (d < dist) {
+        dist = d;
         best = i;
       }
     });
-
     return best;
   }
 
-  function enableRankInteraction(road) {
-    if (!road || road.dataset.rankInteractionReady === "1") return;
-    road.dataset.rankInteractionReady = "1";
-
-    let dragging = false;
-    let startX = 0;
-    let startScrollLeft = 0;
+  function bindRoad(road) {
     let raf = 0;
 
-    const sync = () => {
-      raf = 0;
-      if (window.matchMedia("(max-width: 768px)").matches) {
-        setActiveRank(road, nearestVisibleRank(road));
-      } else {
-        setActiveRank(road, getActiveRankIndex());
+    const syncMobileActive = () => {
+      if (window.innerWidth > 768) {
+        setActive(getActiveRankIndex());
+        return;
       }
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => setActive(nearestVisibleRank(road)));
     };
 
-    const schedule = () => {
-      if (!raf) raf = requestAnimationFrame(sync);
-    };
+    road.addEventListener("scroll", syncMobileActive, { passive: true });
+    window.addEventListener("resize", syncMobileActive, { passive: true });
 
-    road.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule, { passive: true });
+    let down = false;
+    let startX = 0;
+    let startScroll = 0;
 
-    road.addEventListener("pointerdown", event => {
-      if (event.pointerType !== "mouse" || road.scrollWidth <= road.clientWidth) return;
-      dragging = true;
-      startX = event.clientX;
-      startScrollLeft = road.scrollLeft;
+    road.addEventListener("pointerdown", (e) => {
+      if (window.innerWidth > 768) return;
+      down = true;
+      startX = e.clientX;
+      startScroll = road.scrollLeft;
       road.classList.add("is-dragging");
-      road.setPointerCapture?.(event.pointerId);
-      event.preventDefault();
+      try { road.setPointerCapture(e.pointerId); } catch (_) {}
     });
 
-    road.addEventListener("pointermove", event => {
-      if (!dragging || event.pointerType !== "mouse") return;
-      road.scrollLeft = startScrollLeft - (event.clientX - startX);
-      event.preventDefault();
+    road.addEventListener("pointermove", (e) => {
+      if (!down) return;
+      road.scrollLeft = startScroll - (e.clientX - startX);
     });
 
-    const stop = event => {
-      if (!dragging) return;
-      dragging = false;
+    const stop = () => {
+      if (!down) return;
+      down = false;
       road.classList.remove("is-dragging");
-      if (event && road.hasPointerCapture?.(event.pointerId)) {
-        road.releasePointerCapture(event.pointerId);
-      }
-      schedule();
+      syncMobileActive();
     };
 
     road.addEventListener("pointerup", stop);
     road.addEventListener("pointercancel", stop);
-    road.addEventListener("lostpointercapture", stop);
+    road.addEventListener("pointerleave", stop);
 
-    setActiveRank(road, getActiveRankIndex());
-    requestAnimationFrame(() => {
-      road.scrollLeft = 0;
-      sync();
-    });
+    syncMobileActive();
   }
 
-  function installNativeRankJourney() {
-    const road = document.querySelector(".homepage-rank-road");
-    if (!road) return;
-    buildNativeRoad(road);
-    enableRankInteraction(road);
-    fixProgressCopy();
+  function boot() {
+    buildRoad();
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", installNativeRankJourney, { once: true });
+    document.addEventListener("DOMContentLoaded", boot, { once: true });
   } else {
-    installNativeRankJourney();
+    boot();
   }
-
-  window.addEventListener("pageshow", () => {
-    const road = document.querySelector(".homepage-rank-road");
-    if (road && road.dataset.rankDesignLocked !== "approved-final") installNativeRankJourney();
-    else if (road) {
-      setActiveRank(
-        road,
-        window.matchMedia("(max-width: 768px)").matches
-          ? nearestVisibleRank(road)
-          : getActiveRankIndex()
-      );
-    }
-    fixProgressCopy();
-  });
 })();
