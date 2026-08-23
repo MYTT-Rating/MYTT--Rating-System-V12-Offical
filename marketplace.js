@@ -19,6 +19,44 @@
   const polishCss = "mobile-polish-v23.css?v=20260821-recent-matches-1";
   const polishCssId = "mytt-mobile-polish-v23-style";
 
+  /* Avatar performance patch.
+     The old lazy-loading helper ran after player cards were already inserted,
+     which meant browsers could start downloading every avatar first. Add the
+     native image hints at HTML creation time instead. */
+  function installEarlyAvatarLoading() {
+    if (typeof window.avatarHTML === "function") {
+      window.avatarHTML = function (db, cls = "avatar") {
+        const src = typeof window.avatarUrl === "function"
+          ? window.avatarUrl(db)
+          : (db && db.id ? `avatars/${db.id}.jpg` : "");
+
+        if (!src) return `<div class="${cls}">👤</div>`;
+
+        const isProfile = String(cls || "").includes("profile-avatar");
+        const loading = isProfile ? "eager" : "lazy";
+        const priority = isProfile ? "high" : "low";
+        const alt = (db && db.name) || "Player";
+
+        return `<div class="${cls}"><img src="${src}" alt="${alt}" loading="${loading}" decoding="async" fetchpriority="${priority}" onerror="this.parentElement.textContent='👤'"></div>`;
+      };
+    }
+
+    if (typeof window.opponentAvatarHTML === "function") {
+      window.opponentAvatarHTML = function (opponent) {
+        const db = typeof window.findDbByName === "function"
+          ? window.findDbByName(opponent)
+          : null;
+        const src = typeof window.avatarUrl === "function"
+          ? window.avatarUrl(db)
+          : "";
+
+        return `<div class="match-avatar">${src ? `<img src="${src}" alt="${opponent}" loading="lazy" decoding="async" fetchpriority="low" onerror="this.parentElement.textContent='👤'">` : "👤"}</div>`;
+      };
+    }
+  }
+
+  installEarlyAvatarLoading();
+
   function ensureCss(id, href) {
     if (document.getElementById(id)) return;
     const link = document.createElement("link");
