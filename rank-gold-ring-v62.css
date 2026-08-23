@@ -1,66 +1,32 @@
-/* V62 — final clean gold edge for 2200 / 2300.
-   The shell itself is the circle. The artwork sits underneath it, so there is
-   no separate CSS ring and therefore no visible gap between two circles. */
-
+/* V63 — clean gold badges with baked-in complete rings.
+   No CSS-drawn ring, border, outline, crop, or shell background. */
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell,
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell{
   position:relative!important;
-  overflow:hidden!important;
-  box-sizing:border-box!important;
-  border-radius:50%!important;
-  border:2px solid #e9b91a!important;
-  background:#050505!important;
-  box-shadow:
-    inset 0 0 0 1px rgba(255,239,134,.72),
-    0 0 0 1px rgba(105,63,0,.72),
-    0 0 4px rgba(255,195,24,.18)!important;
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  filter:none!important;
 }
-
-/* Kill every older add-on ring. */
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell::after,
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell::after{
   content:none!important;
   display:none!important;
 }
-
-/* Slightly enlarge the source under the shell border. The source gold edge
-   now sits behind the border instead of beside it, so the seam disappears. */
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge,
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{
-  position:absolute!important;
-  z-index:2!important;
-  left:50%!important;
-  top:50%!important;
-  width:107%!important;
-  height:107%!important;
-  max-width:none!important;
+  width:100%!important;
+  height:100%!important;
   object-fit:contain!important;
-  object-position:center!important;
-  transform:translate(-50%,-50%)!important;
-  transform-origin:center!important;
+  object-position:center center!important;
+  transform:none!important;
   clip-path:none!important;
   -webkit-clip-path:none!important;
   border:0!important;
   border-radius:0!important;
+  background:transparent!important;
   box-shadow:none!important;
   filter:none!important;
-}
-
-@media (max-width:768px){
-  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell,
-  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell{
-    border-width:1.7px!important;
-  }
-  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge,
-  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{
-    width:108%!important;
-    height:108%!important;
-  }
-}
-
-@media (max-width:430px){
-  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell,
-  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell{
-    border-width:1.5px!important;
-  }
 }
