@@ -11,6 +11,8 @@
   const rankEffectsCssId = "mytt-rank-effects-v31-style";
   const rankPolishCss = "rank-mobile-polish-v47.css?v=20260822-2";
   const rankPolishCssId = "mytt-rank-mobile-polish-v47-style";
+  const rankGoldRingCss = "rank-gold-ring-v60.css?v=20260823-1";
+  const rankGoldRingCssId = "mytt-rank-gold-ring-v60-style";
 
   const coreSrc = "marketplace-core-v23.js?v=20260821-2";
   const polishSrc = "mobile-polish-v23.js?v=20260821-avatar-lazy-1";
@@ -44,6 +46,7 @@
     ensureCss(rankCssId, rankCss);
     ensureCss(rankEffectsCssId, rankEffectsCss);
     ensureCss(rankPolishCssId, rankPolishCss);
+    ensureCss(rankGoldRingCssId, rankGoldRingCss);
 
     loadScript("mytt-rank-system-v27", rankSrc)
       .then(() => loadScript("mytt-marketplace-core-v23", coreSrc))
