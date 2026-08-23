@@ -4,14 +4,14 @@
   /* Stable non-blocking loader.
      Rank order and final badge artwork live directly in rank-system-v27.js. */
 
-  const rankSrc = "rank-system-v27.js?v=20260823-32";
+  const rankSrc = "rank-system-v27.js?v=20260823-33";
   const rankCss = "rank-system-v27.css?v=20260822-5";
   const rankCssId = "mytt-rank-system-v27-style";
   const rankEffectsCss = "rank-effects-v31.css?v=20260822-7";
   const rankEffectsCssId = "mytt-rank-effects-v31-style";
   const rankPolishCss = "rank-mobile-polish-v47.css?v=20260822-2";
   const rankPolishCssId = "mytt-rank-mobile-polish-v47-style";
-  const rankGoldRingCss = "rank-gold-ring-v62.css?v=20260823-6";
+  const rankGoldRingCss = "rank-gold-ring-v62.css?v=20260823-7";
   const rankGoldRingCssId = "mytt-rank-gold-ring-v62-style";
 
   const coreSrc = "marketplace-core-v23.js?v=20260821-2";
