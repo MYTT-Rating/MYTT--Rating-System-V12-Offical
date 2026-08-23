@@ -11,7 +11,7 @@
   const rankEffectsCssId = "mytt-rank-effects-v31-style";
   const rankPolishCss = "rank-mobile-polish-v47.css?v=20260822-2";
   const rankPolishCssId = "mytt-rank-mobile-polish-v47-style";
-  const rankGoldRingCss = "rank-gold-ring-v62.css?v=20260823-9";
+  const rankGoldRingCss = "rank-gold-ring-v62.css?v=20260823-10";
   const rankGoldRingCssId = "mytt-rank-gold-ring-v62-style";
 
   const coreSrc = "marketplace-core-v23.js?v=20260821-2";
