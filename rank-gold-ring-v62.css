@@ -1,0 +1,25 @@
+/* V62 — use only the baked-in clean gold ring from the badge artwork.
+   No CSS ring overlay, no extra outline, no pseudo-element edge. */
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell{
+  overflow:visible!important;
+}
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell::after,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell::after{
+  content:none!important;
+  display:none!important;
+}
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:none!important;
+  clip-path:none!important;
+  -webkit-clip-path:none!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+}
