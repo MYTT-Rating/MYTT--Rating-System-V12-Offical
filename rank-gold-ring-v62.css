@@ -1,42 +1,38 @@
-/* V63 — single smooth ring merged into the gold artwork edge.
-   Draw one thicker transparent ring directly on top of the existing edge so
-   no background slit can show between the source artwork and the repair. */
+/* V64 — one clean circle, no double-ring gap.
+   The source artwork is enlarged underneath the shell border so its own
+   irregular/transparent edge cannot show as a separate circle. */
+
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell,
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell{
   position:relative!important;
-  overflow:visible!important;
-  border:0!important;
-  border-radius:0!important;
-  background:transparent!important;
-  box-shadow:none!important;
-}
-html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell::after,
-html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell::after{
-  content:""!important;
-  display:block!important;
-  position:absolute!important;
-  z-index:5!important;
-  left:50%!important;
-  top:50%!important;
-  width:90.4%!important;
-  height:90.4%!important;
-  transform:translate(-50%,-50%)!important;
+  overflow:hidden!important;
   box-sizing:border-box!important;
   border-radius:50%!important;
-  background:transparent!important;
-  border:3.4px solid #e6b314!important;
+  border:2px solid #d7a80d!important;
+  background:#050505!important;
   box-shadow:
-    inset 0 0 0 1px rgba(255,238,133,.72),
-    0 0 0 1px rgba(111,67,0,.50)!important;
-  pointer-events:none!important;
+    inset 0 0 0 1px rgba(255,241,158,.58),
+    0 0 2px rgba(255,199,30,.20)!important;
 }
+
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell::after,
+html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell::after{
+  content:none!important;
+  display:none!important;
+}
+
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge,
 html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{
-  width:100%!important;
-  height:100%!important;
+  position:absolute!important;
+  z-index:2!important;
+  left:50%!important;
+  top:50%!important;
+  width:114%!important;
+  height:114%!important;
+  max-width:none!important;
   object-fit:contain!important;
   object-position:center center!important;
-  transform:none!important;
+  transform:translate(-50%,-50%)!important;
   clip-path:none!important;
   -webkit-clip-path:none!important;
   border:0!important;
@@ -45,19 +41,22 @@ html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-r
   box-shadow:none!important;
   filter:none!important;
 }
+
 @media (max-width:768px){
-  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell::after,
-  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell::after{
-    width:90.2%!important;
-    height:90.2%!important;
-    border-width:3px!important;
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell,
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell{
+    border-width:1.8px!important;
+  }
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-badge,
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-badge{
+    width:114.5%!important;
+    height:114.5%!important;
   }
 }
+
 @media (max-width:430px){
-  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell::after,
-  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell::after{
-    width:90%!important;
-    height:90%!important;
-    border-width:2.8px!important;
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="7"] .home-rank-native-shell,
+  html body .hero-rank-card-v5 .home-rank-native-node[data-rank-index="8"] .home-rank-native-shell{
+    border-width:1.6px!important;
   }
 }
