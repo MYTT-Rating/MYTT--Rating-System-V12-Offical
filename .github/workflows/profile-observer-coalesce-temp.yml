@@ -1,9 +1,9 @@
 name: Apply profile observer coalescing
 
 on:
-  push:
+  pull_request:
     branches:
-      - profile-observer-coalesce
+      - main
     paths:
       - '.github/workflows/profile-observer-coalesce-temp.yml'
 
@@ -16,7 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: profile-observer-coalesce
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          fetch-depth: 0
       - name: Coalesce profile observer and bump cache key
         shell: bash
         run: |
@@ -55,17 +57,24 @@ jobs:
 
             window.addEventListener("resize", scheduleEnhance, { passive: true });
           }'''
-          if s.count(old) != 1:
-              raise SystemExit(f'watchProfile match count: {s.count(old)}')
-          p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          if old in s:
+              if s.count(old) != 1:
+                  raise SystemExit(f'watchProfile match count: {s.count(old)}')
+              s = s.replace(old, new, 1)
+              p.write_text(s, encoding='utf-8')
+          elif new not in s:
+              raise SystemExit('Neither old nor optimized watchProfile block found')
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          old = 'mobile-polish-v23.js?v=20260824-avatar-cleanup-1'
-          new = 'mobile-polish-v23.js?v=20260824-profile-observer-1'
-          if s.count(old) != 1:
-              raise SystemExit(f'cache key match count: {s.count(old)}')
-          p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          old_key = 'mobile-polish-v23.js?v=20260824-avatar-cleanup-1'
+          new_key = 'mobile-polish-v23.js?v=20260824-profile-observer-1'
+          if old_key in s:
+              if s.count(old_key) != 1:
+                  raise SystemExit(f'cache key match count: {s.count(old_key)}')
+              p.write_text(s.replace(old_key, new_key, 1), encoding='utf-8')
+          elif new_key not in s:
+              raise SystemExit('Neither old nor new mobile polish cache key found')
           PY
           node --check mobile-polish-v23.js
           git diff --check
@@ -74,8 +83,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          if git diff --quiet; then
+            echo "No additional changes required."
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add mobile-polish-v23.js index.html
           git commit -m "Coalesce mobile profile observer updates"
-          git push origin HEAD:profile-observer-coalesce
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
