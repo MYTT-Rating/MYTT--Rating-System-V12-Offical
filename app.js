@@ -18,12 +18,22 @@ function leaderboardTierIconHTML(r){const t=getTier(r);return `<img class="leade
 function progressTierHTML(t,label){if(!t)return `<span>${label||"Top Tier"}</span>`;return `<span><img class="profile-progress-badge" src="${rankBadgeUrl(t)}" alt="" aria-hidden="true">${label||t.name}</span>`}
 function progressHTML(r){const rating=Number(r)||0;const t=getTier(rating);if(!t.next)return `<div class="tier-progress"><div class="tier-progress-top">${progressTierHTML(t)}<span>Top Tier</span></div><div class="progress-track"><div class="progress-fill" style="width:100%"></div></div><div class="progress-note">You have reached ${t.name} tier.</div></div>`;const base=t.min===-Infinity?1400:t.min;const pct=Math.max(0,Math.min(100,((rating-base)/(t.next-base))*100));const next=TIERS.find(x=>x.min===t.next);return `<div class="tier-progress"><div class="tier-progress-top">${progressTierHTML(t)}${progressTierHTML(next)}</div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="progress-note">${rating} / ${t.next} · ${t.next-rating} pts to ${next.name}</div></div>`}
 function rankJourneyHTML(r){const rating=Number(r)||0;const currentTier=getTier(rating);const nextTier=currentTier.next?TIERS.find(t=>t.min===currentTier.next):null;const heading=nextTier?`<h3>Progress to ${nextTier.name}</h3>`:`<h3>${currentTier.name}</h3>`;const ratingValue=nextTier?"":`<strong>${rating}</strong>`;const nodes=TIERS.filter(t=>t.min>=1500).map(t=>`<div class="profile-rank-detail-node ${rating>=t.min?"reached":""} ${currentTier.name===t.name?"current":""}"><img class="profile-rank-detail-badge" src="${rankBadgeUrl(t)}" alt="" aria-hidden="true"><strong>${t.name}</strong><small>${t.min}</small></div>`).join("");return `<div class="profile-rank-compact"><div class="profile-rank-compact-head"><div><small>MYTT RANK JOURNEY</small>${heading}</div>${ratingValue}</div>${progressHTML(rating)}<details class="profile-rank-details"><summary>View Full Rank Journey</summary><div class="profile-rank-details-road">${nodes}</div></details></div>`}
-function syncHomeRankBadges(){const tiers=TIERS.filter(t=>t.min>=1500);const nodes=document.querySelectorAll('.homepage-rank-road .home-rank-node');nodes.forEach((node,index)=>{const t=tiers[index];const orb=node.querySelector('.home-rank-orb');if(!t||!orb)return;orb.textContent='';orb.style.setProperty('background-image',`url("${rankBadgeUrl(t)}")`,'important');node.dataset.rankTier=t.name})}
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',syncHomeRankBadges,{once:true})}else{syncHomeRankBadges()}
 
 function parseCSV(t){const r=[];let row=[],cell="",q=false;for(let i=0;i<t.length;i++){const c=t[i],n=t[i+1];if(c=='"'&&q&&n=='"'){cell+='"';i++}else if(c=='"'){q=!q}else if(c==","&&!q){row.push(cell.trim());cell=""}else if((c=="\n"||c=="\r")&&!q){if(cell||row.length){row.push(cell.trim());r.push(row);row=[];cell=""}if(c=="\r"&&n=="\n")i++}else cell+=c}if(cell||row.length){row.push(cell.trim());r.push(row)}return r}
 function cleanRows(rows){return rows.filter(row=>row.some(cell=>String(cell).trim()!="")).slice(1)}
-async function fetchRows(csvUrl){const url=csvUrl+(csvUrl.includes("?")?"&":"?")+"t="+Date.now();const res=await fetch(url);if(!res.ok)throw new Error("Unable to load CSV");return cleanRows(parseCSV(await res.text()))}
+const csvFetchInflight=new Map();
+async function fetchRows(csvUrl){
+  const key=String(csvUrl||"");
+  if(csvFetchInflight.has(key))return csvFetchInflight.get(key);
+  const request=(async()=>{
+    const url=key+(key.includes("?")?"&":"?")+"t="+Date.now();
+    const res=await fetch(url);
+    if(!res.ok)throw new Error("Unable to load CSV");
+    return cleanRows(parseCSV(await res.text()));
+  })().finally(()=>csvFetchInflight.delete(key));
+  csvFetchInflight.set(key,request);
+  return request;
+}
 function slug(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"").trim()}
 function rowToLb(row,type){return{type,rank:row[0]||"-",name:row[1]||"-",rating:row[2]||"-",record:row[3]||"-",winRate:row[4]||"-",peak:row[5]||"-"}}
 function rowToDb(row){return{id:row[0]||"",name:row[1]||"",grip:row[2]||"",hand:row[3]||"",blade:row[4]||"",fh:row[5]||"",bh:row[6]||"",photo:row[7]||"",status:row[8]||"",joined:row[9]||""}}
@@ -2632,6 +2642,12 @@ function openEventRegistration(eventId){
 
   configureEventCategories(event);
   renderEventPlayerSuggestions();
+  if(!playerDb.length){
+    loadPlayerDb().then(()=>{
+      renderEventPlayerSuggestions();
+      syncEventMyttIdFromName();
+    });
+  }
 
   e.modal.classList.remove("hidden");
   e.modal.setAttribute("aria-hidden","false");
@@ -3010,26 +3026,36 @@ function refreshAfterDoublesSubmission(){
 
 async function loadInitialData(){
   const isPhone=window.innerWidth<=860;
-  const essential=[
-    loadPlayerDb(),
-    loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles")
-  ];
 
-  if(!isPhone){
-    essential.push(loadActivePlayers(),loadActiveDoublesTeams(),ensureDoublesData(),ensureMatchData());
+  if(isPhone){
+    const idle=window.requestIdleCallback||((fn)=>setTimeout(fn,900));
+
+    // Home needs no leaderboard/player payload for first paint. Only warm the
+    // Singles session status quickly so the Home submit CTA becomes accurate.
+    idle(()=>loadActivePlayers(),{timeout:1500});
+
+    // Warm common next-page data later without competing with first paint.
+    // Match history and all Doubles payloads remain genuinely on-demand.
+    setTimeout(()=>{
+      idle(()=>Promise.allSettled([
+        loadPlayerDb(),
+        loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles")
+      ]),{timeout:4500});
+    },1600);
+    return;
   }
 
-  await Promise.allSettled(essential);
+  await Promise.allSettled([
+    loadPlayerDb(),
+    loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),
+    loadActivePlayers(),
+    loadActiveDoublesTeams(),
+    ensureDoublesData(),
+    ensureMatchData()
+  ]);
   renderPlayers();
   renderSearch();
   renderEventPlayerSuggestions();
-
-  // Phone first paint only waits for Player DB + Singles. Warm match history
-  // and the Singles session after paint; Doubles stays fully on-demand.
-  if(isPhone){
-    const idle=window.requestIdleCallback||((fn)=>setTimeout(fn,1600));
-    idle(()=>Promise.allSettled([ensureMatchData(),loadActivePlayers()]),{timeout:3500});
-  }
 }
 
 async function refreshVisibleData(){
@@ -3052,9 +3078,9 @@ async function refreshVisibleData(){
   }
 
   const jobs=[];
-  if(target==="home")jobs.push(loadPlayerDb(),loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),loadActivePlayers());
+  if(target==="home")jobs.push(loadActivePlayers());
   if(target==="players")jobs.push(loadPlayerDb(),loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),ensureMatchData());
-  if(target==="singles")jobs.push(loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),loadActivePlayers());
+  if(target==="singles")jobs.push(loadPlayerDb(),loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),loadActivePlayers());
   if(target==="doubles")jobs.push(ensureDoublesData(),loadActiveDoublesTeams());
   if(target==="submit")jobs.push(loadActivePlayers(),loadActiveDoublesTeams());
   if(jobs.length)await Promise.allSettled(jobs);
@@ -3063,16 +3089,35 @@ async function refreshVisibleData(){
 config.ensurePageData=function(target){
   const page=String(target||"");
   if(page==="events")return loadUpcomingEvents({maxAttempts:1,timeoutMs:18000});
+  if(page==="market")return window.MYTT_LOAD_MARKET?.()||Promise.resolve();
   if(page==="doubles")return Promise.allSettled([ensureDoublesData(),loadActiveDoublesTeams()]);
-  if(page==="players")return Promise.allSettled([ensureMatchData(),loadPlayerDb()]);
-  if(page==="singles")return Promise.allSettled([loadActivePlayers()]);
+  if(page==="players")return Promise.allSettled([
+    ensureMatchData(),
+    loadPlayerDb(),
+    loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles")
+  ]);
+  if(page==="singles")return Promise.allSettled([
+    loadPlayerDb(),
+    loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),
+    loadActivePlayers()
+  ]);
   if(page==="submit")return Promise.allSettled([loadActivePlayers(),loadActiveDoublesTeams()]);
   return Promise.resolve();
 };
 
+function primeUpcomingEventsFromCache(){
+  const cached=readCachedUpcomingEvents();
+  const bundled=bundledUpcomingEvents();
+  upcomingEvents=cached.length?cached:bundled;
+  renderUpcomingEvents();
+  return upcomingEvents;
+}
+
 bindEvents();bindSinglesFormEvents();bindDoublesFormEvents();bindJoinFormEvents();bindEventRegistrationEvents();
-// Events remain a first-class fast path; core data now loads in parallel.
-loadUpcomingEvents();
+// Mobile Home renders a safe cached/bundled event card immediately; opening
+// Events performs the live refresh. Desktop keeps the live startup refresh.
+if(window.innerWidth<=860)primeUpcomingEventsFromCache();
+else loadUpcomingEvents();
 loadInitialData();
 setInterval(refreshVisibleData,60000);
 setInterval(()=>{
