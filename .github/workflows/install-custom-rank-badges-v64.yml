@@ -1,0 +1,39 @@
+name: Install custom rank badges v64
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'rank-badges/custom-badges-v64.json'
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decode custom badge assets
+        run: |
+          python - <<'PY'
+          import base64, json
+          from pathlib import Path
+
+          manifest = Path('rank-badges/custom-badges-v64.json')
+          data = json.loads(manifest.read_text())
+          out = Path('rank-badges')
+          out.mkdir(exist_ok=True)
+          for name, payload in data.items():
+              (out / name).write_bytes(base64.b64decode(payload))
+          PY
+      - name: Commit decoded badges
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add rank-badges/*-custom-v64.webp
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'Install custom 1500-2300 rank badges v64'
+          git push
