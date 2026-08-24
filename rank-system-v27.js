@@ -25,15 +25,15 @@
 
     const FINAL_TIERS = [
       novice,
-      {min:1500,name:"Rookie",icon:"🌱",cls:"tier-rookie",badge:"novice-standalone.webp",next:1600},
-      {min:1600,name:"Challenger",icon:"⚔️",cls:"tier-challenger",badge:"challenger-standalone.webp",next:1700},
-      {min:1700,name:"Elite",icon:"⭐",cls:"tier-elite",badge:"rookie-standalone.webp",next:1800},
-      {min:1800,name:"Master",icon:"🔥",cls:"tier-master",badge:"elite-standalone.webp",next:1900},
-      {min:1900,name:"Grandmaster",icon:"🔥",cls:"tier-grandmaster",badge:"master-standalone.webp",next:2000},
-      {min:2000,name:"MYTT Champion",icon:"🏆",cls:"tier-champion",badge:"immortal-standalone.webp",next:2100},
-      {min:2100,name:"Legend",icon:"👑",cls:"tier-legend",badge:"legend-standalone.webp",next:2200},
-      {min:2200,name:"Immortal",icon:"🏆",cls:"tier-immortal",badge:"2200-immortal-balanced-v59.webp",next:2300},
-      {min:2300,name:"Hall of Fame",icon:"🌟",cls:"tier-hof",badge:"2300-hall-of-fame-balanced-v59.webp",next:null}
+      {min:1500,name:"Rookie",icon:"🌱",cls:"tier-rookie",badge:"1500-rookie-v64.webp",next:1600},
+      {min:1600,name:"Challenger",icon:"⚔️",cls:"tier-challenger",badge:"1600-challenger-v64.webp",next:1700},
+      {min:1700,name:"Elite",icon:"⭐",cls:"tier-elite",badge:"1700-elite-v64.webp",next:1800},
+      {min:1800,name:"Master",icon:"🔥",cls:"tier-master",badge:"1800-master-v64.webp",next:1900},
+      {min:1900,name:"Grandmaster",icon:"🔥",cls:"tier-grandmaster",badge:"1900-grandmaster-v64.webp",next:2000},
+      {min:2000,name:"MYTT Champion",icon:"🏆",cls:"tier-champion",badge:"2000-champion-v64.webp",next:2100},
+      {min:2100,name:"Legend",icon:"👑",cls:"tier-legend",badge:"2100-legend-v64.webp",next:2200},
+      {min:2200,name:"Immortal",icon:"🏆",cls:"tier-immortal",badge:"2200-immortal-v64.webp",next:2300},
+      {min:2300,name:"Hall of Fame",icon:"🌟",cls:"tier-hof",badge:"2300-hall-of-fame-v64.webp",next:null}
     ];
 
     TIERS.splice(0, TIERS.length, ...FINAL_TIERS);
@@ -41,19 +41,19 @@
   }
 
   const RANKS = [
-    {name:"Rookie",score:1500,badge:"novice-standalone.webp",color:"#d8dde4",line:"line-red"},
-    {name:"Challenger",score:1600,badge:"challenger-standalone.webp",color:"#19f53a",line:"line-orange"},
-    {name:"Elite",score:1700,badge:"rookie-standalone.webp",color:"#21c9ff",line:"line-gold"},
-    {name:"Master",score:1800,badge:"elite-standalone.webp",color:"#b55cff",line:"line-yellow"},
-    {name:"Grandmaster",score:1900,badge:"master-standalone.webp",color:"#ff3131",line:"line-green"},
-    {name:"MYTT Champion",score:2000,badge:"immortal-standalone.webp",color:"#ff2e8d",line:"line-cyan"},
-    {name:"Legend",score:2100,badge:"legend-standalone.webp",color:"#f0a81c",line:"line-purple"},
-    {name:"Immortal",score:2200,badge:"2200-immortal-balanced-v59.webp",color:"#ffd51c",line:"line-pink"},
-    {name:"Hall of Fame",score:2300,badge:"2300-hall-of-fame-balanced-v59.webp",color:"#ffd51c",line:null}
+    {name:"Rookie",score:1500,badge:"1500-rookie-v64.webp",color:"#d8dde4",line:"line-red"},
+    {name:"Challenger",score:1600,badge:"1600-challenger-v64.webp",color:"#19f53a",line:"line-orange"},
+    {name:"Elite",score:1700,badge:"1700-elite-v64.webp",color:"#21c9ff",line:"line-gold"},
+    {name:"Master",score:1800,badge:"1800-master-v64.webp",color:"#b55cff",line:"line-yellow"},
+    {name:"Grandmaster",score:1900,badge:"1900-grandmaster-v64.webp",color:"#ff3131",line:"line-green"},
+    {name:"MYTT Champion",score:2000,badge:"2000-champion-v64.webp",color:"#ff2e8d",line:"line-cyan"},
+    {name:"Legend",score:2100,badge:"2100-legend-v64.webp",color:"#f0a81c",line:"line-purple"},
+    {name:"Immortal",score:2200,badge:"2200-immortal-v64.webp",color:"#ffd51c",line:"line-pink"},
+    {name:"Hall of Fame",score:2300,badge:"2300-hall-of-fame-v64.webp",color:"#ffd51c",line:null}
   ];
 
   function badgeUrl(file) {
-    return `rank-badges/${file}?v=20260823-v63-ringmerge`;
+    return `rank-badges/${file}?v=20260824-v64-custom-badges`;
   }
 
   function getHomepageRating() {
