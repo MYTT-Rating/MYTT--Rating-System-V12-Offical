@@ -36,14 +36,14 @@ function opponentOf(match,name){if(samePlayer(match.playerA,name))return match.p
 function isWin(match,name){return samePlayer(match.winner,name)}
 function beforeAfter(match,name){if(samePlayer(match.playerA,name))return{before:match.playerABefore,after:match.playerAAfter};if(samePlayer(match.playerB,name))return{before:match.playerBBefore,after:match.playerBAfter};return{before:"",after:""}}
 function deltaOf(match,name){const ba=beforeAfter(match,name);const before=Number(ba.before),after=Number(ba.after);if(ba.before!==""&&ba.after!==""&&!isNaN(before)&&!isNaN(after))return after-before;const ch=Number(match.ratingChange);if(match.ratingChange!==""&&!isNaN(ch))return isWin(match,name)?ch:-ch;return null}
-function opponentAvatarHTML(opponent){const db=findDbByName(opponent);const src=avatarUrl(db);return `<div class="match-avatar">${src?`<img src="${src}" alt="${opponent}" onerror="this.parentElement.textContent='👤'">`:"👤"}</div>`}
+function opponentAvatarHTML(opponent){const db=findDbByName(opponent);const src=avatarUrl(db);return `<div class="match-avatar">${src?`<img src="${src}" alt="${opponent}" loading="lazy" decoding="async" fetchpriority="low" onerror="this.parentElement.textContent='👤'">`:"👤"}</div>`}
 function recentMatchesHTML(name){const matches=playerMatches(name).slice().reverse().slice(0,10);if(!matches.length)return`<div class="profile-panel"><h3>🕒 Recent Matches</h3><p class="muted">No match history yet.</p></div>`;return`<div class="profile-panel"><h3>🕒 Recent Matches</h3><div class="match-list">${matches.map(m=>{const win=isWin(m,name),opp=opponentOf(m,name),ba=beforeAfter(m,name),delta=deltaOf(m,name),deltaText=delta===null?"—":(delta>0?"+"+delta:String(delta)),deltaCls=delta===null?"":(delta>=0?"match-delta-up":"match-delta-down");return`<div class="match-card ${win?"match-win":"match-loss"}"><div class="match-left">${opponentAvatarHTML(opp)}</div><div class="match-body"><div class="match-result">${win?"🟢 Win":"🔴 Loss"}</div><div class="match-main">vs <span data-player="${encodeURIComponent(opp)}" class="match-opponent">${opp}</span></div><div class="match-score">🏓 ${m.score||"-"}</div><div class="match-rating"><span class="${deltaCls}">${deltaText} Rating</span>${ba.before&&ba.after?` · ${ba.before} → ${ba.after}`:""}</div><div class="match-date">${displayDate(m.matchDate||m.timestamp)}</div></div></div>`}).join("")}</div></div>`}
 function ratingHistoryHTML(name){const list=playerMatches(name);let points=[];list.forEach(m=>{const ba=beforeAfter(m,name);if(ba.before&&points.length===0)points.push(Number(ba.before));if(ba.after)points.push(Number(ba.after))});points=points.filter(x=>!isNaN(x));if(points.length<2)return`<div class="profile-panel"><h3>📈 Rating History</h3><p class="muted">Play more matches to build a rating chart.</p></div>`;const min=Math.min(...points),max=Math.max(...points),range=Math.max(1,max-min),w=520,h=150,pad=18;const coords=points.map((v,i)=>`${pad+(i/(points.length-1))*(w-pad*2)},${h-pad-((v-min)/range)*(h-pad*2)}`).join(" ");return`<div class="profile-panel"><h3>📈 Rating History</h3><div class="rating-chart"><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${coords}" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="chart-note">${points[0]} → ${points[points.length-1]} · Peak ${max}</div></div>`}
 function headToHeadHTML(name){const map={};playerMatches(name).forEach(m=>{const opp=opponentOf(m,name);if(!opp)return;const key=slug(opp);if(!map[key])map[key]={opp,w:0,l:0,total:0};if(isWin(m,name))map[key].w++;else map[key].l++;map[key].total++});const rows=Object.values(map).sort((a,b)=>b.total-a.total).slice(0,6);if(!rows.length)return`<div class="profile-panel"><h3>🤝 Head to Head</h3><p class="muted">No head-to-head data yet.</p></div>`;return`<div class="profile-panel"><h3>🤝 Head to Head</h3><div class="h2h-list">${rows.map(r=>`<div class="h2h-row"><span data-player="${encodeURIComponent(r.opp)}">${r.opp}</span><strong>${r.w}-${r.l}</strong><small>${r.total} matches</small></div>`).join("")}</div></div>`}
 
 function rankLabel(rank){const v=String(rank||"").trim();if(v=="1")return"🥇 1";if(v=="2")return"🥈 2";if(v=="3")return"🥉 3";return v||"-"}
 function avatarUrl(db){if(!db?.id)return"";return `avatars/${db.id}.jpg`}
-function avatarHTML(db,cls="avatar"){const src=avatarUrl(db);return `<div class="${cls}">${src?`<img src="${src}" alt="${db?.name||"Player"}" onerror="this.parentElement.textContent='👤'">`:"👤"}</div>`}
+function avatarHTML(db,cls="avatar"){const src=avatarUrl(db);const profile=String(cls||"").includes("profile-avatar");const loading=profile?"eager":"lazy";const priority=profile?"high":"low";return `<div class="${cls}">${src?`<img src="${src}" alt="${db?.name||"Player"}" loading="${loading}" decoding="async" fetchpriority="${priority}" onerror="this.parentElement.textContent='👤'">`:"👤"}</div>`}
 function findDbByName(name){const s=slug(name);return playerDb.find(p=>slug(p.name)===s)||playerDb.find(p=>slug(p.name).includes(s)||s.includes(slug(p.name)))}
 function findLbByName(name){const s=slug(name);return singlesPlayers.find(p=>slug(p.name)===s)||singlesPlayers.find(p=>slug(p.name).includes(s)||s.includes(slug(p.name)))||{rating:"1500",peak:"1500",rank:"-",record:"0-0",winRate:"-"}}
 
@@ -835,8 +835,17 @@ function openSinglesResultForm(){
   e.modal.classList.remove("hidden");
   e.modal.setAttribute("aria-hidden","false");
   document.body.classList.add("result-modal-open");
-  if(activePlayersLoaded&&!activePlayersError&&activePlayers.length){
-    setTimeout(()=>e.aSearch?.focus(),80);
+
+  const focusWhenReady=()=>{
+    if(!e.modal.classList.contains("hidden")&&activePlayersLoaded&&!activePlayersError&&activePlayers.length){
+      setTimeout(()=>e.aSearch?.focus(),80);
+    }
+  };
+
+  if(!activePlayersLoaded){
+    loadActivePlayers().then(focusWhenReady);
+  }else{
+    focusWhenReady();
   }
 }
 
@@ -1598,8 +1607,17 @@ function openDoublesResultForm(){
   e.modal.classList.remove("hidden");
   e.modal.setAttribute("aria-hidden","false");
   document.body.classList.add("result-modal-open");
-  if(activeDoublesTeamsLoaded&&!activeDoublesTeamsError&&activeDoublesTeams.length){
-    setTimeout(()=>e.aSearch?.focus(),80);
+
+  const focusWhenReady=()=>{
+    if(!e.modal.classList.contains("hidden")&&activeDoublesTeamsLoaded&&!activeDoublesTeamsError&&activeDoublesTeams.length){
+      setTimeout(()=>e.aSearch?.focus(),80);
+    }
+  };
+
+  if(!activeDoublesTeamsLoaded){
+    Promise.allSettled([ensureDoublesData(),loadActiveDoublesTeams()]).then(focusWhenReady);
+  }else{
+    focusWhenReady();
   }
 }
 
@@ -2994,13 +3012,11 @@ async function loadInitialData(){
   const isPhone=window.innerWidth<=860;
   const essential=[
     loadPlayerDb(),
-    loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),
-    loadActivePlayers(),
-    loadActiveDoublesTeams()
+    loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles")
   ];
 
   if(!isPhone){
-    essential.push(ensureDoublesData(),ensureMatchData());
+    essential.push(loadActivePlayers(),loadActiveDoublesTeams(),ensureDoublesData(),ensureMatchData());
   }
 
   await Promise.allSettled(essential);
@@ -3008,11 +3024,11 @@ async function loadInitialData(){
   renderSearch();
   renderEventPlayerSuggestions();
 
-  // On phones, keep first paint light. Match history can warm in the
-  // background; Doubles waits until the user actually opens that page.
+  // Phone first paint only waits for Player DB + Singles. Warm match history
+  // and the Singles session after paint; Doubles stays fully on-demand.
   if(isPhone){
     const idle=window.requestIdleCallback||((fn)=>setTimeout(fn,1600));
-    idle(()=>ensureMatchData(),{timeout:3500});
+    idle(()=>Promise.allSettled([ensureMatchData(),loadActivePlayers()]),{timeout:3500});
   }
 }
 
@@ -3036,7 +3052,7 @@ async function refreshVisibleData(){
   }
 
   const jobs=[];
-  if(target==="home")jobs.push(loadPlayerDb(),loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),loadActivePlayers(),loadActiveDoublesTeams());
+  if(target==="home")jobs.push(loadPlayerDb(),loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),loadActivePlayers());
   if(target==="players")jobs.push(loadPlayerDb(),loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),ensureMatchData());
   if(target==="singles")jobs.push(loadLeaderboard(config.singlesCsv,"singlesBody","singlesStatus","singles","singles"),loadActivePlayers());
   if(target==="doubles")jobs.push(ensureDoublesData(),loadActiveDoublesTeams());
@@ -3047,7 +3063,7 @@ async function refreshVisibleData(){
 config.ensurePageData=function(target){
   const page=String(target||"");
   if(page==="events")return loadUpcomingEvents({maxAttempts:1,timeoutMs:18000});
-  if(page==="doubles")return ensureDoublesData();
+  if(page==="doubles")return Promise.allSettled([ensureDoublesData(),loadActiveDoublesTeams()]);
   if(page==="players")return Promise.allSettled([ensureMatchData(),loadPlayerDb()]);
   if(page==="singles")return Promise.allSettled([loadActivePlayers()]);
   if(page==="submit")return Promise.allSettled([loadActivePlayers(),loadActiveDoublesTeams()]);

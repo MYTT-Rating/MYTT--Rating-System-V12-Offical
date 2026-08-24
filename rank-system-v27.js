@@ -104,7 +104,10 @@
       img.src = badgeUrl(rank.badge);
       img.alt = `${rank.name} badge`;
       img.decoding = "async";
-      img.loading = "eager";
+      const phone = window.innerWidth <= 768;
+      const aboveFold = !phone || index <= 3;
+      img.loading = aboveFold ? "eager" : "lazy";
+      img.fetchPriority = index === 0 ? "high" : (aboveFold ? "auto" : "low");
       shell.appendChild(img);
 
       const name = document.createElement("span");
