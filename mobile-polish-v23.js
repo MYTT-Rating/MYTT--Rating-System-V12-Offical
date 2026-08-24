@@ -116,11 +116,20 @@
     const root = document.getElementById("profileContent");
     if (!root) return;
 
-    const observer = new MutationObserver(() => requestAnimationFrame(enhanceProfile));
+    let enhanceFrame = 0;
+    const scheduleEnhance = () => {
+      if (enhanceFrame) return;
+      enhanceFrame = requestAnimationFrame(() => {
+        enhanceFrame = 0;
+        enhanceProfile();
+      });
+    };
+
+    const observer = new MutationObserver(scheduleEnhance);
     observer.observe(root, { childList: true, subtree: true });
     enhanceProfile();
 
-    window.addEventListener("resize", () => requestAnimationFrame(enhanceProfile), { passive: true });
+    window.addEventListener("resize", scheduleEnhance, { passive: true });
   }
 
   function isHomeTarget() {
