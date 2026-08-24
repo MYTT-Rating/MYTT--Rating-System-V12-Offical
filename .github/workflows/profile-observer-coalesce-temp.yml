@@ -1,0 +1,81 @@
+name: Apply profile observer coalescing
+
+on:
+  push:
+    branches:
+      - profile-observer-coalesce
+    paths:
+      - '.github/workflows/profile-observer-coalesce-temp.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: profile-observer-coalesce
+      - name: Coalesce profile observer and bump cache key
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path('mobile-polish-v23.js')
+          s = p.read_text(encoding='utf-8')
+          old = '''  function watchProfile() {
+            const root = document.getElementById("profileContent");
+            if (!root) return;
+
+            const observer = new MutationObserver(() => requestAnimationFrame(enhanceProfile));
+            observer.observe(root, { childList: true, subtree: true });
+            enhanceProfile();
+
+            window.addEventListener("resize", () => requestAnimationFrame(enhanceProfile), { passive: true });
+          }'''
+          new = '''  function watchProfile() {
+            const root = document.getElementById("profileContent");
+            if (!root) return;
+
+            let enhanceFrame = 0;
+            const scheduleEnhance = () => {
+              if (enhanceFrame) return;
+              enhanceFrame = requestAnimationFrame(() => {
+                enhanceFrame = 0;
+                enhanceProfile();
+              });
+            };
+
+            const observer = new MutationObserver(scheduleEnhance);
+            observer.observe(root, { childList: true, subtree: true });
+            enhanceProfile();
+
+            window.addEventListener("resize", scheduleEnhance, { passive: true });
+          }'''
+          if s.count(old) != 1:
+              raise SystemExit(f'watchProfile match count: {s.count(old)}')
+          p.write_text(s.replace(old, new, 1), encoding='utf-8')
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          old = 'mobile-polish-v23.js?v=20260824-avatar-cleanup-1'
+          new = 'mobile-polish-v23.js?v=20260824-profile-observer-1'
+          if s.count(old) != 1:
+              raise SystemExit(f'cache key match count: {s.count(old)}')
+          p.write_text(s.replace(old, new, 1), encoding='utf-8')
+          PY
+          node --check mobile-polish-v23.js
+          git diff --check
+          git diff -- mobile-polish-v23.js index.html
+      - name: Commit changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mobile-polish-v23.js index.html
+          git commit -m "Coalesce mobile profile observer updates"
+          git push origin HEAD:profile-observer-coalesce
