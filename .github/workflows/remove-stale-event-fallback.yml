@@ -1,0 +1,44 @@
+name: Remove stale MYTT event fallback
+
+on:
+  push:
+    paths:
+      - '.github/workflows/remove-stale-event-fallback.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove stale fallback event
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          old = '''  eventsFallbackRows: [\n    ["MYTT-E001","MYTT Rating Day","2026-08-30","2:00 PM","Jom Nittaku","Round Robin Singles","16","2026-08-28","Open","Official MYTT rating matches.","1"]\n  ],'''
+          new = '''  eventsFallbackRows: [],'''
+          if old not in s:
+              raise SystemExit('Target fallback block not found; refusing to change anything.')
+          s2 = s.replace(old, new, 1)
+          p.write_text(s2, encoding='utf-8')
+          PY
+
+      - name: Commit change
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No change needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Remove stale event fallback data'
+          git push
