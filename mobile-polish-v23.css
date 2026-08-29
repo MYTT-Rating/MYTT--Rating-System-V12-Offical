@@ -333,3 +333,19 @@
     margin-top:22px !important;
   }
 }
+
+/* MYTT mobile navigation cleanup — bottom navigation is the single phone nav. */
+@media (max-width:860px){
+  .premium-mobile-toggle,
+  .premium-nav{
+    display:none !important;
+  }
+
+  .premium-header-inner{
+    justify-content:flex-start !important;
+  }
+
+  .premium-brand{
+    margin-right:auto !important;
+  }
+}
