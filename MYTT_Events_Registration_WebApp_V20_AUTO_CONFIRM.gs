@@ -92,6 +92,11 @@ function doGet(e) {
         events: getUpcomingEvents()
       };
 
+    } else if (action === "registrations") {
+      payload = getPublicEventRegistrations(
+        cleanEventText(params.eventId)
+      );
+
     } else if (action === "status") {
       const submissionId =
         cleanEventText(
@@ -456,6 +461,48 @@ function doPost(e) {
   } finally {
     lock.releaseLock();
   }
+}
+
+
+/***********************
+ * PUBLIC REGISTRATION LIST
+ ***********************/
+function getPublicEventRegistrations(eventId) {
+  if (!eventId) {
+    return { source: "MYTT_EVENTS_WEB_APP", status: "error", message: "Event ID is required." };
+  }
+
+  const ss = SpreadsheetApp.openById(EVENTS_SPREADSHEET_ID);
+  const sheet = ss.getSheetByName(EVENTS_SHEETS.REGISTRATIONS);
+  if (!sheet) throw new Error("Cannot find sheet: Event Registrations");
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) {
+    return { source: "MYTT_EVENTS_WEB_APP", status: "ok", eventId: eventId, registrations: [] };
+  }
+
+  const rows = sheet.getRange(2, 1, lastRow - 1, 11).getValues();
+  const target = normalizeEventKey(eventId);
+  const activeStatuses = { confirmed: true, approved: true, accepted: true };
+  const registrations = [];
+
+  rows.forEach(function(row) {
+    if (normalizeEventKey(row[1]) !== target) return;
+    const status = cleanEventText(row[9]).toLowerCase();
+    if (!activeStatuses[status]) return;
+    registrations.push({
+      playerName: cleanEventText(row[3]),
+      myttId: cleanEventText(row[4]),
+      category: cleanEventText(row[5])
+    });
+  });
+
+  return {
+    source: "MYTT_EVENTS_WEB_APP",
+    status: "ok",
+    eventId: eventId,
+    registrations: registrations
+  };
 }
 
 
