@@ -90,15 +90,26 @@
     }
   }
 
+  function updatePhotoRequirementCopy(){
+    const copy=document.querySelector('#joinFormModal .join-photo-guideline-copy');
+    if(!copy)return;
+    const strong=copy.querySelector('strong');
+    const note=copy.querySelector('em');
+    if(strong)strong.textContent='Please upload a clear front-facing photo where your full face is clearly visible.';
+    if(note)note.textContent='Side-profile, back-facing, action/playing, group, heavily filtered, or unclear photos may be rejected.';
+  }
+
   function repair(){
     restoreButtons();
     rescueEvents();
+    updatePhotoRequirementCopy();
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{setTimeout(repair,300);setTimeout(repair,1500);setTimeout(repair,4000)},{once:true});
   else{setTimeout(repair,300);setTimeout(repair,1500);setTimeout(repair,4000)}
 
   document.addEventListener('click',e=>{
+    if(e.target.closest('[data-open-join-form]'))setTimeout(updatePhotoRequirementCopy,0);
     if(!e.target.closest('a[href="#events"],[data-v14-target="events"]'))return;
     setTimeout(repair,80);
     setTimeout(repair,800);
