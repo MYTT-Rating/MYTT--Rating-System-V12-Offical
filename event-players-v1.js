@@ -6,7 +6,7 @@
   if(!api)return;
 
   const cache=new Map();
-  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
   function jsonp(params){
     return new Promise((resolve,reject)=>{
@@ -41,7 +41,7 @@
     if(card.querySelector('.event-view-players'))return;
     const eventId=eventIdFromCard(card);
     if(!eventId)return;
-    const filledText=[...card.querySelectorAll('*')].map(n=>n.children.length?null:n.textContent).find(t=>t&&/\d+\s*\/\s*\d+/.test(t));
+    const filledText=[...card.querySelectorAll('*')].map(n=>n.children.length?null:n.textContent).find(t=>t&&/\d+\s*\/\s*(\d+)/.test(t));
     const m=filledText&&filledText.match(/(\d+)\s*\/\s*(\d+)/);
     const count=m?Number(m[1]):null;
     const btn=document.createElement('button');
