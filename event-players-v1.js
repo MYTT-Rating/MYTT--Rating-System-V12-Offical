@@ -1,89 +1,76 @@
 (()=>{
   'use strict';
 
+  /*
+   * MYTT Events safety helper.
+   * Keep this file intentionally small and non-invasive:
+   * - no MutationObserver
+   * - no automatic registrations API polling
+   * - never edits or disables the official REGISTER NOW button
+   * - only supplies a fast fallback if the main Events loader is still stuck
+   */
+
   const cfg=window.MYTT||{};
-  const api=String(cfg.eventsWebAppUrl||cfg.eventWebAppUrl||'').trim();
-  if(!api)return;
+  let rescueRunning=false;
+  let rescueDone=false;
 
-  const cache=new Map();
-  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-  function jsonp(params){
-    return new Promise((resolve,reject)=>{
-      const cb='__myttEventPlayers_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7);
-      const script=document.createElement('script');
-      let done=false;
-      const finish=()=>{if(done)return;done=true;try{delete window[cb]}catch(_){window[cb]=undefined}script.remove()};
-      const timer=setTimeout(()=>{finish();reject(new Error('timeout'))},7000);
-      window[cb]=data=>{clearTimeout(timer);finish();resolve(data)};
-      script.onerror=()=>{clearTimeout(timer);finish();reject(new Error('network'))};
-      const qs=new URLSearchParams({...params,callback:cb,_:Date.now()});
-      script.src=api+(api.includes('?')?'&':'?')+qs.toString();
-      document.body.appendChild(script);
-    });
+  function eventsStillLoading(){
+    const grid=document.getElementById('eventsGrid');
+    if(!grid)return false;
+    if(grid.querySelector('.target-event-shell'))return false;
+    const text=(grid.textContent||'').toLowerCase();
+    return /loading upcoming|checking events|refreshing events/.test(text) || !!grid.querySelector('.event-empty-state');
   }
 
-  async function getPlayers(eventId){
-    if(cache.has(eventId))return cache.get(eventId);
-    const data=await jsonp({action:'registrations',eventId});
-    if(!data||data.status!=='ok')throw new Error(data?.message||'Unable to load registered players');
-    const players=Array.isArray(data.registrations)?data.registrations:[];
-    cache.set(eventId,players);
-    return players;
-  }
+  async function rescueEvents(){
+    if(rescueRunning||rescueDone||!eventsStillLoading())return;
+    if(!cfg.eventsCsvUrl)return;
+    if(typeof parseCSV!=='function'||typeof cleanRows!=='function'||typeof publishedRowsToEvents!=='function'||typeof renderUpcomingEvents!=='function')return;
 
-  function eventIdFromCard(card){
-    const btn=card.querySelector('[data-event-id],[data-eventid]');
-    return btn?.dataset.eventId||btn?.dataset.eventid||card.dataset.eventId||card.dataset.eventid||'';
-  }
+    rescueRunning=true;
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),8000);
 
-  function ensureButton(card){
-    if(card.querySelector('.event-view-players'))return;
-    const eventId=eventIdFromCard(card);
-    if(!eventId)return;
-    const filledText=[...card.querySelectorAll('*')].map(n=>n.children.length?null:n.textContent).find(t=>t&&/\d+\s*\/\s*\d+/.test(t));
-    const m=filledText&&filledText.match(/(\d+)\s*\/\s*(\d+)/);
-    const count=m?Number(m[1]):null;
-    const btn=document.createElement('button');
-    btn.type='button';
-    btn.className='event-view-players';
-    btn.dataset.eventId=eventId;
-    btn.innerHTML=`<span>Registered Players</span><strong>${count===null?'View':esc(count)}</strong>`;
-    const actions=card.querySelector('.event-actions,.event-card-actions,.event-footer')||card;
-    actions.appendChild(btn);
-  }
+    try{
+      const sep=cfg.eventsCsvUrl.includes('?')?'&':'?';
+      const res=await fetch(cfg.eventsCsvUrl+sep+'_='+Date.now(),{
+        cache:'no-store',
+        signal:controller.signal
+      });
+      if(!res.ok)throw new Error('Events CSV HTTP '+res.status);
 
-  function scan(){document.querySelectorAll('#eventsGrid .event-card, #eventsGrid article').forEach(ensureButton)};
+      const text=await res.text();
+      const rows=cleanRows(parseCSV(text));
+      const events=publishedRowsToEvents(rows);
 
-  function openModal(eventId,players){
-    let modal=document.getElementById('eventPlayersModal');
-    if(!modal){
-      modal=document.createElement('div');
-      modal.id='eventPlayersModal';
-      modal.className='event-players-modal hidden';
-      modal.innerHTML='<button class="event-players-backdrop" aria-label="Close registered players"></button><section class="event-players-sheet" role="dialog" aria-modal="true" aria-labelledby="eventPlayersTitle"><div class="event-players-head"><div><small>MYTT EVENT</small><h3 id="eventPlayersTitle">Registered Players</h3></div><button type="button" class="event-players-close" aria-label="Close">×</button></div><div class="event-players-body"></div></section>';
-      document.body.appendChild(modal);
-      modal.querySelector('.event-players-close').onclick=closeModal;
-      modal.querySelector('.event-players-backdrop').onclick=closeModal;
+      if(events.length){
+        upcomingEvents=events;
+        renderUpcomingEvents();
+        try{cacheUpcomingEvents?.(events)}catch(_){}
+        rescueDone=true;
+      }
+    }catch(err){
+      console.warn('MYTT Events safe fallback unavailable',err);
+    }finally{
+      clearTimeout(timer);
+      rescueRunning=false;
     }
-    const body=modal.querySelector('.event-players-body');
-    body.innerHTML=players.length?`<div class="event-player-count">${players.length} registered</div><div class="event-player-list">${players.map((p,i)=>`<div class="event-player-row"><span class="event-player-number">${i+1}</span><div><strong>${esc(p.playerName||'Player')}</strong><small>${esc(p.myttId||'MYTT ID pending')}${p.category?' · '+esc(p.category):''}</small></div></div>`).join('')}</div>`:'<div class="event-player-empty">No confirmed players yet.</div>';
-    modal.classList.remove('hidden');
-    document.body.classList.add('event-players-open');
   }
 
-  function closeModal(){document.getElementById('eventPlayersModal')?.classList.add('hidden');document.body.classList.remove('event-players-open')}
+  function scheduleRescue(){
+    setTimeout(rescueEvents,900);
+    setTimeout(rescueEvents,3200);
+  }
 
-  document.addEventListener('click',async e=>{
-    const btn=e.target.closest('.event-view-players');
-    if(!btn)return;
-    const eventId=btn.dataset.eventId;
-    const old=btn.innerHTML;
-    btn.disabled=true;btn.innerHTML='<span>Registered Players</span><strong>Loading…</strong>';
-    try{openModal(eventId,await getPlayers(eventId))}catch(err){console.error('MYTT registered players',err);btn.innerHTML='<span>Registered Players</span><strong>Retry</strong>';setTimeout(()=>{btn.disabled=false},500);return}
-    btn.innerHTML=old;btn.disabled=false;
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',scheduleRescue,{once:true});
+  }else{
+    scheduleRescue();
+  }
+
+  document.addEventListener('click',e=>{
+    const eventsLink=e.target.closest('a[href="#events"],[data-v14-target="events"]');
+    if(!eventsLink)return;
+    setTimeout(rescueEvents,120);
   });
-
-  new MutationObserver(scan).observe(document.getElementById('eventsGrid')||document.body,{childList:true,subtree:true});
-  scan();
 })();
