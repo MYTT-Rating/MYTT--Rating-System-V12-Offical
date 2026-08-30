@@ -19,6 +19,22 @@
     return (card?.querySelector('.target-event-id')?.textContent||'').trim();
   }
 
+  function forceDesktopButtonVisible(card,btn){
+    if(!card||!btn)return;
+    const wrap=card.querySelector('.target-hero-action');
+    if(wrap){
+      wrap.style.setProperty('display','flex','important');
+      wrap.style.setProperty('visibility','visible','important');
+      wrap.style.setProperty('opacity','1','important');
+      wrap.style.setProperty('pointer-events','auto','important');
+      wrap.style.setProperty('z-index','8','important');
+    }
+    btn.style.setProperty('display','inline-flex','important');
+    btn.style.setProperty('visibility','visible','important');
+    btn.style.setProperty('opacity','1','important');
+    btn.style.setProperty('pointer-events','auto','important');
+  }
+
   function restoreButtons(){
     document.querySelectorAll('#eventsGrid .target-event-shell').forEach(card=>{
       if(!eventIsOpen(card))return;
@@ -34,6 +50,9 @@
       if(desktopWrap && !desktopWrap.querySelector('[data-register-event]')){
         desktopWrap.innerHTML=`<button class="target-register-button" type="button" data-register-event="${id}"><span>REGISTER NOW</span><b>→</b></button>`;
       }
+
+      const desktopBtn=desktopWrap?.querySelector('[data-register-event]');
+      if(window.innerWidth>860)forceDesktopButtonVisible(card,desktopBtn);
     });
   }
 
@@ -84,6 +103,8 @@
     setTimeout(repair,80);
     setTimeout(repair,800);
   });
+
+  window.addEventListener('resize',()=>setTimeout(restoreButtons,80));
 
   const observer=new MutationObserver(()=>restoreButtons());
   const startObserver=()=>{const grid=document.getElementById('eventsGrid');if(grid)observer.observe(grid,{childList:true,subtree:true})};
