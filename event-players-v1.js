@@ -38,8 +38,8 @@
   }
 
   function eventIdFromCard(card){
-    const btn=card.querySelector('[data-event-id],[data-eventid]');
-    return btn?.dataset.eventId||btn?.dataset.eventid||card.dataset.eventId||card.dataset.eventid||'';
+    const el=card.querySelector('[data-register-event],[data-event-id],[data-eventid]');
+    return el?.dataset.registerEvent||el?.dataset.eventId||el?.dataset.eventid||card.dataset.eventId||card.dataset.eventid||'';
   }
 
   function parseCapacity(card){
@@ -52,38 +52,12 @@
     return{filled:null,capacity:null};
   }
 
-  function findRegisterButton(card){
-    const candidates=[...card.querySelectorAll('button,a')];
-    return candidates.find(el=>{
-      if(el.classList.contains('event-view-players'))return false;
-      const t=(el.textContent||'').trim().toLowerCase();
-      return /register|join event|sign up/.test(t);
-    })||null;
-  }
-
-  function setFullState(card,isFull){
+  function setFullBadge(card,isFull){
     card.classList.toggle('event-card-full',!!isFull);
     let badge=card.querySelector('.event-full-badge');
     if(isFull){
       if(!badge){badge=document.createElement('span');badge.className='event-full-badge';badge.textContent='FULL';card.appendChild(badge)}
-      const reg=findRegisterButton(card);
-      if(reg){
-        if(!reg.dataset.fullOriginalText)reg.dataset.fullOriginalText=(reg.textContent||'').trim();
-        reg.classList.add('event-register-full');
-        if(reg.tagName==='BUTTON')reg.disabled=true;
-        reg.setAttribute('aria-disabled','true');
-        reg.textContent='Event Full';
-      }
-    }else{
-      badge?.remove();
-      const reg=findRegisterButton(card);
-      if(reg&&reg.classList.contains('event-register-full')){
-        reg.classList.remove('event-register-full');
-        if(reg.tagName==='BUTTON')reg.disabled=false;
-        reg.removeAttribute('aria-disabled');
-        if(reg.dataset.fullOriginalText)reg.textContent=reg.dataset.fullOriginalText;
-      }
-    }
+    }else badge?.remove();
   }
 
   function updateButton(btn,count,capacity){
@@ -102,7 +76,7 @@
       const count=players.length;
       const capacity=parsed.capacity;
       updateButton(btn,count,capacity);
-      setFullState(card,!!capacity&&count>=capacity);
+      setFullBadge(card,!!capacity&&count>=capacity);
       card.dataset.registeredCount=String(count);
       if(capacity)card.dataset.eventCapacity=String(capacity);
       card.dataset.eventPlayersHydrated='done';
@@ -116,25 +90,24 @@
   function ensureButton(card){
     const eventId=eventIdFromCard(card);
     if(!eventId)return;
-    let btn=card.querySelector('.event-view-players');
+    let btn=card.querySelector(':scope > .event-view-players');
     if(!btn){
       btn=document.createElement('button');
       btn.type='button';
       btn.className='event-view-players';
       btn.dataset.eventId=eventId;
       btn.innerHTML='<span><b>Registered Players</b><small>View confirmed list</small></span><strong>View <i aria-hidden="true">›</i></strong>';
-      const actions=card.querySelector('.event-actions,.event-card-actions,.event-footer')||card;
-      actions.appendChild(btn);
+      card.appendChild(btn);
     }else btn.dataset.eventId=eventId;
     hydrateCard(card,eventId,btn);
   }
 
-  function scan(){document.querySelectorAll('#eventsGrid .event-card, #eventsGrid article').forEach(ensureButton)}
+  function scan(){document.querySelectorAll('#eventsGrid .target-event-shell,#eventsGrid .event-card,#eventsGrid article').forEach(ensureButton)}
 
   function eventTitle(eventId){
-    const card=[...document.querySelectorAll('#eventsGrid .event-card, #eventsGrid article')].find(c=>eventIdFromCard(c)===eventId);
+    const card=[...document.querySelectorAll('#eventsGrid .target-event-shell,#eventsGrid .event-card,#eventsGrid article')].find(c=>eventIdFromCard(c)===eventId);
     if(!card)return 'Registered Players';
-    const h=card.querySelector('h2,h3,.event-title,.event-name');
+    const h=card.querySelector('h2,h3,.event-title,.event-name,.me5-title');
     return (h?.textContent||'Registered Players').trim();
   }
 
@@ -150,7 +123,7 @@
       modal.querySelector('.event-players-backdrop').onclick=closeModal;
     }
     modal.querySelector('#eventPlayersEventName').textContent=eventTitle(eventId);
-    const card=[...document.querySelectorAll('#eventsGrid .event-card, #eventsGrid article')].find(c=>eventIdFromCard(c)===eventId);
+    const card=[...document.querySelectorAll('#eventsGrid .target-event-shell,#eventsGrid .event-card,#eventsGrid article')].find(c=>eventIdFromCard(c)===eventId);
     const capacity=Number(card?.dataset.eventCapacity)||parseCapacity(card||document.createElement('div')).capacity||0;
     const body=modal.querySelector('.event-players-body');
     const countLine=capacity?`${players.length} / ${capacity} registered`:`${players.length} registered`;
@@ -175,16 +148,15 @@
     const btn=e.target.closest('.event-view-players');
     if(!btn)return;
     const eventId=btn.dataset.eventId;
-    const old=btn.innerHTML;
     btn.disabled=true;
     btn.classList.add('is-loading');
     btn.innerHTML='<span><b>Registered Players</b><small>Loading confirmed list…</small></span><strong>•••</strong>';
     try{
       const players=await getPlayers(eventId,{fresh:true});
-      const card=btn.closest('.event-card,article');
+      const card=btn.closest('.target-event-shell,.event-card,article');
       const capacity=Number(card?.dataset.eventCapacity)||parseCapacity(card||document.createElement('div')).capacity||null;
       updateButton(btn,players.length,capacity);
-      if(card)setFullState(card,!!capacity&&players.length>=capacity);
+      if(card)setFullBadge(card,!!capacity&&players.length>=capacity);
       openModal(eventId,players);
     }catch(err){
       console.error('MYTT registered players',err);
@@ -192,7 +164,6 @@
     }finally{
       btn.disabled=false;
       btn.classList.remove('is-loading');
-      if(!btn.innerHTML.trim())btn.innerHTML=old;
     }
   });
 
